@@ -77,7 +77,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  if (request.destination === 'image') {
+  if (request.destination === 'image' || request.destination === 'font') {
     event.respondWith((async () => {
       const cache = await caches.open(CACHE_NAME);
       const cached = await cache.match(request);

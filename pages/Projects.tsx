@@ -37,7 +37,10 @@ const Projects: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center pt-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="flex flex-col items-center justify-center">
+          <div className="w-12 h-12 border-4 border-brand-blue/30 border-t-brand-gold rounded-full animate-spin mb-4"></div>
+          <p className="text-brand-gold font-serif tracking-widest text-sm animate-pulse">LOADING PROJECTS</p>
+        </div>
       </div>
     );
   }

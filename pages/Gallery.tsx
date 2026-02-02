@@ -11,8 +11,10 @@ const Gallery: React.FC = () => {
   const [modalTitle, setModalTitle] = useState<string | undefined>(undefined);
 
   const categories = useMemo(() => {
+    const base = ['Living Room', 'Bedroom', 'Kitchen', 'Office', 'Commercial'];
     const cats = Array.from(new Set(items.map(i => (i.category || '')))).filter(Boolean);
-    return ['All', ...cats];
+    const merged = Array.from(new Set([...base, ...cats]));
+    return ['All', ...merged];
   }, [items]);
 
   const visible = useMemo(() => {
@@ -58,31 +60,11 @@ const Gallery: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {visible.map((item) => (
-            <div
+            <GalleryCard
               key={item.id}
-              className="group relative overflow-hidden rounded-lg shadow-lg border border-transparent hover:border-brand-gold/40 cursor-pointer"
-              onClick={() => { setModalImages([item.url]); setModalTitle(item.title); setModalOpen(true); }}
-            >
-              <div className="aspect-w-4 aspect-h-3">
-                <img
-                  src={item.url}
-                  alt={item.title || 'Gallery image'}
-                  className="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-500"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                <div className="absolute bottom-0 left-0 p-4">
-                  {item.category && (
-                    <span className="inline-block px-3 py-1 bg-brand-gold text-white text-xs font-semibold rounded-full mb-2">
-                      {item.category}
-                    </span>
-                  )}
-                  {item.title && <h4 className="text-lg font-bold text-white">{item.title}</h4>}
-                </div>
-              </div>
-            </div>
+              item={item}
+              onOpen={() => { setModalImages([item.url]); setModalTitle(item.title); setModalOpen(true); }}
+            />
           ))}
         </div>
       </Section>
@@ -93,6 +75,38 @@ const Gallery: React.FC = () => {
         images={modalImages}
         title={modalTitle}
       />
+    </div>
+  );
+};
+
+const GalleryCard: React.FC<{ item: any; onOpen: () => void }> = ({ item, onOpen }) => {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <div
+      className="group relative overflow-hidden rounded-lg shadow-lg border border-transparent hover:border-brand-gold/40 cursor-pointer"
+      onClick={onOpen}
+    >
+      <div className="aspect-w-4 aspect-h-3 relative">
+        <div className={`absolute inset-0 bg-slate-200 animate-pulse ${loaded ? 'opacity-0' : 'opacity-100'}`} />
+        <img
+          src={item.url}
+          alt={item.title || 'Gallery image'}
+          className={`w-full h-64 object-cover transform transition-transform duration-500 ${loaded ? 'group-hover:scale-105' : 'scale-100'}`}
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setLoaded(true)}
+        />
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute bottom-0 left-0 p-4">
+          {item.category && (
+            <span className="inline-block px-3 py-1 bg-brand-gold text-white text-xs font-semibold rounded-full mb-2">
+              {item.category}
+            </span>
+          )}
+          {item.title && <h4 className="text-lg font-bold text-white">{item.title}</h4>}
+        </div>
+      </div>
     </div>
   );
 };

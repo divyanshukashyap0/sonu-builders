@@ -32,6 +32,8 @@ const Contact: React.FC = () => {
         phone: formData.phone,
         subject: formData.subject || 'General Inquiry',
         message: formData.message,
+        status: 'New',
+        notes: '',
         createdAt: new Date().toISOString()
       };
       await addDoc(collection(db, 'leads'), payload);
@@ -206,11 +208,15 @@ const Contact: React.FC = () => {
                     onChange={handleChange}
                     className="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-brand-gold focus:border-brand-gold"
                   >
-                    <option value="">Select a topic...</option>
-                    <option value="Residential Construction">Residential Construction</option>
-                    <option value="Commercial Project">Commercial Project</option>
-                    <option value="Renovation">Renovation</option>
-                    <option value="Property Inquiry">Property Inquiry</option>
+                    <option value="">Select a service...</option>
+                    <option value="Living Room Interiors">Living Room Interiors</option>
+                    <option value="Bedroom Interiors">Bedroom Interiors</option>
+                    <option value="Modular Kitchens">Modular Kitchens</option>
+                    <option value="False Ceiling & Lighting">False Ceiling & Lighting</option>
+                    <option value="Office Interiors">Office Interiors</option>
+                    <option value="Commercial Interiors">Commercial Interiors</option>
+                    <option value="Turnkey Interior Project">Turnkey Interior Project</option>
+                    <option value="Space Planning & Execution">Space Planning & Execution</option>
                     <option value="Other">Other</option>
                   </select>
                 </div>

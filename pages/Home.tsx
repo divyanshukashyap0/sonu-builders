@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Star } from 'lucide-react';
 import Section from '../components/Section';
@@ -13,14 +13,26 @@ const Home: React.FC = () => {
   const { testimonials } = useTestimonials();
   const { images } = useImages();
 
+  const heroRef = useRef<HTMLDivElement | null>(null);
+  const [offset, setOffset] = useState(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      setOffset(Math.min(40, y * 0.15));
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
     <>
       {/* Hero Section */}
-      <div className="relative h-screen min-h-[600px] flex items-center">
+      <div ref={heroRef} className="relative h-screen min-h-[600px] flex items-center">
         {/* Background Image with Overlay */}
         <div
           className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url("${images.homeHero}")` }}
+          style={{ backgroundImage: `url("${images.homeHero}")`, transform: `translateY(${offset}px)` }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-brand-dark/90 to-brand-dark/40" />
         </div>

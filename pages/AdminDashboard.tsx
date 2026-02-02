@@ -1,26 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { signOut } from 'firebase/auth';
-import { doc, getDoc, setDoc, onSnapshot, collection, deleteDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, onSnapshot, collection, deleteDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
 import { useNavigate } from 'react-router-dom';
-import { Save, LogOut, Building, Phone, Mail, MapPin, Plus, Trash2, Edit2, Image as ImageIcon } from 'lucide-react';
-import { CONTACT_INFO, COMPANY_NAME } from '../constants';
+import { Save, LogOut, Building, Phone, Mail, MapPin, Plus, Trash2, Edit2, Image as ImageIcon, LayoutDashboard, Settings, Folder, Star, Images, Inbox, Share2, ChevronLeft, ChevronRight, BarChart3 } from 'lucide-react';
+import { CONTACT_INFO, COMPANY_NAME, SERVICES } from '../constants';
 import { useProjects } from '../hooks/useProjects';
 import { useTestimonials } from '../hooks/useTestimonials';
 import { useImages } from '../hooks/useImages';
+import { useGallery } from '../hooks/useGallery';
 import { Project, Testimonial, ProjectCategory } from '../types';
 
 import { useUsers } from '../hooks/useUsers';
 import { Users as UsersIcon, Check, X } from 'lucide-react';
 
-type Tab = 'general' | 'projects' | 'testimonials' | 'images' | 'users' | 'leads' | 'social';
+type Tab = 'overview' | 'general' | 'projects' | 'testimonials' | 'images' | 'gallery' | 'users' | 'leads' | 'social';
 
 export default function AdminDashboard() {
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<Tab>('general');
+    const [activeTab, setActiveTab] = useState<Tab>('overview');
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState('');
+    const [isDark, setIsDark] = useState<boolean>(() => {
+        const pref = localStorage.getItem('theme') || '';
+        return pref === 'dark';
+    });
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(() => {
+        const pref = localStorage.getItem('adminSidebarCollapsed') || '';
+        return pref === 'true';
+    });
 
     // General Info State
     const [generalData, setGeneralData] = useState({
@@ -34,8 +43,10 @@ export default function AdminDashboard() {
     const { projects, addProject, updateProject, deleteProject } = useProjects();
     const { testimonials, addTestimonial, updateTestimonial, deleteTestimonial } = useTestimonials();
     const { images, updateImage } = useImages();
+    const { items: galleryItems, addItem: addGalleryItem, deleteItem: deleteGalleryItem } = useGallery();
     const { users, approveUser, deleteUser } = useUsers();
     const [leads, setLeads] = useState<any[]>([]);
+    const [leadNotes, setLeadNotes] = useState<Record<string, string>>({});
     const [socialData, setSocialData] = useState<any>({ facebook: '', twitter: '', instagram: '', linkedin: '', whatsapp: '' });
 
     // Local state for forms
@@ -67,6 +78,14 @@ export default function AdminDashboard() {
         await deleteDoc(doc(db, 'leads', id));
     };
 
+    const setLeadStatus = async (id: string, status: 'New' | 'Contacted' | 'Closed') => {
+        await updateDoc(doc(db, 'leads', id), { status });
+    };
+
+    const saveLeadNotes = async (id: string, notes: string) => {
+        await updateDoc(doc(db, 'leads', id), { notes });
+    };
+
     const fetchGeneralData = async () => {
         try {
             const docRef = doc(db, 'settings', 'general');
@@ -85,6 +104,20 @@ export default function AdminDashboard() {
         await signOut(auth);
         navigate('/admin-portal');
     };
+
+    useEffect(() => {
+        const root = document.documentElement;
+        if (isDark) {
+            root.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            root.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+        }
+    }, [isDark]);
+    useEffect(() => {
+        localStorage.setItem('adminSidebarCollapsed', String(isSidebarCollapsed));
+    }, [isSidebarCollapsed]);
 
     const handleGeneralSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -134,6 +167,30 @@ export default function AdminDashboard() {
         }
     };
 
+    const inquiryTrend = React.useMemo(() => {
+        const days = 7;
+        const now = new Date();
+        const buckets = Array.from({ length: days }, (_, i) => {
+            const d = new Date(now);
+            d.setDate(now.getDate() - (days - 1 - i));
+            const key = d.toISOString().slice(0, 10);
+            return { key, date: d, count: 0 };
+        });
+        leads.forEach((lead) => {
+            const k = (lead.createdAt ? new Date(lead.createdAt) : new Date()).toISOString().slice(0, 10);
+            const b = buckets.find(b => b.key === k);
+            if (b) b.count += 1;
+        });
+        const max = Math.max(1, ...buckets.map(b => b.count));
+        const points = buckets.map((b, i) => {
+            const x = (i / (days - 1)) * 100;
+            const y = 100 - (b.count / max) * 100;
+            return `${x},${y}`;
+        }).join(' ');
+        const labels = buckets.map(b => b.key.slice(5));
+        return { buckets, points, labels, max };
+    }, [leads]);
+
     if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
 
     return (
@@ -143,6 +200,13 @@ export default function AdminDashboard() {
                     <div className="flex justify-between h-16 items-center">
                         <h1 className="text-xl font-bold text-gray-900 dark:text-white">Admin Dashboard</h1>
                         <div className="flex items-center space-x-4">
+                                <button
+                                    onClick={() => setIsDark(d => !d)}
+                                    className="px-3 py-2 rounded border border-gray-300 dark:border-gray-600 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700"
+                                    title="Toggle Dark Mode"
+                                >
+                                    {isDark ? 'Light' : 'Dark'}
+                                </button>
                             <button onClick={() => navigate('/')} className="text-sm text-blue-600 hover:underline">View Site</button>
                             <button
                                 onClick={handleLogout}
@@ -153,25 +217,51 @@ export default function AdminDashboard() {
                             </button>
                         </div>
                     </div>
-                    {/* Tabs */}
-                    <div className="flex space-x-8 overflow-x-auto">
-                        {(['general', 'projects', 'testimonials', 'images', 'users', 'leads', 'social'] as Tab[]).map((tab) => (
-                            <button
-                                key={tab}
-                                onClick={() => setActiveTab(tab)}
-                                className={`py-3 px-1 border-b-2 text-sm font-medium capitalize whitespace-nowrap ${activeTab === tab
-                                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                                    }`}
-                            >
-                                {tab}
-                            </button>
-                        ))}
-                    </div>
                 </div>
             </nav>
 
             <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+                <div className="flex gap-6">
+                    <aside className={`sticky top-20 h-[calc(100vh-6rem)] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm transition-all ${isSidebarCollapsed ? 'w-20' : 'w-64'} hidden md:block`}>
+                        <div className="flex items-center justify-between p-3">
+                            <span className={`text-sm font-semibold text-gray-700 dark:text-gray-200 transition-opacity ${isSidebarCollapsed ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>Navigation</span>
+                            <button
+                                onClick={() => setIsSidebarCollapsed(c => !c)}
+                                className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                                title={isSidebarCollapsed ? 'Expand' : 'Collapse'}
+                            >
+                                {isSidebarCollapsed ? <ChevronRight className="w-4 h-4 text-gray-600" /> : <ChevronLeft className="w-4 h-4 text-gray-600" />}
+                            </button>
+                        </div>
+                        <nav className="mt-2">
+                            {[
+                                { key: 'overview', label: 'Overview', icon: LayoutDashboard },
+                                { key: 'general', label: 'General', icon: Settings },
+                                { key: 'projects', label: 'Projects', icon: Folder },
+                                { key: 'testimonials', label: 'Testimonials', icon: Star },
+                                { key: 'images', label: 'Images', icon: ImageIcon },
+                                { key: 'gallery', label: 'Gallery', icon: Images },
+                                { key: 'users', label: 'Users', icon: UsersIcon },
+                                { key: 'leads', label: 'Leads', icon: Inbox },
+                                { key: 'social', label: 'Social', icon: Share2 },
+                            ].map((item: any) => {
+                                const Icon = item.icon;
+                                const active = activeTab === item.key;
+                                return (
+                                    <button
+                                        key={item.key}
+                                        onClick={() => setActiveTab(item.key)}
+                                        className={`w-full flex items-center gap-3 px-3 py-3 text-sm rounded-md transition-colors ${active ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-200' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700'}`}
+                                        title={item.label}
+                                    >
+                                        <Icon className="w-5 h-5 flex-shrink-0" />
+                                        <span className={`${isSidebarCollapsed ? 'hidden' : 'inline'}`}>{item.label}</span>
+                                    </button>
+                                );
+                            })}
+                        </nav>
+                    </aside>
+                    <section className="flex-1">
 
                 {/* General Info Tab */}
                 {activeTab === 'general' && (
@@ -208,6 +298,80 @@ export default function AdminDashboard() {
                                 </button>
                             </div>
                         </form>
+                    </div>
+                )}
+
+                {/* Overview Tab */}
+                {activeTab === 'overview' && (
+                    <div className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 border border-transparent hover:border-blue-200 dark:hover:border-blue-900 transition-colors">
+                                <div className="flex items-center justify-between mb-2">
+                                    <p className="text-sm text-gray-500">Inquiries</p>
+                                    <Inbox className="w-4 h-4 text-blue-600" />
+                                </div>
+                                <p className="text-3xl font-bold text-gray-900 dark:text-white">{leads.length}</p>
+                            </div>
+                            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 border border-transparent hover:border-blue-200 dark:hover:border-blue-900 transition-colors">
+                                <div className="flex items-center justify-between mb-2">
+                                    <p className="text-sm text-gray-500">Projects</p>
+                                    <Folder className="w-4 h-4 text-blue-600" />
+                                </div>
+                                <p className="text-3xl font-bold text-gray-900 dark:text-white">{projects.length}</p>
+                            </div>
+                            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 border border-transparent hover:border-blue-200 dark:hover:border-blue-900 transition-colors">
+                                <div className="flex items-center justify-between mb-2">
+                                    <p className="text-sm text-gray-500">Gallery Images</p>
+                                    <Images className="w-4 h-4 text-blue-600" />
+                                </div>
+                                <p className="text-3xl font-bold text-gray-900 dark:text-white">{galleryItems.length}</p>
+                            </div>
+                            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 border border-transparent hover:border-blue-200 dark:hover:border-blue-900 transition-colors">
+                                <div className="flex items-center justify-between mb-2">
+                                    <p className="text-sm text-gray-500">Services</p>
+                                    <Settings className="w-4 h-4 text-blue-600" />
+                                </div>
+                                <p className="text-3xl font-bold text-gray-900 dark:text-white">{SERVICES.length}</p>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 border border-transparent hover:border-blue-200 dark:hover:border-blue-900 transition-colors lg:col-span-2">
+                                <div className="flex items-center justify-between mb-4">
+                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Inquiry Trends (7 days)</h3>
+                                    <BarChart3 className="w-5 h-5 text-blue-600" />
+                                </div>
+                                <div className="h-32">
+                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full">
+                                        <polyline
+                                            points={inquiryTrend.points}
+                                            fill="none"
+                                            stroke="currentColor"
+                                            className="text-blue-600"
+                                            strokeWidth="2"
+                                        />
+                                    </svg>
+                                </div>
+                                <div className="mt-2 flex justify-between text-xs text-gray-500">
+                                    {inquiryTrend.labels.map((l, i) => <span key={i}>{l}</span>)}
+                                </div>
+                            </div>
+                            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 border border-transparent hover:border-blue-200 dark:hover:border-blue-900 transition-colors">
+                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Recent Activity</h3>
+                                <div className="space-y-3">
+                                    {leads.slice(0, 5).map(lead => (
+                                        <div key={lead.id} className="flex items-start justify-between">
+                                            <div>
+                                                <p className="text-sm font-medium text-gray-900 dark:text-white">{lead.name || 'Unknown'}</p>
+                                                <p className="text-xs text-gray-500">{lead.subject || 'Inquiry'}</p>
+                                            </div>
+                                            <p className="text-xs text-gray-400">{lead.createdAt ? new Date(lead.createdAt).toLocaleDateString() : ''}</p>
+                                        </div>
+                                    ))}
+                                    {leads.length === 0 && <p className="text-sm text-gray-500">No recent inquiries.</p>}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 )}
 
@@ -368,6 +532,58 @@ export default function AdminDashboard() {
                     </div>
                 )}
 
+                {activeTab === 'gallery' && (
+                    <div className="space-y-6">
+                        <div className="flex justify-between items-center">
+                            <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center"><ImageIcon className="w-5 h-5 mr-2" /> Gallery</h2>
+                            <button
+                                onClick={() => setEditingProject({}) as any}
+                                className="flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                            >
+                                <Plus className="w-4 h-4 mr-2" /> Add Image
+                            </button>
+                        </div>
+                        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg border border-blue-200 dark:border-blue-900">
+                            <form
+                                onSubmit={async (e) => {
+                                    e.preventDefault();
+                                    const form = e.target as HTMLFormElement;
+                                    const url = (form.elements.namedItem('url') as HTMLInputElement).value;
+                                    const title = (form.elements.namedItem('title') as HTMLInputElement).value;
+                                    const category = (form.elements.namedItem('category') as HTMLInputElement).value;
+                                    if (!url) return;
+                                    await addGalleryItem({ url, title, category });
+                                    form.reset();
+                                }}
+                                className="grid grid-cols-1 md:grid-cols-3 gap-4"
+                            >
+                                <input name="url" placeholder="Image URL" className="p-2 border rounded dark:bg-gray-700 dark:text-white md:col-span-2" required />
+                                <input name="title" placeholder="Title (optional)" className="p-2 border rounded dark:bg-gray-700 dark:text-white" />
+                                <input name="category" placeholder="Category (optional)" className="p-2 border rounded dark:bg-gray-700 dark:text-white md:col-span-3" />
+                                <div className="md:col-span-3 flex justify-end">
+                                    <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Add</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {galleryItems.map(item => (
+                                <div key={item.id} className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden group">
+                                    <div className="h-48 bg-gray-200 relative">
+                                        {item.url && <img src={item.url} alt={item.title || 'Gallery'} className="w-full h-full object-cover" />}
+                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center space-x-2">
+                                            <button onClick={() => deleteGalleryItem(item.id)} className="p-2 bg-white rounded-full text-red-600 hover:bg-red-50"><Trash2 className="w-4 h-4" /></button>
+                                        </div>
+                                    </div>
+                                    <div className="p-4">
+                                        {item.title && <h3 className="font-bold text-gray-900 dark:text-white">{item.title}</h3>}
+                                        <p className="text-sm text-gray-500">{item.category}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
                 {/* Social Links Tab */}
                 {activeTab === 'social' && (
                     <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 max-w-4xl mx-auto">
@@ -485,6 +701,44 @@ export default function AdminDashboard() {
                                     <div className="mt-3">
                                         <p className="text-gray-600 dark:text-gray-300 italic">{lead.message}</p>
                                     </div>
+                                    <div className="mt-4 flex items-center justify-between">
+                                        <div className="flex items-center space-x-2">
+                                            <span className={`px-2 py-1 rounded-full text-xs ${(() => {
+                                                const s = lead.status || 'New';
+                                                if (s === 'Contacted') return 'bg-blue-100 text-blue-800';
+                                                if (s === 'Closed') return 'bg-green-100 text-green-800';
+                                                return 'bg-yellow-100 text-yellow-800';
+                                            })()}`}>
+                                                {lead.status || 'New'}
+                                            </span>
+                                        </div>
+                                        <select
+                                            defaultValue={lead.status || 'New'}
+                                            onChange={(e) => setLeadStatus(lead.id, e.target.value as 'New' | 'Contacted' | 'Closed')}
+                                            className="p-2 border rounded text-sm dark:bg-gray-700 dark:text-white"
+                                        >
+                                            <option value="New">New</option>
+                                            <option value="Contacted">Contacted</option>
+                                            <option value="Closed">Closed</option>
+                                        </select>
+                                    </div>
+                                    <div className="mt-4">
+                                        <textarea
+                                            placeholder="Notes"
+                                            value={leadNotes[lead.id] ?? lead.notes ?? ''}
+                                            onChange={(e) => setLeadNotes({ ...leadNotes, [lead.id]: e.target.value })}
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white"
+                                            rows={3}
+                                        />
+                                        <div className="flex justify-end mt-2">
+                                            <button
+                                                onClick={() => saveLeadNotes(lead.id, leadNotes[lead.id] ?? '')}
+                                                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                            >
+                                                Save Notes
+                                            </button>
+                                        </div>
+                                    </div>
                                     {lead.createdAt && (
                                         <p className="mt-4 text-xs text-gray-400">Received: {new Date(lead.createdAt).toLocaleString()}</p>
                                     )}
@@ -494,6 +748,8 @@ export default function AdminDashboard() {
                     </div>
                 )}
 
+                    </section>
+                </div>
             </main>
         </div>
     );

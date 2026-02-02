@@ -22,7 +22,7 @@ const Button: React.FC<ButtonProps> = ({
   fullWidth = false,
   disabled = false
 }) => {
-  const baseStyles = "inline-flex items-center justify-center px-6 py-3 border text-base font-medium rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-gold";
+  const baseStyles = "inline-flex items-center justify-center px-6 py-3 border text-base font-medium rounded-md transition-all duration-300 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-gold";
   
   const variants = {
     primary: "border-transparent text-white bg-brand-blue hover:bg-blue-800 shadow-lg hover:shadow-xl hover:-translate-y-[1px]",

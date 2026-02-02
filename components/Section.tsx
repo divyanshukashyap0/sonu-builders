@@ -1,16 +1,34 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface SectionProps {
   children: React.ReactNode;
   className?: string;
   id?: string;
   colored?: boolean;
+  reveal?: boolean;
 }
 
-const Section: React.FC<SectionProps> = ({ children, className = '', id, colored = false }) => {
+const Section: React.FC<SectionProps> = ({ children, className = '', id, colored = false, reveal = false }) => {
   const bgClass = colored ? 'bg-brand-gold/10' : 'bg-brand-blue/10';
+  const ref = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!reveal || !ref.current) return;
+    const el = ref.current;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) el.classList.add('is-visible');
+        });
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [reveal]);
+
   return (
-    <section id={id} className={`py-16 md:py-24 ${bgClass} ${className}`}>
+    <section ref={ref} id={id} className={`py-16 md:py-24 ${bgClass} ${className} ${reveal ? 'reveal' : ''}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {children}
       </div>

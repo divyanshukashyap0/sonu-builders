@@ -8,12 +8,17 @@ import { useCompanyData } from '../hooks/useCompanyData';
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [lastY, setLastY] = useState(0);
   const location = useLocation();
   const { name, phone } = useCompanyData();
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      const y = window.scrollY;
+      setScrolled(y > 20);
+      setHidden(y > 80 && y > lastY);
+      setLastY(y);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -25,7 +30,7 @@ const Header: React.FC = () => {
 
   return (
     <header
-      className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-brand-dark shadow-md py-2' : 'bg-brand-dark/95 backdrop-blur-sm py-4'
+      className={`fixed w-full z-50 transition-all duration-300 ${hidden ? '-translate-y-full' : 'translate-y-0'} ${scrolled ? 'bg-brand-dark shadow-md py-2 pt-[max(0.5rem,env(safe-area-inset-top))]' : 'bg-brand-dark/95 backdrop-blur-sm py-4 pt-[max(1rem,env(safe-area-inset-top))]'
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -72,7 +77,7 @@ const Header: React.FC = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-brand-dark shadow-lg border-t border-brand-dark">
+        <div className="md:hidden absolute top-full left-0 w-full bg-brand-dark shadow-lg border-t border-brand-dark transition-transform duration-300 translate-y-0">
           <div className="px-4 pt-2 pb-6 space-y-1">
             {NAV_LINKS.map((link) => (
               <Link
