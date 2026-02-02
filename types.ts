@@ -37,3 +37,11 @@ export interface NavLink {
   label: string;
   path: string;
 }
+
+export interface GalleryItem {
+  id: string;
+  url: string;
+  title?: string;
+  category?: string;
+  createdAt?: number;
+}

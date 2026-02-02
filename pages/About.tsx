@@ -33,11 +33,15 @@ const About: React.FC = () => {
               src="https://images.unsplash.com/photo-1590644365607-1c5a38fc9270?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
               alt="Team discussing plans" 
               className="rounded-lg shadow-lg w-full h-64 object-cover mt-8"
+              loading="lazy"
+              decoding="async"
             />
             <img 
               src="https://images.unsplash.com/photo-1531834685032-c34bf0d84c77?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
               alt="Construction work" 
               className="rounded-lg shadow-lg w-full h-64 object-cover"
+              loading="lazy"
+              decoding="async"
             />
           </div>
         </div>

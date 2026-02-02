@@ -13,3 +13,27 @@ root.render(
     <App />
   </React.StrictMode>
 );
+
+if ('serviceWorker' in navigator) {
+  const register = () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then((registration) => {
+        registration.addEventListener('updatefound', () => {
+          const newSW = registration.installing;
+          if (!newSW) return;
+          newSW.addEventListener('statechange', () => {
+            if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
+            }
+          });
+        });
+      })
+      .catch((err) => {
+        console.error('SW registration failed', err);
+      });
+  };
+  if (document.readyState === 'complete') {
+    register();
+  } else {
+    window.addEventListener('load', register);
+  }
+}

@@ -83,6 +83,7 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({ isOpen, onClose, 
             src={images[currentIndex]}
             alt={`Gallery image ${currentIndex + 1}`}
             className="max-h-[80vh] md:max-h-[85vh] max-w-full object-contain rounded-sm shadow-2xl animate-fadeIn"
+            decoding="async"
           />
         </div>
 

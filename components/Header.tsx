@@ -32,7 +32,7 @@ const Header: React.FC = () => {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <img src={logo} alt={name} className="h-16 w-auto object-contain" />
+            <img src={logo} alt={name} className="h-16 w-auto object-contain" decoding="async" />
           </Link>
 
           {/* Desktop Nav */}

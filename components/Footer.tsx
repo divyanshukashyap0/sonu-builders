@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
           {/* Company Info */}
           <div>
             <Link to="/" className="inline-block mb-4">
-              <img src={logo} alt="Sonu Enterprises" className="h-12 w-auto opacity-100 hover:opacity-100 transition-opacity" />
+              <img src={logo} alt="Sonu Enterprises" className="h-12 w-auto opacity-100 hover:opacity-100 transition-opacity" loading="lazy" decoding="async" />
             </Link>
             <p className="text-sm leading-relaxed mb-6">
               Delivering quality construction and reliable real-estate solutions with integrity and expertise. Building trust, creating landmarks.

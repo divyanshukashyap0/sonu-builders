@@ -8,6 +8,7 @@ import About from './pages/About';
 import Services from './pages/Services';
 import Projects from './pages/Projects';
 import Contact from './pages/Contact';
+import Gallery from './pages/Gallery';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -48,6 +49,7 @@ const AppContent: React.FC = () => {
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/admin-portal" element={<AdminLogin />} />
           <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />

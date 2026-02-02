@@ -65,6 +65,8 @@ const Home: React.FC = () => {
               src={images.aboutBanner}
               alt="Construction site"
               className="rounded-lg shadow-xl"
+              loading="lazy"
+              decoding="async"
             />
             <div className="absolute -bottom-6 -right-6 bg-brand-blue text-white p-8 rounded-lg shadow-lg hidden md:block">
               <p className="text-4xl font-bold font-serif mb-1">15+</p>
@@ -131,6 +133,8 @@ const Home: React.FC = () => {
                   src={project.image}
                   alt={project.title}
                   className="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-90 transition-opacity">

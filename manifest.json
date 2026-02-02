@@ -1,0 +1,33 @@
+{
+  "name": "Sonu Enterprises & Building Developers",
+  "short_name": "Sonu Builders",
+  "description": "Building Trust. Creating Landmarks. Premium construction and real estate development services.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#000C21",
+  "theme_color": "#DD9726",
+  "orientation": "portrait",
+  "categories": ["business", "construction", "real estate"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

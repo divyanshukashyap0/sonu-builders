@@ -83,6 +83,8 @@ const Projects: React.FC = () => {
                   src={project.image}
                   alt={project.title}
                   className="w-full h-64 object-cover transform group-hover:scale-110 transition-transform duration-700"
+                  loading="lazy"
+                  decoding="async"
                 />
 
                 {/* Overlay */}
