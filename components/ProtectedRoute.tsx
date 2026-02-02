@@ -1,0 +1,117 @@
+import { useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../lib/firebase';
+
+export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
+    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState<any>(null);
+    const [isAuthorized, setIsAuthorized] = useState(false);
+    const [isPending, setIsPending] = useState(false);
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+            if (currentUser) {
+                setUser(currentUser);
+                // Check if user is an admin in Firestore
+                if (currentUser.email) {
+                    try {
+                        const adminDocRef = doc(db, 'admins', currentUser.email);
+                        const adminDoc = await getDoc(adminDocRef);
+
+                        if (adminDoc.exists()) {
+                            const data = adminDoc.data();
+                            if (data.role === 'admin') {
+                                setIsAuthorized(true);
+                                setIsPending(false);
+                            } else {
+                                setIsPending(true);
+                                setIsAuthorized(false);
+                            }
+                        } else {
+                            // Auto-register as pending
+                            await setDoc(adminDocRef, {
+                                email: currentUser.email,
+                                role: 'pending',
+                                createdAt: new Date().toISOString()
+                            });
+                            setIsPending(true);
+                            setIsAuthorized(false);
+                        }
+                    } catch (error) {
+                        console.error("Error checking admin status:", error);
+                        setIsAuthorized(false);
+                        setIsPending(false);
+                    }
+                }
+            } else {
+                setUser(null);
+                setIsAuthorized(false);
+                setIsPending(false);
+            }
+            setLoading(false);
+        });
+        return () => unsubscribe();
+    }, []);
+
+    if (loading) return (
+        <div className="min-h-screen flex items-center justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        </div>
+    );
+
+    if (!user) return <Navigate to="/admin-portal" replace />;
+
+    if (isPending) {
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
+                <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md max-w-md w-full text-center">
+                    <h2 className="text-2xl font-bold text-orange-600 mb-4">Approval Pending</h2>
+                    <p className="text-gray-600 dark:text-gray-300 mb-6">
+                        Your account <span className="font-mono text-sm bg-gray-100 dark:bg-gray-700 px-1 rounded">{user.email}</span>
+                        has been registered but is awaiting admin approval.
+                    </p>
+                    <div className="space-y-3">
+                        <button
+                            onClick={() => signOut(auth)}
+                            className="w-full bg-orange-600 hover:bg-orange-700 text-white py-2 px-4 rounded transition-colors"
+                        >
+                            Sign Out & Check Later
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    if (!isAuthorized) {
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
+                <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md max-w-md w-full text-center">
+                    <h2 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h2>
+                    <p className="text-gray-600 dark:text-gray-300 mb-6">
+                        You are logged in as <span className="font-mono text-sm bg-gray-100 dark:bg-gray-700 px-1 rounded">{user.email}</span>,
+                        but you do not have administrator privileges.
+                    </p>
+                    <div className="space-y-3">
+                        <button
+                            onClick={() => signOut(auth)}
+                            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition-colors"
+                        >
+                            Sign Out
+                        </button>
+                        <button
+                            onClick={() => window.location.href = '/'}
+                            className="w-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 py-2 px-4 rounded transition-colors"
+                        >
+                            Go to Home
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    return <>{children}</>;
+}
