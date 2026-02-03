@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { Project, ProjectCategory, Service, Testimonial, NavLink } from './types';
 
-export const COMPANY_NAME = "Sonu Enterprises & Building Developers";
+export const COMPANY_NAME = "Sonu Interiors & Home Design";
 export const COMPANY_PHONE = "+91 9967044479";
 export const COMPANY_EMAIL = "sonu15enterprises@gmail.com";
 export const COMPANY_ADDRESS = "Shop no. 22, Chandresh Godavari, Kalyan - Shilphata Rd, near nilje station, Dombivali East, Palava City, Kalyan, Maharashtra 421204";
@@ -67,83 +67,84 @@ export const SERVICES: Service[] = [
 export const PROJECTS: Project[] = [
   {
     id: '1',
-    title: 'Skyline Heights',
-    location: 'Sector 45, Urban City',
+    title: 'Modern Minimalist Apartment',
+    location: 'Palava City, Kalyan',
     category: ProjectCategory.RESIDENTIAL,
-    image: 'https://picsum.photos/id/122/800/600',
-    description: 'A premium 12-story residential complex with modern amenities.',
+    image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800',
+    description: 'Complete 3BHK interior makeover with minimalist design theme, custom modular kitchen, and smart storage solutions.',
     completionDate: '2023',
     gallery: [
-      'https://picsum.photos/id/122/800/600',
-      'https://picsum.photos/id/123/800/600',
-      'https://picsum.photos/id/124/800/600'
+      'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800',
+      'https://images.unsplash.com/photo-1556912173-3bb406ef7e77?w=800',
+      'https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=800'
     ]
   },
   {
     id: '2',
-    title: 'TechHub Business Park',
-    location: 'Cyber District',
-    category: ProjectCategory.COMMERCIAL,
-    image: 'https://picsum.photos/id/48/800/600',
-    description: 'Grade A office spaces designed for IT and corporate firms.',
+    title: 'Luxury Penthouse Design',
+    location: 'Thane West',
+    category: ProjectCategory.LUXURY,
+    image: 'https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800',
+    description: 'High-end penthouse interiors featuring Italian marble, designer lighting, and bespoke furniture.',
     completionDate: '2022',
     gallery: [
-      'https://picsum.photos/id/48/800/600',
-      'https://picsum.photos/id/49/800/600',
-      'https://picsum.photos/id/50/800/600'
+      'https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800',
+      'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800',
+      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800'
     ]
   },
   {
     id: '3',
-    title: 'Green Valley Villas',
-    location: 'Suburban Hills',
+    title: 'Contemporary Villa Interiors',
+    location: 'Dombivli',
     category: ProjectCategory.ONGOING,
-    image: 'https://picsum.photos/id/164/800/600',
-    description: 'Luxury eco-friendly villas surrounded by nature.',
+    image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800',
+    description: 'Complete villa interior design with modern aesthetics, false ceiling, and landscape integration.',
     completionDate: 'Dec 2024',
     gallery: [
-      'https://picsum.photos/id/164/800/600',
-      'https://picsum.photos/id/165/800/600',
-      'https://picsum.photos/id/166/800/600'
+      'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800',
+      'https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=800',
+      'https://images.unsplash.com/photo-1600563438938-a9a27216b4f5?w=800'
     ]
   },
   {
     id: '4',
-    title: 'The Grand Arcade',
-    location: 'Main Market Road',
-    category: ProjectCategory.UPCOMING,
-    image: 'https://picsum.photos/id/221/800/600',
-    description: 'A mix-use retail and entertainment complex.',
+    title: 'Boutique Office Interior',
+    location: 'Navi Mumbai',
+    category: ProjectCategory.COMMERCIAL,
+    image: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800',
+    description: 'Creative workspace design with ergonomic furniture, acoustic panels, and vibrant color schemes.',
+    completionDate: '2023',
     gallery: [
-      'https://picsum.photos/id/221/800/600',
-      'https://picsum.photos/id/222/800/600'
+      'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800',
+      'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800'
     ]
   },
   {
     id: '5',
-    title: 'Sunrise Apartments',
-    location: 'East End',
+    title: 'Cozy Studio Apartment',
+    location: 'Mumbai',
     category: ProjectCategory.RESIDENTIAL,
-    image: 'https://picsum.photos/id/193/800/600',
-    description: 'Affordable luxury apartments for modern families.',
-    completionDate: '2021',
+    image: 'https://images.unsplash.com/photo-1556912167-f556f1f39faa?w=800',
+    description: 'Space-optimized studio design with multi-functional furniture and warm color tones.',
+    completionDate: '2024',
     gallery: [
-      'https://picsum.photos/id/193/800/600',
-      'https://picsum.photos/id/194/800/600'
+      'https://images.unsplash.com/photo-1556912167-f556f1f39faa?w=800',
+      'https://images.unsplash.com/photo-1556909212-d5b604d0c90d?w=800'
     ]
   },
   {
     id: '6',
-    title: 'City Center Mall',
-    location: 'Downtown',
-    category: ProjectCategory.COMMERCIAL,
-    image: 'https://picsum.photos/id/435/800/600',
-    description: 'Renovation and expansion of the historic city mall.',
+    title: 'Traditional Indian Home',
+    location: 'Kalyan',
+    category: ProjectCategory.TRADITIONAL,
+    image: 'https://images.unsplash.com/photo-1615529328331-f8917597711f?w=800',
+    description: 'Classic Indian interior design with ethnic patterns, wooden furniture, and traditional decor elements.',
     completionDate: '2023',
     gallery: [
-      'https://picsum.photos/id/435/800/600',
-      'https://picsum.photos/id/436/800/600',
-      'https://picsum.photos/id/437/800/600'
+      'https://images.unsplash.com/photo-1615529328331-f8917597711f?w=800',
+      'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800',
+      'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=800'
     ]
   }
 ];
@@ -151,24 +152,24 @@ export const PROJECTS: Project[] = [
 export const TESTIMONIALS: Testimonial[] = [
   {
     id: '1',
-    name: 'Rajesh Kumar',
+    name: 'Priya Sharma',
     role: 'Home Owner',
-    content: 'Sonu Enterprises delivered our dream home on time and within budget. The quality of materials used was exceptional.',
+    content: 'Sonu Interiors transformed our 3BHK into a dream home! The modular kitchen is beautiful and functional. Highly recommend!',
     rating: 5,
   },
   {
     id: '2',
-    name: 'Anita Desai',
-    role: 'Property Investor',
-    content: 'Professionalism and transparency are what define them. I have invested in two of their commercial projects.',
+    name: 'Amit Patel',
+    role: 'Apartment Owner',
+    content: 'Professional team with great design sense. They understood our vision and delivered exactly what we wanted. The false ceiling work is exceptional.',
     rating: 5,
   },
   {
     id: '3',
-    name: 'Vikram Singh',
-    role: 'Architect',
-    content: 'As an architect, I appreciate their attention to detail and adherence to structural drawings. Great partners.',
-    rating: 4,
+    name: 'Neha Deshmukh',
+    role: 'Villa Owner',
+    content: 'From custom wardrobes to living room design, everything was executed perfectly. Great quality and on-time delivery!',
+    rating: 5,
   },
 ];
 

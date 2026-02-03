@@ -17,19 +17,27 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
                 // Check if user is an admin in Firestore
                 if (currentUser.email) {
                     try {
+                        console.log('🔍 Checking admin status for:', currentUser.email);
                         const adminDocRef = doc(db, 'admins', currentUser.email);
                         const adminDoc = await getDoc(adminDocRef);
 
+                        console.log('📄 Admin doc exists?', adminDoc.exists());
                         if (adminDoc.exists()) {
                             const data = adminDoc.data();
+                            console.log('👤 Admin data:', data);
+                            console.log('🔑 Role:', data.role);
+
                             if (data.role === 'admin') {
+                                console.log('✅ Access GRANTED - User is admin');
                                 setIsAuthorized(true);
                                 setIsPending(false);
                             } else {
+                                console.log('⏳ Access PENDING - Role is:', data.role);
                                 setIsPending(true);
                                 setIsAuthorized(false);
                             }
                         } else {
+                            console.log('➕ Creating new pending admin entry');
                             // Auto-register as pending
                             await setDoc(adminDocRef, {
                                 email: currentUser.email,
@@ -40,7 +48,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
                             setIsAuthorized(false);
                         }
                     } catch (error) {
-                        console.error("Error checking admin status:", error);
+                        console.error("❌ Error checking admin status:", error);
                         setIsAuthorized(false);
                         setIsPending(false);
                     }

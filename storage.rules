@@ -1,0 +1,19 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Allow public read access to all images
+    match /images/{allPaths=**} {
+      allow read: if true;
+      
+      // Only authenticated admins can write/delete
+      allow write, delete: if request.auth != null && 
+        firestore.get(/databases/(default)/documents/admins/$(request.auth.token.email)).data.role == 'admin';
+    }
+
+    // Deny all other access
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

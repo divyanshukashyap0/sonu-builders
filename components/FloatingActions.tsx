@@ -34,7 +34,7 @@ const FloatingActions: React.FC = () => {
       {showInstall && (
         <button
           onClick={installApp}
-          className="bg-brand-gold/90 backdrop-blur-sm text-white px-3 py-1.5 rounded-full shadow-lg shadow-brand-gold/20 hover:scale-105 transition-all text-xs font-semibold animate-pulse"
+          className="bg-brand-gold/90 backdrop-blur-sm text-white px-3 py-1.5 rounded-full shadow-lg shadow-brand-gold/20 hover:scale-105 transition-all text-xs font-semibold"
           aria-label="Install App"
         >
           Install App

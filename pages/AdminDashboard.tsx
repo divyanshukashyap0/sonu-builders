@@ -13,8 +13,12 @@ import { Project, Testimonial, ProjectCategory } from '../types';
 
 import { useUsers } from '../hooks/useUsers';
 import { Users as UsersIcon, Check, X } from 'lucide-react';
+import ImageUploader from '../components/ImageUploader';
+import DataSeeder from '../components/DataSeeder';
+import LinkPreview from '../components/LinkPreview';
+import { Database } from 'lucide-react';
 
-type Tab = 'overview' | 'general' | 'projects' | 'testimonials' | 'images' | 'gallery' | 'users' | 'leads' | 'social';
+type Tab = 'overview' | 'general' | 'projects' | 'testimonials' | 'images' | 'gallery' | 'users' | 'leads' | 'social' | 'branding' | 'data';
 
 export default function AdminDashboard() {
     const navigate = useNavigate();
@@ -22,10 +26,6 @@ export default function AdminDashboard() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState('');
-    const [isDark, setIsDark] = useState<boolean>(() => {
-        const pref = localStorage.getItem('theme') || '';
-        return pref === 'dark';
-    });
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(() => {
         const pref = localStorage.getItem('adminSidebarCollapsed') || '';
         return pref === 'true';
@@ -52,6 +52,14 @@ export default function AdminDashboard() {
     // Local state for forms
     const [editingProject, setEditingProject] = useState<Partial<Project> | null>(null);
     const [editingTestimonial, setEditingTestimonial] = useState<Partial<Testimonial> | null>(null);
+    const [brandingData, setBrandingData] = useState({
+        title: 'Defining Modern Luxury',
+        subtitle: 'Our Vision',
+        description: 'Crafting timeless interiors...',
+        imageUrl: '',
+        buttonText: 'Export Our Philosophy',
+        buttonLink: '/about'
+    });
 
     useEffect(() => {
         fetchGeneralData();
@@ -69,6 +77,15 @@ export default function AdminDashboard() {
         const unsub = onSnapshot(doc(db, 'settings', 'social'), (docSnap) => {
             if (docSnap.exists()) {
                 setSocialData(docSnap.data());
+            }
+        });
+        return () => unsub();
+    }, []);
+
+    useEffect(() => {
+        const unsub = onSnapshot(doc(db, 'settings', 'branding'), (docSnap) => {
+            if (docSnap.exists()) {
+                setBrandingData(docSnap.data() as any);
             }
         });
         return () => unsub();
@@ -105,16 +122,6 @@ export default function AdminDashboard() {
         navigate('/admin-portal');
     };
 
-    useEffect(() => {
-        const root = document.documentElement;
-        if (isDark) {
-            root.classList.add('dark');
-            localStorage.setItem('theme', 'dark');
-        } else {
-            root.classList.remove('dark');
-            localStorage.setItem('theme', 'light');
-        }
-    }, [isDark]);
     useEffect(() => {
         localStorage.setItem('adminSidebarCollapsed', String(isSidebarCollapsed));
     }, [isSidebarCollapsed]);
@@ -194,23 +201,16 @@ export default function AdminDashboard() {
     if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-20">
-            <nav className="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-10">
+        <div className="min-h-screen bg-premium-stone pb-20">
+            <nav className="bg-white/95 backdrop-blur-md shadow-sm border-b border-luxury-gold/10 sticky top-0 z-10">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16 items-center">
-                        <h1 className="text-xl font-bold text-gray-900 dark:text-white">Admin Dashboard</h1>
-                        <div className="flex items-center space-x-4">
-                            <button
-                                onClick={() => setIsDark(d => !d)}
-                                className="px-3 py-2 rounded border border-gray-300 dark:border-gray-600 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700"
-                                title="Toggle Dark Mode"
-                            >
-                                {isDark ? 'Light' : 'Dark'}
-                            </button>
-                            <button onClick={() => navigate('/')} className="text-sm text-blue-600 hover:underline">View Site</button>
+                        <h1 className="text-xl font-serif font-bold text-luxury-charcoal">Admin Dashboard</h1>
+                        <div className="flex items-center space-x-6">
+                            <button onClick={() => navigate('/')} className="text-sm font-bold text-luxury-gold hover:text-luxury-charcoal uppercase tracking-widest transition-colors">View Site</button>
                             <button
                                 onClick={handleLogout}
-                                className="flex items-center text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400"
+                                className="flex items-center text-luxury-charcoal/60 hover:text-red-500 transition-colors uppercase tracking-widest text-xs font-bold"
                             >
                                 <LogOut className="w-5 h-5 mr-2" />
                                 Logout
@@ -222,15 +222,15 @@ export default function AdminDashboard() {
 
             <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col md:flex-row gap-6">
-                    <aside className={`sticky top-16 md:top-20 z-30 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm transition-all ${isSidebarCollapsed ? 'md:w-20' : 'md:w-64'} w-full md:block`}>
-                        <div className="flex items-center justify-between p-3 border-b md:border-b-0 border-gray-200 dark:border-gray-700">
-                            <span className={`text-sm font-semibold text-gray-700 dark:text-gray-200 transition-opacity ${isSidebarCollapsed ? 'md:opacity-0 md:pointer-events-none' : 'opacity-100'}`}>Navigation</span>
+                    <aside className={`sticky top-16 md:top-20 z-30 bg-white border border-luxury-gold/5 rounded-lg shadow-glass transition-all ${isSidebarCollapsed ? 'md:w-20' : 'md:w-64'} w-full md:block`}>
+                        <div className="flex items-center justify-between p-4 border-b md:border-b-0 border-luxury-gold/5">
+                            <span className={`text-[10px] items-center uppercase tracking-[0.2em] font-bold text-luxury-gold transition-opacity ${isSidebarCollapsed ? 'md:opacity-0 md:pointer-events-none' : 'opacity-100'}`}>Navigation</span>
                             <button
                                 onClick={() => setIsSidebarCollapsed(c => !c)}
-                                className="hidden md:block p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                                className="hidden md:block p-2 rounded hover:bg-luxury-gold/10 transition-colors"
                                 title={isSidebarCollapsed ? 'Expand' : 'Collapse'}
                             >
-                                {isSidebarCollapsed ? <ChevronRight className="w-4 h-4 text-gray-600" /> : <ChevronLeft className="w-4 h-4 text-gray-600" />}
+                                {isSidebarCollapsed ? <ChevronRight className="w-4 h-4 text-luxury-charcoal/60" /> : <ChevronLeft className="w-4 h-4 text-luxury-charcoal/60" />}
                             </button>
                         </div>
                         <nav className="flex md:flex-col overflow-x-auto md:overflow-visible p-2 md:p-0 mt-0 md:mt-2 gap-2 md:gap-0 no-scrollbar">
@@ -244,6 +244,7 @@ export default function AdminDashboard() {
                                 { key: 'users', label: 'Users', icon: UsersIcon },
                                 { key: 'leads', label: 'Leads', icon: Inbox },
                                 { key: 'social', label: 'Social', icon: Share2 },
+                                { key: 'branding', label: 'Branding', icon: ImageIcon },
                             ].map((item: any) => {
                                 const Icon = item.icon;
                                 const active = activeTab === item.key;
@@ -251,7 +252,7 @@ export default function AdminDashboard() {
                                     <button
                                         key={item.key}
                                         onClick={() => setActiveTab(item.key)}
-                                        className={`flex-shrink-0 md:w-full flex items-center gap-3 px-3 py-3 text-sm rounded-md transition-colors whitespace-nowrap ${active ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-200' : 'text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700'}`}
+                                        className={`flex-shrink-0 md:w-full flex items-center gap-3 px-4 py-3 text-xs rounded-md transition-all duration-300 whitespace-nowrap uppercase tracking-widest font-bold ${active ? 'bg-luxury-gold text-white shadow-luxury' : 'text-luxury-charcoal/70 hover:bg-luxury-gold/5'}`}
                                         title={item.label}
                                     >
                                         <Icon className="w-5 h-5 flex-shrink-0" />
@@ -402,7 +403,14 @@ export default function AdminDashboard() {
                                                 >
                                                     {Object.values(ProjectCategory).map(c => <option key={c} value={c}>{c}</option>)}
                                                 </select>
-                                                <input placeholder="Main Image URL" value={editingProject.image || ''} onChange={e => setEditingProject({ ...editingProject, image: e.target.value })} className="p-2 border rounded dark:bg-gray-700 dark:text-white" />
+                                                <div className="md:col-span-2">
+                                                    <ImageUploader
+                                                        label="Main Project Image"
+                                                        existingUrl={editingProject.image}
+                                                        onUpload={(url) => setEditingProject({ ...editingProject, image: url })}
+                                                        path="projects"
+                                                    />
+                                                </div>
                                                 <input placeholder="Completion Date" value={editingProject.completionDate || ''} onChange={e => setEditingProject({ ...editingProject, completionDate: e.target.value })} className="p-2 border rounded dark:bg-gray-700 dark:text-white" />
                                             </div>
                                             <textarea placeholder="Description" rows={3} value={editingProject.description || ''} onChange={e => setEditingProject({ ...editingProject, description: e.target.value })} className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" required />
@@ -499,34 +507,20 @@ export default function AdminDashboard() {
                                 <div className="space-y-6">
                                     <div className="border p-4 rounded-lg">
                                         <h3 className="font-medium mb-2 dark:text-white">Home Page Hero Background</h3>
-                                        <div className="flex gap-4 items-start">
-                                            <div className="w-32 h-20 bg-gray-200 rounded overflow-hidden flex-shrink-0">
-                                                <img src={images.homeHero} alt="Preview" className="w-full h-full object-cover" />
-                                            </div>
-                                            <input
-                                                type="text"
-                                                value={images.homeHero || ''}
-                                                onChange={(e) => updateImage('homeHero', e.target.value)}
-                                                className="flex-1 p-2 border rounded dark:bg-gray-700 dark:text-white"
-                                                placeholder="Enter image URL..."
-                                            />
-                                        </div>
+                                        <ImageUploader
+                                            existingUrl={images.homeHero}
+                                            onUpload={(url) => updateImage('homeHero', url)}
+                                            path="homepage"
+                                        />
                                     </div>
 
                                     <div className="border p-4 rounded-lg">
                                         <h3 className="font-medium mb-2 dark:text-white">About Us/Generic Banner</h3>
-                                        <div className="flex gap-4 items-start">
-                                            <div className="w-32 h-20 bg-gray-200 rounded overflow-hidden flex-shrink-0">
-                                                <img src={images.aboutBanner} alt="Preview" className="w-full h-full object-cover" />
-                                            </div>
-                                            <input
-                                                type="text"
-                                                value={images.aboutBanner || ''}
-                                                onChange={(e) => updateImage('aboutBanner', e.target.value)}
-                                                className="flex-1 p-2 border rounded dark:bg-gray-700 dark:text-white"
-                                                placeholder="Enter image URL..."
-                                            />
-                                        </div>
+                                        <ImageUploader
+                                            existingUrl={images.aboutBanner}
+                                            onUpload={(url) => updateImage('aboutBanner', url)}
+                                            path="banners"
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -598,12 +592,27 @@ export default function AdminDashboard() {
                                     }}
                                     className="space-y-4"
                                 >
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <input placeholder="Facebook URL" value={socialData.facebook || ''} onChange={e => setSocialData({ ...socialData, facebook: e.target.value })} className="p-2 border rounded dark:bg-gray-700 dark:text-white" />
-                                        <input placeholder="Twitter URL" value={socialData.twitter || ''} onChange={e => setSocialData({ ...socialData, twitter: e.target.value })} className="p-2 border rounded dark:bg-gray-700 dark:text-white" />
-                                        <input placeholder="Instagram URL" value={socialData.instagram || ''} onChange={e => setSocialData({ ...socialData, instagram: e.target.value })} className="p-2 border rounded dark:bg-gray-700 dark:text-white" />
-                                        <input placeholder="LinkedIn URL" value={socialData.linkedin || ''} onChange={e => setSocialData({ ...socialData, linkedin: e.target.value })} className="p-2 border rounded dark:bg-gray-700 dark:text-white" />
-                                        <input placeholder="WhatsApp URL (wa.me link)" value={socialData.whatsapp || ''} onChange={e => setSocialData({ ...socialData, whatsapp: e.target.value })} className="p-2 border rounded dark:bg-gray-700 dark:text-white" />
+                                    <div className="space-y-4">
+                                        <div>
+                                            <input placeholder="Facebook URL" value={socialData.facebook || ''} onChange={e => setSocialData({ ...socialData, facebook: e.target.value })} className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
+                                            <LinkPreview url={socialData.facebook} showPreview={false} />
+                                        </div>
+                                        <div>
+                                            <input placeholder="Twitter URL" value={socialData.twitter || ''} onChange={e => setSocialData({ ...socialData, twitter: e.target.value })} className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
+                                            <LinkPreview url={socialData.twitter} showPreview={false} />
+                                        </div>
+                                        <div>
+                                            <input placeholder="Instagram URL" value={socialData.instagram || ''} onChange={e => setSocialData({ ...socialData, instagram: e.target.value })} className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
+                                            <LinkPreview url={socialData.instagram} showPreview={false} />
+                                        </div>
+                                        <div>
+                                            <input placeholder="LinkedIn URL" value={socialData.linkedin || ''} onChange={e => setSocialData({ ...socialData, linkedin: e.target.value })} className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
+                                            <LinkPreview url={socialData.linkedin} showPreview={false} />
+                                        </div>
+                                        <div>
+                                            <input placeholder="WhatsApp URL (wa.me link)" value={socialData.whatsapp || ''} onChange={e => setSocialData({ ...socialData, whatsapp: e.target.value })} className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white" />
+                                            <LinkPreview url={socialData.whatsapp} showPreview={false} />
+                                        </div>
                                     </div>
                                     <div className="flex justify-end">
                                         <button type="submit" className="flex items-center px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
@@ -611,6 +620,130 @@ export default function AdminDashboard() {
                                         </button>
                                     </div>
                                 </form>
+                            </div>
+                        )}
+
+                        {/* Branding Tab */}
+                        {activeTab === 'branding' && (
+                            <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 max-w-4xl mx-auto">
+                                <div className="mb-6">
+                                    <h2 className="text-lg font-medium text-gray-900 dark:text-white">Home Branding Section</h2>
+                                    <p className="text-sm text-gray-500">Manage the stylish featured section on your homepage.</p>
+                                </div>
+                                {message && <div className="mb-4 p-3 bg-blue-50 text-blue-700 rounded">{message}</div>}
+
+                                <form
+                                    onSubmit={async (e) => {
+                                        e.preventDefault();
+                                        setSaving(true);
+                                        try {
+                                            await setDoc(doc(db, 'settings', 'branding'), brandingData);
+                                            setMessage('Branding updated successfully!');
+                                            setTimeout(() => setMessage(''), 3000);
+                                        } catch (error) {
+                                            console.error(error);
+                                            setMessage('Failed to update branding.');
+                                        } finally {
+                                            setSaving(false);
+                                        }
+                                    }}
+                                    className="space-y-6"
+                                >
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="md:col-span-2">
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title (Stylish text)</label>
+                                            <input
+                                                type="text"
+                                                value={brandingData.title}
+                                                onChange={e => setBrandingData({ ...brandingData, title: e.target.value })}
+                                                className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white font-serif text-xl"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Subtitle (Badge)</label>
+                                            <input
+                                                type="text"
+                                                value={brandingData.subtitle}
+                                                onChange={e => setBrandingData({ ...brandingData, subtitle: e.target.value })}
+                                                className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Button Text</label>
+                                            <input
+                                                type="text"
+                                                value={brandingData.buttonText}
+                                                onChange={e => setBrandingData({ ...brandingData, buttonText: e.target.value })}
+                                                className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                            />
+                                        </div>
+                                        <div className="md:col-span-2">
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
+                                            <textarea
+                                                rows={4}
+                                                value={brandingData.description}
+                                                onChange={e => setBrandingData({ ...brandingData, description: e.target.value })}
+                                                className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                            />
+                                        </div>
+                                        <div className="md:col-span-2">
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Featured Image</label>
+                                            <ImageUploader
+                                                existingUrl={brandingData.imageUrl}
+                                                onUpload={(url) => setBrandingData({ ...brandingData, imageUrl: url })}
+                                                path="branding"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-end">
+                                        <button
+                                            type="submit"
+                                            disabled={saving}
+                                            className="flex items-center px-6 py-2 bg-luxury-gold text-white rounded hover:bg-luxury-bronze transition-colors focus:ring-2 focus:ring-luxury-gold"
+                                        >
+                                            <Save className="w-4 h-4 mr-2" /> Save Changes
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        )}
+
+                        {/* Data Management Tab */}
+                        {activeTab === 'data' && (
+                            <div className="space-y-6">
+                                <div className="mb-6">
+                                    <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                                        <Database className="w-6 h-6" />
+                                        Data Management
+                                    </h2>
+                                    <p className="text-sm text-gray-500 mt-1">
+                                        Import, export, and manage bulk data for your website content.
+                                    </p>
+                                </div>
+
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    <DataSeeder
+                                        collectionType="projects"
+                                        onDataChanged={() => {
+                                            setMessage('Projects updated successfully');
+                                            setTimeout(() => setMessage(''), 3000);
+                                        }}
+                                    />
+                                    <DataSeeder
+                                        collectionType="testimonials"
+                                        onDataChanged={() => {
+                                            setMessage('Testimonials updated successfully');
+                                            setTimeout(() => setMessage(''), 3000);
+                                        }}
+                                    />
+                                    <DataSeeder
+                                        collectionType="gallery"
+                                        onDataChanged={() => {
+                                            setMessage('Gallery updated successfully');
+                                            setTimeout(() => setMessage(''), 3000);
+                                        }}
+                                    />
+                                </div>
                             </div>
                         )}
 

@@ -10,6 +10,7 @@ import Services from './pages/Services';
 import Projects from './pages/Projects';
 import Contact from './pages/Contact';
 import Gallery from './pages/Gallery';
+import AITools from './pages/AITools';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -48,7 +49,7 @@ const AppContent: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen pb-16 md:pb-0">
+    <div className="flex flex-col min-h-screen">
       {loading && (
         <div className="app-loader">
           <div className="ring" />
@@ -63,6 +64,7 @@ const AppContent: React.FC = () => {
             <Route path="/services" element={<Services />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/gallery" element={<Gallery />} />
+            <Route path="/ai-tools" element={<AITools />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/admin-portal" element={<AdminLogin />} />
             <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />

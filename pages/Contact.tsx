@@ -76,52 +76,65 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <div className="pt-16">
-      <div className="bg-brand-dark py-20 text-center">
-        <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-4">Contact Us</h1>
-        <p className="text-slate-400 text-lg max-w-2xl mx-auto px-4">
-          Get in touch with us for inquiries, quotes, or to discuss your next big project.
-        </p>
+    <div>
+      <div className="bg-premium-stone pt-32 pb-20 text-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-luxury-gold/5 via-luxury-gold/2 to-transparent z-0" />
+        <div className="relative z-10 px-4">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-charcoal mb-4 animate-fadeInUp">Contact Us</h1>
+          <p className="text-luxury-charcoal/70 text-lg max-w-2xl mx-auto animate-fadeInUp font-medium" style={{ animationDelay: '0.2s' }}>
+            Get in touch with us for inquiries, quotes, or to discuss your next big interior project.
+          </p>
+        </div>
       </div>
 
       <Section>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
           {/* Contact Info */}
           <div>
-            <h2 className="text-2xl font-serif font-bold text-brand-dark mb-6">Get In Touch</h2>
-            <p className="text-slate-600 mb-8">
-              We are here to answer any questions you may have about our experiences. Reach out to us and we'll respond as soon as we can.
+            <h2 className="text-2xl font-serif font-bold text-luxury-charcoal mb-6">Get In Touch</h2>
+            <p className="text-luxury-charcoal/70 mb-8 leading-relaxed">
+              We are here to answer any questions you may have about our design experiences. Reach out to us and we'll respond as soon as we can.
             </p>
 
             <div className="space-y-6">
-              <div className="flex items-start">
-                <div className="w-12 h-12 bg-brand-light rounded-lg flex items-center justify-center shrink-0">
-                  <Phone className="w-6 h-6 text-brand-blue" />
+              <div className="flex items-start group">
+                <div className="w-12 h-12 bg-luxury-gold/5 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-luxury-gold transition-colors duration-300">
+                  <Phone className="w-6 h-6 text-luxury-gold group-hover:text-white transition-colors duration-300" />
                 </div>
                 <div className="ml-6">
-                  <h4 className="text-lg font-bold text-brand-dark">Phone</h4>
-                  <p className="text-slate-600 mt-1">{contactInfo.phone}</p>
-                  <p className="text-sm text-slate-500">Mon-Sat, 9am - 6pm</p>
+                  <h4 className="text-lg font-bold text-luxury-charcoal font-serif">Phone</h4>
+                  <p className="text-luxury-charcoal/70 mt-1">{contactInfo.phone}</p>
+                  <p className="text-[10px] uppercase tracking-widest font-bold text-luxury-gold mt-1">Mon-Sat, 9am - 6pm</p>
                 </div>
               </div>
 
-              <div className="flex items-start">
-                <div className="w-12 h-12 bg-brand-light rounded-lg flex items-center justify-center shrink-0">
-                  <Mail className="w-6 h-6 text-brand-gold" />
+              <div className="flex items-start group">
+                <div className="w-12 h-12 bg-luxury-gold/5 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-luxury-gold transition-colors duration-300">
+                  <Mail className="w-6 h-6 text-luxury-gold group-hover:text-white transition-colors duration-300" />
                 </div>
                 <div className="ml-6">
-                  <h4 className="text-lg font-bold text-brand-dark">Email</h4>
-                  <p className="text-slate-600 mt-1">{contactInfo.email}</p>
+                  <h4 className="text-lg font-bold text-luxury-charcoal font-serif">Email</h4>
+                  <p className="text-luxury-charcoal/70 mt-1">{contactInfo.email}</p>
                 </div>
               </div>
 
-              <div className="flex items-start">
-                <div className="w-12 h-12 bg-brand-light rounded-lg flex items-center justify-center shrink-0">
-                  <MapPin className="w-6 h-6 text-brand-gold" />
+              <div className="flex items-start group">
+                <div className="w-12 h-12 bg-luxury-gold/5 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-luxury-gold transition-all duration-300">
+                  <MapPin className="w-6 h-6 text-luxury-gold group-hover:text-white transition-all duration-300" />
                 </div>
                 <div className="ml-6">
-                  <h4 className="text-lg font-bold text-brand-dark">Office</h4>
-                  <p className="text-slate-600 mt-1 max-w-xs">{contactInfo.address}</p>
+                  <h4 className="text-lg font-bold text-luxury-charcoal font-serif">Office</h4>
+                  <p className="text-luxury-charcoal/70 mt-1 max-w-xs font-semibold">{contactInfo.address}</p>
+                  <div className="mt-2">
+                    <a
+                      href="https://share.google/LZ79ah8csbmZUG2B0"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-sm font-semibold text-luxury-gold hover:text-luxury-charcoal transition-colors"
+                    >
+                      Open in Google Maps
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -130,7 +143,7 @@ const Contact: React.FC = () => {
             <div className="mt-12 w-full h-64 bg-slate-200 rounded-lg overflow-hidden relative">
               <iframe
                 title="Google Maps"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.0664285949!2d77.025!3d28.627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjjCsDM3JzM3LjIiTiA3N8KwMDEnMzAuMCJF!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin"
+                src={`https://www.google.com/maps?q=${encodeURIComponent(contactInfo.address)}&output=embed`}
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -141,8 +154,9 @@ const Contact: React.FC = () => {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-brand-blue/10 rounded-xl shadow-xl p-8 border border-transparent">
-            <h2 className="text-2xl font-serif font-bold text-brand-dark mb-6">Send Message</h2>
+          <div className="bg-white rounded-xl shadow-luxury-hover p-8 border border-luxury-gold/5 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-luxury-gold/5 rounded-full -mr-16 -mt-16 blur-3xl" />
+            <h2 className="text-2xl font-serif font-bold text-luxury-charcoal mb-6 relative z-10">Send Message</h2>
 
             {status === 'success' ? (
               <div className="bg-green-50 border border-green-200 text-green-700 p-6 rounded-lg text-center">
@@ -158,7 +172,7 @@ const Contact: React.FC = () => {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
+                    <label htmlFor="name" className="block text-[10px] uppercase tracking-widest font-bold text-luxury-gold mb-2">Full Name</label>
                     <input
                       type="text"
                       id="name"
@@ -166,12 +180,12 @@ const Contact: React.FC = () => {
                       required
                       value={formData.name}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-brand-gold focus:border-brand-gold"
+                      className="w-full px-4 py-3 bg-ivory-pearl/50 border border-luxury-gold/10 rounded-lg focus:ring-2 focus:ring-luxury-gold/20 focus:border-luxury-gold outline-none transition-all"
                       placeholder="John Doe"
                     />
                   </div>
                   <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-slate-700 mb-1">Phone Number</label>
+                    <label htmlFor="phone" className="block text-[10px] uppercase tracking-widest font-bold text-luxury-gold mb-2">Phone Number</label>
                     <input
                       type="tel"
                       id="phone"
@@ -179,14 +193,14 @@ const Contact: React.FC = () => {
                       required
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-brand-gold focus:border-brand-gold"
+                      className="w-full px-4 py-3 bg-ivory-pearl/50 border border-luxury-gold/10 rounded-lg focus:ring-2 focus:ring-luxury-gold/20 focus:border-luxury-gold outline-none transition-all font-medium"
                       placeholder="+91 ..."
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
+                  <label htmlFor="email" className="block text-[10px] uppercase tracking-widest font-bold text-luxury-gold mb-2">Email Address</label>
                   <input
                     type="email"
                     id="email"
@@ -194,19 +208,19 @@ const Contact: React.FC = () => {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-brand-gold focus:border-brand-gold"
+                    className="w-full px-4 py-3 bg-ivory-pearl/50 border border-luxury-gold/10 rounded-lg focus:ring-2 focus:ring-luxury-gold/20 focus:border-luxury-gold outline-none transition-all font-medium"
                     placeholder="john@example.com"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-slate-700 mb-1">Interested In</label>
+                  <label htmlFor="subject" className="block text-[10px] uppercase tracking-widest font-bold text-luxury-gold mb-2">Interested In</label>
                   <select
                     id="subject"
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-brand-gold focus:border-brand-gold"
+                    className="w-full px-4 py-3 bg-ivory-pearl/50 border border-luxury-gold/10 rounded-lg focus:ring-2 focus:ring-luxury-gold/20 focus:border-luxury-gold outline-none transition-all font-medium"
                   >
                     <option value="">Select a service...</option>
                     <option value="Living Room Interiors">Living Room Interiors</option>
@@ -222,7 +236,7 @@ const Contact: React.FC = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-slate-700 mb-1">Message</label>
+                  <label htmlFor="message" className="block text-[10px] uppercase tracking-widest font-bold text-luxury-gold mb-2">Message</label>
                   <textarea
                     id="message"
                     name="message"
@@ -230,7 +244,7 @@ const Contact: React.FC = () => {
                     required
                     value={formData.message}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-brand-gold focus:border-brand-gold"
+                    className="w-full px-4 py-3 bg-ivory-pearl/50 border border-luxury-gold/10 rounded-lg focus:ring-2 focus:ring-luxury-gold/20 focus:border-luxury-gold outline-none transition-all font-medium"
                     placeholder="Tell us about your project requirements..."
                   ></textarea>
                 </div>

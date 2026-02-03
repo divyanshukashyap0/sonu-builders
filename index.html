@@ -4,15 +4,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sonu Enterprises & Building Developers</title>
+  <title>Sonu Interiors & Home Design</title>
   <meta name="description"
-    content="Building Trust. Creating Landmarks. Premium construction and real estate development services." />
+    content="Transforming houses into beautiful homes. Premium interior design, modular kitchens, wardrobes, false ceilings, and complete home interior solutions." />
   <meta name="robots" content="index,follow" />
+  <meta name="keywords"
+    content="interior design, modular kitchen, wardrobe design, false ceiling, home interiors, luxury interiors, residential design, commercial interiors" />
+  <meta name="author" content="Sonu Interiors & Home Design" />
+
+  <!-- PWA Meta Tags -->
+  <meta name="theme-color" content="#D4AF37" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Sonu Interiors" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
+
+  <!-- Additional SEO -->
+  <meta name="geo.region" content="IN" />
+  <meta name="geo.placename" content="India" />
+  <meta name="language" content="English" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700;800&display=swap"
     rel="stylesheet" />
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link rel="manifest" href="/manifest.json" />
@@ -23,6 +38,12 @@
   <link rel="dns-prefetch" href="https://images.unsplash.com">
   <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
   <link rel="dns-prefetch" href="https://wa.me">
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+
+  <!-- Performance hints -->
+  <link rel="preload" href="/index.css" as="style">
+  <link rel="modulepreload" href="/index.tsx">
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -33,13 +54,25 @@
             serif: ['Playfair Display', 'serif'],
           },
           colors: {
+            luxury: {
+              white: '#FAFAF9',
+              beige: '#F5F1ED',
+              charcoal: '#1C1917',
+              gold: '#D4AF37',
+              bronze: '#CD7F32',
+            },
             brand: {
-              dark: '#000C21', // Extracted Dark Blue/Black
-              blue: '#003368', // Extracted Primary Blue
-              green: '#047857', // Emerald 700 (Keep)
-              gold: '#DD9726', // Extracted Gold
-              light: '#f8fafc', // Slate 50
+              dark: '#1C1917',
+              blue: '#003368',
+              green: '#047857',
+              gold: '#D4AF37',
+              light: '#FAFAF9',
             }
+          },
+          boxShadow: {
+            luxury: '0 10px 40px rgba(0,0,0,0.08)',
+            'luxury-hover': '0 20px 60px rgba(0,0,0,0.12)',
+            glass: '0 8px 32px rgba(0,0,0,0.1)',
           }
         }
       }
@@ -79,7 +112,8 @@
   <meta name="twitter:image" content="/favicon.png" />
 </head>
 
-<body class="bg-brand-blue/10 text-slate-800 antialiased selection:bg-brand-blue selection:text-white font-sans">
+<body
+  class="bg-ivory-pearl text-luxury-charcoal antialiased selection:bg-luxury-gold selection:text-white font-sans overflow-x-hidden">
   <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
 </body>

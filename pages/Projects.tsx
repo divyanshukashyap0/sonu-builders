@@ -38,23 +38,24 @@ const Projects: React.FC = () => {
     return (
       <div className="min-h-screen flex items-center justify-center pt-20">
         <div className="flex flex-col items-center justify-center">
-          <div className="w-12 h-12 border-4 border-brand-blue/30 border-t-brand-gold rounded-full animate-spin mb-4"></div>
-          <p className="text-brand-gold font-serif tracking-widest text-sm animate-pulse">LOADING PROJECTS</p>
+          <div className="w-12 h-12 border-4 border-luxury-gold/30 border-t-luxury-gold rounded-full animate-spin mb-4"></div>
+          <p className="text-luxury-gold font-serif tracking-widest text-sm animate-pulse uppercase">Refining Excellence</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="pt-20">
-      <Section className="bg-brand-dark text-white">
-        <div className="text-center max-w-3xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">Our Projects</h1>
-          <p className="text-lg text-slate-300">
+    <div>
+      <div className="bg-premium-stone pt-32 pb-20 text-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-luxury-gold/5 via-luxury-gold/2 to-transparent z-0" />
+        <div className="relative z-10 px-4">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-charcoal mb-4 animate-fadeInUp">Our Projects</h1>
+          <p className="text-luxury-charcoal/70 text-lg max-w-2xl mx-auto animate-fadeInUp font-medium" style={{ animationDelay: '0.2s' }}>
             A showcase of our commitment to excellence, innovation, and quality in every structure we build.
           </p>
         </div>
-      </Section>
+      </div>
 
       <Section>
         {/* Filter */}
@@ -63,9 +64,9 @@ const Projects: React.FC = () => {
             <button
               key={category}
               onClick={() => setFilter(category)}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${filter === category
-                ? 'bg-brand-blue text-white shadow-lg transform scale-105'
-                : 'bg-brand-blue/10 text-brand-dark hover:bg-brand-blue/20 border border-transparent'
+              className={`px-6 py-2 rounded-full text-xs uppercase tracking-widest font-bold transition-all duration-300 ${filter === category
+                ? 'bg-luxury-gold text-white shadow-luxury transform scale-105'
+                : 'bg-white text-luxury-charcoal hover:bg-luxury-gold hover:text-white border border-luxury-gold/20'
                 }`}
             >
               {category}
@@ -108,22 +109,22 @@ const Projects: React.FC = () => {
 
               <div className="p-6">
                 <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-xl font-bold text-brand-dark group-hover:text-brand-blue transition-colors">{project.title}</h3>
-                  <span className="inline-block px-2 py-1 bg-brand-light text-brand-blue text-xs font-semibold rounded-full">
+                  <h3 className="text-xl font-bold text-luxury-charcoal group-hover:text-luxury-gold transition-colors">{project.title}</h3>
+                  <span className="inline-block px-2 py-1 bg-luxury-gold/10 text-luxury-gold text-[10px] uppercase tracking-tighter font-bold rounded-sm">
                     {project.category}
                   </span>
                 </div>
 
-                <p className="text-sm text-slate-500 mb-4 flex items-center">
-                  <span className="text-brand-gold mr-1">📍</span> {project.location}
+                <p className="text-[10px] uppercase tracking-widest font-bold text-luxury-gold mb-3 flex items-center">
+                  <span className="text-luxury-gold mr-1.5 opacity-60">📍</span> {project.location}
                 </p>
-                <p className="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-3">
+                <p className="text-luxury-charcoal/70 text-sm leading-relaxed mb-6 line-clamp-3 font-medium">
                   {project.description}
                 </p>
 
-                <div className="text-xs text-brand-blue font-semibold border-t border-slate-100 pt-4 flex justify-between items-center">
+                <div className="text-[10px] text-luxury-gold/60 font-bold uppercase tracking-widest border-t border-luxury-gold/10 pt-4 flex justify-between items-center">
                   <span>{project.completionDate ? `Completed: ${project.completionDate}` : 'Ongoing'}</span>
-                  <span className="text-brand-gold font-bold text-xs uppercase tracking-wider">View Details</span>
+                  <span className="text-luxury-gold font-bold transition-colors group-hover:text-luxury-charcoal">View Details</span>
                 </div>
               </div>
             </div>

@@ -1,8 +1,8 @@
 export enum ProjectCategory {
   RESIDENTIAL = 'Residential',
   COMMERCIAL = 'Commercial',
-  INDUSTRIAL = 'Industrial',
-  INTERIOR = 'Interior',
+  LUXURY = 'Luxury Interiors',
+  TRADITIONAL = 'Traditional Style',
   ONGOING = 'Ongoing Projects',
   UPCOMING = 'Upcoming Projects'
 }

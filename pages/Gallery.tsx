@@ -25,21 +25,25 @@ const Gallery: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center pt-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-blue"></div>
+        <div className="flex flex-col items-center justify-center">
+          <div className="w-12 h-12 border-4 border-luxury-gold/30 border-t-luxury-gold rounded-full animate-spin mb-4"></div>
+          <p className="text-luxury-gold font-serif tracking-widest text-sm animate-pulse uppercase">Curating Inspiration</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="pt-20">
-      <Section className="bg-brand-dark text-white">
-        <div className="text-center max-w-3xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">Gallery</h1>
-          <p className="text-lg text-slate-300">
-            Explore project highlights and behind-the-scenes moments.
+    <div>
+      <div className="bg-premium-stone pt-32 pb-20 text-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-luxury-gold/5 via-luxury-gold/2 to-transparent z-0" />
+        <div className="relative z-10 px-4">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-charcoal mb-4 animate-fadeInUp">Gallery</h1>
+          <p className="text-luxury-charcoal/70 text-lg max-w-2xl mx-auto animate-fadeInUp font-medium" style={{ animationDelay: '0.2s' }}>
+            Explore project highlights and behind-the-scenes moments of our luxury transformations.
           </p>
         </div>
-      </Section>
+      </div>
 
       <Section>
         <div className="flex flex-wrap justify-center gap-3 mb-10">
@@ -47,9 +51,9 @@ const Gallery: React.FC = () => {
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${activeCategory === cat
-                  ? 'bg-brand-blue text-white shadow-lg transform scale-105'
-                  : 'bg-brand-blue/10 text-brand-dark hover:bg-brand-blue/20 border border-transparent'
+              className={`px-5 py-2 rounded-full text-xs uppercase tracking-widest font-bold transition-all duration-300 ${activeCategory === cat
+                ? 'bg-luxury-gold text-white shadow-luxury transform scale-105'
+                : 'bg-white text-luxury-charcoal hover:bg-luxury-gold hover:text-white border border-luxury-gold/20'
                 }`}
             >
               {cat}
@@ -96,14 +100,14 @@ const GalleryCard: React.FC<{ item: any; onOpen: () => void }> = ({ item, onOpen
           onLoad={() => setLoaded(true)}
         />
       </div>
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-        <div className="absolute bottom-0 left-0 p-4">
+      <div className="absolute inset-0 bg-gradient-to-t from-luxury-charcoal/80 via-luxury-charcoal/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute bottom-0 left-0 p-4 relative z-10 w-full">
           {item.category && (
-            <span className="inline-block px-3 py-1 bg-brand-gold text-white text-xs font-semibold rounded-full mb-2">
+            <span className="inline-block px-3 py-1 bg-luxury-gold text-white text-[10px] uppercase tracking-tighter font-bold rounded-sm mb-2">
               {item.category}
             </span>
           )}
-          {item.title && <h4 className="text-lg font-bold text-white">{item.title}</h4>}
+          {item.title && <h4 className="text-lg font-bold text-white font-serif">{item.title}</h4>}
         </div>
       </div>
     </div>

@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Disallow admin pages
+Disallow: /admin-portal
+Disallow: /admin-dashboard
+
+# Sitemap
+Sitemap: https://yourwebsite.com/sitemap.xml
