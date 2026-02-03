@@ -1,84 +1,131 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import Button from '../Button';
 
 interface CinematicHeroProps {
     backgroundImage?: string;
     backgroundVideo?: string;
+    titleColor?: string;
+    emphasisColor?: string;
+    subtextColor?: string;
+    title?: string;
+    emphasisText?: string;
+    description?: string;
 }
 
 export const CinematicHero: React.FC<CinematicHeroProps> = ({
     backgroundImage = 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1920&q=80',
-    backgroundVideo
+    backgroundVideo,
+    titleColor = '#FFFFFF',
+    emphasisColor = '#000000',
+    subtextColor = '#FFFFFF',
+    title = 'Designing Spaces That Define',
+    emphasisText = 'How You Live',
+    description = 'Luxury interiors & turnkey construction crafted with precision, trust, and timeless design.'
 }) => {
-    // Removed parallax scroll listener for better performance
+    const { scrollY } = useScroll();
+    const bgY = useTransform(scrollY, [0, 500], [0, 200]);
+    const textY = useTransform(scrollY, [0, 500], [0, -100]);
+    const opacity = useTransform(scrollY, [0, 500], [1, 0]);
 
     return (
-        <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
-            {/* Background Video or Image - Fixed (no parallax) */}
-            {backgroundVideo ? (
-                <video
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    className="absolute inset-0 w-full h-full object-cover"
-                >
-                    <source src={backgroundVideo} type="video/mp4" />
-                </video>
-            ) : (
-                <div
-                    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                    style={{
-                        backgroundImage: `url("${backgroundImage}")`
-                    }}
-                />
-            )}
+        <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-luxury-obsidian">
+            {/* Background Container with Parallax */}
+            <motion.div
+                style={{ y: bgY }}
+                className="absolute inset-0 w-full h-full"
+            >
+                {backgroundVideo ? (
+                    <video
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        className="w-full h-full object-cover scale-110"
+                    >
+                        <source src={backgroundVideo} type="video/mp4" />
+                    </video>
+                ) : (
+                    <div
+                        className="w-full h-full bg-cover bg-center bg-no-repeat scale-110"
+                        style={{
+                            backgroundImage: `url("${backgroundImage}")`
+                        }}
+                    />
+                )}
+            </motion.div>
 
-            {/* Light Champagne Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-ivory-pearl/60 via-ivory-pearl/20 to-transparent" />
-            <div className="absolute inset-0 bg-ivory-pearl/20 backdrop-blur-[2px]" />
+            {/* Premium Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-luxury-obsidian/80 via-luxury-obsidian/20 to-luxury-obsidian/40" />
+            <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-luxury-obsidian/60 via-transparent to-transparent" />
 
             {/* Content */}
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
-                <div className="max-w-4xl mx-auto space-y-8">
+            <motion.div
+                style={{ y: textY, opacity }}
+                className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-10 sm:pt-20"
+            >
+                <div className="max-w-4xl mx-auto space-y-12">
+                    {/* Floating Badge */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8 }}
+                    >
+                        <span className="inline-block px-4 py-2 border border-luxury-gold/30 rounded-full text-luxury-gold text-xs uppercase tracking-[0.3em] font-bold bg-white/5 backdrop-blur-md">
+                            Bespoke Excellence Since 2010
+                        </span>
+                    </motion.div>
+
                     {/* Headline */}
-                    <h1 className="font-serif font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-luxury-charcoal leading-tight animate-fadeInUp">
-                        Designing Spaces That Define{' '}
-                        <span className="text-luxury-gold block mt-2 drop-shadow-sm">How You Live</span>
-                    </h1>
+                    <motion.h1
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2, duration: 1 }}
+                        className="font-serif font-bold text-4xl sm:text-6xl md:text-7xl lg:text-8xl leading-[1.2] sm:leading-[1.1] tracking-tighter drop-shadow-lg"
+                        style={{ color: titleColor }}
+                    >
+                        {title}{' '}
+                        <span
+                            className="block mt-4"
+                            style={{ color: emphasisColor }}
+                        >
+                            {emphasisText}
+                        </span>
+                    </motion.h1>
 
                     {/* Subtext */}
-                    <p
-                        className="text-lg sm:text-xl md:text-2xl text-luxury-charcoal/80 max-w-3xl mx-auto leading-relaxed animate-fadeInUp font-medium"
-                        style={{ animationDelay: '0.2s', opacity: 0, animationFillMode: 'forwards' }}
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4, duration: 0.8 }}
+                        className="text-xl sm:text-2xl max-w-2xl mx-auto leading-relaxed font-medium drop-shadow-md"
+                        style={{ color: subtextColor }}
                     >
-                        Luxury interiors & turnkey construction crafted with precision, trust, and timeless design.
-                    </p>
+                        {description}
+                    </motion.p>
 
                     {/* CTA Buttons */}
-                    <div
-                        className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fadeInUp"
-                        style={{ animationDelay: '0.4s', opacity: 0, animationFillMode: 'forwards' }}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.6, duration: 0.8 }}
+                        style={{
+                            opacity: useTransform(scrollY, [500, 900], [1, 0]),
+                            pointerEvents: useTransform(scrollY, (v) => v >= 900 ? "none" : "auto") as any
+                        }}
+                        className="flex flex-col sm:flex-row gap-8 justify-center items-center mt-12"
                     >
-                        <a
-                            href="/contact"
-                            className="btn-luxury bg-luxury-gold text-white px-10 py-5 rounded-sm hover:bg-luxury-charcoal hover:shadow-luxury-hover transition-all duration-500 flex items-center gap-3 text-lg font-bold w-full sm:w-auto justify-center uppercase tracking-widest"
-                        >
-                            Start Your Journey
-                            <ArrowRight className="w-5 h-5" />
-                        </a>
-
-                        <a
-                            href="/projects"
-                            className="btn-luxury bg-white border border-luxury-gold/30 text-luxury-charcoal px-10 py-5 rounded-sm hover:border-luxury-gold hover:shadow-luxury transition-all duration-500 text-lg font-bold w-full sm:w-auto justify-center uppercase tracking-widest"
-                        >
-                            Explore Portfolios
-                        </a>
-                    </div>
+                        <Button to="/contact" variant="primary">
+                            Get a Consultation
+                        </Button>
+                        <Button to="/projects" variant="white">
+                            View Portfolio
+                        </Button>
+                    </motion.div>
                 </div>
-            </div>
-
-            {/* Removed scroll indicator per user request */}
+            </motion.div>
         </section>
     );
 };

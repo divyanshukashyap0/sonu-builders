@@ -1,10 +1,12 @@
 import React, { useMemo, useState } from 'react';
 import Section from '../components/Section';
 import { useGallery } from '../hooks/useGallery';
+import { usePageHeaders } from '../hooks/usePageHeaders';
 import ImageGalleryModal from '../components/ImageGalleryModal';
 
 const Gallery: React.FC = () => {
   const { items, loading } = useGallery();
+  const { headers, loading: headersLoading } = usePageHeaders();
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalImages, setModalImages] = useState<string[]>([]);
@@ -22,7 +24,7 @@ const Gallery: React.FC = () => {
     return items.filter(i => i.category === activeCategory);
   }, [items, activeCategory]);
 
-  if (loading) {
+  if (loading || headersLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center pt-20">
         <div className="flex flex-col items-center justify-center">
@@ -38,9 +40,11 @@ const Gallery: React.FC = () => {
       <div className="bg-premium-stone pt-32 pb-20 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-luxury-gold/5 via-luxury-gold/2 to-transparent z-0" />
         <div className="relative z-10 px-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-charcoal mb-4 animate-fadeInUp">Gallery</h1>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-charcoal mb-4 animate-fadeInUp">
+            {headers.gallery.title}
+          </h1>
           <p className="text-luxury-charcoal/70 text-lg max-w-2xl mx-auto animate-fadeInUp font-medium" style={{ animationDelay: '0.2s' }}>
-            Explore project highlights and behind-the-scenes moments of our luxury transformations.
+            {headers.gallery.subtitle}
           </p>
         </div>
       </div>

@@ -3,6 +3,7 @@ import Section from '../components/Section';
 import ImageGalleryModal from '../components/ImageGalleryModal';
 import { ProjectCategory, Project } from '../types';
 import { useProjects } from '../hooks/useProjects';
+import { usePageHeaders } from '../hooks/usePageHeaders';
 import { Maximize2, Camera } from 'lucide-react';
 
 const Projects: React.FC = () => {
@@ -10,6 +11,7 @@ const Projects: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const { projects, loading } = useProjects();
+  const { headers, loading: headersLoading } = usePageHeaders();
 
   const categories = ['All', ...Object.values(ProjectCategory)];
 
@@ -34,7 +36,7 @@ const Projects: React.FC = () => {
     return [project.image];
   };
 
-  if (loading) {
+  if (loading || headersLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center pt-20">
         <div className="flex flex-col items-center justify-center">
@@ -50,9 +52,11 @@ const Projects: React.FC = () => {
       <div className="bg-premium-stone pt-32 pb-20 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-luxury-gold/5 via-luxury-gold/2 to-transparent z-0" />
         <div className="relative z-10 px-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-charcoal mb-4 animate-fadeInUp">Our Projects</h1>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-charcoal mb-4 animate-fadeInUp">
+            {headers.projects.title}
+          </h1>
           <p className="text-luxury-charcoal/70 text-lg max-w-2xl mx-auto animate-fadeInUp font-medium" style={{ animationDelay: '0.2s' }}>
-            A showcase of our commitment to excellence, innovation, and quality in every structure we build.
+            {headers.projects.subtitle}
           </p>
         </div>
       </div>

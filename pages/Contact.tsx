@@ -3,11 +3,13 @@ import { Phone, Mail, MapPin, Send } from 'lucide-react';
 import Section from '../components/Section';
 import Button from '../components/Button';
 import { useCompanyData } from '../hooks/useCompanyData';
+import { usePageHeaders } from '../hooks/usePageHeaders';
 import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 
 const Contact: React.FC = () => {
   const { contactInfo } = useCompanyData();
+  const { headers, loading: headersLoading } = usePageHeaders();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -75,14 +77,27 @@ const Contact: React.FC = () => {
     }
   };
 
+  if (headersLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center pt-20">
+        <div className="flex flex-col items-center justify-center">
+          <div className="w-12 h-12 border-4 border-luxury-gold/30 border-t-luxury-gold rounded-full animate-spin mb-4"></div>
+          <p className="text-luxury-gold font-serif tracking-widest text-sm animate-pulse uppercase">Connecting Horizons</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="bg-premium-stone pt-32 pb-20 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-luxury-gold/5 via-luxury-gold/2 to-transparent z-0" />
         <div className="relative z-10 px-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-charcoal mb-4 animate-fadeInUp">Contact Us</h1>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-charcoal mb-4 animate-fadeInUp">
+            {headers.contact.title}
+          </h1>
           <p className="text-luxury-charcoal/70 text-lg max-w-2xl mx-auto animate-fadeInUp font-medium" style={{ animationDelay: '0.2s' }}>
-            Get in touch with us for inquiries, quotes, or to discuss your next big interior project.
+            {headers.contact.subtitle}
           </p>
         </div>
       </div>

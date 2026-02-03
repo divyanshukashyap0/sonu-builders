@@ -14,10 +14,23 @@ import AITools from './pages/AITools';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
+import CustomCursor from './components/luxury/CustomCursor';
+import { COMPANY_NAME } from './constants';
+import { useCompanyData } from './hooks/useCompanyData';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ThemeProvider, useTheme } from './context/ThemeContext';
+import { db } from './lib/firebase';
+import { doc, onSnapshot } from 'firebase/firestore';
 
 // Scroll to top on route change
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
+
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+  }, []);
 
   useEffect(() => {
     // Check if there is a hash (anchor) in the URL
@@ -42,19 +55,84 @@ const AppContent: React.FC = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin-portal') || location.pathname.startsWith('/admin-dashboard');
   const [loading, setLoading] = useState(true);
+  const { theme, toggleTheme } = useTheme();
+  const { name } = useCompanyData();
 
   useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 600);
+    const unsub = onSnapshot(doc(db, 'settings', 'master'), (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data.siteTitle) document.title = data.siteTitle;
+        if (data.themeOverride && data.themeOverride !== 'auto') {
+          // Enforce theme if overridden by admin
+          if (data.themeOverride !== theme) {
+            toggleTheme();
+          }
+        }
+      }
+    });
+    return () => unsub();
+  }, [theme, toggleTheme]);
+
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, 'settings', 'appearance'), (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const root = document.documentElement;
+
+        // Map appearance data to CSS variables
+        if (data.luxuryWhite) root.style.setProperty('--luxury-white', data.luxuryWhite);
+        if (data.warmBeige) root.style.setProperty('--warm-beige', data.warmBeige);
+        if (data.charcoal) root.style.setProperty('--charcoal', data.charcoal);
+        if (data.goldAccent) root.style.setProperty('--gold-accent', data.goldAccent);
+        if (data.bronze) root.style.setProperty('--bronze', data.bronze);
+        if (data.obsidian) root.style.setProperty('--obsidian', data.obsidian);
+        if (data.champagne) root.style.setProperty('--champagne', data.champagne);
+        if (data.premiumStone) root.style.setProperty('--premium-stone', data.premiumStone);
+        if (data.ivoryPearl) root.style.setProperty('--ivory-pearl', data.ivoryPearl);
+      }
+    });
+    return () => unsub();
+  }, []);
+
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(t);
   }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
-      {loading && (
-        <div className="app-loader">
-          <div className="ring" />
-        </div>
-      )}
+      <CustomCursor />
+      <AnimatePresence>
+        {loading && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            className="app-loader flex flex-col items-center justify-center bg-luxury-obsidian"
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="relative"
+            >
+              <div className="w-24 h-24 border-[1px] border-luxury-gold/20 rounded-full animate-[spin_4s_linear_infinite]" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-16 h-16 border-t border-luxury-gold rounded-full animate-spin" />
+              </div>
+            </motion.div>
+            <motion.h2
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="mt-8 text-luxury-gold tracking-[0.3em] text-sm uppercase font-light"
+            >
+              {name}
+            </motion.h2>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {!isAdminRoute && <Header />}
       <main className="flex-grow">
         <div key={location.pathname} className="page-transition">
@@ -80,10 +158,12 @@ const AppContent: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <ScrollToTop />
-      <AppContent />
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <ScrollToTop />
+        <AppContent />
+      </Router>
+    </ThemeProvider>
   );
 };
 

@@ -2,10 +2,11 @@
   /* Luxury Color Palette */
   --luxury-white: #FCFBFA;
   --warm-beige: #F8F5F2;
-  --charcoal: #3D352E;
-  /* Softer Deep Bronze instead of Blackish Charcoal */
+  --charcoal: #1A1A1A;
   --gold-accent: #D4AF37;
   --bronze: #8E6D45;
+  --obsidian: #0A0A0A;
+  --champagne: #E5D1B8;
   --premium-stone: #F5F2EF;
   --ivory-pearl: #FDFBFA;
 
@@ -18,12 +19,13 @@
 
   /* Gradients */
   --hero-overlay: linear-gradient(135deg, rgba(253, 251, 250, 0.6) 0%, rgba(253, 251, 250, 0.2) 100%);
-  --cta-gradient: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
+  --cta-gradient: linear-gradient(135deg, var(--gold-accent) 0%, var(--bronze) 100%);
 
   /* Shadows */
-  --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.08);
-  --shadow-hover: 0 20px 60px rgba(0, 0, 0, 0.12);
-  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --shadow-soft: 0 20px 40px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 40px 80px rgba(0, 0, 0, 0.08);
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
+  --shadow-premium: 0 30px 60px -12px rgba(0, 0, 0, 0.25);
 
   /* Spacing */
   --section-spacing: 6rem;
@@ -90,16 +92,47 @@ h6 {
 }
 
 h1 {
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(3rem, 8vw, 5rem);
   font-weight: 800;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  touch-action: manipulation;
+  /* Faster touch response */
+}
+
+@media (max-width: 640px) {
+  :root {
+    --section-spacing: 4rem;
+  }
+}
+
+.mobile-haptic:active {
+  transform: scale(0.96);
+  transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.premium-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-accent) transparent;
+}
+
+.premium-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.premium-scroll::-webkit-scrollbar-thumb {
+  background: var(--gold-accent);
+  border-radius: 10px;
 }
 
 h2 {
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  letter-spacing: -0.02em;
 }
 
 h3 {
-  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  letter-spacing: -0.01em;
 }
 
 /* Improve tap interactions on mobile */

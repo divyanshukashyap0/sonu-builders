@@ -55,24 +55,27 @@
           },
           colors: {
             luxury: {
-              white: '#FAFAF9',
-              beige: '#F5F1ED',
-              charcoal: '#1C1917',
+              white: '#FCFBFA',
+              beige: '#F8F5F2',
+              charcoal: '#1A1A1A',
               gold: '#D4AF37',
-              bronze: '#CD7F32',
+              bronze: '#8E6D45',
+              obsidian: '#0A0A0A',
+              champagne: '#E5D1B8',
             },
             brand: {
-              dark: '#1C1917',
-              blue: '#003368',
-              green: '#047857',
+              dark: '#141414',
               gold: '#D4AF37',
-              light: '#FAFAF9',
+              light: '#FDFBFA',
             }
           },
           boxShadow: {
-            luxury: '0 10px 40px rgba(0,0,0,0.08)',
-            'luxury-hover': '0 20px 60px rgba(0,0,0,0.12)',
-            glass: '0 8px 32px rgba(0,0,0,0.1)',
+            luxury: '0 20px 40px rgba(0,0,0,0.04)',
+            'luxury-hover': '0 30px 60px rgba(0,0,0,0.08)',
+            glass: '0 8px 32px 0 rgba(0, 0, 0, 0.1)',
+          },
+          backgroundImage: {
+            'grain': 'url("https://www.transparenttextures.com/patterns/micro-carbon.png")',
           }
         }
       }
@@ -113,7 +116,9 @@
 </head>
 
 <body
-  class="bg-ivory-pearl text-luxury-charcoal antialiased selection:bg-luxury-gold selection:text-white font-sans overflow-x-hidden">
+  class="bg-luxury-white text-luxury-charcoal antialiased selection:bg-luxury-gold selection:text-white font-sans overflow-x-hidden relative">
+  <!-- Noise/Grain Overlay -->
+  <div class="fixed inset-0 pointer-events-none opacity-[0.03] z-[9999] bg-grain"></div>
   <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
 </body>

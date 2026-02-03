@@ -4,9 +4,12 @@ import logo from '../logo.png';
 import { Facebook, Twitter, Instagram, Linkedin, ArrowRight } from 'lucide-react';
 import { NAV_LINKS } from '../constants';
 import { useCompanyData } from '../hooks/useCompanyData';
+import { useServices } from '../hooks/useServices';
 
 const Footer: React.FC = () => {
-  const { name, contactInfo, socialLinks } = useCompanyData();
+  const { name, contactInfo, socialLinks, footerDescription } = useCompanyData();
+  const { services } = useServices();
+
   return (
     <footer className="bg-premium-stone text-luxury-charcoal/80 border-t border-luxury-gold/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
@@ -15,10 +18,10 @@ const Footer: React.FC = () => {
           {/* Company Info */}
           <div>
             <Link to="/" className="inline-block mb-6">
-              <img src={logo} alt="Sonu Enterprises" className="h-12 w-auto" loading="lazy" decoding="async" />
+              <img src={logo} alt={name} className="h-12 w-auto" loading="lazy" decoding="async" />
             </Link>
             <p className="text-sm leading-relaxed mb-8 font-medium">
-              Delivering quality construction and reliable real-estate solutions with integrity and expertise. Building trust, creating landmarks.
+              {footerDescription}
             </p>
             <div className="flex space-x-6">
               <a href={socialLinks.facebook || '#'} className="text-luxury-gold hover:text-luxury-charcoal transition-colors" aria-label="Facebook"><Facebook className="w-5 h-5" /></a>
@@ -51,11 +54,18 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="text-luxury-charcoal text-sm uppercase tracking-widest font-bold mb-6">Our Services</h4>
             <ul className="space-y-4 text-sm font-semibold">
-              <li>Residential Construction</li>
-              <li>Commercial Development</li>
-              <li>Project Management</li>
-              <li>Renovation Services</li>
-              <li>Turnkey Solutions</li>
+              {services.slice(0, 5).map(service => (
+                <li key={service.id}>{service.title}</li>
+              ))}
+              {services.length === 0 && (
+                <>
+                  <li>Residential Construction</li>
+                  <li>Commercial Development</li>
+                  <li>Project Management</li>
+                  <li>Renovation Services</li>
+                  <li>Turnkey Solutions</li>
+                </>
+              )}
             </ul>
           </div>
 

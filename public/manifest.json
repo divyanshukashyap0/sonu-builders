@@ -31,7 +31,7 @@
             "name": "AI Style Finder",
             "short_name": "Style Quiz",
             "description": "Find your interior design style",
-            "url": "/ai-tools",
+            "url": "/#/ai-tools",
             "icons": [
                 {
                     "src": "/favicon.png",
@@ -43,7 +43,7 @@
             "name": "Budget Calculator",
             "short_name": "Calculator",
             "description": "Estimate project costs",
-            "url": "/ai-tools",
+            "url": "/#/ai-tools",
             "icons": [
                 {
                     "src": "/favicon.png",
@@ -55,7 +55,7 @@
             "name": "Contact Us",
             "short_name": "Contact",
             "description": "Get in touch",
-            "url": "/contact",
+            "url": "/#/contact",
             "icons": [
                 {
                     "src": "/favicon.png",

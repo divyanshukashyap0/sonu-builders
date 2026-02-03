@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { MessageCircle, X } from 'lucide-react';
-import { COMPANY_PHONE, COMPANY_NAME } from '../../constants';
+import { useCompanyData } from '../../hooks/useCompanyData';
 
 export const FloatingWhatsApp: React.FC = () => {
+    const { phone, name } = useCompanyData();
     const [isExpanded, setIsExpanded] = useState(false);
 
-    const whatsappUrl = `https://wa.me/${COMPANY_PHONE.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
-        `Hello ${COMPANY_NAME}, I would like to inquire about your interior design services.`
+    const whatsappUrl = `https://wa.me/${phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
+        `Hello ${name}, I would like to inquire about your interior design services.`
     )}`;
 
     return (

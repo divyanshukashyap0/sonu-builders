@@ -69,14 +69,25 @@ service cloud.firestore {
     }
     
     // ========================================
+    // SERVICES COLLECTION
+    // ========================================
+    match /services/{serviceId} {
+      // Public read access
+      allow read: if true;
+      
+      // Only admins can create, update, or delete
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ========================================
     // SETTINGS COLLECTION
     // ========================================
     match /settings/{settingId} {
       // Public read access for general and social settings
       allow read: if true;
       
-      // Only admins can update settings
-      allow update: if isAdmin();
+      // Only admins can create or update settings
+      allow create, update: if isAdmin();
       
       // Prevent deletion of settings
       allow delete: if false;

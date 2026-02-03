@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Magnetic from './luxury/Magnetic';
 
 interface ButtonProps {
   children: React.ReactNode;
@@ -12,45 +13,44 @@ interface ButtonProps {
   disabled?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({ 
-  children, 
-  variant = 'primary', 
-  to, 
-  onClick, 
-  className = '', 
+const Button: React.FC<ButtonProps> = ({
+  children,
+  variant = 'primary',
+  to,
+  onClick,
+  className = '',
   type = 'button',
   fullWidth = false,
   disabled = false
 }) => {
-  const baseStyles = "inline-flex items-center justify-center px-6 py-3 border text-base font-medium rounded-md transition-all duration-300 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-gold";
-  
+  const baseStyles = "inline-flex items-center justify-center px-10 py-5 text-sm font-bold uppercase tracking-[0.2em] transition-all duration-500 rounded-sm focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed";
+
   const variants = {
-    primary: "border-transparent text-white bg-brand-blue hover:bg-blue-800 shadow-lg hover:shadow-xl hover:-translate-y-[1px]",
-    secondary: "border-transparent text-white bg-brand-gold hover:brightness-90 shadow-md hover:-translate-y-[1px]",
-    outline: "border-brand-blue text-brand-blue bg-transparent hover:bg-brand-blue/20",
-    white: "border-transparent text-white bg-brand-gold hover:brightness-95 shadow-md hover:-translate-y-[1px]"
+    primary: "bg-luxury-gold text-white hover:bg-luxury-charcoal shadow-luxury hover:shadow-luxury-hover",
+    secondary: "bg-luxury-charcoal text-white hover:bg-luxury-gold shadow-luxury",
+    outline: "border border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-white",
+    white: "bg-white text-luxury-charcoal border border-luxury-gold/20 hover:border-luxury-gold shadow-luxury hover:shadow-luxury-hover"
   };
 
   const widthClass = fullWidth ? 'w-full' : '';
-  const disabledClass = disabled ? 'opacity-60 cursor-not-allowed pointer-events-none' : '';
-  const combinedClasses = `${baseStyles} ${variants[variant]} ${widthClass} ${disabledClass} ${className}`;
+  const combinedClasses = `${baseStyles} ${variants[variant]} ${widthClass} ${className}`;
 
-  if (to) {
-    if (disabled) {
-      return <span className={combinedClasses}>{children}</span>;
+  const renderContent = () => {
+    if (to) {
+      return (
+        <Link to={to} className={combinedClasses}>
+          {children}
+        </Link>
+      );
     }
     return (
-      <Link to={to} className={combinedClasses}>
+      <button type={type} onClick={onClick} className={combinedClasses} disabled={disabled}>
         {children}
-      </Link>
+      </button>
     );
-  }
+  };
 
-  return (
-    <button type={type} onClick={onClick} className={combinedClasses} disabled={disabled}>
-      {children}
-    </button>
-  );
+  return <Magnetic>{renderContent()}</Magnetic>;
 };
 
 export default Button;

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Phone, MessageCircle } from 'lucide-react';
-import { COMPANY_PHONE, COMPANY_NAME } from '../../constants';
+import { useCompanyData } from '../../hooks/useCompanyData';
 
 export const MobileStickyCTA: React.FC = () => {
+    const { phone, name } = useCompanyData();
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
@@ -16,12 +17,12 @@ export const MobileStickyCTA: React.FC = () => {
     }, []);
 
     const handleCall = () => {
-        window.location.href = `tel:${COMPANY_PHONE}`;
+        window.location.href = `tel:${phone}`;
     };
 
     const handleWhatsApp = () => {
-        const url = `https://wa.me/${COMPANY_PHONE.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
-            `Hello ${COMPANY_NAME}, I'm interested in your interior design services.`
+        const url = `https://wa.me/${phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
+            `Hello ${name}, I'm interested in your interior design services.`
         )}`;
         window.open(url, '_blank');
     };
