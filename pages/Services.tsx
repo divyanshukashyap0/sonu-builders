@@ -27,11 +27,11 @@ const Services: React.FC = () => {
                 </p>
               </div>
               <div className="bg-brand-gold/5 px-8 py-4 border-t border-gray-100">
-                 <ul className="text-sm text-slate-500 space-y-2">
-                    <li className="flex items-center"><span className="w-1.5 h-1.5 bg-brand-gold rounded-full mr-2"></span>Expert Team</li>
-                    <li className="flex items-center"><span className="w-1.5 h-1.5 bg-brand-gold rounded-full mr-2"></span>Quality Materials</li>
-                    <li className="flex items-center"><span className="w-1.5 h-1.5 bg-brand-gold rounded-full mr-2"></span>On-time Completion</li>
-                 </ul>
+                <ul className="text-sm text-slate-500 space-y-2">
+                  <li className="flex items-center"><span className="w-1.5 h-1.5 bg-brand-gold rounded-full mr-2"></span>Expert Team</li>
+                  <li className="flex items-center"><span className="w-1.5 h-1.5 bg-brand-gold rounded-full mr-2"></span>Quality Materials</li>
+                  <li className="flex items-center"><span className="w-1.5 h-1.5 bg-brand-gold rounded-full mr-2"></span>On-time Completion</li>
+                </ul>
               </div>
             </div>
           ))}
@@ -40,11 +40,11 @@ const Services: React.FC = () => {
 
       <Section colored>
         <div className="max-w-4xl mx-auto text-center">
-           <h2 className="text-3xl font-serif font-bold text-brand-dark mb-6">Need a Custom Solution?</h2>
-           <p className="text-slate-600 mb-8 text-lg">
-             Every project is unique. We offer tailored construction packages designed to meet your specific requirements and budget.
-           </p>
-           <Button to="/contact">Discuss Your Project</Button>
+          <h2 className="text-3xl font-serif font-bold text-brand-dark mb-6">Need a Custom Solution?</h2>
+          <p className="text-slate-600 mb-8 text-lg">
+            Every project is unique. We offer tailored construction packages designed to meet your specific requirements and budget.
+          </p>
+          <Button to="/contact">Discuss Your Project</Button>
         </div>
       </Section>
     </div>

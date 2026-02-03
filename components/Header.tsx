@@ -97,6 +97,12 @@ const Header: React.FC = () => {
             >
               Call Us Now
             </a>
+            <Link
+              to="/admin-portal"
+              className="block w-full text-center mt-2 px-3 py-3 rounded-md text-sm font-medium text-slate-400 hover:text-white"
+            >
+              Admin Login
+            </Link>
           </div>
         </div>
       )}

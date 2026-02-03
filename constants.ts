@@ -28,38 +28,38 @@ export const NAV_LINKS: NavLink[] = [
 export const SERVICES: Service[] = [
   {
     id: '1',
-    title: 'Residential Construction',
-    description: 'Custom home building with a focus on durability, aesthetics, and modern living standards.',
+    title: 'Full Home Interiors',
+    description: 'Transforming your entire home with cohesive design themes, smart space planning, and premium finishes.',
     icon: Home,
   },
   {
     id: '2',
-    title: 'Commercial Development',
-    description: 'State-of-the-art office spaces, retail complexes, and industrial buildings.',
-    icon: Building2,
-  },
-  {
-    id: '3',
-    title: 'Project Planning',
-    description: 'Comprehensive architectural planning, structural design, and government approvals.',
-    icon: Ruler,
-  },
-  {
-    id: '4',
-    title: 'Renovation & Remodeling',
-    description: 'Transforming existing structures with modern designs and improved functionality.',
+    title: 'Modular Kitchens',
+    description: 'Ergonomic and stylish modular kitchens designed for modern cooking needs with maximum storage.',
     icon: PaintBucket,
   },
   {
+    id: '3',
+    title: 'Living Room Design',
+    description: 'Creating luxurious and inviting living spaces with custom furniture, lighting, and decor.',
+    icon: Building2,
+  },
+  {
+    id: '4',
+    title: 'Wardrobe & Storage',
+    description: 'Customized wardrobes and smart storage solutions that blend functionality with aesthetics.',
+    icon: Ruler,
+  },
+  {
     id: '5',
-    title: 'Turnkey Solutions',
-    description: 'End-to-end construction management from groundbreaking to final key handover.',
+    title: 'False Ceiling & Lighting',
+    description: 'Elegant false ceiling designs and ambient lighting solutions to enhance the mood of your home.',
     icon: Key,
   },
   {
     id: '6',
-    title: 'Real Estate Development',
-    description: 'Developing sustainable housing societies and premium plotted developments.',
+    title: 'Bathroom Renovations',
+    description: 'Modern bathroom designs with premium fittings, tiling, and space-saving layouts.',
     icon: HardHat,
   },
 ];

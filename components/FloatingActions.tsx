@@ -30,31 +30,31 @@ const FloatingActions: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-40 flex flex-col gap-3">
+    <div className="fixed bottom-20 md:bottom-6 right-4 z-40 flex flex-col gap-2 items-end">
       {showInstall && (
         <button
           onClick={installApp}
-          className="bg-brand-gold text-white px-4 py-2 rounded-full shadow-lg hover:scale-110 transition-transform text-sm font-semibold"
+          className="bg-brand-gold/90 backdrop-blur-sm text-white px-3 py-1.5 rounded-full shadow-lg shadow-brand-gold/20 hover:scale-105 transition-all text-xs font-semibold animate-pulse"
           aria-label="Install App"
         >
           Install App
         </button>
       )}
-      <a 
-        href={`https://wa.me/${COMPANY_PHONE.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hello ${COMPANY_NAME}, I would like to request a quotation for my project.`)}`} 
-        target="_blank" 
+      <a
+        href={`https://wa.me/${COMPANY_PHONE.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hello ${COMPANY_NAME}, I would like to request a quotation for my project.`)}`}
+        target="_blank"
         rel="noreferrer"
-        className="bg-brand-gold text-white p-3 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center justify-center"
+        className="bg-[#25D366] text-white p-2.5 rounded-full shadow-lg shadow-green-500/20 hover:scale-105 transition-all flex items-center justify-center"
         aria-label="Chat on WhatsApp"
       >
-        <MessageCircle className="w-6 h-6" />
+        <MessageCircle className="w-5 h-5" />
       </a>
-      <a 
-        href={`tel:${COMPANY_PHONE.replace(/[^0-9]/g, '')}`} 
-        className="bg-brand-blue text-white p-3 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center justify-center md:hidden"
+      <a
+        href={`tel:${COMPANY_PHONE.replace(/[^0-9]/g, '')}`}
+        className="bg-brand-blue text-white p-2.5 rounded-full shadow-lg shadow-brand-blue/20 hover:scale-105 transition-all flex items-center justify-center md:hidden"
         aria-label="Call Us"
       >
-        <Phone className="w-6 h-6" />
+        <Phone className="w-5 h-5" />
       </a>
     </div>
   );

@@ -28,7 +28,7 @@ const Home: React.FC = () => {
   return (
     <>
       {/* Hero Section */}
-      <div ref={heroRef} className="relative h-screen min-h-[600px] flex items-center">
+      <div ref={heroRef} className="relative min-h-screen flex flex-col justify-center pt-32 pb-16">
         {/* Background Image with Overlay */}
         <div
           className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
@@ -39,30 +39,30 @@ const Home: React.FC = () => {
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
           <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-6xl font-serif font-bold leading-tight mb-6">
-              Building Trust. <br />
-              <span className="text-brand-gold">Creating Landmarks.</span>
+            <h1 className="text-4xl md:text-6xl font-serif font-bold leading-tight mb-6 drop-shadow-lg">
+              Crafting Elegance. <br />
+              <span className="text-brand-gold">Designing Dreams.</span>
             </h1>
-            <p className="text-lg md:text-xl text-slate-200 mb-8 leading-relaxed">
-              Delivering quality construction and reliable real-estate solutions with integrity and expertise. We turn your vision into concrete reality.
+            <p className="text-lg md:text-xl text-slate-200 mb-8 leading-relaxed drop-shadow-md">
+              Transforming spaces into beautiful sanctuaries with premium interior design and execution. We turn your vision into reality.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button to="/projects" variant="primary">View Our Projects</Button>
               <Button to="/contact" variant="secondary" className="shadow-xl">Contact Us</Button>
             </div>
 
-            <div className="mt-12 flex items-center space-x-8 text-sm font-medium text-slate-300">
+            <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 text-sm font-medium text-slate-300">
               <div className="flex items-center">
                 <CheckCircle className="w-5 h-5 text-brand-gold mr-2" />
-                Quality Construction
+                Premium Finishes
               </div>
               <div className="flex items-center">
                 <CheckCircle className="w-5 h-5 text-brand-gold mr-2" />
-                Transparent Process
+                Custom Designs
               </div>
               <div className="flex items-center">
                 <CheckCircle className="w-5 h-5 text-brand-gold mr-2" />
-                On-Time Delivery
+                Expert Execution
               </div>
             </div>
           </div>
@@ -103,7 +103,7 @@ const Home: React.FC = () => {
       <Section className="!bg-brand-blue/10">
         <div className="text-center mb-16">
           <h2 className="text-brand-gold font-semibold uppercase tracking-wider mb-2 text-sm">Our Expertise</h2>
-          <h3 className="text-3xl md:text-4xl font-serif font-bold text-brand-dark">Comprehensive Construction Services</h3>
+          <h3 className="text-3xl md:text-4xl font-serif font-bold text-brand-dark">Premium Interior Design Services</h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

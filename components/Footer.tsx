@@ -39,6 +39,11 @@ const Footer: React.FC = () => {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link to="/admin-portal" className="text-sm hover:text-white hover:translate-x-1 transition-all inline-block text-slate-400">
+                  Admin Login
+                </Link>
+              </li>
             </ul>
           </div>
 

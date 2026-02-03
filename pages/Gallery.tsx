@@ -47,11 +47,10 @@ const Gallery: React.FC = () => {
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
-                activeCategory === cat
+              className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${activeCategory === cat
                   ? 'bg-brand-blue text-white shadow-lg transform scale-105'
                   : 'bg-brand-blue/10 text-brand-dark hover:bg-brand-blue/20 border border-transparent'
-              }`}
+                }`}
             >
               {cat}
             </button>
