@@ -96,8 +96,24 @@ const AppContent: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 2000);
-    return () => clearTimeout(t);
+    const handleLoad = () => {
+      // Ensure minimum display time for branding but clear asap after
+      setTimeout(() => setLoading(false), 2000);
+    };
+
+    if (document.readyState === 'complete') {
+      handleLoad();
+    } else {
+      window.addEventListener('load', handleLoad);
+    }
+
+    // Safety timeout in case window.load doesn't fire or stalls
+    const safetyTimer = setTimeout(() => setLoading(false), 5000);
+
+    return () => {
+      window.removeEventListener('load', handleLoad);
+      clearTimeout(safetyTimer);
+    };
   }, []);
 
   return (

@@ -20,10 +20,14 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
     const ref = useRef<HTMLSpanElement>(null);
 
     useEffect(() => {
+        // If already visible, no need to observe
+        if (isVisible) return;
+
         const observer = new IntersectionObserver(
             ([entry]) => {
-                if (entry.isIntersecting && !isVisible) {
+                if (entry.isIntersecting) {
                     setIsVisible(true);
+                    observer.disconnect(); // Run once
                 }
             },
             { threshold: 0.1 }
@@ -34,9 +38,7 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
         }
 
         return () => {
-            if (ref.current) {
-                observer.unobserve(ref.current);
-            }
+            observer.disconnect();
         };
     }, [isVisible]);
 

@@ -37,7 +37,7 @@ const Gallery: React.FC = () => {
 
   return (
     <div>
-      <div className="bg-premium-stone pt-32 pb-20 text-center relative overflow-hidden">
+      <div className="bg-stone-50 pt-32 pb-20 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-luxury-gold/5 via-luxury-gold/2 to-transparent z-0" />
         <div className="relative z-10 px-4">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-charcoal mb-4 animate-fadeInUp">
@@ -49,7 +49,7 @@ const Gallery: React.FC = () => {
         </div>
       </div>
 
-      <Section>
+      <Section className="!bg-stone-50">
         <div className="flex flex-wrap justify-center gap-3 mb-10">
           {categories.map(cat => (
             <button

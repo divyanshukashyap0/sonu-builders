@@ -14,6 +14,7 @@
 
   <!-- PWA Meta Tags -->
   <meta name="theme-color" content="#D4AF37" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Sonu Interiors" />
@@ -53,29 +54,51 @@
             sans: ['Inter', 'sans-serif'],
             serif: ['Playfair Display', 'serif'],
           },
+          backdropBlur: {
+            'glass': 'var(--glass-blur, 8px)',
+          },
           colors: {
+            // Override 'stone' to be our new Luxury Charcoal System
+            stone: {
+              50: 'var(--luxury-white, #FDFBFA)',  // Warm Ivory
+              100: '#F5F5F4', // Soft Cloud
+              200: '#EAE6E3', // Warm Off-White (Primary Text)
+              300: '#D6D3D1', // Muted Silver
+              400: '#A8A29E', // Neutral Grey
+              500: '#78716C', // Secondary Text
+              600: '#57534E', // Deep Grey
+              700: '#44403C', // Graphite
+              800: '#292524', // Dark Charcoal (Card bg)
+              900: '#1C1917', // Deep Charcoal (Surface)
+              950: '#0A0A0A', // Obsidian (Body bg)
+            },
+            'premium-stone': '#141414', // Mapped to Dark Surface
+            'ivory-pearl': '#050505',   // Mapped to Main Dark BG
             luxury: {
-              white: '#FCFBFA',
-              beige: '#F8F5F2',
-              charcoal: '#1A1A1A',
-              gold: '#D4AF37',
-              bronze: '#8E6D45',
-              obsidian: '#0A0A0A',
-              champagne: '#E5D1B8',
+              white: 'var(--luxury-white, #FDFBFA)', // Ivory Pearl
+              beige: 'var(--warm-beige, #F8F5F2)', // Warm Beige
+              charcoal: 'var(--charcoal, #1A1A1A)', // Rich Deep Graphite
+              gold: 'var(--gold-accent, #D4AF37)', // Refined Classic Gold
+              bronze: 'var(--bronze, #8E6D45)',
+              obsidian: 'var(--obsidian, #0A0A0A)', // True Black mix
+              champagne: 'var(--champagne, #E5D1B8)',
             },
             brand: {
-              dark: '#141414',
-              gold: '#D4AF37',
-              light: '#FDFBFA',
+              dark: 'var(--obsidian, #050505)',
+              gold: 'var(--gold-accent, #D4AF37)',
+              light: 'var(--luxury-white, #FDFBFA)',
             }
           },
           boxShadow: {
-            luxury: '0 20px 40px rgba(0,0,0,0.04)',
-            'luxury-hover': '0 30px 60px rgba(0,0,0,0.08)',
-            glass: '0 8px 32px 0 rgba(0, 0, 0, 0.1)',
+            luxury: '0 20px 40px -5px rgba(0,0,0,0.3)',
+            'luxury-hover': '0 30px 60px -10px rgba(0,0,0,0.4)',
+            glass: '0 8px 32px 0 rgba(0, 0, 0, 0.2)',
+            premium: '0 0 0 1px rgba(255,255,255,0.05), 0 20px 40px -5px rgba(0,0,0,0.4)',
           },
           backgroundImage: {
-            'grain': 'url("https://www.transparenttextures.com/patterns/micro-carbon.png")',
+            'grain': 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.85\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\' opacity=\'0.03\'/%3E%3C/svg%3E")',
+            'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+            'gradient-cinematic': 'linear-gradient(180deg, rgba(5,5,5,0) 0%, rgba(5,5,5,0.8) 100%)',
           }
         }
       }

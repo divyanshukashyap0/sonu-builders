@@ -13,7 +13,7 @@ const BottomNav = () => {
 
     return (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 md:hidden w-[90%] max-w-sm">
-            <nav className="bg-white/10 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-full py-3 px-6 shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex justify-between items-center relative overflow-hidden">
+            <nav className="bg-luxury-white/80 dark:bg-stone-900/80 backdrop-blur-md border border-white/20 rounded-full py-3 px-6 shadow-luxury flex justify-between items-center relative overflow-hidden">
                 {/* Visual Glow Layer */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-luxury-gold/5 via-transparent to-luxury-gold/5 pointer-events-none" />
 
@@ -22,7 +22,7 @@ const BottomNav = () => {
                         key={item.path}
                         to={item.path}
                         className={({ isActive }) =>
-                            `group relative flex flex-col items-center justify-center transition-all duration-500 ${isActive ? 'text-luxury-gold scale-110' : 'text-stone-400 hover:text-stone-200'
+                            `group relative flex flex-col items-center justify-center transition-all duration-500 ${isActive ? 'text-luxury-gold scale-110' : 'text-luxury-charcoal/40 hover:text-luxury-charcoal'
                             }`
                         }
                     >

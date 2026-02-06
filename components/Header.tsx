@@ -16,30 +16,31 @@ const Header: React.FC = () => {
   const { name, phone } = useCompanyData();
   const { theme, toggleTheme } = useTheme();
 
+  // Use Intersection Observer for scroll performance
   useEffect(() => {
-    let ticking = false;
+    const sentinel = document.createElement('div');
+    sentinel.style.position = 'absolute';
+    sentinel.style.top = '100px'; // Trigger point
+    sentinel.style.left = '0';
+    sentinel.style.height = '1px';
+    sentinel.style.width = '1px';
+    sentinel.style.pointerEvents = 'none';
+    sentinel.style.visibility = 'hidden';
+    document.body.appendChild(sentinel);
 
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const currentScrollY = window.scrollY;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setScrolled(!entry.isIntersecting);
+      },
+      { root: null, threshold: 0 }
+    );
 
-          if (currentScrollY > 100) {
-            setScrolled(true);
-          } else {
-            setScrolled(false);
-          }
-          setHidden(false);
+    observer.observe(sentinel);
 
-          lastScrollY.current = currentScrollY;
-          ticking = false;
-        });
-        ticking = true;
-      }
+    return () => {
+      observer.disconnect();
+      if (sentinel.parentNode) sentinel.parentNode.removeChild(sentinel);
     };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
@@ -51,8 +52,8 @@ const Header: React.FC = () => {
     <header
       className={`fixed top-0 left-0 w-full z-[60] transition-all duration-500 ease-in-out h-16 md:h-20 ${hidden ? '-translate-y-full' : 'translate-y-0'
         } ${scrolled
-          ? 'bg-white/95 dark:bg-brand-dark/95 shadow-md backdrop-blur-md border-b border-brand-gold/20'
-          : 'bg-white/70 dark:bg-brand-dark/70 backdrop-blur-sm border-b border-brand-gold/10'
+          ? 'bg-white/90 dark:bg-stone-900/80 shadow-luxury backdrop-blur-md border-b border-white/5'
+          : 'bg-gradient-to-b from-black/50 to-transparent backdrop-blur-0 border-b border-transparent'
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -145,7 +146,7 @@ const Header: React.FC = () => {
           </div>
         </div>
       </div>
-    </header>
+    </header >
   );
 };
 

@@ -52,14 +52,18 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
                         style={{
                             backgroundImage: `url("${backgroundImage}")`
                         }}
-                    />
+                    >
+                        {/* Hidden image for LCP optimization */}
+                        <img src={backgroundImage} alt="Hero Background" className="hidden" fetchpriority="high" />
+                    </div>
                 )}
             </motion.div>
 
-            {/* Premium Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-luxury-obsidian/80 via-luxury-obsidian/20 to-luxury-obsidian/40" />
-            <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px]" />
-            <div className="absolute inset-0 bg-gradient-to-t from-luxury-obsidian/60 via-transparent to-transparent" />
+            {/* Premium Gradient Overlay - Enhanced for text readability */}
+            <div className="absolute inset-0 bg-gradient-to-b from-luxury-obsidian/80 via-transparent to-luxury-obsidian/95" />
+            <div className="absolute inset-0 bg-black/10 backdrop-blur-[0px]" />
+            {/* Radial focus to darken edges and focus on center, but keep text contrasting */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]" />
 
             {/* Content */}
             <motion.div
@@ -83,8 +87,11 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2, duration: 1 }}
-                        className="font-serif font-bold text-4xl sm:text-6xl md:text-7xl lg:text-8xl leading-[1.2] sm:leading-[1.1] tracking-tighter drop-shadow-lg"
-                        style={{ color: titleColor }}
+                        className="font-serif font-bold text-4xl sm:text-5xl md:text-7xl lg:text-8xl leading-[1.1] tracking-tighter drop-shadow-2xl"
+                        style={{
+                            textShadow: "0 10px 30px rgba(0,0,0,0.5)",
+                            color: titleColor
+                        }}
                     >
                         {title}{' '}
                         <span

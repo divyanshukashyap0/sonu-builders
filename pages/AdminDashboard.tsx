@@ -87,12 +87,29 @@ export default function AdminDashboard() {
         obsidian: '#0A0A0A',
         champagne: '#E5D1B8',
         premiumStone: '#F5F2EF',
-        ivoryPearl: '#FDFBFA'
+        ivoryPearl: '#FDFBFA',
+        glassBlur: 8,
+        glassOpacity: 0.03
     });
 
     useEffect(() => {
         fetchGeneralData();
     }, []);
+
+    // Live Preview Engine: Sync local appearance state to CSS variables instantly
+    useEffect(() => {
+        if (activeTab === 'appearance') {
+            const root = document.documentElement;
+            // Colors
+            root.style.setProperty('--gold-accent', appearanceData.goldAccent);
+            root.style.setProperty('--charcoal', appearanceData.charcoal);
+            root.style.setProperty('--obsidian', appearanceData.obsidian);
+
+            // Glass
+            root.style.setProperty('--glass-blur', `${appearanceData.glassBlur}px`);
+            root.style.setProperty('--glass-opacity', appearanceData.glassOpacity.toString());
+        }
+    }, [appearanceData, activeTab]);
 
     useEffect(() => {
         const unsub = onSnapshot(collection(db, 'leads'), (snapshot) => {
@@ -123,7 +140,7 @@ export default function AdminDashboard() {
     useEffect(() => {
         const unsub = onSnapshot(doc(db, 'settings', 'appearance'), (docSnap) => {
             if (docSnap.exists()) {
-                setAppearanceData(docSnap.data() as any);
+                setAppearanceData(prev => ({ ...prev, ...docSnap.data() }));
             }
         });
         return () => unsub();
@@ -283,7 +300,7 @@ export default function AdminDashboard() {
                 <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-luxury-gold/5 blur-[120px] rounded-full" />
             </div>
 
-            <nav className="bg-stone-950/50 backdrop-blur-xl border-b border-white/5 sticky top-0 z-50">
+            <nav className="bg-stone-950/30 backdrop-blur-glass border-b border-white/5 sticky top-0 z-50">
                 <div className="max-w-[1600px] mx-auto px-6 sm:px-8">
                     <div className="flex justify-between h-20 items-center">
                         <div className="flex items-center gap-4">
@@ -312,7 +329,7 @@ export default function AdminDashboard() {
             <main className="max-w-[1600px] mx-auto py-10 px-6 sm:px-8 relative z-10">
                 <div className="flex flex-col lg:flex-row gap-10">
                     <aside className={`sticky top-28 z-30 transition-all duration-500 lg:w-80 w-full lg:block`}>
-                        <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl p-3">
+                        <div className="bg-white/5 backdrop-blur-glass border border-white/10 rounded-2xl overflow-hidden shadow-2xl p-3">
                             <div className="flex items-center justify-between p-4 mb-4 border-b border-white/5">
                                 <span className={`text-[10px] items-center uppercase tracking-[0.3em] font-bold text-stone-500 transition-opacity whitespace-nowrap opacity-100`}>Control Center</span>
                             </div>
@@ -358,7 +375,7 @@ export default function AdminDashboard() {
                             <motion.div
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                className="bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-3xl p-8 sm:p-12 max-w-5xl mx-auto"
+                                className="bg-white/5 backdrop-blur-glass border border-white/10 shadow-2xl rounded-3xl p-8 sm:p-12 max-w-5xl mx-auto"
                             >
                                 <div className="mb-10">
                                     <p className="text-luxury-gold font-bold uppercase tracking-[0.4em] text-[10px] mb-3">Settings</p>
@@ -424,7 +441,7 @@ export default function AdminDashboard() {
                                         { label: 'Visual Media', val: galleryItems.length, icon: Images, trend: 'High Res' },
                                         { label: 'Global Services', val: SERVICES.length, icon: Settings, trend: 'Optimized' }
                                     ].map((stat, i) => (
-                                        <div key={i} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:bg-white/[0.08] transition-all group border-b-2 border-b-transparent hover:border-b-luxury-gold shadow-xl">
+                                        <div key={i} className="bg-white/5 backdrop-blur-glass border border-white/10 rounded-2xl p-6 hover:bg-white/[0.08] transition-all group border-b-2 border-b-transparent hover:border-b-luxury-gold shadow-xl">
                                             <div className="flex items-center justify-between mb-6">
                                                 <div className="p-3 bg-luxury-gold/10 rounded-lg group-hover:bg-luxury-gold/20 transition-colors">
                                                     <stat.icon className="w-5 h-5 text-luxury-gold" />
@@ -440,7 +457,7 @@ export default function AdminDashboard() {
                                 </div>
 
                                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                                    <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 lg:col-span-2 shadow-2xl">
+                                    <div className="bg-white/5 backdrop-blur-glass border border-white/10 rounded-3xl p-8 lg:col-span-2 shadow-2xl">
                                         <div className="flex items-center justify-between mb-8">
                                             <div>
                                                 <h3 className="text-xl font-serif font-bold text-white">Analytics Performance</h3>
@@ -482,7 +499,7 @@ export default function AdminDashboard() {
                                         </div>
                                     </div>
 
-                                    <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+                                    <div className="bg-white/5 backdrop-blur-glass border border-white/10 rounded-3xl p-8 shadow-2xl">
                                         <h3 className="text-xl font-serif font-bold text-white mb-8 border-b border-white/5 pb-4">Live Activity</h3>
                                         <div className="space-y-6">
                                             {leads.slice(0, 5).map((lead, idx) => (
@@ -531,7 +548,7 @@ export default function AdminDashboard() {
                                     <motion.div
                                         initial={{ opacity: 0, scale: 0.95 }}
                                         animate={{ opacity: 1, scale: 1 }}
-                                        className="bg-white/5 backdrop-blur-3xl border border-white/10 p-8 rounded-3xl shadow-2xl mb-12 relative overflow-hidden"
+                                        className="bg-white/5 backdrop-blur-glass border border-white/10 p-8 rounded-3xl shadow-2xl mb-12 relative overflow-hidden"
                                     >
                                         <div className="absolute top-0 left-0 w-2 h-full bg-luxury-gold" />
                                         <h3 className="text-xl font-serif font-bold text-white mb-8 flex items-center gap-3">
@@ -652,7 +669,7 @@ export default function AdminDashboard() {
                                     <motion.div
                                         initial={{ opacity: 0, scale: 0.95 }}
                                         animate={{ opacity: 1, scale: 1 }}
-                                        className="bg-white/5 backdrop-blur-3xl border border-white/10 p-8 rounded-3xl shadow-2xl mb-12 relative overflow-hidden"
+                                        className="bg-white/5 backdrop-blur-glass border border-white/10 p-8 rounded-3xl shadow-2xl mb-12 relative overflow-hidden"
                                     >
                                         <div className="absolute top-0 left-0 w-2 h-full bg-luxury-gold" />
                                         <h3 className="text-xl font-serif font-bold text-white mb-8 flex items-center gap-3">
@@ -747,7 +764,7 @@ export default function AdminDashboard() {
                             <motion.div
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                className="bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-3xl p-8 sm:p-12 max-w-5xl mx-auto"
+                                className="bg-white/5 backdrop-blur-glass border border-white/10 shadow-2xl rounded-3xl p-8 sm:p-12 max-w-5xl mx-auto"
                             >
                                 <div className="mb-10">
                                     <p className="text-luxury-gold font-bold uppercase tracking-[0.4em] text-[10px] mb-3">Narrative</p>
@@ -855,7 +872,7 @@ export default function AdminDashboard() {
                             <motion.div
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                className="bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-3xl p-8 sm:p-12 max-w-5xl mx-auto"
+                                className="bg-white/5 backdrop-blur-glass border border-white/10 shadow-2xl rounded-3xl p-8 sm:p-12 max-w-5xl mx-auto"
                             >
                                 <div className="mb-10">
                                     <p className="text-luxury-gold font-bold uppercase tracking-[0.4em] text-[10px] mb-3">Governance</p>
@@ -951,7 +968,7 @@ export default function AdminDashboard() {
                                     <motion.div
                                         initial={{ opacity: 0, scale: 0.95 }}
                                         animate={{ opacity: 1, scale: 1 }}
-                                        className="bg-white/5 backdrop-blur-3xl border border-white/10 p-8 rounded-3xl shadow-2xl mb-12 relative overflow-hidden"
+                                        className="bg-white/5 backdrop-blur-glass border border-white/10 p-8 rounded-3xl shadow-2xl mb-12 relative overflow-hidden"
                                     >
                                         <div className="absolute top-0 left-0 w-2 h-full bg-luxury-gold" />
                                         <h3 className="text-xl font-serif font-bold text-white mb-8">Refine Testimonial</h3>
@@ -999,7 +1016,7 @@ export default function AdminDashboard() {
                                         <motion.div
                                             key={t.id}
                                             whileHover={{ scale: 1.02 }}
-                                            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 relative group shadow-2xl"
+                                            className="bg-white/5 backdrop-blur-glass border border-white/10 rounded-3xl p-8 relative group shadow-2xl"
                                         >
                                             <div className="absolute top-8 right-8 flex gap-1">
                                                 {[...Array(5)].map((_, i) => (
@@ -1031,7 +1048,7 @@ export default function AdminDashboard() {
                             <motion.div
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                className="bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-3xl p-8 sm:p-12 max-w-5xl mx-auto"
+                                className="bg-white/5 backdrop-blur-glass border border-white/10 shadow-2xl rounded-3xl p-8 sm:p-12 max-w-5xl mx-auto"
                             >
                                 <div className="mb-10">
                                     <p className="text-luxury-gold font-bold uppercase tracking-[0.4em] text-[10px] mb-3">Global Media</p>
@@ -1093,7 +1110,7 @@ export default function AdminDashboard() {
                                     </button>
                                 </div>
 
-                                <div className="bg-white/5 backdrop-blur-3xl border border-white/10 p-8 rounded-3xl shadow-2xl">
+                                <div className="bg-white/5 backdrop-blur-glass border border-white/10 p-8 rounded-3xl shadow-2xl">
                                     <p className="text-stone-500 italic text-sm mb-8">Curate the visual narrative for the public showcase.</p>
                                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
                                         {galleryItems.map((item) => (
@@ -1113,7 +1130,7 @@ export default function AdminDashboard() {
                                                     </button>
                                                 </div>
                                                 {item.category && (
-                                                    <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/50 backdrop-blur-md rounded text-[8px] uppercase tracking-widest text-white border border-white/10">
+                                                    <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/50 backdrop-blur-glass rounded text-[8px] uppercase tracking-widest text-white border border-white/10">
                                                         {item.category}
                                                     </div>
                                                 )}
@@ -1129,7 +1146,7 @@ export default function AdminDashboard() {
                             <motion.div
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                className="bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-3xl p-8 sm:p-12 max-w-5xl mx-auto"
+                                className="bg-white/5 backdrop-blur-glass border border-white/10 shadow-2xl rounded-3xl p-8 sm:p-12 max-w-5xl mx-auto"
                             >
                                 <div className="mb-10">
                                     <p className="text-luxury-gold font-bold uppercase tracking-[0.4em] text-[10px] mb-3">Connectivity</p>
@@ -1172,13 +1189,20 @@ export default function AdminDashboard() {
                             <motion.div
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                className="bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-3xl p-8 sm:p-12 max-w-5xl mx-auto"
+                                className="bg-white/5 backdrop-blur-glass border border-white/10 shadow-2xl rounded-3xl p-8 sm:p-12 max-w-5xl mx-auto"
                             >
                                 <div className="mb-10">
                                     <p className="text-luxury-gold font-bold uppercase tracking-[0.4em] text-[10px] mb-3">Identity</p>
                                     <h2 className="text-3xl font-serif font-bold text-white mb-2">Home Branding</h2>
                                     <p className="text-stone-500 text-sm italic">Sculpt the primary architectural narrative of your home page.</p>
                                 </div>
+
+                                {message && (
+                                    <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-8 p-4 bg-luxury-gold/10 border border-luxury-gold/20 text-luxury-gold rounded-xl text-sm flex items-center">
+                                        <div className="w-2 h-2 bg-luxury-gold rounded-full mr-3 animate-pulse" />
+                                        {message}
+                                    </motion.div>
+                                )}
 
                                 <form
                                     onSubmit={async (e) => {
@@ -1308,7 +1332,7 @@ export default function AdminDashboard() {
                             <motion.div
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                className="bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-3xl p-8 sm:p-12 max-w-5xl mx-auto"
+                                className="bg-white/5 backdrop-blur-glass border border-white/10 shadow-2xl rounded-3xl p-8 sm:p-12 max-w-5xl mx-auto"
                             >
                                 <div className="mb-10">
                                     <p className="text-luxury-gold font-bold uppercase tracking-[0.4em] text-[10px] mb-3">Aesthetics</p>
@@ -1442,7 +1466,7 @@ export default function AdminDashboard() {
                             <motion.div
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                className="bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-3xl p-8 lg:p-12"
+                                className="bg-white/5 backdrop-blur-glass border border-white/10 shadow-2xl rounded-3xl p-8 lg:p-12"
                             >
                                 <div className="flex items-center justify-between mb-12">
                                     <div>
@@ -1530,12 +1554,12 @@ export default function AdminDashboard() {
                                         <motion.div
                                             key={lead.id}
                                             whileHover={{ y: -5 }}
-                                            className="bg-white/5 backdrop-blur-3xl border border-white/10 rounded-3xl p-8 relative group shadow-2xl overflow-hidden"
+                                            className="bg-white/5 backdrop-blur-glass border border-white/10 rounded-3xl p-8 relative group shadow-2xl overflow-hidden"
                                         >
                                             <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
                                                 <a
                                                     href={`mailto:${lead.email}?subject=${encodeURIComponent(`Executive Response: ${lead.subject || 'Inquiry'}`)}&body=${encodeURIComponent(`Dear ${lead.name || ''},\n\nWe appreciate your interest in Sonu Enterprises. Regarding your vision for:\n\n"${lead.message || ''}"\n\nOur consultancy team is reviewing your requirements. We aim for architectural excellence in every detail.\n\nWarm regards,\nManagement Team\n${COMPANY_NAME}`)}`}
-                                                    className="w-10 h-10 bg-white/10 backdrop-blur-md rounded-full text-white flex items-center justify-center hover:bg-luxury-gold hover:text-stone-950 transition-all border border-white/10"
+                                                    className="w-10 h-10 bg-white/10 backdrop-blur-glass rounded-full text-white flex items-center justify-center hover:bg-luxury-gold hover:text-stone-950 transition-all border border-white/10"
                                                     title="Formal Response"
                                                 >
                                                     <Mail className="w-4 h-4" />
@@ -1544,12 +1568,12 @@ export default function AdminDashboard() {
                                                     href={`https://wa.me/${(lead.phone || '').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hello ${lead.name || ''}, Sonu Enterprises here. We've received your inquiry regarding "${lead.subject || 'Architectural Design'}". How may we assist you today?`)}`}
                                                     target="_blank"
                                                     rel="noreferrer"
-                                                    className="w-10 h-10 bg-emerald-500/20 backdrop-blur-md rounded-full text-emerald-400 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/30"
+                                                    className="w-10 h-10 bg-emerald-500/20 backdrop-blur-glass rounded-full text-emerald-400 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition-all border border-emerald-500/30"
                                                     title="WhatsApp Concierge"
                                                 >
                                                     <Phone className="w-4 h-4" />
                                                 </a>
-                                                <button onClick={() => deleteLead(lead.id)} className="w-10 h-10 bg-red-500/20 backdrop-blur-md rounded-full text-red-400 flex items-center justify-center hover:bg-red-50 hover:text-white transition-all border border-red-500/30" title="Archive Inquiry">
+                                                <button onClick={() => deleteLead(lead.id)} className="w-10 h-10 bg-red-500/20 backdrop-blur-glass rounded-full text-red-400 flex items-center justify-center hover:bg-red-50 hover:text-white transition-all border border-red-500/30" title="Archive Inquiry">
                                                     <Trash2 className="w-4 h-4" />
                                                 </button>
                                             </div>
@@ -1636,7 +1660,7 @@ export default function AdminDashboard() {
                                     <p className="text-stone-500 text-sm italic mt-2">Manage global ecosystem parameters and system health.</p>
                                 </div>
 
-                                <div className="bg-white/5 backdrop-blur-3xl border border-white/10 rounded-3xl p-10 shadow-2xl space-y-12">
+                                <div className="bg-white/5 backdrop-blur-glass border border-white/10 rounded-3xl p-10 shadow-2xl space-y-12">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                                         <div className="space-y-4">
                                             <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-luxury-gold">Platform Title</label>
@@ -1729,6 +1753,160 @@ export default function AdminDashboard() {
                                                 <Save className="w-4 h-4" />
                                             )}
                                             {saving ? 'Syncing...' : 'Apply Global Override'}
+                                        </button>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        )}
+
+                        {/* Design System Tab */}
+                        {activeTab === 'appearance' && (
+                            <motion.div
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                className="bg-white/5 backdrop-blur-glass border border-white/10 shadow-2xl rounded-3xl p-8 sm:p-12 max-w-5xl mx-auto"
+                            >
+                                <div className="mb-10">
+                                    <p className="text-luxury-gold font-bold uppercase tracking-[0.4em] text-[10px] mb-3">System</p>
+                                    <h2 className="text-3xl font-serif font-bold text-white mb-2">Design System</h2>
+                                    <p className="text-stone-500 text-sm italic">Control the global visual language of your digital estate.</p>
+                                </div>
+
+                                {message && (
+                                    <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-8 p-4 bg-luxury-gold/10 border border-luxury-gold/20 text-luxury-gold rounded-xl text-sm flex items-center">
+                                        <div className="w-2 h-2 bg-luxury-gold rounded-full mr-3 animate-pulse" />
+                                        {message}
+                                    </motion.div>
+                                )}
+
+                                <div className="space-y-12">
+                                    {/* Color Palette */}
+                                    <div className="p-8 bg-white/5 rounded-2xl border border-white/5">
+                                        <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-3">
+                                            <Palette className="w-5 h-5 text-luxury-gold" />
+                                            <span>Color Palette</span>
+                                        </h3>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                            {/* Presets Helper */}
+                                            {[
+                                                { label: 'Gold Accent', key: 'goldAccent', presets: ['#D4AF37', '#C5A028', '#E5D1B8', '#8E6D45'] },
+                                                { label: 'Charcoal Surface', key: 'charcoal', presets: ['#1A1A1A', '#2D2D2D', '#333333', '#1F1F1F'] },
+                                                { label: 'Obsidian Base', key: 'obsidian', presets: ['#0A0A0A', '#000000', '#0F0F0F', '#050505'] },
+                                                { label: 'Light Theme Base', key: 'luxuryWhite', presets: ['#FDFBFA', '#F5F5F4', '#F0F0F0', '#FFFFFF'] }
+                                            ].map((group) => (
+                                                <div key={group.key} className="group">
+                                                    <label className="block text-[10px] uppercase tracking-[0.2em] font-bold text-stone-500 mb-3">{group.label}</label>
+                                                    <div className="flex items-center gap-4 mb-3">
+                                                        <div className="relative overflow-hidden w-12 h-12 rounded-xl border border-white/10 shadow-lg">
+                                                            <input
+                                                                type="color"
+                                                                value={(appearanceData as any)[group.key] || '#000000'}
+                                                                onChange={e => setAppearanceData({ ...appearanceData, [group.key]: e.target.value })}
+                                                                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] p-0 border-0 cursor-pointer"
+                                                            />
+                                                        </div>
+                                                        <input
+                                                            type="text"
+                                                            value={(appearanceData as any)[group.key] || '#000000'}
+                                                            onChange={e => setAppearanceData({ ...appearanceData, [group.key]: e.target.value })}
+                                                            className="flex-1 bg-white/5 border border-white/10 rounded-xl p-3 text-white font-mono text-sm uppercase focus:border-luxury-gold outline-none transition-colors"
+                                                        />
+                                                    </div>
+                                                    <div className="flex gap-2">
+                                                        {group.presets.map(color => (
+                                                            <button
+                                                                key={color}
+                                                                onClick={() => setAppearanceData({ ...appearanceData, [group.key]: color })}
+                                                                className="w-6 h-6 rounded-full border border-white/10 hover:scale-110 transition-transform shadow-sm"
+                                                                style={{ backgroundColor: color }}
+                                                                title={color}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Glassmorphism Controls */}
+                                    <div className="p-8 bg-white/5 rounded-2xl border border-white/5">
+                                        <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-3">
+                                            <div className="w-5 h-5 rounded border border-white/20 bg-white/10 backdrop-blur-glass" />
+                                            <span>Glassmorphism Engine</span>
+                                        </h3>
+                                        <div className="space-y-8">
+                                            <div>
+                                                <div className="flex justify-between mb-3">
+                                                    <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-stone-500">Blur Intensity</label>
+                                                    <span className="text-xs font-mono text-luxury-gold">{(appearanceData as any).glassBlur ?? 8}px</span>
+                                                </div>
+                                                <input
+                                                    type="range"
+                                                    min="0"
+                                                    max="40"
+                                                    value={(appearanceData as any).glassBlur ?? 8}
+                                                    onChange={(e) => setAppearanceData({ ...appearanceData, glassBlur: parseInt(e.target.value) } as any)}
+                                                    className="w-full h-2 bg-stone-800 rounded-lg appearance-none cursor-pointer accent-luxury-gold"
+                                                />
+                                            </div>
+                                            <div>
+                                                <div className="flex justify-between mb-3">
+                                                    <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-stone-500">Opacity Level</label>
+                                                    <span className="text-xs font-mono text-luxury-gold">{Math.round(((appearanceData as any).glassOpacity ?? 0.03) * 100)}%</span>
+                                                </div>
+                                                <input
+                                                    type="range"
+                                                    min="0"
+                                                    max="100"
+                                                    value={((appearanceData as any).glassOpacity ?? 0.03) * 100}
+                                                    onChange={(e) => setAppearanceData({ ...appearanceData, glassOpacity: parseInt(e.target.value) / 100 } as any)}
+                                                    className="w-full h-2 bg-stone-800 rounded-lg appearance-none cursor-pointer accent-luxury-gold"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex justify-end pt-4">
+                                        <button
+                                            onClick={async () => {
+                                                setSaving(true);
+                                                try {
+                                                    // Save to Firestore 'settings/ui' which UIProvider listens to
+                                                    await setDoc(doc(db, 'settings', 'ui'), {
+                                                        luxuryGold: appearanceData.goldAccent,
+                                                        luxuryCharcoal: appearanceData.charcoal,
+                                                        luxuryObsidian: appearanceData.obsidian,
+                                                        luxuryWhite: appearanceData.luxuryWhite,
+                                                        glassBlur: (appearanceData as any).glassBlur || 8,
+                                                        glassOpacity: (appearanceData as any).glassOpacity || 0.03
+                                                    }, { merge: true });
+
+                                                    // Also save to 'appearance' for legacy compatibility or dashboard state
+                                                    await setDoc(doc(db, 'settings', 'appearance'), appearanceData, { merge: true });
+
+                                                    setMessage('Design system synchronized globally.');
+                                                    setTimeout(() => setMessage(''), 3000);
+                                                } catch (err) {
+                                                    console.error(err);
+                                                    setMessage('Failed to sync design system.');
+                                                } finally {
+                                                    setSaving(false);
+                                                }
+                                            }}
+                                            disabled={saving}
+                                            className="px-8 py-4 bg-luxury-gold text-stone-950 rounded-xl font-bold uppercase tracking-[0.2em] text-xs hover:bg-white hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] transition-all flex items-center group"
+                                        >
+                                            {saving ? (
+                                                <>
+                                                    <div className="w-4 h-4 border-2 border-stone-950 border-t-transparent rounded-full animate-spin mr-3" />
+                                                    Propagating...
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <span className="mr-3">Publish System</span>
+                                                    <Check className="w-4 h-4" />
+                                                </>
+                                            )}
                                         </button>
                                     </div>
                                 </div>

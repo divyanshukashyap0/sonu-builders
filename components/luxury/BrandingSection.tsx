@@ -19,7 +19,7 @@ const BrandingSection: React.FC<BrandingSectionProps> = ({
     buttonLink = "/about"
 }) => {
     return (
-        <section className="relative py-24 bg-ivory-pearl overflow-hidden">
+        <section className="relative py-24 bg-stone-50 overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col lg:flex-row items-center gap-16">
                     {/* Text Content */}

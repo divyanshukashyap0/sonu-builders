@@ -52,7 +52,7 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
     };
 
     return (
-        <section className="relative bg-premium-stone py-24 overflow-hidden border-t border-luxury-gold/10">
+        <section className="relative bg-stone-50 py-24 overflow-hidden border-t border-luxury-gold/5">
             {/* Background Image with Light Overlay */}
             <div className="absolute inset-0">
                 <img
@@ -60,7 +60,7 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
                     alt="Interior design"
                     className="w-full h-full object-cover opacity-[0.03] grayscale"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-ivory-pearl via-ivory-pearl/95 to-ivory-pearl/90" />
+                <div className="absolute inset-0 bg-gradient-to-r from-stone-50 via-stone-50/95 to-stone-50/90" />
             </div>
 
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -12,27 +12,29 @@ const CustomCursor: React.FC = () => {
 
     useEffect(() => {
         const moveCursor = (e: MouseEvent) => {
+            // Use requestAnimationFrame for smoother performance if needed, 
+            // but framer-motion values are already optimized.
             cursorX.set(e.clientX);
             cursorY.set(e.clientY);
         };
 
         const handleMouseOver = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
-            if (
+            // Enhanced hover detection
+            const isClickable =
                 target.tagName === 'A' ||
                 target.tagName === 'BUTTON' ||
                 target.closest('button') ||
                 target.closest('a') ||
-                target.classList.contains('interactive')
-            ) {
-                setIsHovered(true);
-            } else {
-                setIsHovered(false);
-            }
+                target.closest('[role="button"]') ||
+                target.classList.contains('interactive') ||
+                getComputedStyle(target).cursor === 'pointer';
+
+            setIsHovered(!!isClickable);
         };
 
-        window.addEventListener('mousemove', moveCursor);
-        window.addEventListener('mouseover', handleMouseOver);
+        window.addEventListener('mousemove', moveCursor, { passive: true });
+        window.addEventListener('mouseover', handleMouseOver, { passive: true });
 
         return () => {
             window.removeEventListener('mousemove', moveCursor);
