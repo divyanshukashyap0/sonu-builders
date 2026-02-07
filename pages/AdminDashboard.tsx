@@ -10,7 +10,7 @@ import { useProjects } from '../hooks/useProjects';
 import { useTestimonials } from '../hooks/useTestimonials';
 import { useImages } from '../hooks/useImages';
 import { useGallery } from '../hooks/useGallery';
-import { Project, Testimonial, ProjectCategory, Service } from '../types';
+import { Project, Testimonial, ProjectCategory, Service, GalleryItem } from '../types';
 import { useServices } from '../hooks/useServices';
 import { useAboutPage } from '../hooks/useAboutPage';
 import { usePageHeaders, HeadersData } from '../hooks/usePageHeaders';
@@ -21,9 +21,223 @@ import { Users as UsersIcon, Check, X } from 'lucide-react';
 import ImageUploader from '../components/ImageUploader';
 import DataSeeder from '../components/DataSeeder';
 import LinkPreview from '../components/LinkPreview';
-import { Database } from 'lucide-react';
+import { Database, Monitor, Smartphone, X as CloseIcon } from 'lucide-react';
+import Home from './Home';
 
 type Tab = 'overview' | 'general' | 'projects' | 'testimonials' | 'images' | 'gallery' | 'users' | 'leads' | 'social' | 'branding' | 'data' | 'master' | 'appearance' | 'services_mgr' | 'about_mgr' | 'headers_mgr';
+
+const ROYAL_PRESETS = [
+    {
+        name: 'Luxury Dark (Premium)',
+        colors: {
+            luxuryWhite: '#E5E7EB',
+            warmBeige: '#9CA3AF',
+            charcoal: '#111827',
+            goldAccent: '#E11D48',
+            bronze: '#22D3EE',
+            obsidian: '#0B0F14',
+            champagne: '#9CA3AF',
+            premiumStone: '#111827',
+            ivoryPearl: '#0B0F14'
+        }
+    },
+    {
+        name: 'Enterprise Blue (Light)',
+        colors: {
+            luxuryWhite: '#0F172A',
+            warmBeige: '#334155',
+            charcoal: '#0F172A', // Text color
+            goldAccent: '#1E40AF',
+            bronze: '#38BDF8',
+            obsidian: '#FFFFFF', // Background
+            champagne: '#94A3B8',
+            premiumStone: '#F8FAFC', // Surface
+            ivoryPearl: '#FFFFFF'
+        }
+    },
+    {
+        name: 'Classic Charcoal (Gold)',
+        colors: {
+            luxuryWhite: '#F5F5F5',
+            warmBeige: '#A1A1AA',
+            charcoal: '#1C1C1C',
+            goldAccent: '#D4AF37',
+            bronze: '#B08D57',
+            obsidian: '#121212',
+            champagne: '#E5D1B8',
+            premiumStone: '#1C1C1C',
+            ivoryPearl: '#121212'
+        }
+    },
+    {
+        name: 'Neon Cyberverge (AI)',
+        colors: {
+            luxuryWhite: '#E5E7EB',
+            warmBeige: '#94A3B8',
+            charcoal: '#020617',
+            goldAccent: '#22C55E',
+            bronze: '#A855F7',
+            obsidian: '#020617',
+            champagne: '#94A3B8',
+            premiumStone: '#0F172A',
+            ivoryPearl: '#020617'
+        }
+    },
+    {
+        name: 'Elegant Steel (Corporate)',
+        colors: {
+            luxuryWhite: '#F5F5F5',
+            warmBeige: '#6B7280',
+            charcoal: '#111827',
+            goldAccent: '#F9BF1F',
+            bronze: '#205285',
+            obsidian: '#0F3D91', // Strong Navy Background
+            champagne: '#E5E7EB',
+            premiumStone: '#1E3A8A',
+            ivoryPearl: '#F5F5F5' // Light background
+        }
+    },
+    {
+        name: 'Earth & Timber (Nature)',
+        colors: {
+            luxuryWhite: '#FFFFFF',
+            warmBeige: '#A2B29F',
+            charcoal: '#1F2937',
+            goldAccent: '#D9A64B',
+            bronze: '#385E2B',
+            obsidian: '#FFFFFF', // Clean Light Background
+            champagne: '#ECFCCB',
+            premiumStone: '#F0FDF4',
+            ivoryPearl: '#FFFFFF'
+        }
+    },
+    {
+        name: 'Modern Slate (Commercial)',
+        colors: {
+            luxuryWhite: '#F8FAFC',
+            warmBeige: '#64748B',
+            charcoal: '#0F172A',
+            goldAccent: '#F25C05',
+            bronze: '#334155',
+            obsidian: '#F1F5F9', // Soft White Background
+            champagne: '#CBD5E1',
+            premiumStone: '#E2E8F0',
+            ivoryPearl: '#F8FAFC'
+        }
+    },
+    {
+        name: 'Luxury Neutrals (Upscale)',
+        colors: {
+            luxuryWhite: '#FFFFFF',
+            warmBeige: '#918E8C',
+            charcoal: '#111111',
+            goldAccent: '#C0A16B',
+            bronze: '#57534E',
+            obsidian: '#FFFFFF', // Clean Background
+            champagne: '#FAFAF9',
+            premiumStone: '#F5F5F4',
+            ivoryPearl: '#FFFFFF'
+        }
+    },
+    {
+        name: 'Industrial Blue (Classic)',
+        colors: {
+            luxuryWhite: '#F3F4F6',
+            warmBeige: '#5A6F87',
+            charcoal: '#1F2937',
+            goldAccent: '#EAB308',
+            bronze: '#1E3A5F',
+            obsidian: '#F9FAFB',
+            champagne: '#D1D5DB',
+            premiumStone: '#E5E7EB',
+            ivoryPearl: '#F3F4F6'
+        }
+    },
+    {
+        name: 'Cinematic Red (OTT)',
+        colors: {
+            luxuryWhite: '#FFFFFF',
+            warmBeige: '#B3B3B3',
+            charcoal: '#141414',
+            goldAccent: '#E50914',
+            bronze: '#FFFFFF',
+            obsidian: '#000000',
+            champagne: '#B3B3B3',
+            premiumStone: '#141414',
+            ivoryPearl: '#000000'
+        }
+    },
+    {
+        name: 'Soft Serenity (Light)',
+        colors: {
+            luxuryWhite: '#111827',
+            warmBeige: '#4B5563',
+            charcoal: '#111827',
+            goldAccent: '#065F46',
+            bronze: '#F59E0B',
+            obsidian: '#F9FAFB',
+            champagne: '#9CA3AF',
+            premiumStone: '#FFFFFF',
+            ivoryPearl: '#F9FAFB'
+        }
+    },
+    {
+        name: 'Obsidian Fury (Bold)',
+        colors: {
+            luxuryWhite: '#F9FAFB',
+            warmBeige: '#D1D5DB',
+            charcoal: '#121212',
+            goldAccent: '#DC2626',
+            bronze: '#991B1B',
+            obsidian: '#0A0A0A',
+            champagne: '#9CA3AF',
+            premiumStone: '#121212',
+            ivoryPearl: '#0A0A0A'
+        }
+    },
+    {
+        name: 'Royal Emerald',
+        colors: {
+            luxuryWhite: '#F0FDF4',
+            warmBeige: '#DCFCE7',
+            charcoal: '#022C22',
+            goldAccent: '#D4AF37',
+            bronze: '#065F46',
+            obsidian: '#020617',
+            champagne: '#BBF7D0',
+            premiumStone: '#F0FDFA',
+            ivoryPearl: '#F0FDF4'
+        }
+    },
+    {
+        name: 'Sapphire Night',
+        colors: {
+            luxuryWhite: '#F8FAFC',
+            warmBeige: '#F1F5F9',
+            charcoal: '#0F172A',
+            goldAccent: '#60A5FA',
+            bronze: '#1E293B',
+            obsidian: '#020617',
+            champagne: '#BFDBFE',
+            premiumStone: '#F8FAFC',
+            ivoryPearl: '#F8FAFC'
+        }
+    },
+    {
+        name: 'Classic Luxury (Reset)',
+        colors: {
+            luxuryWhite: '#FCFBFA',
+            warmBeige: '#F8F5F2',
+            charcoal: '#1A1A1A',
+            goldAccent: '#D4AF37',
+            bronze: '#8E6D45',
+            obsidian: '#0A0A0A',
+            champagne: '#E5D1B8',
+            premiumStone: '#F5F2EF',
+            ivoryPearl: '#FDFBFA'
+        }
+    }
+];
 
 export default function AdminDashboard() {
     const navigate = useNavigate();
@@ -31,6 +245,8 @@ export default function AdminDashboard() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState('');
+    const [showPreview, setShowPreview] = useState(false);
+    const [previewDevice, setPreviewDevice] = useState<'desktop' | 'mobile'>('desktop');
 
     // General Info State
     const [generalData, setGeneralData] = useState({
@@ -44,7 +260,7 @@ export default function AdminDashboard() {
     const { projects, addProject, updateProject, deleteProject } = useProjects();
     const { testimonials, addTestimonial, updateTestimonial, deleteTestimonial } = useTestimonials();
     const { images, updateImage } = useImages();
-    const { items: galleryItems, addItem: addGalleryItem, deleteItem: deleteGalleryItem } = useGallery();
+    const { items: galleryItems, addItem: addGalleryItem, deleteItem: deleteGalleryItem, updateItem: updateGalleryItem } = useGallery();
     const { users, approveUser, deleteUser } = useUsers();
     const { services: dbServices, addService, updateService, deleteService } = useServices();
     const { content: aboutContent, updateAbout } = useAboutPage();
@@ -57,6 +273,7 @@ export default function AdminDashboard() {
     const [editingProject, setEditingProject] = useState<Partial<Project> | null>(null);
     const [editingTestimonial, setEditingTestimonial] = useState<Partial<Testimonial> | null>(null);
     const [editingService, setEditingService] = useState<Partial<Service> | null>(null);
+    const [editingGalleryItem, setEditingGalleryItem] = useState<Partial<GalleryItem> | null>(null);
     const [brandingData, setBrandingData] = useState({
         title: 'Designing Spaces That Define',
         emphasisText: 'How You Live',
@@ -89,8 +306,57 @@ export default function AdminDashboard() {
         premiumStone: '#F5F2EF',
         ivoryPearl: '#FDFBFA',
         glassBlur: 8,
-        glassOpacity: 0.03
+        glassOpacity: 0.03,
+        themeEnabled: true
     });
+
+    // When preview is active, sync appearance changes to CSS vars immediately
+    useEffect(() => {
+        if (activeTab === 'appearance' || showPreview) {
+            const root = document.documentElement;
+
+            if (appearanceData.themeEnabled) {
+                // Colors
+                root.style.setProperty('--luxury-white', appearanceData.luxuryWhite);
+                root.style.setProperty('--warm-beige', appearanceData.warmBeige);
+                root.style.setProperty('--charcoal', appearanceData.charcoal);
+                root.style.setProperty('--gold-accent', appearanceData.goldAccent);
+                root.style.setProperty('--bronze', appearanceData.bronze);
+                root.style.setProperty('--obsidian', appearanceData.obsidian);
+                root.style.setProperty('--champagne', appearanceData.champagne);
+                root.style.setProperty('--premium-stone', appearanceData.premiumStone);
+                root.style.setProperty('--ivory-pearl', appearanceData.ivoryPearl);
+
+                // Glass
+                root.style.setProperty('--glass-blur', `${appearanceData.glassBlur}px`);
+                root.style.setProperty('--glass-opacity', appearanceData.glassOpacity.toString());
+            } else {
+                // Revert to CSS defaults by removing inline styles
+                root.style.removeProperty('--luxury-white');
+                root.style.removeProperty('--warm-beige');
+                root.style.removeProperty('--charcoal');
+                root.style.removeProperty('--gold-accent');
+                root.style.removeProperty('--bronze');
+                root.style.removeProperty('--obsidian');
+                root.style.removeProperty('--champagne');
+                root.style.removeProperty('--premium-stone');
+                root.style.removeProperty('--ivory-pearl');
+                root.style.removeProperty('--glass-blur');
+                root.style.removeProperty('--glass-opacity');
+            }
+        }
+    }, [appearanceData, activeTab, showPreview]);
+
+    const handleApplyPreset = (preset: any) => {
+        setAppearanceData(prev => ({ ...prev, ...preset.colors }));
+        // Automatically sync dark/light mode preference
+        if (preset.mode) {
+            setDoc(doc(db, 'settings', 'master'), { ...masterData, themeOverride: preset.mode }, { merge: true });
+            setMasterData(prev => ({ ...prev, themeOverride: preset.mode }));
+        }
+        setMessage(`Applied ${preset.name} theme.`);
+        setTimeout(() => setMessage(''), 3000);
+    };
 
     useEffect(() => {
         fetchGeneralData();
@@ -106,8 +372,13 @@ export default function AdminDashboard() {
             root.style.setProperty('--obsidian', appearanceData.obsidian);
 
             // Glass
-            root.style.setProperty('--glass-blur', `${appearanceData.glassBlur}px`);
-            root.style.setProperty('--glass-opacity', appearanceData.glassOpacity.toString());
+            if (appearanceData.themeEnabled) {
+                root.style.setProperty('--glass-blur', `${appearanceData.glassBlur}px`);
+                root.style.setProperty('--glass-opacity', appearanceData.glassOpacity.toString());
+            } else {
+                root.style.removeProperty('--glass-blur');
+                root.style.removeProperty('--glass-opacity');
+            }
         }
     }, [appearanceData, activeTab]);
 
@@ -291,6 +562,162 @@ export default function AdminDashboard() {
     }, [leads]);
 
     if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+
+    if (showPreview) {
+        return (
+            <div className="relative min-h-screen bg-stone-950 flex justify-center overflow-hidden">
+                {/* Live Site Render */}
+                <div
+                    className={`transition-all duration-500 ease-in-out shadow-2xl ${previewDevice === 'mobile'
+                        ? 'w-[375px] h-[812px] mt-10 rounded-[40px] border-8 border-stone-800 overflow-hidden relative'
+                        : 'w-full h-screen overflow-y-auto'
+                        }`}
+                >
+                    {/* Mobile Notch simulation */}
+                    {previewDevice === 'mobile' && (
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-stone-800 rounded-b-2xl z-50 pointer-events-none" />
+                    )}
+
+                    <div className="h-full w-full overflow-y-auto no-scrollbar bg-white dark:bg-stone-950">
+                        <Home />
+                    </div>
+                </div>
+
+                {/* Floating Design Panel */}
+                <motion.div
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    drag
+                    dragMomentum={false}
+                    className="fixed top-10 right-10 w-96 bg-stone-950/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-2xl z-[9999] max-h-[85vh] overflow-y-auto no-scrollbar"
+                >
+                    <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/5">
+                        <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-luxury-gold/20 rounded-lg flex items-center justify-center text-luxury-gold animate-pulse">
+                                {previewDevice === 'mobile' ? <Smartphone className="w-4 h-4" /> : <Monitor className="w-4 h-4" />}
+                            </div>
+                            <div>
+                                <h3 className="text-sm font-bold text-white uppercase tracking-wider">Live Preview</h3>
+                                <p className="text-[10px] text-stone-500">Real-time Design Studio</p>
+                            </div>
+                        </div>
+                        <button onClick={() => setShowPreview(false)} className="text-stone-500 hover:text-white transition-colors">
+                            <CloseIcon className="w-5 h-5" />
+                        </button>
+                    </div>
+
+                    <div className="space-y-8">
+                        {/* Device Toggles */}
+                        <div className="bg-white/5 p-1 rounded-xl flex">
+                            <button
+                                onClick={() => setPreviewDevice('desktop')}
+                                className={`flex-1 flex items-center justify-center py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${previewDevice === 'desktop' ? 'bg-luxury-gold text-stone-950 shadow-lg' : 'text-stone-400 hover:text-white'}`}
+                            >
+                                <Monitor className="w-3 h-3 mr-2" /> Desktop
+                            </button>
+                            <button
+                                onClick={() => setPreviewDevice('mobile')}
+                                className={`flex-1 flex items-center justify-center py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${previewDevice === 'mobile' ? 'bg-luxury-gold text-stone-950 shadow-lg' : 'text-stone-400 hover:text-white'}`}
+                            >
+                                <Smartphone className="w-3 h-3 mr-2" /> Mobile
+                            </button>
+                        </div>
+
+                        {/* Quick Presets */}
+                        <div>
+                            <p className="text-[10px] font-bold text-luxury-gold uppercase tracking-widest mb-3">Royal Presets</p>
+                            <div className="grid grid-cols-2 gap-2">
+                                {ROYAL_PRESETS.map((preset) => (
+                                    <button
+                                        key={preset.name}
+                                        onClick={() => handleApplyPreset(preset)}
+                                        className="text-left p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-luxury-gold/30 transition-all text-[10px] font-bold text-stone-300 hover:text-white"
+                                    >
+                                        {preset.name}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Glass Engine Controls */}
+                        <div className="space-y-4 border-t border-white/5 pt-4">
+                            <p className="text-[10px] font-bold text-luxury-gold uppercase tracking-widest mb-2">Glass Effect</p>
+                            <div className="space-y-3">
+                                <div>
+                                    <div className="flex justify-between mb-2">
+                                        <label className="text-[10px] text-stone-500 font-bold">Blur</label>
+                                        <span className="text-[10px] font-mono text-stone-300">{appearanceData.glassBlur}px</span>
+                                    </div>
+                                    <input
+                                        type="range"
+                                        min="0"
+                                        max="20"
+                                        step="1"
+                                        value={appearanceData.glassBlur}
+                                        onChange={e => setAppearanceData({ ...appearanceData, glassBlur: parseInt(e.target.value) })}
+                                        className="w-full accent-luxury-gold h-1 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                                    />
+                                </div>
+                                <div>
+                                    <div className="flex justify-between mb-2">
+                                        <label className="text-[10px] text-stone-500 font-bold">Opacity</label>
+                                        <span className="text-[10px] font-mono text-stone-300">{Math.round(appearanceData.glassOpacity * 100)}%</span>
+                                    </div>
+                                    <input
+                                        type="range"
+                                        min="0"
+                                        max="0.5"
+                                        step="0.01"
+                                        value={appearanceData.glassOpacity}
+                                        onChange={e => setAppearanceData({ ...appearanceData, glassOpacity: parseFloat(e.target.value) })}
+                                        className="w-full accent-luxury-gold h-1 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Fine Tuning Controls */}
+                        {[
+                            { label: 'Gold Accent', key: 'goldAccent' },
+                            { label: 'Obsidian Black', key: 'obsidian' },
+                            { label: 'Charcoal Grey', key: 'charcoal' },
+                            { label: 'Luxury White', key: 'luxuryWhite' }
+                        ].map((color) => (
+                            <div key={color.key} className="space-y-2">
+                                <label className="text-[10px] uppercase tracking-widest text-stone-500 font-bold ml-1">{color.label}</label>
+                                <div className="flex items-center gap-3 bg-black/40 p-2 rounded-xl border border-white/5">
+                                    <input
+                                        type="color"
+                                        value={(appearanceData as any)[color.key]}
+                                        onChange={e => setAppearanceData({ ...appearanceData, [color.key]: e.target.value })}
+                                        className="w-8 h-8 bg-transparent border-0 cursor-pointer rounded-lg"
+                                    />
+                                    <span className="text-[10px] font-mono text-stone-400">{(appearanceData as any)[color.key]}</span>
+                                </div>
+                            </div>
+                        ))}
+
+                        <div className="pt-4 border-t border-white/5 space-y-3">
+                            <button
+                                onClick={async () => {
+                                    setSaving(true);
+                                    await setDoc(doc(db, 'settings', 'appearance'), appearanceData);
+                                    setSaving(false);
+                                    setMessage('Live changes saved.');
+                                    setTimeout(() => setMessage(''), 3000);
+                                }}
+                                disabled={saving}
+                                className="w-full py-4 bg-luxury-gold text-stone-950 rounded-xl font-bold uppercase tracking-[0.2em] text-xs hover:bg-white transition-all shadow-xl disabled:opacity-50"
+                            >
+                                {saving ? 'Committing...' : 'Commit Design'}
+                            </button>
+                            {message && <p className="text-center text-[10px] text-green-400 font-bold uppercase tracking-widest">{message}</p>}
+                        </div>
+                    </div>
+                </motion.div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-stone-950 text-stone-200">
@@ -1103,12 +1530,73 @@ export default function AdminDashboard() {
                                         </h2>
                                     </div>
                                     <button
-                                        onClick={() => setEditingProject({}) as any}
+                                        onClick={() => setEditingGalleryItem({ url: '', title: '', category: '' })}
                                         className="flex items-center px-6 py-3 bg-white/5 border border-white/10 text-white rounded-xl hover:bg-luxury-gold hover:text-stone-950 transition-all uppercase tracking-widest text-[10px] font-bold group"
                                     >
                                         <Plus className="w-4 h-4 mr-2 transition-transform group-hover:rotate-90" /> Add Masterpiece
                                     </button>
                                 </div>
+
+                                {editingGalleryItem && (
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        className="bg-white/5 backdrop-blur-glass border border-white/10 p-8 rounded-3xl shadow-2xl mb-12 relative overflow-hidden"
+                                    >
+                                        <div className="absolute top-0 left-0 w-2 h-full bg-luxury-gold" />
+                                        <h3 className="text-xl font-serif font-bold text-white mb-8 flex items-center gap-3">
+                                            {editingGalleryItem.id ? <Edit2 className="w-5 h-5 text-luxury-gold" /> : <Plus className="w-5 h-5 text-luxury-gold" />}
+                                            {editingGalleryItem.id ? 'Refine Visual Masterpiece' : 'Curate New Visual'}
+                                        </h3>
+                                        <form
+                                            onSubmit={async (e) => {
+                                                e.preventDefault();
+                                                setSaving(true);
+                                                try {
+                                                    if (editingGalleryItem.id) {
+                                                        await updateGalleryItem(editingGalleryItem.id, editingGalleryItem);
+                                                    } else {
+                                                        await addGalleryItem(editingGalleryItem as any);
+                                                    }
+                                                    setEditingGalleryItem(null);
+                                                    setMessage('Gallery curated.');
+                                                    setTimeout(() => setMessage(''), 3000);
+                                                } catch (err) {
+                                                    console.error(err);
+                                                    setMessage('Curation failed.');
+                                                } finally {
+                                                    setSaving(false);
+                                                }
+                                            }}
+                                            className="space-y-8"
+                                        >
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] uppercase tracking-widest text-stone-500 font-bold ml-1">Title (Optional)</label>
+                                                    <input placeholder="Ex: Grand Foyer" value={editingGalleryItem.title || ''} onChange={e => setEditingGalleryItem({ ...editingGalleryItem, title: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-luxury-gold/50 transition-all" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] uppercase tracking-widest text-stone-500 font-bold ml-1">Category (Tag)</label>
+                                                    <input placeholder="Ex: Living Room" value={editingGalleryItem.category || ''} onChange={e => setEditingGalleryItem({ ...editingGalleryItem, category: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-luxury-gold/50 transition-all" />
+                                                </div>
+                                                <div className="md:col-span-2 space-y-2">
+                                                    <label className="text-[10px] uppercase tracking-widest text-stone-500 font-bold ml-1 mb-3 block">High-Res Visual</label>
+                                                    <ImageUploader
+                                                        label=""
+                                                        existingUrl={editingGalleryItem.url}
+                                                        onUpload={(url: string) => setEditingGalleryItem({ ...editingGalleryItem, url })}
+                                                        path="gallery"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="flex justify-end space-x-6 pt-4 border-t border-white/5">
+                                                <button type="button" onClick={() => setEditingGalleryItem(null)} className="px-6 py-3 text-stone-500 hover:text-white uppercase tracking-widest text-[10px] font-bold transition-colors">Discard</button>
+                                                <button type="submit" disabled={saving} className="px-10 py-4 bg-luxury-gold text-stone-950 rounded-xl font-bold uppercase tracking-[0.2em] text-xs hover:bg-white transition-all shadow-xl">Archive Visual</button>
+                                            </div>
+                                        </form>
+                                    </motion.div>
+                                )}
 
                                 <div className="bg-white/5 backdrop-blur-glass border border-white/10 p-8 rounded-3xl shadow-2xl">
                                     <p className="text-stone-500 italic text-sm mb-8">Curate the visual narrative for the public showcase.</p>
@@ -1127,6 +1615,9 @@ export default function AdminDashboard() {
                                                 <div className="absolute inset-0 bg-stone-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
                                                     <button onClick={() => deleteDoc(doc(db, 'gallery', item.id))} className="w-10 h-10 bg-red-600/20 text-red-400 border border-red-600/30 rounded-full flex items-center justify-center hover:bg-red-600 hover:text-white transition-all">
                                                         <Trash2 className="w-4 h-4" />
+                                                    </button>
+                                                    <button onClick={() => setEditingGalleryItem(item)} className="w-10 h-10 bg-white/20 text-white border border-white/30 rounded-full flex items-center justify-center hover:bg-white hover:text-stone-950 transition-all ml-2">
+                                                        <Edit2 className="w-4 h-4" />
                                                     </button>
                                                 </div>
                                                 {item.category && (
@@ -1338,6 +1829,50 @@ export default function AdminDashboard() {
                                     <p className="text-luxury-gold font-bold uppercase tracking-[0.4em] text-[10px] mb-3">Aesthetics</p>
                                     <h2 className="text-3xl font-serif font-bold text-white mb-2">Global Design System</h2>
                                     <p className="text-stone-500 text-sm italic">Orchestrate the visual DNA of the entire digital experience.</p>
+
+                                    <div className="flex gap-4 mt-6">
+                                        <button
+                                            onClick={() => setShowPreview(true)}
+                                            className="px-6 py-3 bg-white/10 hover:bg-luxury-gold text-white hover:text-stone-950 rounded-xl text-xs font-bold uppercase tracking-widest transition-all flex items-center gap-2 border border-white/10"
+                                        >
+                                            <Monitor className="w-4 h-4" /> Launch Live Preview
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Master Theme Toggle */}
+                                <div className="mb-12 p-6 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between">
+                                    <div>
+                                        <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-1">Enable Custom Theme</h3>
+                                        <p className="text-[10px] text-stone-500">Toggle to apply your custom design system. Turning off reverts to default styles.</p>
+                                    </div>
+                                    <button
+                                        onClick={() => setAppearanceData(prev => ({ ...prev, themeEnabled: !prev.themeEnabled }))}
+                                        className={`w-14 h-8 rounded-full p-1 transition-colors duration-300 ${appearanceData.themeEnabled ? 'bg-luxury-gold' : 'bg-stone-700'}`}
+                                    >
+                                        <div className={`w-6 h-6 rounded-full bg-white shadow-md transform transition-transform duration-300 ${appearanceData.themeEnabled ? 'translate-x-6' : 'translate-x-0'}`} />
+                                    </button>
+                                </div>
+
+                                <div className="mb-12">
+                                    <h3 className="text-xs uppercase tracking-[0.3em] text-luxury-gold font-black border-b border-white/5 pb-4 mb-6">Royal Presets</h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                        {ROYAL_PRESETS.map((preset) => (
+                                            <button
+                                                key={preset.name}
+                                                onClick={() => handleApplyPreset(preset)}
+                                                className="group relative overflow-hidden bg-stone-900 border border-white/10 p-6 rounded-2xl hover:border-luxury-gold/50 transition-all text-left"
+                                            >
+                                                <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-white/5 to-transparent rounded-bl-full" />
+                                                <div className="flex gap-2 mb-4">
+                                                    <div className="w-6 h-6 rounded-full border border-white/10" style={{ backgroundColor: preset.colors.goldAccent }} />
+                                                    <div className="w-6 h-6 rounded-full border border-white/10" style={{ backgroundColor: preset.colors.charcoal }} />
+                                                    <div className="w-6 h-6 rounded-full border border-white/10" style={{ backgroundColor: preset.colors.luxuryWhite }} />
+                                                </div>
+                                                <span className="text-xs font-bold text-white uppercase tracking-widest group-hover:text-luxury-gold transition-colors">{preset.name}</span>
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
 
                                 <form
@@ -1357,60 +1892,47 @@ export default function AdminDashboard() {
                                     }}
                                     className="space-y-12"
                                 >
-                                    {/* Core Colors Group */}
+                                    {/* Core Colors Group - REMOVED per user request to enforce presets */}
+
+                                    {/* Ambient & Foundation Group - REMOVED per user request to enforce presets */}
+
+                                    {/* Glassmorphism Engine */}
                                     <div className="space-y-8">
-                                        <h3 className="text-xs uppercase tracking-[0.3em] text-luxury-gold font-black border-b border-white/5 pb-4">Core Palette</h3>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                            {[
-                                                { label: 'Gold Accent', key: 'goldAccent' },
-                                                { label: 'Obsidian Black', key: 'obsidian' },
-                                                { label: 'Charcoal Grey', key: 'charcoal' },
-                                                { label: 'Bronze Material', key: 'bronze' },
-                                                { label: 'Champagne Finish', key: 'champagne' },
-                                                { label: 'Luxury White', key: 'luxuryWhite' }
-                                            ].map((color) => (
-                                                <div key={color.key} className="space-y-3">
-                                                    <label className="text-[10px] uppercase tracking-widest text-stone-500 font-bold ml-1">{color.label}</label>
-                                                    <div className="flex items-center gap-4 bg-black/20 p-3 rounded-xl border border-white/5">
-                                                        <input
-                                                            type="color"
-                                                            value={(appearanceData as any)[color.key]}
-                                                            onChange={e => setAppearanceData({ ...appearanceData, [color.key]: e.target.value })}
-                                                            className="w-10 h-10 bg-transparent border-0 cursor-pointer rounded-lg"
-                                                            title={color.label}
-                                                        />
-                                                        <span className="text-xs font-mono text-stone-400">{(appearanceData as any)[color.key]}</span>
-                                                    </div>
+                                        <h3 className="text-xs uppercase tracking-[0.3em] text-luxury-gold font-black border-b border-white/5 pb-4">Glassmorphism Engine</h3>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                            <div className="space-y-4">
+                                                <div className="flex justify-between">
+                                                    <label className="text-[10px] uppercase tracking-widest text-stone-500 font-bold ml-1">Blur Intensity</label>
+                                                    <span className="text-[10px] font-mono text-luxury-gold">{appearanceData.glassBlur}px</span>
                                                 </div>
-                                            ))}
+                                                <input
+                                                    type="range"
+                                                    min="0"
+                                                    max="20"
+                                                    step="1"
+                                                    value={appearanceData.glassBlur}
+                                                    onChange={e => setAppearanceData({ ...appearanceData, glassBlur: parseInt(e.target.value) })}
+                                                    className="w-full accent-luxury-gold h-1 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                                                />
+                                            </div>
+                                            <div className="space-y-4">
+                                                <div className="flex justify-between">
+                                                    <label className="text-[10px] uppercase tracking-widest text-stone-500 font-bold ml-1">Surface Opacity</label>
+                                                    <span className="text-[10px] font-mono text-luxury-gold">{Math.round(appearanceData.glassOpacity * 100)}%</span>
+                                                </div>
+                                                <input
+                                                    type="range"
+                                                    min="0"
+                                                    max="0.5"
+                                                    step="0.01"
+                                                    value={appearanceData.glassOpacity}
+                                                    onChange={e => setAppearanceData({ ...appearanceData, glassOpacity: parseFloat(e.target.value) })}
+                                                    className="w-full accent-luxury-gold h-1 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                                                />
+                                            </div>
                                         </div>
                                     </div>
 
-                                    {/* Ambient & Foundation Group */}
-                                    <div className="space-y-8">
-                                        <h3 className="text-xs uppercase tracking-[0.3em] text-luxury-gold font-black border-b border-white/5 pb-4">Ambient Stones & Foundations</h3>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                            {[
-                                                { label: 'Ivory Pearl (Body BG)', key: 'ivoryPearl' },
-                                                { label: 'Premium Stone', key: 'premiumStone' },
-                                                { label: 'Warm Beige', key: 'warmBeige' }
-                                            ].map((color) => (
-                                                <div key={color.key} className="space-y-3">
-                                                    <label className="text-[10px] uppercase tracking-widest text-stone-500 font-bold ml-1">{color.label}</label>
-                                                    <div className="flex items-center gap-4 bg-black/20 p-3 rounded-xl border border-white/5">
-                                                        <input
-                                                            type="color"
-                                                            value={(appearanceData as any)[color.key]}
-                                                            onChange={e => setAppearanceData({ ...appearanceData, [color.key]: e.target.value })}
-                                                            className="w-10 h-10 bg-transparent border-0 cursor-pointer rounded-lg"
-                                                            title={color.label}
-                                                        />
-                                                        <span className="text-xs font-mono text-stone-400">{(appearanceData as any)[color.key]}</span>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
 
                                     <div className="flex justify-end pt-6 border-t border-white/5">
                                         <button
@@ -1915,7 +2437,7 @@ export default function AdminDashboard() {
 
                     </section>
                 </div>
-            </main>
-        </div>
+            </main >
+        </div >
     );
 }

@@ -83,7 +83,7 @@ const Home: React.FC = () => {
         )}
 
         {/* Services Preview */}
-        <Section className="bg-luxury-white dark:bg-stone-900 pt-20 pb-20">
+        <Section className="bg-luxury-white dark:bg-luxury-charcoal pt-20 pb-20">
           <motion.div
             variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 30 } }}
             className="text-center mb-24"
@@ -141,7 +141,7 @@ const Home: React.FC = () => {
         </motion.div>
 
         {/* Featured Projects */}
-        <Section className="bg-luxury-white dark:bg-stone-900">
+        <Section className="bg-luxury-white dark:bg-luxury-charcoal">
           <div className="flex justify-between items-end mb-20">
             <div>
               <p className="text-luxury-gold font-bold uppercase tracking-[0.3em] mb-4 text-xs">
@@ -198,7 +198,7 @@ const Home: React.FC = () => {
       </div>
 
       {/* Testimonials */}
-      <Section className="bg-luxury-white dark:bg-stone-900 relative overflow-hidden">
+      <Section className="bg-luxury-white dark:bg-luxury-charcoal relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-luxury-gold/5 to-transparent opacity-50" />
         <div className="text-center mb-16 relative z-10">
           <p className="text-luxury-gold font-bold uppercase tracking-[0.2em] mb-3 text-xs">
@@ -241,7 +241,7 @@ const Home: React.FC = () => {
       <LeadCaptureForm />
 
       {/* CTA Section */}
-      <Section className="bg-luxury-white dark:bg-stone-900 border-y border-luxury-gold/10 relative overflow-hidden">
+      <Section className="bg-luxury-white dark:bg-luxury-charcoal border-y border-luxury-gold/10 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-luxury-gold/5 rounded-full -mr-48 -mt-48 blur-3xl opacity-50" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-luxury-gold/5 rounded-full -ml-48 -mb-48 blur-3xl opacity-50" />
         <div className="text-center text-luxury-charcoal max-w-4xl mx-auto relative z-10">

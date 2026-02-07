@@ -9,6 +9,10 @@
     "preview": "node node_modules/vite/bin/vite.js preview"
   },
   "dependencies": {
+    "cloudinary": "^2.9.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.4",
+    "express": "^5.2.1",
     "firebase": "^12.8.0",
     "framer-motion": "^12.31.0",
     "lucide-react": "0.344.0",

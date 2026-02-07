@@ -90,13 +90,13 @@ const Contact: React.FC = () => {
 
   return (
     <div>
-      <div className="bg-premium-stone pt-32 pb-20 text-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-luxury-gold/5 via-luxury-gold/2 to-transparent z-0" />
+      <div className="bg-luxury-white dark:bg-luxury-charcoal pt-32 pb-20 text-center relative overflow-hidden">
+        {/* <div className="absolute inset-0 bg-gradient-to-b from-luxury-gold/5 via-luxury-gold/2 to-transparent z-0" /> */}
         <div className="relative z-10 px-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-charcoal mb-4 animate-fadeInUp">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-charcoal dark:text-white mb-4 animate-fadeInUp">
             {headers.contact.title}
           </h1>
-          <p className="text-luxury-charcoal/70 text-lg max-w-2xl mx-auto animate-fadeInUp font-medium" style={{ animationDelay: '0.2s' }}>
+          <p className="text-luxury-charcoal/70 dark:text-white/70 text-lg max-w-2xl mx-auto animate-fadeInUp font-medium" style={{ animationDelay: '0.2s' }}>
             {headers.contact.subtitle}
           </p>
         </div>
@@ -169,7 +169,7 @@ const Contact: React.FC = () => {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white rounded-xl shadow-luxury-hover p-8 border border-luxury-gold/5 relative overflow-hidden">
+          <div className="bg-white dark:bg-luxury-charcoal rounded-xl shadow-luxury-hover p-8 border border-luxury-gold/5 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-luxury-gold/5 rounded-full -mr-16 -mt-16 blur-3xl" />
             <h2 className="text-2xl font-serif font-bold text-luxury-charcoal mb-6 relative z-10">Send Message</h2>
 
@@ -195,7 +195,7 @@ const Contact: React.FC = () => {
                       required
                       value={formData.name}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 bg-ivory-pearl/50 border border-luxury-gold/10 rounded-lg focus:ring-2 focus:ring-luxury-gold/20 focus:border-luxury-gold outline-none transition-all"
+                      className="w-full px-4 py-3 bg-white dark:bg-luxury-obsidian border border-luxury-gold/10 rounded-lg focus:ring-2 focus:ring-luxury-gold/20 focus:border-luxury-gold outline-none transition-all text-luxury-charcoal dark:text-white placeholder:text-stone-400"
                       placeholder="John Doe"
                     />
                   </div>
@@ -208,7 +208,7 @@ const Contact: React.FC = () => {
                       required
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 bg-ivory-pearl/50 border border-luxury-gold/10 rounded-lg focus:ring-2 focus:ring-luxury-gold/20 focus:border-luxury-gold outline-none transition-all font-medium"
+                      className="w-full px-4 py-3 bg-white dark:bg-luxury-obsidian border border-luxury-gold/10 rounded-lg focus:ring-2 focus:ring-luxury-gold/20 focus:border-luxury-gold outline-none transition-all font-medium text-luxury-charcoal dark:text-white placeholder:text-stone-400"
                       placeholder="+91 ..."
                     />
                   </div>
@@ -223,7 +223,7 @@ const Contact: React.FC = () => {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-ivory-pearl/50 border border-luxury-gold/10 rounded-lg focus:ring-2 focus:ring-luxury-gold/20 focus:border-luxury-gold outline-none transition-all font-medium"
+                    className="w-full px-4 py-3 bg-white dark:bg-luxury-obsidian border border-luxury-gold/10 rounded-lg focus:ring-2 focus:ring-luxury-gold/20 focus:border-luxury-gold outline-none transition-all font-medium text-luxury-charcoal dark:text-white placeholder:text-stone-400"
                     placeholder="john@example.com"
                   />
                 </div>
@@ -235,7 +235,7 @@ const Contact: React.FC = () => {
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-ivory-pearl/50 border border-luxury-gold/10 rounded-lg focus:ring-2 focus:ring-luxury-gold/20 focus:border-luxury-gold outline-none transition-all font-medium"
+                    className="w-full px-4 py-3 bg-white dark:bg-luxury-obsidian border border-luxury-gold/10 rounded-lg focus:ring-2 focus:ring-luxury-gold/20 focus:border-luxury-gold outline-none transition-all font-medium text-luxury-charcoal dark:text-white"
                   >
                     <option value="">Select a service...</option>
                     <option value="Living Room Interiors">Living Room Interiors</option>
@@ -257,9 +257,7 @@ const Contact: React.FC = () => {
                     name="message"
                     rows={4}
                     required
-                    value={formData.message}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 bg-ivory-pearl/50 border border-luxury-gold/10 rounded-lg focus:ring-2 focus:ring-luxury-gold/20 focus:border-luxury-gold outline-none transition-all font-medium"
+                    className="w-full px-4 py-3 bg-white dark:bg-luxury-obsidian border border-luxury-gold/10 rounded-lg focus:ring-2 focus:ring-luxury-gold/20 focus:border-luxury-gold outline-none transition-all font-medium text-luxury-charcoal dark:text-white placeholder:text-stone-400"
                     placeholder="Tell us about your project requirements..."
                   ></textarea>
                 </div>

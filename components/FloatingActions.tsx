@@ -45,7 +45,7 @@ const FloatingActions: React.FC = () => {
       {/* PWA Install Toast - Centered Bottom */}
       {showInstall && (
         <div className="fixed bottom-32 md:bottom-8 left-1/2 transform -translate-x-1/2 z-[100] animate-fadeInUp w-[90%] max-w-sm">
-          <div className="bg-luxury-charcoal/90 backdrop-blur-md text-white p-4 rounded-xl shadow-luxury border border-luxury-gold/20 flex items-center gap-4">
+          <div className="bg-stone-900 text-white p-4 rounded-xl shadow-luxury border border-luxury-gold/20 flex items-center gap-4">
             <div className="w-12 h-12 bg-stone-800 rounded-lg flex items-center justify-center flex-shrink-0 border border-white/10">
               <img src="/favicon.png" alt="App Icon" className="w-8 h-8 object-contain" />
             </div>

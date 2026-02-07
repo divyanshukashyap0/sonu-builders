@@ -69,11 +69,11 @@
               600: '#57534E', // Deep Grey
               700: '#44403C', // Graphite
               800: '#292524', // Dark Charcoal (Card bg)
-              900: '#1C1917', // Deep Charcoal (Surface)
-              950: '#0A0A0A', // Obsidian (Body bg)
+              900: 'var(--charcoal, #1C1917)', // Deep Charcoal (Surface)
+              950: 'var(--obsidian, #0A0A0A)', // Obsidian (Body bg)
             },
-            'premium-stone': '#141414', // Mapped to Dark Surface
-            'ivory-pearl': '#050505',   // Mapped to Main Dark BG
+            'premium-stone': 'var(--charcoal, #141414)', // Mapped to Dark Surface
+            'ivory-pearl': 'var(--obsidian, #050505)',   // Mapped to Main Dark BG
             luxury: {
               white: 'var(--luxury-white, #FDFBFA)', // Ivory Pearl
               beige: 'var(--warm-beige, #F8F5F2)', // Warm Beige
@@ -140,8 +140,7 @@
 
 <body
   class="bg-luxury-white text-luxury-charcoal antialiased selection:bg-luxury-gold selection:text-white font-sans overflow-x-hidden relative">
-  <!-- Noise/Grain Overlay -->
-  <div class="fixed inset-0 pointer-events-none opacity-[0.03] z-[9999] bg-grain"></div>
+  <!-- Noise/Grain Overlay Removed -->
   <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
 </body>

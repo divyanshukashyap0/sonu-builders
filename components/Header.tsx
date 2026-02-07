@@ -77,7 +77,7 @@ const Header: React.FC = () => {
                 to={link.path}
                 className={`text-[11px] uppercase tracking-[0.18em] font-bold transition-all duration-300 ${location.pathname === link.path
                   ? 'text-brand-gold border-b-2 border-brand-gold pb-1'
-                  : 'text-luxury-charcoal dark:text-white/90 hover:text-brand-gold'
+                  : 'text-stone-300 hover:text-white transition-colors duration-300'
                   }`}
               >
                 {link.label}
@@ -131,7 +131,7 @@ const Header: React.FC = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-2xl font-serif font-bold ${location.pathname === link.path ? 'text-brand-gold underline underline-offset-8' : 'text-luxury-charcoal dark:text-white'
+                className={`text-2xl font-serif font-bold ${location.pathname === link.path ? 'text-brand-gold underline underline-offset-8' : 'text-stone-300 hover:text-luxury-charcoal dark:hover:text-white'
                   }`}
               >
                 {link.label}

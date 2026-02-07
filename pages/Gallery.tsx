@@ -37,19 +37,19 @@ const Gallery: React.FC = () => {
 
   return (
     <div>
-      <div className="bg-stone-50 pt-32 pb-20 text-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-luxury-gold/5 via-luxury-gold/2 to-transparent z-0" />
+      <div className="bg-stone-50 dark:bg-luxury-obsidian pt-32 pb-20 text-center relative overflow-hidden">
+        {/* <div className="absolute inset-0 bg-gradient-to-b from-luxury-gold/5 via-luxury-gold/2 to-transparent z-0" /> */}
         <div className="relative z-10 px-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-charcoal mb-4 animate-fadeInUp">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-charcoal dark:text-white mb-4 animate-fadeInUp">
             {headers.gallery.title}
           </h1>
-          <p className="text-luxury-charcoal/70 text-lg max-w-2xl mx-auto animate-fadeInUp font-medium" style={{ animationDelay: '0.2s' }}>
+          <p className="text-luxury-charcoal/70 dark:text-white/70 text-lg max-w-2xl mx-auto animate-fadeInUp font-medium" style={{ animationDelay: '0.2s' }}>
             {headers.gallery.subtitle}
           </p>
         </div>
       </div>
 
-      <Section className="!bg-stone-50">
+      <Section className="!bg-stone-50 dark:!bg-luxury-obsidian">
         <div className="flex flex-wrap justify-center gap-3 mb-10">
           {categories.map(cat => (
             <button
@@ -57,7 +57,7 @@ const Gallery: React.FC = () => {
               onClick={() => setActiveCategory(cat)}
               className={`px-5 py-2 rounded-full text-xs uppercase tracking-widest font-bold transition-all duration-300 ${activeCategory === cat
                 ? 'bg-luxury-gold text-white shadow-luxury transform scale-105'
-                : 'bg-white text-luxury-charcoal hover:bg-luxury-gold hover:text-white border border-luxury-gold/20'
+                : 'bg-white dark:bg-luxury-charcoal text-luxury-charcoal dark:text-white hover:bg-luxury-gold hover:text-white border border-luxury-gold/20'
                 }`}
             >
               {cat}

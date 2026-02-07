@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { addDoc, collection, deleteDoc, doc, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, onSnapshot, orderBy, query, updateDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { GalleryItem } from '../types';
 
@@ -31,5 +31,9 @@ export const useGallery = () => {
     await deleteDoc(doc(db, 'gallery', id));
   };
 
-  return { items, loading, addItem, deleteItem };
+  const updateItem = async (id: string, item: Partial<GalleryItem>) => {
+    await updateDoc(doc(db, 'gallery', id), item);
+  };
+
+  return { items, loading, addItem, updateItem, deleteItem };
 };

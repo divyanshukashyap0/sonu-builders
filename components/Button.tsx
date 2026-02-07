@@ -29,7 +29,7 @@ const Button: React.FC<ButtonProps> = ({
     primary: "bg-luxury-gold text-white hover:bg-luxury-charcoal shadow-luxury hover:shadow-luxury-hover",
     secondary: "bg-luxury-charcoal text-white hover:bg-luxury-gold shadow-luxury",
     outline: "border border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-white",
-    white: "bg-white text-luxury-charcoal border border-luxury-gold/20 hover:border-luxury-gold shadow-luxury hover:shadow-luxury-hover"
+    white: "bg-white dark:bg-luxury-obsidian text-luxury-charcoal dark:text-white border border-luxury-gold/20 dark:border-luxury-gold/50 hover:border-luxury-gold shadow-luxury hover:shadow-luxury-hover"
   };
 
   const widthClass = fullWidth ? 'w-full' : '';

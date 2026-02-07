@@ -49,13 +49,13 @@ const Projects: React.FC = () => {
 
   return (
     <div>
-      <div className="bg-premium-stone pt-32 pb-20 text-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-luxury-gold/5 via-luxury-gold/2 to-transparent z-0" />
+      <div className="bg-luxury-white dark:bg-luxury-charcoal pt-32 pb-20 text-center relative overflow-hidden">
+        {/* <div className="absolute inset-0 bg-gradient-to-b from-luxury-gold/5 via-luxury-gold/2 to-transparent z-0" /> */}
         <div className="relative z-10 px-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-charcoal mb-4 animate-fadeInUp">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-charcoal dark:text-white mb-4 animate-fadeInUp">
             {headers.projects.title}
           </h1>
-          <p className="text-luxury-charcoal/70 text-lg max-w-2xl mx-auto animate-fadeInUp font-medium" style={{ animationDelay: '0.2s' }}>
+          <p className="text-luxury-charcoal/70 dark:text-white/70 text-lg max-w-2xl mx-auto animate-fadeInUp font-medium" style={{ animationDelay: '0.2s' }}>
             {headers.projects.subtitle}
           </p>
         </div>
@@ -70,7 +70,7 @@ const Projects: React.FC = () => {
               onClick={() => setFilter(category)}
               className={`px-6 py-2 rounded-full text-xs uppercase tracking-widest font-bold transition-all duration-300 ${filter === category
                 ? 'bg-luxury-gold text-white shadow-luxury transform scale-105'
-                : 'bg-white text-luxury-charcoal hover:bg-luxury-gold hover:text-white border border-luxury-gold/20'
+                : 'bg-white dark:bg-luxury-charcoal text-luxury-charcoal dark:text-white hover:bg-luxury-gold hover:text-white border border-luxury-gold/20'
                 }`}
             >
               {category}
@@ -83,7 +83,7 @@ const Projects: React.FC = () => {
           {filteredProjects.map((project) => (
             <div
               key={project.id}
-              className="group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer border border-transparent hover:border-brand-gold/40"
+              className="group bg-white dark:bg-luxury-charcoal rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer border border-transparent hover:border-brand-gold/40"
               onClick={() => openGallery(project)}
             >
               <div className="relative overflow-hidden aspect-w-4 aspect-h-3">
