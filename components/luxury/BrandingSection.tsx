@@ -29,7 +29,7 @@ const BrandingSection: React.FC<BrandingSectionProps> = ({
     });
 
     return (
-        <section className="relative py-24 bg-transparent overflow-hidden">
+        <section className="relative py-24 sm:py-32 bg-transparent overflow-hidden mt-16 sm:mt-0">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col lg:flex-row items-center gap-16">
                     {/* Text Content */}

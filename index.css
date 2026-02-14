@@ -101,19 +101,7 @@ body {
   color: inherit;
 }
 
-/* Premium noise texture for a sophisticated feel */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("https://www.transparenttextures.com/patterns/pinstripe-dark.png");
-  opacity: 0.15;
-  pointer-events: none;
-  z-index: -1;
-}
+
 
 /* Typography */
 h1,

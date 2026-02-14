@@ -61,12 +61,6 @@ export const TrustMetrics: React.FC = () => {
 
     return (
         <section className="bg-transparent py-24 sm:py-32 relative overflow-hidden">
-            {/* Background Parallax Text - Keeping it subtle */}
-            <div className="absolute inset-0 pointer-events-none select-none overflow-hidden opacity-[0.02]">
-                <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[60px] sm:text-[80px] lg:text-[110px] font-serif font-black tracking-tighter text-white whitespace-nowrap">
-                    ESTABLISHED
-                </span>
-            </div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 {/* Bridge Section */}
@@ -75,14 +69,21 @@ export const TrustMetrics: React.FC = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 1 }}
-                    className="text-center mb-32"
+                    className="text-center mb-16 relative"
                 >
                     <p className="text-luxury-gold font-bold uppercase tracking-[0.4em] text-[10px] mb-6">
                         The Standard of Luxury
                     </p>
-                    <h2 className="text-white max-w-4xl mx-auto leading-tight italic">
+                    <h2 className="text-white max-w-4xl mx-auto leading-tight italic mb-12">
                         Transforming <span className="text-luxury-gold">Visionary Concepts</span> into Standing Realities.
                     </h2>
+
+                    {/* Background Parallax Text - Now physically below the quote, zero clipping */}
+                    <div className="pointer-events-none select-none flex items-center justify-center opacity-[0.15] sm:opacity-[0.2] transition-opacity duration-700">
+                        <span className="text-[14vw] sm:text-[100px] lg:text-[140px] font-serif font-black tracking-tighter text-white whitespace-nowrap">
+                            ESTABLISHED
+                        </span>
+                    </div>
                 </motion.div>
 
                 {/* Trust Metrics Grid */}

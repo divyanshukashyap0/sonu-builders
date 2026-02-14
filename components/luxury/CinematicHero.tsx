@@ -33,8 +33,6 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
         description: defaultDesc
     });
 
-    // Debug log
-    console.log('Hero content from Firestore:', content);
 
     const { scrollY } = useScroll();
     const bgY = useTransform(scrollY, [0, 500], [0, 200]);
@@ -66,7 +64,7 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
                                 alt="Luxury Interior Design"
                                 className="w-full h-full object-cover"
                                 loading="eager"
-                                onLoad={() => console.log('✅ Hero image loaded:', content.backgroundImage)}
+                                onLoad={() => { }}
                                 onError={(e) => console.error('❌ Hero image failed to load:', content.backgroundImage, e)}
                             />
                         </>
@@ -86,7 +84,7 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
             {/* Content */}
             <motion.div
                 style={{ y: textY, opacity }}
-                className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20"
+                className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-24 md:pt-20"
             >
                 <div className="max-w-5xl mx-auto space-y-8">
                     {/* Badge */}
@@ -94,6 +92,7 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
+                        className="hidden md:block"
                     >
                         <span className="inline-block px-6 py-2 border border-luxury-gold/30 rounded-full text-luxury-gold text-sm md:text-xs uppercase tracking-[0.3em] font-bold bg-black/20 backdrop-blur-md shadow-glow-gold">
                             {content.subtitle || defaultEmphasis}
@@ -105,12 +104,12 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
-                        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight text-white mb-6 md:mb-8"
+                        className="text-2xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight text-white mb-4 md:mb-8"
                         style={{ color: titleColor }}
                     >
                         {content.title || defaultTitle}
                         <br />
-                        <span className="text-luxury-gold" style={{ color: emphasisColor }}>
+                        <span className="text-luxury-gold text-xl sm:text-5xl md:text-6xl lg:text-7xl" style={{ color: emphasisColor }}>
                             {content.subtitle || defaultEmphasis}
                         </span>
                     </motion.h1>
@@ -143,16 +142,6 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
                 </div>
             </motion.div>
 
-            {/* Scroll Indicator */}
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.5, duration: 1 }}
-                className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2"
-            >
-                <span className="text-white/50 text-[10px] uppercase tracking-widest">Scroll</span>
-                <div className="w-[1px] h-12 bg-gradient-to-b from-luxury-gold to-transparent opacity-50" />
-            </motion.div>
         </section>
     );
 };

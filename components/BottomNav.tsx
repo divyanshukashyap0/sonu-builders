@@ -12,8 +12,8 @@ const BottomNav = () => {
     ];
 
     return (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 md:hidden w-[90%] max-w-sm">
-            <nav className="bg-luxury-white/80 dark:bg-stone-900/80 backdrop-blur-md border border-white/20 rounded-full py-3 px-6 shadow-luxury flex justify-between items-center relative overflow-hidden">
+        <div className="fixed bottom-16 inset-x-0 z-50 md:hidden flex justify-center">
+            <nav className="w-[90%] max-w-sm bg-luxury-white/80 dark:bg-stone-900/80 backdrop-blur-md border border-white/20 rounded-full py-3 px-6 shadow-luxury flex justify-between items-center relative overflow-hidden">
                 {/* Visual Glow Layer */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-luxury-gold/5 via-transparent to-luxury-gold/5 pointer-events-none" />
 
