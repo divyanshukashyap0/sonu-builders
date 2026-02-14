@@ -9,9 +9,9 @@ export const TrustMetrics: React.FC = () => {
     const { content } = useSiteContent('trust_metrics', {
         stat1: '15',
         label1: 'Years Experience',
-        stat2: '150',
+        stat2: '4500',
         label2: 'Projects Completed',
-        stat3: '140',
+        stat3: '4000',
         label3: 'Happy Families',
         stat4: '6',
         label4: 'Cities Served'
