@@ -30,7 +30,12 @@ export interface Service {
   id: string;
   title: string;
   description: string;
-  icon: any; // Using any for Lucide icon component type for simplicity
+  longDescription?: string;
+  icon: any;
+  image?: string;
+  features?: string[];
+  suggestions?: string[];
+  gallery?: string[];
 }
 
 export interface NavLink {

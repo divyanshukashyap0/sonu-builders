@@ -11,7 +11,8 @@ import {
     ChevronLeft,
     ChevronRight,
     Menu,
-    Home
+    Home,
+    LayoutTemplate
 } from 'lucide-react';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../lib/firebase';
@@ -28,6 +29,7 @@ const Sidebar: React.FC = () => {
         { icon: LayoutDashboard, label: 'Dashboard', path: '/admin/dashboard' },
         { icon: Users, label: 'Leads', path: '/admin/leads' },
         { icon: Briefcase, label: 'Projects', path: '/admin/projects' },
+        { icon: LayoutTemplate, label: 'Services', path: '/admin/services' },
         { icon: IndianRupee, label: 'Financials', path: '/admin/financials' },
         { icon: FileText, label: 'Content', path: '/admin/content' },
         { icon: Users, label: 'Team', path: '/admin/team' }, // Changed Icon to Users for Team

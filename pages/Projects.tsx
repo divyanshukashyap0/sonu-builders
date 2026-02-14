@@ -60,7 +60,7 @@ const Projects: React.FC = () => {
       <PageHero
         title={headers.projects.title}
         subtitle={headers.projects.subtitle}
-        backgroundImage="https://images.unsplash.com/photo-1600210492493-0946911123ea?w=1920&q=80"
+        backgroundImage={headers.projects.backgroundImage}
       />
 
       <Section>

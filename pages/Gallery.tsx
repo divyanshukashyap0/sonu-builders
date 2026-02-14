@@ -41,7 +41,7 @@ const Gallery: React.FC = () => {
       <PageHero
         title={headers.gallery.title}
         subtitle={headers.gallery.subtitle}
-        backgroundImage="https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1600&q=80"
+        backgroundImage={headers.gallery.backgroundImage}
       />
 
       <Section className="!bg-stone-50 dark:!bg-luxury-obsidian">

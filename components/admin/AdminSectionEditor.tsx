@@ -39,8 +39,23 @@ const AdminSectionEditor: React.FC<AdminSectionEditorProps> = ({ sectionId, titl
         fetchData();
     }, [sectionId]);
 
+    const getNestedValue = (obj: any, path: string) => {
+        return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+    };
+
+    const setNestedValue = (obj: any, path: string, value: any) => {
+        const parts = path.split('.');
+        const last = parts.pop()!;
+        const target = parts.reduce((acc, part) => {
+            if (!acc[part]) acc[part] = {};
+            return acc[part];
+        }, obj);
+        target[last] = value;
+        return { ...obj };
+    };
+
     const handleChange = (key: string, value: string) => {
-        setData(prev => ({ ...prev, [key]: value }));
+        setData(prev => setNestedValue({ ...prev }, key, value));
         setSuccess(false);
     };
 
@@ -82,7 +97,7 @@ const AdminSectionEditor: React.FC<AdminSectionEditorProps> = ({ sectionId, titl
 
                         {field.type === 'textarea' ? (
                             <textarea
-                                value={data[field.key] || ''}
+                                value={getNestedValue(data, field.key) || ''}
                                 onChange={(e) => handleChange(field.key, e.target.value)}
                                 placeholder={field.placeholder}
                                 rows={4}
@@ -91,17 +106,17 @@ const AdminSectionEditor: React.FC<AdminSectionEditorProps> = ({ sectionId, titl
                         ) : (
                             <input
                                 type="text"
-                                value={data[field.key] || ''}
+                                value={getNestedValue(data, field.key) || ''}
                                 onChange={(e) => handleChange(field.key, e.target.value)}
                                 placeholder={field.placeholder}
                                 className="w-full bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-white/10 rounded-lg p-3 text-sm focus:ring-2 focus:ring-luxury-gold/50 outline-none transition-all text-luxury-charcoal dark:text-white"
                             />
                         )}
 
-                        {field.type === 'image' && data[field.key] && (
+                        {field.type === 'image' && getNestedValue(data, field.key) && (
                             <div className="mt-2 relative group w-fit">
                                 <img
-                                    src={data[field.key]}
+                                    src={getNestedValue(data, field.key)}
                                     alt="Preview"
                                     className="h-20 w-auto rounded-lg border border-gray-200 dark:border-white/10 object-cover"
                                 />

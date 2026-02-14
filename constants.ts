@@ -30,37 +30,151 @@ export const SERVICES: Service[] = [
     id: '1',
     title: 'Full Home Interiors',
     description: 'Transforming your entire home with cohesive design themes, smart space planning, and premium finishes.',
+    longDescription: 'Our full home interior service provides a comprehensive end-to-end solution for your living space. We believe that a home should be a reflection of your personality. Our team works closely with you to create a harmonious design language that flows through every room, from the foyer to the bedrooms.',
     icon: Home,
+    image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&q=80',
+    features: [
+      'Personalized design consultations',
+      '3D visualizations for all rooms',
+      'Premium material sourcing',
+      'Dedicated project management',
+      'Professional installation'
+    ],
+    suggestions: [
+      'Consider open-plan layouts for smaller homes to create a sense of space.',
+      'Use a neutral color palette as a base and add pops of color through accessories.',
+      'Invest in high-quality lighting to set the mood in different zones.'
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&q=80',
+      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80'
+    ]
   },
   {
     id: '2',
     title: 'Modular Kitchens',
     description: 'Ergonomic and stylish modular kitchens designed for modern cooking needs with maximum storage.',
+    longDescription: 'A kitchen is the heart of the home. Our modular kitchen designs focus on the "Work Triangle" concept to maximize efficiency while ensuring a sleek, clutter-free aesthetic. We use high-quality hardware and water-resistant materials to ensure longevity and ease of maintenance.',
     icon: PaintBucket,
+    image: 'https://images.unsplash.com/photo-1556912173-3bb406ef7e77?w=800&q=80',
+    features: [
+      'Ergonomic layout planning (L-shaped, U-shaped, Island)',
+      'Soft-close German hardware',
+      'Waterproof BWP plywood cabinets',
+      'Granite or Quartz countertops',
+      'Integrated appliance housing'
+    ],
+    suggestions: [
+      'Choose high-gloss finishes for small kitchens to reflect light.',
+      'Incorporate pull-out pantry units for better accessibility.',
+      'Opt for under-cabinet LED lighting for task-oriented illumination.'
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1556911223-e250e334621c?w=800&q=80',
+      'https://images.unsplash.com/photo-1516455590571-18256e5bb9ce?w=800&q=80',
+      'https://images.unsplash.com/photo-1600489000022-c2086d79f9d4?w=800&q=80'
+    ]
   },
   {
     id: '3',
     title: 'Living Room Design',
     description: 'Creating luxurious and inviting living spaces with custom furniture, lighting, and decor.',
+    longDescription: 'The living room is where you entertain and unwind. Our designs prioritize comfort without compromising on elegance. We focus on creating a centerpiece—be it a custom TV unit or a feature wall—that anchors the room and sets the tone for the rest of your home.',
     icon: Building2,
+    image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&q=80',
+    features: [
+      'Custom TV unit designs',
+      'Statement wall treatments (Stone, Wood, Paint)',
+      'Bespoke sofa and seating sets',
+      'Smart home lighting integration',
+      'Curated decor and art selection'
+    ],
+    suggestions: [
+      'Use rugs to define seating areas in large rooms.',
+      'Mix textures like velvet and wood to create a rich, layered feel.',
+      'Keep the walk-paths clear to maintain an airy feel.'
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1600210492493-0946911123ea?w=800&q=80',
+      'https://images.unsplash.com/photo-1600121848594-d8644e57abab?w=800&q=80',
+      'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=800&q=80'
+    ]
   },
   {
     id: '4',
     title: 'Wardrobe & Storage',
     description: 'Customized wardrobes and smart storage solutions that blend functionality with aesthetics.',
+    longDescription: 'Efficient storage is the key to a clutter-free life. Our wardrobe solutions are tailored to your storage needs, whether you prefer walk-in closets or sleek sliding wardrobes. We integrate smart accessories like pull-out racks and internal lighting to make organization effortless.',
     icon: Ruler,
+    image: 'https://images.unsplash.com/photo-1558882224-cca162730191?w=800&q=80',
+    features: [
+      'Sliding or hinged door options',
+      'Customized internal configurations',
+      'Built-in sensor lighting',
+      'Soft-close drawers and accessories',
+      'Premium laminate or glass finishes'
+    ],
+    suggestions: [
+      'Use floor-to-ceiling wardrobes to maximize vertical space.',
+      'Incorporate mirror doors to make bedrooms feel larger.',
+      'Add a dedicated jewelry or watch tray for better organization.'
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=800&q=80',
+      'https://images.unsplash.com/photo-1616486029423-aaa4789e8c9a?w=800&q=80',
+      'https://images.unsplash.com/photo-1558882224-cca162730191?w=800&q=80'
+    ]
   },
   {
     id: '5',
     title: 'False Ceiling & Lighting',
     description: 'Elegant false ceiling designs and ambient lighting solutions to enhance the mood of your home.',
+    longDescription: 'Lighting can transform a space instantly. Our ceiling designs do more than just hide wiring; they become an architectural element of your home. We combine cove lighting, spotlights, and chandeliers to create a multi-layered lighting strategy that is both functional and dramatic.',
     icon: Key,
+    image: 'https://images.unsplash.com/photo-1534073828943-f801091bb18c?w=800&q=80',
+    features: [
+      'Gypsum or PVC false ceilings',
+      'Cove lighting and backlighting',
+      'Magnetic track lighting systems',
+      'Chandelier and pendant installation',
+      'Smart lighting controls'
+    ],
+    suggestions: [
+      'Use perimeter cove lighting to make ceilings appear higher.',
+      'Cool white light is best for kitchens; warm yellow for bedrooms.',
+      'Combine multiple light sources to create depth and eliminate shadows.'
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=800&q=80',
+      'https://images.unsplash.com/photo-1560184897-62429407db3a?w=800&q=80',
+      'https://images.unsplash.com/photo-1518739144896-74895624bf7c?w=800&q=80'
+    ]
   },
   {
     id: '6',
     title: 'Bathroom Renovations',
     description: 'Modern bathroom designs with premium fittings, tiling, and space-saving layouts.',
+    longDescription: 'Turn your bathroom into a personal spa. Our renovation services focus on waterproofing, smart plumbing, and the latest trends in vanity design and tile selection. We ensure that even small bathrooms feel spacious and opulent through clever design and high-quality finishes.',
     icon: HardHat,
+    image: 'https://images.unsplash.com/photo-1620626011761-9963d7521477?w=800&q=80',
+    features: [
+      'Complete waterproofing treatment',
+      'Premium sanitary ware installation',
+      'Custom vanity and mirror cabinets',
+      'Modern tile and stone cladding',
+      'Shower glass partitions'
+    ],
+    suggestions: [
+      'Use large tiles to minimize grout lines for a cleaner look.',
+      'Wall-hung vanities create more visual floor space.',
+      'Incorporate a niche in the shower area for organized storage.'
+    ],
+    gallery: [
+      'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800&q=80',
+      'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800&q=80',
+      'https://images.unsplash.com/photo-1600210492493-0946911123ea?w=800&q=80'
+    ]
   },
 ];
 

@@ -51,8 +51,8 @@ const Timeline: React.FC = () => {
                                 <span className="inline-block text-5xl md:text-7xl font-serif font-bold text-luxury-gold/20 mb-2">
                                     {item.year}
                                 </span>
-                                <h3 className="text-2xl font-bold text-luxury-charcoal mb-2">{item.title}</h3>
-                                <p className="text-luxury-charcoal/70 leading-relaxed max-w-md mx-auto md:mx-0 ml-auto">
+                                <h3 className="text-2xl font-bold text-white mb-2">{item.title}</h3>
+                                <p className="text-white/80 leading-relaxed max-w-md mx-auto md:mx-0 ml-auto">
                                     {item.description}
                                 </p>
                             </div>

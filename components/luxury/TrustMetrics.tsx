@@ -62,8 +62,8 @@ export const TrustMetrics: React.FC = () => {
     return (
         <section className="bg-transparent py-24 sm:py-32 relative overflow-hidden">
             {/* Background Parallax Text - Keeping it subtle */}
-            <div className="absolute top-0 left-0 w-full h-full pointer-events-none select-none overflow-hidden opacity-[0.02]">
-                <span className="absolute top-20 left-1/2 -translate-x-1/2 text-[100px] sm:text-[120px] font-serif font-black tracking-tighter text-white whitespace-nowrap">
+            <div className="absolute inset-0 pointer-events-none select-none overflow-hidden opacity-[0.02]">
+                <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[60px] sm:text-[80px] lg:text-[110px] font-serif font-black tracking-tighter text-white whitespace-nowrap">
                     ESTABLISHED
                 </span>
             </div>

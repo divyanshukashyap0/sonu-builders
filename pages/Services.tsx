@@ -14,7 +14,7 @@ const Services: React.FC = () => {
 
   const getIcon = (iconName: string) => {
     const IconComponent = (Icons as any)[iconName] || Icons.Home;
-    return <IconComponent className="w-8 h-8 text-luxury-gold group-hover:text-white transition-colors duration-500" />;
+    return <IconComponent className="w-8 h-8 text-white transition-colors duration-500" />;
   };
 
   if (loading || headersLoading) {
@@ -38,19 +38,38 @@ const Services: React.FC = () => {
       <PageHero
         title={headers.services.title}
         subtitle={headers.services.subtitle}
-        backgroundImage="https://images.unsplash.com/photo-1616137466211-f939a420be63?w=1600&q=80"
+        backgroundImage={headers.services.backgroundImage || "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=100"}
       />
 
-      <Section>
+      <Section className="relative">
+        {/* Subtle Section Background Pattern - More prominent for texture */}
+        <div
+          className="absolute inset-0 opacity-[0.07] pointer-events-none"
+          style={{
+            backgroundImage: 'url("https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1920&q=80")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed'
+          }}
+        />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service) => (
             <Link to={`/services/${service.id}`} key={service.id} className="bg-white dark:bg-luxury-charcoal border border-luxury-gold/10 hover:border-luxury-gold/40 rounded-xl overflow-hidden hover:shadow-luxury-hover transition-all duration-500 flex flex-col group block h-full">
-              <div className="p-8 flex-1">
-                <div className="w-16 h-16 bg-luxury-gold/5 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-luxury-gold transition-colors duration-500">
+              {/* Service Card Image */}
+              <div className="relative h-48 overflow-hidden bg-luxury-obsidian">
+                <img
+                  src={service.image || "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&q=80"}
+                  alt={service.title}
+                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000 opacity-60 group-hover:opacity-100"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-luxury-obsidian/80 to-transparent" />
+                <div className="absolute top-4 left-4 w-12 h-12 bg-luxury-gold flex items-center justify-center rounded-lg shadow-luxury transform group-hover:-translate-y-1 transition-transform">
                   {getIcon(service.icon as unknown as string)}
                 </div>
-                <h3 className="text-xl font-bold text-luxury-charcoal mb-3 font-serif">{service.title}</h3>
-                <p className="text-luxury-charcoal/70 leading-relaxed text-sm">
+              </div>
+              <div className="p-8 flex-1">
+                <h3 className="text-xl font-bold text-luxury-charcoal dark:text-white mb-3 font-serif">{service.title}</h3>
+                <p className="text-luxury-charcoal/70 dark:text-white/70 leading-relaxed text-sm font-medium">
                   {service.description}
                 </p>
               </div>

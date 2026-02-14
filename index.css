@@ -101,19 +101,19 @@ body {
   color: inherit;
 }
 
-/* Noise texture removed for 100% clear background */
-/* body::before {
+/* Premium noise texture for a sophisticated feel */
+body::before {
   content: "";
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("data:image/svg+xml,...");
-  opacity: 0.05;
+  background-image: url("https://www.transparenttextures.com/patterns/pinstripe-dark.png");
+  opacity: 0.15;
   pointer-events: none;
-  z-index: 999;
-} */
+  z-index: -1;
+}
 
 /* Typography */
 h1,
@@ -493,8 +493,8 @@ nav a {
 
 nav a:hover,
 nav a.active {
-  color: #00D4AA;
-  border-bottom: 2px solid #00D4AA;
+  color: var(--luxury-gold);
+  border-bottom: 2px solid var(--luxury-gold);
 }
 
 /* 3. STATISTICS LABELS FIXES */
@@ -560,8 +560,7 @@ button {
 
 /* 8. SECONDARY TEXT IMPROVEMENTS */
 .subtitle,
-.description,
-p {
+.description {
   color: #FFFFFF;
   font-weight: 300;
   line-height: 1.6;

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Phone, Mail, MapPin, Send } from 'lucide-react';
+import PageHero from '../components/luxury/PageHero';
 import Section from '../components/Section';
 import Button from '../components/Button';
 import QuoteCalculator from '../components/interactive/QuoteCalculator';
@@ -104,17 +105,11 @@ const Contact: React.FC = () => {
         description="Get in touch with Sonu Enterprises for a free consultation. Visit our office or contact us for your interior design needs."
         canonical="https://sonuenterprises.com/contact"
       />
-      <div className="bg-luxury-white dark:bg-luxury-charcoal pt-32 pb-20 text-center relative overflow-hidden">
-        {/* <div className="absolute inset-0 bg-gradient-to-b from-luxury-gold/5 via-luxury-gold/2 to-transparent z-0" /> */}
-        <div className="relative z-10 px-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-charcoal dark:text-white mb-4 animate-fadeInUp">
-            {headers.contact.title}
-          </h1>
-          <p className="text-luxury-charcoal/70 dark:text-white/70 text-lg max-w-2xl mx-auto animate-fadeInUp font-medium" style={{ animationDelay: '0.2s' }}>
-            {headers.contact.subtitle}
-          </p>
-        </div>
-      </div>
+      <PageHero
+        title={headers.contact.title}
+        subtitle={headers.contact.subtitle}
+        backgroundImage={headers.contact.backgroundImage}
+      />
 
       <Section>
         <div className="max-w-4xl mx-auto mb-20">

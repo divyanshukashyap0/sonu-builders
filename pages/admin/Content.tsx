@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { FileText, MessageSquare, Image, Plus, Trash2, Edit, Star, LayoutTemplate, PenTool, BarChart3, ImageIcon, Check } from 'lucide-react';
 import AdminSectionEditor from '../../components/admin/AdminSectionEditor';
+import ServiceManager from '../../components/admin/ServiceManager';
 
 const Content: React.FC = () => {
-    const [activeView, setActiveView] = useState<'testimonials' | 'gallery' | 'blog' | 'home-hero' | 'philosophy' | 'lead-capture' | 'trust-metrics' | 'why-choose-us' | null>(null);
+    const [activeView, setActiveView] = useState<'testimonials' | 'gallery' | 'blog' | 'page-headers' | 'home-hero' | 'about-page' | 'philosophy' | 'lead-capture' | 'trust-metrics' | 'why-choose-us' | 'services' | null>(null);
 
     // Mock Data for demonstration
     const testimonials = [
@@ -142,9 +143,44 @@ const Content: React.FC = () => {
                         <h3 className="text-xl font-serif text-white mb-2">Blog Header</h3>
                         <p className="text-sm text-neutral-400">Edit the blog page intro text.</p>
                     </div>
+
+                    {/* About Page Card */}
+                    <div
+                        onClick={() => setActiveView('about-page')}
+                        className="group relative bg-neutral-900/50 backdrop-blur-sm border border-white/5 rounded-2xl p-6 hover:border-luxury-gold/30 transition-all cursor-pointer overflow-hidden"
+                    >
+                        <div className="absolute inset-0 bg-gradient-to-br from-luxury-gold/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <PenTool className="w-8 h-8 text-luxury-gold mb-4" />
+                        <h3 className="text-xl font-serif text-white mb-2">About Us Page</h3>
+                        <p className="text-sm text-neutral-400">Manage founder details, images, and About page content.</p>
+                    </div>
+
+                    {/* Page Headers Card */}
+                    <div
+                        onClick={() => setActiveView('page-headers')}
+                        className="group relative bg-neutral-900/50 backdrop-blur-sm border border-white/5 rounded-2xl p-6 hover:border-luxury-gold/30 transition-all cursor-pointer overflow-hidden"
+                    >
+                        <div className="absolute inset-0 bg-gradient-to-br from-luxury-gold/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <LayoutTemplate className="w-8 h-8 text-luxury-gold mb-4" />
+                        <h3 className="text-xl font-serif text-white mb-2">Global Page Headers</h3>
+                        <p className="text-sm text-neutral-400">Manage titles, subtitles, and background images for main pages.</p>
+                    </div>
+
+                    {/* Services Card */}
+                    <div
+                        onClick={() => setActiveView('services')}
+                        className="group relative bg-neutral-900/50 backdrop-blur-sm border border-white/5 rounded-2xl p-6 hover:border-luxury-gold/30 transition-all cursor-pointer overflow-hidden"
+                    >
+                        <div className="absolute inset-0 bg-gradient-to-br from-luxury-gold/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <PenTool className="w-8 h-8 text-luxury-gold mb-4" />
+                        <h3 className="text-xl font-serif text-white mb-2">Service Details</h3>
+                        <p className="text-sm text-neutral-400">Manage all service categories, features, tips, and galleries.</p>
+                    </div>
                 </div>
             ) : (
                 <div className="bg-white dark:bg-neutral-900/50 backdrop-blur-md rounded-2xl p-6 border border-white/5 shadow-xl">
+                    {activeView === 'services' && <ServiceManager />}
+
                     {activeView === 'home-hero' && (
                         <AdminSectionEditor
                             sectionId="home_hero"
@@ -243,6 +279,64 @@ const Content: React.FC = () => {
                                 { key: 'backgroundImage', label: 'Header Background', type: 'image' }
                             ]}
                         />
+                    )}
+
+                    {activeView === 'about-page' && (
+                        <AdminSectionEditor
+                            sectionId="about"
+                            title="About Us Page"
+                            fields={[
+                                { key: 'headerTitle', label: 'Header Title', type: 'text' },
+                                { key: 'headerSubtitle', label: 'Header Subtitle', type: 'textarea' },
+                                { key: 'headerImage', label: 'Header Background', type: 'image' },
+                                { key: 'mainTitle', label: 'Main Content Title', type: 'text' },
+                                { key: 'founderName', label: 'Founder Name', type: 'text' },
+                                { key: 'founderTitle', label: 'Founder Job Title', type: 'text' },
+                                { key: 'founderBio', label: 'Founder Bio', type: 'textarea' },
+                                { key: 'founderImage', label: 'Founder Image URL', type: 'image' }
+                            ]}
+                        />
+                    )}
+
+                    {activeView === 'page-headers' && (
+                        <div className="space-y-8">
+                            <AdminSectionEditor
+                                sectionId="page_headers"
+                                title="Services Page Header"
+                                fields={[
+                                    { key: 'services.title', label: 'Title', type: 'text' },
+                                    { key: 'services.subtitle', label: 'Subtitle', type: 'textarea' },
+                                    { key: 'services.backgroundImage', label: 'Background Image', type: 'image' }
+                                ]}
+                            />
+                            <AdminSectionEditor
+                                sectionId="page_headers"
+                                title="Projects Page Header"
+                                fields={[
+                                    { key: 'projects.title', label: 'Title', type: 'text' },
+                                    { key: 'projects.subtitle', label: 'Subtitle', type: 'textarea' },
+                                    { key: 'projects.backgroundImage', label: 'Background Image', type: 'image' }
+                                ]}
+                            />
+                            <AdminSectionEditor
+                                sectionId="page_headers"
+                                title="Gallery Page Header"
+                                fields={[
+                                    { key: 'gallery.title', label: 'Title', type: 'text' },
+                                    { key: 'gallery.subtitle', label: 'Subtitle', type: 'textarea' },
+                                    { key: 'gallery.backgroundImage', label: 'Background Image', type: 'image' }
+                                ]}
+                            />
+                            <AdminSectionEditor
+                                sectionId="page_headers"
+                                title="Contact Page Header"
+                                fields={[
+                                    { key: 'contact.title', label: 'Title', type: 'text' },
+                                    { key: 'contact.subtitle', label: 'Subtitle', type: 'textarea' },
+                                    { key: 'contact.backgroundImage', label: 'Background Image', type: 'image' }
+                                ]}
+                            />
+                        </div>
                     )}
                 </div>
             )}

@@ -8,6 +8,11 @@ export interface AboutContent {
     mainTitle: string;
     paragraphs: string[];
     images: string[];
+    headerImage: string;
+    founderName: string;
+    founderTitle: string;
+    founderBio: string;
+    founderImage: string;
     mission: { title: string; content: string; icon: string };
     vision: { title: string; content: string; icon: string };
     values: { title: string; content: string; icon: string };
@@ -26,6 +31,11 @@ const defaultAbout: AboutContent = {
         'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=400',
         'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=400'
     ],
+    headerImage: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=80',
+    founderName: 'Mr. Sonu Singh',
+    founderTitle: 'Founder & Principal Designer',
+    founderBio: 'With over 15 years of experience in the construction and interior design industry, Mr. Singh founded Sonu Enterprises with a vision to deliver premium quality homes at accessible prices. His attention to detail and commitment to customer satisfaction has driven the company to complete over 4500+ successful projects and serve more than 4000+ happy families.',
+    founderImage: '  ',
     mission: {
         title: 'Our Mission',
         content: 'To deliver exceptional interior design solutions that exceed client expectations while creating spaces that inspire, comfort, and reflect individual personalities.',
@@ -48,9 +58,9 @@ export function useAboutPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const unsubscribe = onSnapshot(doc(db, 'settings', 'about'), (docSnap) => {
+        const unsubscribe = onSnapshot(doc(db, 'site_content', 'about'), (docSnap) => {
             if (docSnap.exists()) {
-                setContent(docSnap.data() as AboutContent);
+                setContent({ ...defaultAbout, ...docSnap.data() } as AboutContent);
             }
             setLoading(false);
         }, (error) => {
@@ -63,7 +73,7 @@ export function useAboutPage() {
 
     const updateAbout = async (newContent: AboutContent) => {
         try {
-            await setDoc(doc(db, 'settings', 'about'), newContent);
+            await setDoc(doc(db, 'site_content', 'about'), newContent);
         } catch (error) {
             console.error("Error updating about content:", error);
             throw error;

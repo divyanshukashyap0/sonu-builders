@@ -22,6 +22,7 @@ import AdminProjectForm from './pages/admin/ProjectForm';
 import AdminFinancials from './pages/admin/Financials';
 import AdminContent from './pages/admin/Content';
 import AdminTeam from './pages/admin/Team';
+import AdminServices from './pages/admin/Services';
 import AdminSettings from './pages/admin/Settings';
 import AdminLayout from './layouts/AdminLayout';
 import ComingSoon from './components/admin/ComingSoon';
@@ -199,6 +200,7 @@ const AppContent: React.FC = () => {
               <Route path="projects/edit/:id" element={<AdminProjectForm />} />
               <Route path="financials" element={<AdminFinancials />} />
               <Route path="content" element={<AdminContent />} />
+              <Route path="services" element={<AdminServices />} />
               <Route path="team" element={<AdminTeam />} />
               <Route path="settings" element={<AdminSettings />} />
               {/* Add other admin sub-routes here later */}
