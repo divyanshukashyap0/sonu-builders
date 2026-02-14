@@ -89,46 +89,41 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
                 className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20"
             >
                 <div className="max-w-5xl mx-auto space-y-8">
-                    {/* Floating Badge - Stagger 1 */}
+                    {/* Badge */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
                     >
-                        <span className="inline-block px-6 py-2 border border-luxury-gold/30 rounded-full text-luxury-gold text-xs uppercase tracking-[0.3em] font-bold bg-black/20 backdrop-blur-md shadow-glow-gold">
-                            Bespoke Excellence Since 2010
+                        <span className="inline-block px-6 py-2 border border-luxury-gold/30 rounded-full text-luxury-gold text-sm md:text-xs uppercase tracking-[0.3em] font-bold bg-black/20 backdrop-blur-md shadow-glow-gold">
+                            {content.subtitle || defaultEmphasis}
                         </span>
                     </motion.div>
 
-                    {/* Headline - Stagger 2 */}
+                    {/* Main Heading */}
                     <motion.h1
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2, duration: 1, ease: "easeOut" }}
-                        className="font-serif font-bold text-5xl sm:text-6xl md:text-8xl lg:text-9xl leading-[1.05] tracking-tight drop-shadow-2xl"
-                        style={{
-                            textShadow: "0 10px 40px rgba(0,0,0,0.6)",
-                            color: titleColor
-                        }}
+                        transition={{ duration: 0.8, delay: 0.4 }}
+                        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight text-white mb-6 md:mb-8"
+                        style={{ color: titleColor }}
                     >
-                        {content.title}{' '}
-                        <span
-                            className="block mt-2 italic font-medium"
-                            style={{ color: emphasisColor }}
-                        >
-                            {content.subtitle}
+                        {content.title || defaultTitle}
+                        <br />
+                        <span className="text-luxury-gold" style={{ color: emphasisColor }}>
+                            {content.subtitle || defaultEmphasis}
                         </span>
                     </motion.h1>
 
-                    {/* Subtext - Stagger 3 */}
+                    {/* Description */}
                     <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
-                        className="text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed font-light drop-shadow-lg font-sans tracking-wide"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.8, delay: 0.6 }}
+                        className="text-base md:text-lg lg:text-xl text-gray-300 max-w-3xl mx-auto mb-8 md:mb-10 leading-relaxed px-4"
                         style={{ color: subtextColor }}
                     >
-                        {content.description}
+                        {content.description || defaultDesc}
                     </motion.p>
 
                     {/* CTA Buttons - Stagger 4 */}

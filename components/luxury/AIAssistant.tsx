@@ -85,14 +85,14 @@ const AIAssistant: React.FC = () => {
     };
 
     return (
-        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-none">
+        <div className="hidden lg:flex fixed bottom-6 right-6 z-50 flex-col items-end pointer-events-none">
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
                         initial={{ opacity: 0, y: 20, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 20, scale: 0.95 }}
-                        className="mb-4 w-[350px] max-h-[600px] bg-neutral-900 border border-luxury-gold/20 rounded-2xl shadow-2xl overflow-hidden pointer-events-auto flex flex-col"
+                        className="mb-4 w-[calc(100vw-2rem)] sm:w-[380px] md:w-[350px] max-h-[600px] bg-neutral-900 border border-luxury-gold/20 rounded-2xl shadow-2xl overflow-hidden pointer-events-auto flex flex-col"
                     >
                         {/* Header */}
                         <div className="bg-luxury-charcoal p-4 flex justify-between items-center border-b border-luxury-gold/20">
@@ -178,7 +178,7 @@ const AIAssistant: React.FC = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-14 h-14 bg-luxury-gold text-white rounded-full shadow-glow-gold flex items-center justify-center pointer-events-auto border-2 border-white/20 z-50 hover:rotate-12 transition-transform"
+                className="w-16 h-16 md:w-14 md:h-14 bg-luxury-gold text-white rounded-full shadow-glow-gold flex items-center justify-center pointer-events-auto border-2 border-white/20 z-50 hover:rotate-12 transition-transform"
             >
                 {isOpen ? <X size={24} /> : <MessageSquare size={24} />}
             </motion.button>

@@ -131,9 +131,9 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
                                 {content.policyLink && (
                                     <a
                                         href={content.policyLink}
-                                        className="inline-flex items-center text-luxury-gold hover:text-white text-xs font-bold uppercase tracking-widest transition-colors"
+                                        className="inline-flex items-center text-luxury-gold hover:text-white text-sm md:text-xs font-bold uppercase tracking-widest transition-colors py-2"
                                     >
-                                        Read Full Policy <ArrowRight className="w-3 h-3 ml-2" />
+                                        Read Full Policy <ArrowRight className="w-4 h-4 md:w-3 md:h-3 ml-2" />
                                     </a>
                                 )}
                             </motion.div>
@@ -142,11 +142,11 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
                         <div className="flex gap-8 border-t border-white/10 pt-8">
                             <div>
                                 <p className="text-2xl font-serif font-bold text-white">24h</p>
-                                <p className="text-xs text-neutral-500 uppercase tracking-widest mt-1">Response Time</p>
+                                <p className="text-sm md:text-xs text-neutral-500 uppercase tracking-widest mt-1">Response Time</p>
                             </div>
                             <div>
                                 <p className="text-2xl font-serif font-bold text-white">100%</p>
-                                <p className="text-xs text-neutral-500 uppercase tracking-widest mt-1">Confidential</p>
+                                <p className="text-sm md:text-xs text-neutral-500 uppercase tracking-widest mt-1">Confidential</p>
                             </div>
                         </div>
                     </div>
@@ -180,7 +180,7 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
                         ) : (
                             <form onSubmit={handleSubmit} className="space-y-6 relative z-10" noValidate>
                                 <div>
-                                    <label htmlFor="name" className="block text-xs font-bold uppercase tracking-widest text-neutral-400 mb-2">
+                                    <label htmlFor="name" className="block text-sm md:text-xs font-bold uppercase tracking-widest text-neutral-400 mb-2">
                                         Your Name *
                                     </label>
                                     <input
@@ -190,13 +190,13 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
                                         value={formData.name}
                                         onChange={handleChange}
                                         required
-                                        className="w-full px-4 py-3 bg-white/5 border border-white/10 text-white rounded-lg focus:ring-1 focus:ring-luxury-gold focus:border-luxury-gold transition-all outline-none placeholder-neutral-600 hover:bg-white/10"
+                                        className="w-full px-4 py-4 bg-white/5 border border-white/10 text-white rounded-lg focus:ring-1 focus:ring-luxury-gold focus:border-luxury-gold transition-all outline-none placeholder-neutral-600 hover:bg-white/10 text-base"
                                         placeholder="Enter your full name"
                                     />
                                 </div>
 
                                 <div>
-                                    <label htmlFor="phone" className="block text-xs font-bold uppercase tracking-widest text-neutral-400 mb-2">
+                                    <label htmlFor="phone" className="block text-sm md:text-xs font-bold uppercase tracking-widest text-neutral-400 mb-2">
                                         Phone Number *
                                     </label>
                                     <input
@@ -207,13 +207,13 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
                                         onChange={handleChange}
                                         required
                                         pattern="[0-9]{10}"
-                                        className="w-full px-4 py-3 bg-white/5 border border-white/10 text-white rounded-lg focus:ring-1 focus:ring-luxury-gold focus:border-luxury-gold transition-all outline-none placeholder-neutral-600 hover:bg-white/10"
+                                        className="w-full px-4 py-4 bg-white/5 border border-white/10 text-white rounded-lg focus:ring-1 focus:ring-luxury-gold focus:border-luxury-gold transition-all outline-none placeholder-neutral-600 hover:bg-white/10 text-base"
                                         placeholder="10-digit mobile number"
                                     />
                                 </div>
 
                                 <div>
-                                    <label htmlFor="email" className="block text-xs font-bold uppercase tracking-widest text-neutral-400 mb-2">
+                                    <label htmlFor="email" className="block text-sm md:text-xs font-bold uppercase tracking-widest text-neutral-400 mb-2">
                                         Email Address
                                     </label>
                                     <input
@@ -222,13 +222,13 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
                                         name="email"
                                         value={formData.email}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 bg-white/5 border border-white/10 text-white rounded-lg focus:ring-1 focus:ring-luxury-gold focus:border-luxury-gold transition-all outline-none placeholder-neutral-600 hover:bg-white/10"
+                                        className="w-full px-4 py-4 bg-white/5 border border-white/10 text-white rounded-lg focus:ring-1 focus:ring-luxury-gold focus:border-luxury-gold transition-all outline-none placeholder-neutral-600 hover:bg-white/10 text-base"
                                         placeholder="your.email@example.com (Optional)"
                                     />
                                 </div>
 
                                 <div>
-                                    <label htmlFor="city" className="block text-xs font-bold uppercase tracking-widest text-neutral-400 mb-2">
+                                    <label htmlFor="city" className="block text-sm md:text-xs font-bold uppercase tracking-widest text-neutral-400 mb-2">
                                         City *
                                     </label>
                                     <input
@@ -238,13 +238,13 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
                                         value={formData.city}
                                         onChange={handleChange}
                                         required
-                                        className="w-full px-4 py-3 bg-white/5 border border-white/10 text-white rounded-lg focus:ring-1 focus:ring-luxury-gold focus:border-luxury-gold transition-all outline-none placeholder-neutral-600 hover:bg-white/10"
+                                        className="w-full px-4 py-4 bg-white/5 border border-white/10 text-white rounded-lg focus:ring-1 focus:ring-luxury-gold focus:border-luxury-gold transition-all outline-none placeholder-neutral-600 hover:bg-white/10 text-base"
                                         placeholder="Your city"
                                     />
                                 </div>
 
                                 <div>
-                                    <label htmlFor="propertyType" className="block text-xs font-bold uppercase tracking-widest text-neutral-400 mb-2">
+                                    <label htmlFor="propertyType" className="block text-sm md:text-xs font-bold uppercase tracking-widest text-neutral-400 mb-2">
                                         Property Type *
                                     </label>
                                     <div className="relative">
@@ -255,7 +255,7 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             required
-                                            className={`w-full px-4 py-3 bg-white/5 border text-white rounded-lg focus:ring-1 focus:ring-luxury-gold focus:border-luxury-gold transition-all appearance-none outline-none hover:bg-white/10 ${touched.propertyType && !formData.propertyType ? 'border-red-500' : 'border-white/10'
+                                            className={`w-full px-4 py-4 bg-white/5 border text-white rounded-lg focus:ring-1 focus:ring-luxury-gold focus:border-luxury-gold transition-all appearance-none outline-none hover:bg-white/10 text-base ${touched.propertyType && !formData.propertyType ? 'border-red-500' : 'border-white/10'
                                                 }`}
                                         >
                                             <option value="" disabled className="bg-neutral-900">Select property type</option>

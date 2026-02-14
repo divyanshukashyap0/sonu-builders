@@ -8,15 +8,22 @@ interface PageHeroProps {
 }
 
 const PageHero: React.FC<PageHeroProps> = ({ title, subtitle, backgroundImage }) => {
+    console.log('PageHero backgroundImage:', backgroundImage);
+
     return (
         <div className="relative h-[50vh] min-h-[350px] flex items-end pb-16 justify-start overflow-hidden group">
             {/* Background Image */}
-            <div className="absolute inset-0 z-0">
-                <img
-                    src={backgroundImage}
-                    alt={title}
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-[2s]"
-                />
+            <div className="absolute inset-0 z-0 bg-gradient-to-br from-neutral-900 to-neutral-800">
+                {backgroundImage && (
+                    <img
+                        src={backgroundImage}
+                        alt=""
+                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-[2s]"
+                        onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                        }}
+                    />
+                )}
                 {/* Overlay for readability - stronger at bottom */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
             </div>

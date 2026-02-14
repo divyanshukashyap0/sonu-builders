@@ -23,7 +23,7 @@ const Button: React.FC<ButtonProps> = ({
   fullWidth = false,
   disabled = false
 }) => {
-  const baseStyles = "inline-flex items-center justify-center px-10 py-5 text-sm font-bold uppercase tracking-[0.2em] transition-all duration-500 rounded-sm focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed";
+  const baseStyles = "inline-flex items-center justify-center px-10 py-6 text-base md:text-sm font-bold uppercase tracking-[0.2em] transition-all duration-500 rounded-sm focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed";
 
   const variants = {
     primary: "bg-gradient-to-r from-luxury-gold to-[#8E6D45] text-white shadow-lg hover:shadow-glow-gold hover:scale-105 active:scale-95 border border-transparent",

@@ -60,7 +60,7 @@ const Projects: React.FC = () => {
       <PageHero
         title={headers.projects.title}
         subtitle={headers.projects.subtitle}
-        backgroundImage="https://images.unsplash.com/photo-1626296766624-9b244db8147d?w=1600&q=80"
+        backgroundImage="https://images.unsplash.com/photo-1600210492493-0946911123ea?w=1920&q=80"
       />
 
       <Section>
@@ -83,13 +83,16 @@ const Projects: React.FC = () => {
               className="group bg-white dark:bg-luxury-charcoal rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer border border-transparent hover:border-brand-gold/40"
               onClick={() => openGallery(project)}
             >
-              <div className="relative overflow-hidden aspect-w-4 aspect-h-3">
+              <div className="relative overflow-hidden aspect-w-4 aspect-h-3 bg-gradient-to-br from-neutral-800 to-neutral-900">
                 <img
-                  src={project.image}
+                  src={project.image || 'https://placehold.co/800x600/1a1a1a/d4af37?text=No+Image'}
                   alt={project.title}
                   className="w-full h-64 object-cover transform group-hover:scale-110 transition-transform duration-700"
                   loading="lazy"
                   decoding="async"
+                  onError={(e) => {
+                    e.currentTarget.src = 'https://placehold.co/800x600/1a1a1a/d4af37?text=No+Image';
+                  }}
                 />
 
                 {/* Overlay */}

@@ -116,7 +116,7 @@ export const TrustMetrics: React.FC = () => {
                                 </div>
 
                                 {/* Label */}
-                                <p className="text-xs sm:text-sm text-gray-400 uppercase tracking-[0.2em] font-bold">
+                                <p className="text-sm md:text-xs text-gray-400 uppercase tracking-[0.2em] font-bold">
                                     {metric.label} {isInteractive && <span className="block text-[10px] text-luxury-gold mt-1 opacity-0 group-hover:opacity-100 transition-opacity capitalize font-medium tracking-normal">(Click to view)</span>}
                                 </p>
 
@@ -193,7 +193,7 @@ export const TrustMetrics: React.FC = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: 0.2 + (idx * 0.1), duration: 0.8 }}
-                                className="text-gray-400 text-xs sm:text-sm font-bold uppercase tracking-[0.2em] border-b border-transparent hover:border-luxury-gold/30 hover:text-white transition-all cursor-default pb-1"
+                                className="text-gray-400 text-sm md:text-xs font-bold uppercase tracking-[0.2em] border-b border-transparent hover:border-luxury-gold/30 hover:text-white transition-all cursor-default pb-1"
                             >
                                 {cert}
                             </motion.div>
