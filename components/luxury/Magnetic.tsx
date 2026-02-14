@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
+import { usePerformance } from '../../context/PerformanceContext';
 
 interface MagneticProps {
     children: React.ReactElement;
@@ -7,11 +8,12 @@ interface MagneticProps {
 }
 
 const Magnetic: React.FC<MagneticProps> = ({ children, strength = 0.5 }) => {
+    const { isLowPowerMode } = usePerformance();
     const ref = useRef<HTMLDivElement>(null);
     const [position, setPosition] = useState({ x: 0, y: 0 });
 
     const handleMouseMove = (e: React.MouseEvent) => {
-        if (!ref.current) return;
+        if (!ref.current || isLowPowerMode) return;
         const { clientX, clientY } = e;
         const { left, top, width, height } = ref.current.getBoundingClientRect();
         const x = (clientX - (left + width / 2)) * strength;

@@ -35,6 +35,7 @@ import { COMPANY_NAME } from './constants';
 import { useCompanyData } from './hooks/useCompanyData';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
+import { PerformanceProvider } from './context/PerformanceContext';
 import { db } from './lib/firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
 
@@ -221,12 +222,14 @@ const AppContent: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <ThemeProvider>
-      <Router>
-        <ScrollToTop />
-        <AppContent />
-      </Router>
-    </ThemeProvider>
+    <PerformanceProvider>
+      <ThemeProvider>
+        <Router>
+          <ScrollToTop />
+          <AppContent />
+        </Router>
+      </ThemeProvider>
+    </PerformanceProvider>
   );
 };
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Button from '../Button';
 import { useSiteContent } from '../../hooks/useSiteContent';
+import { usePerformance } from '../../context/PerformanceContext';
 
 interface CinematicHeroProps {
     backgroundImage?: string;
@@ -34,13 +35,16 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
     });
 
 
+    const { isLowPowerMode } = usePerformance();
     const { scrollY } = useScroll();
-    const bgY = useTransform(scrollY, [0, 500], [0, 200]);
-    const textY = useTransform(scrollY, [0, 500], [0, -100]);
+
+    // Disable transforms in low power mode
+    const bgY = useTransform(scrollY, [0, 500], isLowPowerMode ? [0, 0] : [0, 200]);
+    const textY = useTransform(scrollY, [0, 500], isLowPowerMode ? [0, 0] : [0, -100]);
     const opacity = useTransform(scrollY, [0, 500], [1, 0]);
 
     return (
-        <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-luxury-black">
+        <section className={`relative min-h-[100svh] flex items-center justify-center overflow-hidden ${isLowPowerMode ? 'bg-black' : 'bg-luxury-black'}`}>
             {/* Background Container with Parallax & Slow Zoom */}
             <motion.div
                 style={{ y: bgY }}
@@ -78,7 +82,7 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
 
             {/* Cinematic Gradient Overlay */}
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.3)_0%,rgba(0,0,0,0.6)_100%)] mix-blend-multiply" />
-            <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]" />
+            {!isLowPowerMode && <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]" />}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.5)_100%)]" />
 
             {/* Content */}

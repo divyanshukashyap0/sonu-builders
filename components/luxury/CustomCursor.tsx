@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { motion, useSpring, useMotionValue } from 'framer-motion';
+import { usePerformance } from '../../context/PerformanceContext';
 
 const CustomCursor: React.FC = () => {
+    const { isLowPowerMode } = usePerformance();
     const [isHovered, setIsHovered] = useState(false);
+
+    if (isLowPowerMode) return null;
     const cursorX = useMotionValue(-100);
     const cursorY = useMotionValue(-100);
 

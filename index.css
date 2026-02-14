@@ -185,6 +185,12 @@ img[loading="lazy"] {
   transition: backdrop-filter 0.3s ease, background-color 0.3s ease;
 }
 
+.low-power-mode .glass {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(255, 255, 255, 0.95);
+}
+
 .glass-dark {
   backdrop-filter: blur(calc(var(--glass-blur) * 1.5));
   -webkit-backdrop-filter: blur(calc(var(--glass-blur) * 1.5));
@@ -193,12 +199,24 @@ img[loading="lazy"] {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
+.low-power-mode .glass-dark {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(15, 15, 15, 0.98);
+}
+
 /* Premium Panel - High visibility, slight transparency */
 .glass-panel {
   backdrop-filter: blur(calc(var(--glass-blur) * 2));
   -webkit-backdrop-filter: blur(calc(var(--glass-blur) * 2));
   background: rgba(20, 20, 20, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.low-power-mode .glass-panel {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(20, 20, 20, 1);
 }
 
 /* Premium shadows */
@@ -305,6 +323,15 @@ main {
 
 .animate-slowZoom {
   animation: slowZoom 30s linear infinite alternate;
+}
+
+.low-power-mode .animate-slowZoom {
+  animation: none !important;
+}
+
+.low-power-mode .shadow-glow-gold,
+.low-power-mode .shadow-glow-green {
+  box-shadow: none !important;
 }
 
 @keyframes countUp {
