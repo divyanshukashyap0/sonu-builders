@@ -34,7 +34,7 @@ export const seedDatabase = async () => {
         // 4. Seed Settings (Images) - Default values
         const imagesRef = doc(db, 'settings', 'images');
         batch.set(imagesRef, {
-            homeHero: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+            homeHero: 'https://res.cloudinary.com/dpba1gvra/image/upload/v1771057873/22824733_atny8l.jpg',
             aboutBanner: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
         });
 
