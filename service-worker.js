@@ -83,13 +83,14 @@ self.addEventListener('fetch', (event) => {
       const cached = await cache.match(request);
       if (cached) return cached;
       try {
-        const networkResponse = await fetch(request, { mode: 'cors' });
-        if (networkResponse && networkResponse.status === 200) {
-          cache.put(request, networkResponse.clone());
-        }
+        const networkResponse = await fetch(request.url, { mode: 'cors', credentials: 'omit' });
+        if (!networkResponse.ok) throw new Error('Network response was not ok');
+        const cache = await caches.open(CACHE_NAME);
+        cache.put(request, networkResponse.clone());
         return networkResponse;
-      } catch {
-        return new Response(null, { status: 504 });
+      } catch (error) {
+        console.warn('Fetch failed for:', request.url, error);
+        return new Response('', { status: 404, statusText: 'Not Found' });
       }
     })());
     return;

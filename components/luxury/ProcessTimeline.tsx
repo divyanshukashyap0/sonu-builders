@@ -64,13 +64,13 @@ export const ProcessTimeline: React.FC = () => {
     }, []);
 
     return (
-        <section className="bg-white py-20">
+        <section className="bg-transparent py-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <p className="text-luxury-gold font-semibold uppercase tracking-wider mb-2 text-sm">
                         How We Work
                     </p>
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-luxury-charcoal">
+                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-white">
                         Our Seamless Process
                     </h2>
                 </div>
@@ -79,7 +79,7 @@ export const ProcessTimeline: React.FC = () => {
                     {/* Progress Line */}
                     <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-luxury-gold/10 -translate-x-1/2">
                         <div
-                            className="absolute top-0 left-0 w-full bg-luxury-gold transition-all duration-500 shadow-[0_0_10px_rgba(212,175,55,0.3)]"
+                            className="absolute top-0 left-0 w-full bg-luxury-gold transition-all duration-500 shadow-[0_0_10px_rgba(212,175,55,0.5)]"
                             style={{ height: `${(activeStep / (steps.length - 1)) * 100}%` }}
                         />
                     </div>
@@ -96,10 +96,10 @@ export const ProcessTimeline: React.FC = () => {
                                 {/* Content */}
                                 <div className="flex-1 text-center lg:text-left">
                                     <div className={`${index % 2 === 0 ? 'lg:text-right' : ''}`}>
-                                        <h3 className="text-2xl font-serif font-bold text-luxury-charcoal mb-3">
+                                        <h3 className="text-2xl font-serif font-bold text-white mb-3">
                                             {step.title}
                                         </h3>
-                                        <p className="text-gray-600 leading-relaxed max-w-md mx-auto lg:mx-0">
+                                        <p className="text-gray-400 leading-relaxed max-w-md mx-auto lg:mx-0 font-medium">
                                             {step.description}
                                         </p>
                                     </div>
@@ -108,9 +108,9 @@ export const ProcessTimeline: React.FC = () => {
                                 {/* Number Circle */}
                                 <div className="relative z-10 flex-shrink-0">
                                     <div
-                                        className={`w-20 h-20 rounded-full flex items-center justify-center font-serif font-bold text-2xl transition-all duration-500 ${activeStep >= index
+                                        className={`w-20 h-20 rounded-full flex items-center justify-center font-serif font-bold text-2xl transition-all duration-500 border border-white/5 ${activeStep >= index
                                             ? 'bg-luxury-gold text-white scale-110 shadow-luxury'
-                                            : 'bg-gray-100 text-gray-400'
+                                            : 'bg-neutral-900 text-gray-600'
                                             }`}
                                     >
                                         {activeStep > index ? (

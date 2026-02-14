@@ -1,46 +1,54 @@
-:root {
-  /* Luxury Color Palette */
-  --luxury-white: #FCFBFA;
-  --warm-beige: #F8F5F2;
-  --charcoal: #1A1A1A;
-  --gold-accent: #D4AF37;
-  --bronze: #8E6D45;
-  --obsidian: #0A0A0A;
-  --champagne: #E5D1B8;
-  --premium-stone: #F5F2EF;
-  --ivory-pearl: #FDFBFA;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-  /* Legacy colors for compatibility */
-  --brand-dark: #1C1917;
-  --brand-blue: #003368;
-  --brand-gold: #D4AF37;
-  --brand-light: #FAFAF9;
-  --brand-green: #047857;
+:root {
+  /* Luxury Color Palette - 2024 Refresh */
+  --luxury-gold: #D4AF37;
+  /* Primary Gold */
+  --luxury-gold-light: #F4DFB0;
+  --primary-green: #1ec655;
+  /* Primary Green */
+  --primary-green-dark: #17a348;
+  /* Hover Green */
+  --luxury-black: #0a0a0a;
+  /* Premium Black */
+  --luxury-charcoal: #1a1a1a;
+  /* Slightly warmer black for text */
+  --luxury-white: #F9F8F6;
+  /* Softened White */
+  --warm-gray: #e0e0e0;
+  /* Premium Soft Gray */
+  --ivory-pearl: #F2F0E9;
+  /* Warm Beige/Off-White for main background */
+  --premium-stone: #E6E4DC;
+  /* Secondary background */
+
+  /* Legacy/Compatibility mapping */
+  --gold-accent: var(--luxury-gold);
+  --brand-green: var(--primary-green);
+  --charcoal: var(--luxury-charcoal);
+  --obsidian: var(--luxury-black);
 
   /* Gradients */
-  --hero-overlay: linear-gradient(135deg, rgba(253, 251, 250, 0.6) 0%, rgba(253, 251, 250, 0.2) 100%);
-  --cta-gradient: linear-gradient(135deg, var(--gold-accent) 0%, var(--bronze) 100%);
+  --hero-overlay: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.7) 100%);
+  --cta-gradient: linear-gradient(135deg, var(--luxury-gold) 0%, #8E6D45 100%);
+  --glass-gradient: linear-gradient(180deg, rgba(15, 15, 15, 0.95) 0%, rgba(10, 10, 10, 0.9) 100%);
 
-  /* Shadows */
-  --shadow-soft: 0 20px 40px rgba(0, 0, 0, 0.04);
-  --shadow-hover: 0 40px 80px rgba(0, 0, 0, 0.08);
-  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
-  --shadow-premium: 0 30px 60px -12px rgba(0, 0, 0, 0.25);
+  /* Shadows - Elevated */
+  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 16px 32px rgba(0, 0, 0, 0.15);
+  --shadow-glow-green: 0 0 20px rgba(30, 198, 85, 0.3);
+  --shadow-glow-gold: 0 0 20px rgba(212, 175, 55, 0.3);
+
+  /* Typography */
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Montserrat', sans-serif;
 
   /* Spacing */
-  --section-spacing: 6rem;
-  --section-spacing-mobile: 4rem;
-  --card-padding: 3rem;
-
-  /* Glassmorphism Dynamic Variables (with fallbacks) */
-  --glass-blur: 8px;
-  --glass-opacity: 0.03;
-  --glass-border-opacity: 0.08;
-
-  /* Typography Dynamic Variables */
-  --font-heading: 'Playfair Display', serif;
-  --font-body: 'Inter', sans-serif;
-
+  --section-spacing: 120px;
+  /* Generous breathing room */
+  --section-spacing-mobile: 60px;
 
   /* Safe areas */
   --safe-top: env(safe-area-inset-top);
@@ -59,8 +67,10 @@ html {
 body {
   min-height: 100svh;
   padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
-  background-color: var(--ivory-pearl);
-  color: var(--charcoal);
+  background-color: var(--luxury-black);
+  /* Force Dark Theme */
+  color: var(--luxury-white);
+  /* Force White Text */
   font-family: var(--font-body);
   font-size: 1.125rem;
   line-height: 1.8;
@@ -69,6 +79,26 @@ body {
   position: relative;
   font-variant-numeric: tabular-nums;
   /* Stable widths for counters */
+}
+
+.dark body {
+  color: var(--luxury-white);
+  background-color: var(--obsidian);
+}
+
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6 {
+  color: var(--luxury-white);
+}
+
+.dark p,
+.dark span,
+.dark div {
+  color: inherit;
 }
 
 /* Noise texture removed for 100% clear background */
@@ -258,6 +288,7 @@ main {
 }
 
 /* Cinematic scroll animations */
+/* Cinematic scroll animations */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -272,6 +303,32 @@ main {
 
 .animate-fadeInUp {
   animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slowZoom {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.1);
+  }
+}
+
+.animate-slowZoom {
+  animation: slowZoom 30s linear infinite alternate;
+}
+
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Premium button styles */
@@ -320,7 +377,8 @@ section {
 
 /* Luxury card styles */
 .luxury-card {
-  background: white;
+  background: rgba(20, 20, 20, 0.8);
+  /* Dark semi-transparent background */
   border-radius: 0.5rem;
   padding: var(--card-padding);
   box-shadow: var(--shadow-soft);
@@ -399,3 +457,119 @@ a {
 /* Fonts are loaded via Google Fonts CDN in index.html */
 /* font-family: 'Playfair Display'; */
 /* font-family: 'Inter'; */
+
+/* ===============================================
+   FIX ALL INVISIBLE TEXT ISSUES
+   =============================================== */
+
+/* 1. HERO SECTION FIXES */
+.hero-heading {
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+.hero-subtitle,
+.hero-description {
+  color: #FFFFFF !important;
+  /* Fix: was #d4c5a0 */
+  font-weight: 300;
+  font-size: 1.1rem;
+}
+
+/* Remove invisible background text */
+.background-large-text,
+[class*="how-you-live"],
+[class*="background-text"] {
+  display: none !important;
+}
+
+/* 2. NAVIGATION FIXES */
+nav a {
+  color: #FFFFFF !important;
+  /* Fix: was #999999 */
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+nav a:hover,
+nav a.active {
+  color: #00D4AA;
+  border-bottom: 2px solid #00D4AA;
+}
+
+/* 3. STATISTICS LABELS FIXES */
+.stats-label,
+[class*="stat-label"],
+[class*="counter-label"] {
+  color: #2a2a26 !important;
+  /* Fix: was #A9A9A9 */
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.stats-number {
+  color: #FFFFFF;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+/* 4. CERTIFICATION LABELS FIXES */
+.certification-label,
+.cert-text,
+[class*="cert"],
+[class*="badge"] {
+  color: #333333 !important;
+  /* Fix: was #BFBFBF */
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+/* 5. BADGE/PILL ELEMENTS - KEEP GREEN (ALREADY GOOD) */
+.badge,
+.pill {
+  color: #00D4AA;
+  border: 1px solid #00D4AA;
+}
+
+/* 6. FORM LABELS */
+.form-label,
+label {
+  color: #FFFFFF;
+  font-weight: 500;
+}
+
+/* 7. BUTTON TEXT */
+.btn,
+button {
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #00D4AA;
+  color: #FFFFFF;
+}
+
+.btn-primary:hover {
+  background-color: #00B894;
+  box-shadow: 0 4px 12px rgba(0, 212, 170, 0.4);
+}
+
+/* 8. SECONDARY TEXT IMPROVEMENTS */
+.subtitle,
+.description,
+p {
+  color: #FFFFFF;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+/* 9. IMPORTANT: ENSURE TEXT SHADOW ON DARK BACKGROUNDS */
+.hero-content,
+.hero-section,
+[class*="hero"] {
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}

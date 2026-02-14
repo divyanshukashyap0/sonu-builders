@@ -26,10 +26,11 @@ const Button: React.FC<ButtonProps> = ({
   const baseStyles = "inline-flex items-center justify-center px-10 py-5 text-sm font-bold uppercase tracking-[0.2em] transition-all duration-500 rounded-sm focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed";
 
   const variants = {
-    primary: "bg-luxury-gold text-white hover:bg-luxury-charcoal shadow-luxury hover:shadow-luxury-hover",
-    secondary: "bg-luxury-charcoal text-white hover:bg-luxury-gold shadow-luxury",
-    outline: "border border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-white",
-    white: "bg-white dark:bg-luxury-obsidian text-luxury-charcoal dark:text-white border border-luxury-gold/20 dark:border-luxury-gold/50 hover:border-luxury-gold shadow-luxury hover:shadow-luxury-hover"
+    primary: "bg-gradient-to-r from-luxury-gold to-[#8E6D45] text-white shadow-lg hover:shadow-glow-gold hover:scale-105 active:scale-95 border border-transparent",
+    secondary: "bg-transparent border-2 border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-white shadow-none hover:shadow-glow-gold hover:scale-105 active:scale-95",
+    white: "bg-transparent border-2 border-white text-white hover:bg-white/10 hover:border-luxury-gold hover:text-white shadow-none hover:shadow-glow-green hover:scale-105 active:scale-95",
+    outline: "border-2 border-luxury-charcoal text-luxury-charcoal dark:border-white dark:text-white hover:bg-luxury-charcoal hover:text-white dark:hover:bg-white dark:hover:text-luxury-charcoal hover:scale-105 active:scale-95",
+    ghost: "bg-transparent text-luxury-charcoal dark:text-white hover:bg-black/5 dark:hover:bg-white/10 hover:scale-105 active:scale-95"
   };
 
   const widthClass = fullWidth ? 'w-full' : '';

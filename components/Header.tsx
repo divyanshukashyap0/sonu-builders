@@ -16,31 +16,32 @@ const Header: React.FC = () => {
   const { name, phone } = useCompanyData();
   const { theme, toggleTheme } = useTheme();
 
-  // Use Intersection Observer for scroll performance
+  // Scroll effect for hide/show and background
   useEffect(() => {
-    const sentinel = document.createElement('div');
-    sentinel.style.position = 'absolute';
-    sentinel.style.top = '100px'; // Trigger point
-    sentinel.style.left = '0';
-    sentinel.style.height = '1px';
-    sentinel.style.width = '1px';
-    sentinel.style.pointerEvents = 'none';
-    sentinel.style.visibility = 'hidden';
-    document.body.appendChild(sentinel);
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setScrolled(!entry.isIntersecting);
-      },
-      { root: null, threshold: 0 }
-    );
+      // Determine if scrolled (for background)
+      if (currentScrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
 
-    observer.observe(sentinel);
+      // Determine hide/show (sticky behavior)
+      if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+        // Scrolling down & past top
+        setHidden(true);
+      } else {
+        // Scrolling up or at top
+        setHidden(false);
+      }
 
-    return () => {
-      observer.disconnect();
-      if (sentinel.parentNode) sentinel.parentNode.removeChild(sentinel);
+      lastScrollY.current = currentScrollY;
     };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
@@ -52,8 +53,8 @@ const Header: React.FC = () => {
     <header
       className={`fixed top-0 left-0 w-full z-[60] transition-all duration-500 ease-in-out h-16 md:h-20 ${hidden ? '-translate-y-full' : 'translate-y-0'
         } ${scrolled
-          ? 'bg-white/90 dark:bg-stone-900/80 shadow-luxury backdrop-blur-md border-b border-white/5'
-          : 'bg-gradient-to-b from-black/50 to-transparent backdrop-blur-0 border-b border-transparent'
+          ? 'bg-luxury-black/90 backdrop-blur-md border-b border-white/5 shadow-glass'
+          : 'bg-gradient-to-b from-black/80 to-transparent backdrop-blur-[2px] border-b border-transparent'
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -77,7 +78,7 @@ const Header: React.FC = () => {
                 to={link.path}
                 className={`text-[11px] uppercase tracking-[0.18em] font-bold transition-all duration-300 ${location.pathname === link.path
                   ? 'text-brand-gold border-b-2 border-brand-gold pb-1'
-                  : 'text-stone-300 hover:text-white transition-colors duration-300'
+                  : 'text-white hover:text-brand-gold transition-colors duration-300'
                   }`}
               >
                 {link.label}
@@ -115,23 +116,29 @@ const Header: React.FC = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden absolute top-0 left-0 w-full bg-white dark:bg-brand-dark/95 backdrop-blur-md h-screen transition-all duration-500 ease-in-out ${isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+        className={`md:hidden fixed inset-0 z-[100] bg-white dark:bg-brand-dark/95 backdrop-blur-md transition-all duration-500 ease-in-out ${isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0 pointer-events-none'
           }`}
+        style={{ height: '100dvh' }}
       >
-        <div className="flex flex-col h-full p-8 space-y-8">
+        <div className="flex flex-col h-full p-8 space-y-8 overflow-y-auto">
           <div className="flex justify-between items-center">
-            <img src={logo} alt={name} className="h-10 w-auto" />
-            <button onClick={() => setIsOpen(false)} className="text-white p-2 border border-brand-gold/20 rounded-full">
+            <Link to="/" onClick={() => setIsOpen(false)}>
+              <img src={logo} alt={name} className="h-10 w-auto" />
+            </Link>
+            <button onClick={() => setIsOpen(false)} className="text-luxury-charcoal dark:text-white p-2 border border-brand-gold/20 rounded-full">
               <X className="h-6 w-6" />
             </button>
           </div>
 
-          <div className="flex flex-col space-y-6">
+          <div className="flex flex-col space-y-6 pt-10">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-2xl font-serif font-bold ${location.pathname === link.path ? 'text-brand-gold underline underline-offset-8' : 'text-stone-300 hover:text-luxury-charcoal dark:hover:text-white'
+                onClick={() => setIsOpen(false)}
+                className={`text-2xl font-serif font-bold ${location.pathname === link.path
+                  ? 'text-brand-gold underline underline-offset-8'
+                  : 'text-luxury-charcoal dark:text-stone-300 hover:text-brand-gold dark:hover:text-white transition-colors'
                   }`}
               >
                 {link.label}
@@ -139,7 +146,7 @@ const Header: React.FC = () => {
             ))}
             <a
               href={`tel:${phone.replace(/\s/g, '')}`}
-              className="text-xl font-bold text-brand-gold border-t border-brand-gold/10 pt-6"
+              className="text-xl font-bold text-brand-gold border-t border-brand-gold/10 pt-6 mt-4"
             >
               {phone}
             </a>

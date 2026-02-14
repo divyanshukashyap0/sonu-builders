@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Phone, Mail, MapPin, Send } from 'lucide-react';
 import Section from '../components/Section';
 import Button from '../components/Button';
+import QuoteCalculator from '../components/interactive/QuoteCalculator';
 import { useCompanyData } from '../hooks/useCompanyData';
 import { usePageHeaders } from '../hooks/usePageHeaders';
 import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../lib/firebase';
+import SEO from '../components/SEO';
 
 const Contact: React.FC = () => {
   const { contactInfo } = useCompanyData();
@@ -66,12 +68,19 @@ const Contact: React.FC = () => {
       captchaInput.value = 'false';
       form.appendChild(captchaInput);
       document.body.appendChild(form);
-      setStatus('success');
-      form.submit();
+      const isDev = process.env.NODE_ENV === 'development';
+
+      if (!isDev) {
+        form.submit();
+      }
+
       document.body.removeChild(form);
+      setStatus('success');
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
-      setTimeout(() => setStatus('idle'), 3000);
+      // Remove the timeout so the success message stays visible
+      // setTimeout(() => setStatus('idle'), 3000);
     } catch (error) {
+      console.error(error);
       setStatus('idle');
       alert('Failed to send message. Please try again.');
     }
@@ -90,6 +99,11 @@ const Contact: React.FC = () => {
 
   return (
     <div>
+      <SEO
+        title="Contact Us"
+        description="Get in touch with Sonu Enterprises for a free consultation. Visit our office or contact us for your interior design needs."
+        canonical="https://sonuenterprises.com/contact"
+      />
       <div className="bg-luxury-white dark:bg-luxury-charcoal pt-32 pb-20 text-center relative overflow-hidden">
         {/* <div className="absolute inset-0 bg-gradient-to-b from-luxury-gold/5 via-luxury-gold/2 to-transparent z-0" /> */}
         <div className="relative z-10 px-4">
@@ -103,11 +117,15 @@ const Contact: React.FC = () => {
       </div>
 
       <Section>
+        <div className="max-w-4xl mx-auto mb-20">
+          <QuoteCalculator />
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
           {/* Contact Info */}
           <div>
-            <h2 className="text-2xl font-serif font-bold text-luxury-charcoal mb-6">Get In Touch</h2>
-            <p className="text-luxury-charcoal/70 mb-8 leading-relaxed">
+            <h2 className="text-2xl font-serif font-bold text-luxury-charcoal dark:text-white mb-6">Get In Touch</h2>
+            <p className="text-luxury-charcoal/70 dark:text-white/70 mb-8 leading-relaxed">
               We are here to answer any questions you may have about our design experiences. Reach out to us and we'll respond as soon as we can.
             </p>
 
@@ -117,8 +135,8 @@ const Contact: React.FC = () => {
                   <Phone className="w-6 h-6 text-luxury-gold group-hover:text-white transition-colors duration-300" />
                 </div>
                 <div className="ml-6">
-                  <h4 className="text-lg font-bold text-luxury-charcoal font-serif">Phone</h4>
-                  <p className="text-luxury-charcoal/70 mt-1">{contactInfo.phone}</p>
+                  <h4 className="text-lg font-bold text-luxury-charcoal dark:text-white font-serif">Phone</h4>
+                  <p className="text-luxury-charcoal/70 dark:text-white/70 mt-1">{contactInfo.phone}</p>
                   <p className="text-[10px] uppercase tracking-widest font-bold text-luxury-gold mt-1">Mon-Sat, 9am - 6pm</p>
                 </div>
               </div>
@@ -128,8 +146,8 @@ const Contact: React.FC = () => {
                   <Mail className="w-6 h-6 text-luxury-gold group-hover:text-white transition-colors duration-300" />
                 </div>
                 <div className="ml-6">
-                  <h4 className="text-lg font-bold text-luxury-charcoal font-serif">Email</h4>
-                  <p className="text-luxury-charcoal/70 mt-1">{contactInfo.email}</p>
+                  <h4 className="text-lg font-bold text-luxury-charcoal dark:text-white font-serif">Email</h4>
+                  <p className="text-luxury-charcoal/70 dark:text-white/70 mt-1">{contactInfo.email}</p>
                 </div>
               </div>
 
@@ -138,8 +156,8 @@ const Contact: React.FC = () => {
                   <MapPin className="w-6 h-6 text-luxury-gold group-hover:text-white transition-all duration-300" />
                 </div>
                 <div className="ml-6">
-                  <h4 className="text-lg font-bold text-luxury-charcoal font-serif">Office</h4>
-                  <p className="text-luxury-charcoal/70 mt-1 max-w-xs font-semibold">{contactInfo.address}</p>
+                  <h4 className="text-lg font-bold text-luxury-charcoal dark:text-white font-serif">Office</h4>
+                  <p className="text-luxury-charcoal/70 dark:text-white/70 mt-1 max-w-xs font-semibold">{contactInfo.address}</p>
                   <div className="mt-2">
                     <a
                       href="https://share.google/LZ79ah8csbmZUG2B0"
@@ -171,7 +189,7 @@ const Contact: React.FC = () => {
           {/* Contact Form */}
           <div className="bg-white dark:bg-luxury-charcoal rounded-xl shadow-luxury-hover p-8 border border-luxury-gold/5 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-luxury-gold/5 rounded-full -mr-16 -mt-16 blur-3xl" />
-            <h2 className="text-2xl font-serif font-bold text-luxury-charcoal mb-6 relative z-10">Send Message</h2>
+            <h2 className="text-2xl font-serif font-bold text-luxury-charcoal dark:text-white mb-6 relative z-10">Send Message</h2>
 
             {status === 'success' ? (
               <div className="bg-green-50 border border-green-200 text-green-700 p-6 rounded-lg text-center">

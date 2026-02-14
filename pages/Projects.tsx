@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import Section from '../components/Section';
+import PageHero from '../components/luxury/PageHero';
+import ProjectFilter from '../components/luxury/ProjectFilter';
 import ImageGalleryModal from '../components/ImageGalleryModal';
 import { ProjectCategory, Project } from '../types';
 import { useProjects } from '../hooks/useProjects';
 import { usePageHeaders } from '../hooks/usePageHeaders';
+import SEO from '../components/SEO';
 import { Maximize2, Camera } from 'lucide-react';
 
 const Projects: React.FC = () => {
@@ -49,34 +52,28 @@ const Projects: React.FC = () => {
 
   return (
     <div>
-      <div className="bg-luxury-white dark:bg-luxury-charcoal pt-32 pb-20 text-center relative overflow-hidden">
-        {/* <div className="absolute inset-0 bg-gradient-to-b from-luxury-gold/5 via-luxury-gold/2 to-transparent z-0" /> */}
-        <div className="relative z-10 px-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-charcoal dark:text-white mb-4 animate-fadeInUp">
-            {headers.projects.title}
-          </h1>
-          <p className="text-luxury-charcoal/70 dark:text-white/70 text-lg max-w-2xl mx-auto animate-fadeInUp font-medium" style={{ animationDelay: '0.2s' }}>
-            {headers.projects.subtitle}
-          </p>
-        </div>
-      </div>
+      <SEO
+        title="Our Projects"
+        description="Browse our portfolio of luxury interiors and completed construction projects. See why 150+ families trust us."
+        canonical="https://sonuenterprises.com/projects"
+      />
+      <PageHero
+        title={headers.projects.title}
+        subtitle={headers.projects.subtitle}
+        backgroundImage="https://images.unsplash.com/photo-1626296766624-9b244db8147d?w=1600&q=80"
+      />
 
       <Section>
         {/* Filter */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setFilter(category)}
-              className={`px-6 py-2 rounded-full text-xs uppercase tracking-widest font-bold transition-all duration-300 ${filter === category
-                ? 'bg-luxury-gold text-white shadow-luxury transform scale-105'
-                : 'bg-white dark:bg-luxury-charcoal text-luxury-charcoal dark:text-white hover:bg-luxury-gold hover:text-white border border-luxury-gold/20'
-                }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
+        <ProjectFilter
+          categories={categories}
+          activeCategory={filter}
+          onSelectCategory={setFilter}
+          counts={categories.reduce((acc, cat) => {
+            acc[cat] = cat === 'All' ? projects.length : projects.filter(p => p.category === cat).length;
+            return acc;
+          }, {} as Record<string, number>)}
+        />
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

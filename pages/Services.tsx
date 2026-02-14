@@ -1,8 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Section from '../components/Section';
 import Button from '../components/Button';
+import PageHero from '../components/luxury/PageHero';
 import { useServices } from '../hooks/useServices';
 import { usePageHeaders } from '../hooks/usePageHeaders';
+import SEO from '../components/SEO';
 import * as Icons from 'lucide-react';
 
 const Services: React.FC = () => {
@@ -27,22 +30,21 @@ const Services: React.FC = () => {
 
   return (
     <div>
-      <div className="bg-luxury-white dark:bg-luxury-charcoal pt-32 pb-20 text-center relative overflow-hidden">
-        {/* <div className="absolute inset-0 bg-gradient-to-b from-luxury-gold/5 via-luxury-gold/2 to-transparent z-0" /> */}
-        <div className="relative z-10 px-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-charcoal dark:text-white mb-4 animate-fadeInUp">
-            {headers.services.title}
-          </h1>
-          <p className="text-luxury-charcoal/70 dark:text-white/70 text-lg max-w-2xl mx-auto animate-fadeInUp font-medium" style={{ animationDelay: '0.2s' }}>
-            {headers.services.subtitle}
-          </p>
-        </div>
-      </div>
+      <SEO
+        title="Services"
+        description="Explore our premium services: Interior Design, Modular Kitchens, Turnkey Construction, and more. Tailored solutions for luxury living."
+        canonical="https://sonuenterprises.com/services"
+      />
+      <PageHero
+        title={headers.services.title}
+        subtitle={headers.services.subtitle}
+        backgroundImage="https://images.unsplash.com/photo-1616137466211-f939a420be63?w=1600&q=80"
+      />
 
       <Section>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service) => (
-            <div key={service.id} className="bg-white dark:bg-luxury-charcoal border border-luxury-gold/10 hover:border-luxury-gold/40 rounded-xl overflow-hidden hover:shadow-luxury-hover transition-all duration-500 flex flex-col group">
+            <Link to={`/services/${service.id}`} key={service.id} className="bg-white dark:bg-luxury-charcoal border border-luxury-gold/10 hover:border-luxury-gold/40 rounded-xl overflow-hidden hover:shadow-luxury-hover transition-all duration-500 flex flex-col group block h-full">
               <div className="p-8 flex-1">
                 <div className="w-16 h-16 bg-luxury-gold/5 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-luxury-gold transition-colors duration-500">
                   {getIcon(service.icon as unknown as string)}
@@ -59,7 +61,7 @@ const Services: React.FC = () => {
                   <li className="flex items-center"><span className="w-1.5 h-1.5 bg-luxury-gold rounded-full mr-2"></span>On-time Completion</li>
                 </ul>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 

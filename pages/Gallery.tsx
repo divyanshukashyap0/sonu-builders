@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import Section from '../components/Section';
+import PageHero from '../components/luxury/PageHero';
 import { useGallery } from '../hooks/useGallery';
 import { usePageHeaders } from '../hooks/usePageHeaders';
 import ImageGalleryModal from '../components/ImageGalleryModal';
@@ -37,17 +38,11 @@ const Gallery: React.FC = () => {
 
   return (
     <div>
-      <div className="bg-stone-50 dark:bg-luxury-obsidian pt-32 pb-20 text-center relative overflow-hidden">
-        {/* <div className="absolute inset-0 bg-gradient-to-b from-luxury-gold/5 via-luxury-gold/2 to-transparent z-0" /> */}
-        <div className="relative z-10 px-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-charcoal dark:text-white mb-4 animate-fadeInUp">
-            {headers.gallery.title}
-          </h1>
-          <p className="text-luxury-charcoal/70 dark:text-white/70 text-lg max-w-2xl mx-auto animate-fadeInUp font-medium" style={{ animationDelay: '0.2s' }}>
-            {headers.gallery.subtitle}
-          </p>
-        </div>
-      </div>
+      <PageHero
+        title={headers.gallery.title}
+        subtitle={headers.gallery.subtitle}
+        backgroundImage="https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1600&q=80"
+      />
 
       <Section className="!bg-stone-50 dark:!bg-luxury-obsidian">
         <div className="flex flex-wrap justify-center gap-3 mb-10">

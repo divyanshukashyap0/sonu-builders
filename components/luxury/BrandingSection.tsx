@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useSiteContent } from '../../hooks/useSiteContent';
 
 interface BrandingSectionProps {
     title?: string;
@@ -11,15 +12,24 @@ interface BrandingSectionProps {
 }
 
 const BrandingSection: React.FC<BrandingSectionProps> = ({
-    title = "Defining Modern Luxury",
-    subtitle = "Our Vision",
-    description = "We believe that every space has a story to tell. Our mission is to translate your personality into a tangible, high-end reality through precision, trust, and timeless interior design.",
-    imageUrl = "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1200&q=80",
+    title: defaultTitle = "Defining Modern Luxury",
+    subtitle: defaultSubtitle = "Our Vision",
+    description: defaultDesc = "We believe that every space has a story to tell. Our mission is to translate your personality into a tangible, high-end reality through precision, trust, and timeless interior design.",
+    imageUrl: defaultImg = "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1200&q=80",
     buttonText = "Explore Our Philosophy",
     buttonLink = "/about"
 }) => {
+    // Dynamic Content Fetching
+    const { content } = useSiteContent('philosophy_section', {
+        title: defaultTitle,
+        subtitle: defaultSubtitle,
+        description: defaultDesc,
+        imageUrl: defaultImg,
+        yearsExperience: '15+',
+    });
+
     return (
-        <section className="relative py-24 bg-stone-50 overflow-hidden">
+        <section className="relative py-24 bg-transparent overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col lg:flex-row items-center gap-16">
                     {/* Text Content */}
@@ -32,15 +42,15 @@ const BrandingSection: React.FC<BrandingSectionProps> = ({
                     >
                         <div className="space-y-4">
                             <span className="text-luxury-gold font-semibold uppercase tracking-widest text-sm">
-                                {subtitle}
+                                {content.subtitle}
                             </span>
-                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-charcoal leading-tight">
-                                {title}
+                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white leading-tight">
+                                {content.title}
                             </h2>
                         </div>
 
-                        <p className="text-lg text-gray-600 leading-relaxed max-w-xl">
-                            {description}
+                        <p className="text-lg text-gray-300 leading-relaxed max-w-xl">
+                            {content.description}
                         </p>
 
                         <motion.div
@@ -49,7 +59,7 @@ const BrandingSection: React.FC<BrandingSectionProps> = ({
                         >
                             <a
                                 href={buttonLink}
-                                className="inline-block bg-luxury-gold text-white px-10 py-5 rounded-sm font-bold uppercase tracking-[0.2em] text-xs hover:bg-luxury-charcoal transition-all duration-500 shadow-luxury hover:shadow-luxury-hover"
+                                className="inline-block bg-luxury-gold text-white px-10 py-5 rounded-sm font-bold uppercase tracking-[0.2em] text-xs hover:bg-white hover:text-luxury-black transition-all duration-500 shadow-luxury hover:shadow-luxury-hover"
                             >
                                 {buttonText}
                             </a>
@@ -66,25 +76,25 @@ const BrandingSection: React.FC<BrandingSectionProps> = ({
                     >
                         <div className="relative z-10 rounded-lg overflow-hidden shadow-2xl">
                             <img
-                                src={imageUrl}
+                                src={content.imageUrl}
                                 alt="Luxury Interior Vision"
-                                className="w-full h-[500px] object-cover"
+                                className="w-full h-[500px] object-cover transition-all duration-700 hover:scale-105"
                             />
-                            <div className="absolute inset-0 bg-luxury-charcoal/10" />
+                            <div className="absolute inset-0 bg-black/20 pointer-events-none" />
                         </div>
 
                         {/* Decorative Elements */}
-                        <div className="absolute -top-6 -right-6 w-32 h-32 border-t-2 border-r-2 border-luxury-gold/30 z-0" />
-                        <div className="absolute -bottom-6 -left-6 w-32 h-32 border-b-2 border-l-2 border-luxury-gold/30 z-0" />
+                        <div className="absolute -top-6 -right-6 w-32 h-32 border-t-2 border-r-2 border-white/10 z-0" />
+                        <div className="absolute -bottom-6 -left-6 w-32 h-32 border-b-2 border-l-2 border-white/10 z-0" />
 
                         {/* Elegant Floating Badge */}
                         <motion.div
                             animate={{ y: [0, -10, 0] }}
                             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                            className="absolute -bottom-10 -right-10 bg-white p-8 shadow-2xl rounded-sm hidden md:block z-20"
+                            className="absolute -bottom-10 -right-10 bg-neutral-900 border border-white/10 p-8 shadow-2xl rounded-sm hidden md:block z-20"
                         >
-                            <p className="text-luxury-gold font-serif text-3xl font-bold">15+</p>
-                            <p className="text-luxury-charcoal text-xs uppercase tracking-tighter font-semibold">Years of Excellence</p>
+                            <p className="text-luxury-gold font-serif text-3xl font-bold">{content.yearsExperience}</p>
+                            <p className="text-white text-xs uppercase tracking-tighter font-semibold">Years of Excellence</p>
                         </motion.div>
                     </motion.div>
                 </div>

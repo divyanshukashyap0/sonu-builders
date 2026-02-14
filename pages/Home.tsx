@@ -13,7 +13,9 @@ import * as Icons from 'lucide-react';
 
 // Luxury Components
 import CinematicHero from '../components/luxury/CinematicHero';
+import TestimonialCarousel from '../components/luxury/TestimonialCarousel';
 import TrustMetrics from '../components/luxury/TrustMetrics';
+import SEO, { organizationSchema } from '../components/SEO';
 import FloatingWhatsApp from '../components/luxury/FloatingWhatsApp';
 import ProcessTimeline from '../components/luxury/ProcessTimeline';
 import WhyChooseUs from '../components/luxury/WhyChooseUs';
@@ -43,6 +45,12 @@ const Home: React.FC = () => {
 
   return (
     <>
+      <SEO
+        title="Home"
+        description="Sonu Enterprises & Building Developers - Where Luxury Meets Your Vision. Expert interior design and construction services in Mumbai & Thane."
+        canonical="https://sonuenterprises.com/"
+        schema={organizationSchema}
+      />
       {/* Cinematic Hero Section */}
       <CinematicHero
         backgroundImage={brandingData?.imageUrl || images.homeHero}
@@ -209,31 +217,8 @@ const Home: React.FC = () => {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
-          {testimonials.map((testimonial) => (
-            <div
-              key={testimonial.id}
-              className="bg-white dark:bg-luxury-obsidian p-8 rounded-sm shadow-glass border border-luxury-gold/10 dark:border-white/10 hover:border-luxury-gold/30 transition-all duration-500 hover:-translate-y-1"
-            >
-              <div className="flex mb-6 text-luxury-gold">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-current" />
-                ))}
-              </div>
-              <p className="text-luxury-charcoal/80 dark:text-white/80 mb-8 italic leading-relaxed font-medium">
-                "{testimonial.content}"
-              </p>
-              <div className="flex items-center">
-                <div className="w-10 h-10 bg-luxury-gold/5 rounded-full flex items-center justify-center mr-4 text-luxury-gold font-bold">
-                  {testimonial.name[0]}
-                </div>
-                <div>
-                  <p className="text-luxury-charcoal dark:text-white font-bold text-sm uppercase tracking-tighter">{testimonial.name}</p>
-                  <p className="text-luxury-gold text-[10px] font-bold uppercase tracking-widest">{testimonial.role}</p>
-                </div>
-              </div>
-            </div>
-          ))}
+        <div className="relative z-10">
+          <TestimonialCarousel />
         </div>
       </Section>
 

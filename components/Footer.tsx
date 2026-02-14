@@ -5,14 +5,16 @@ import { Facebook, Twitter, Instagram, Linkedin, ArrowRight } from 'lucide-react
 import { NAV_LINKS } from '../constants';
 import { useCompanyData } from '../hooks/useCompanyData';
 import { useServices } from '../hooks/useServices';
+import TrustBar from './luxury/TrustBar';
 
 const Footer: React.FC = () => {
   const { name, contactInfo, socialLinks, footerDescription } = useCompanyData();
   const { services } = useServices();
 
   return (
-    <footer className="bg-stone-50 text-luxury-charcoal/80 border-t border-luxury-gold/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
+    <footer className="bg-stone-50 dark:bg-luxury-obsidian text-luxury-charcoal dark:text-white/80 transition-colors duration-300 border-t border-luxury-gold/10">
+      <TrustBar />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 border-t border-luxury-gold/5">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
 
           {/* Company Info */}
@@ -24,10 +26,10 @@ const Footer: React.FC = () => {
               {footerDescription}
             </p>
             <div className="flex space-x-6">
-              <a href={socialLinks.facebook || '#'} className="text-luxury-gold hover:text-luxury-charcoal transition-colors" aria-label="Facebook"><Facebook className="w-5 h-5" /></a>
-              <a href={socialLinks.twitter || '#'} className="text-luxury-gold hover:text-luxury-charcoal transition-colors" aria-label="Twitter"><Twitter className="w-5 h-5" /></a>
-              <a href={socialLinks.instagram || '#'} className="text-luxury-gold hover:text-luxury-charcoal transition-colors" aria-label="Instagram"><Instagram className="w-5 h-5" /></a>
-              <a href={socialLinks.linkedin || '#'} className="text-luxury-gold hover:text-luxury-charcoal transition-colors" aria-label="LinkedIn"><Linkedin className="w-5 h-5" /></a>
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-luxury-charcoal/60 hover:text-luxury-gold transition-colors duration-300" aria-label="Facebook"><Facebook className="w-5 h-5" /></a>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-luxury-charcoal/60 hover:text-luxury-gold transition-colors duration-300" aria-label="Twitter"><Twitter className="w-5 h-5" /></a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-luxury-charcoal/60 hover:text-luxury-gold transition-colors duration-300" aria-label="Instagram"><Instagram className="w-5 h-5" /></a>
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-luxury-charcoal/60 hover:text-luxury-gold transition-colors duration-300" aria-label="LinkedIn"><Linkedin className="w-5 h-5" /></a>
             </div>
           </div>
 
@@ -42,11 +44,12 @@ const Footer: React.FC = () => {
                   </Link>
                 </li>
               ))}
-              <li>
+              {/* Admin Login hidden for security */}
+              {/* <li>
                 <Link to="/admin-portal" className="text-xs hover:text-luxury-gold transition-all inline-block text-luxury-charcoal/40 font-bold uppercase tracking-tighter">
                   Admin Login
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
 

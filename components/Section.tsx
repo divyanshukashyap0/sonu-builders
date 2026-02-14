@@ -28,7 +28,7 @@ const Section: React.FC<SectionProps> = ({ children, className = '', id, colored
   }, [reveal]);
 
   return (
-    <section ref={ref} id={id} className={`py-16 md:py-24 ${bgClass} ${className} ${reveal ? 'reveal' : ''}`}>
+    <section ref={ref} id={id} className={`py-[var(--section-spacing-mobile)] md:py-[var(--section-spacing)] ${bgClass} ${className} ${reveal ? 'reveal' : ''}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {children}
       </div>

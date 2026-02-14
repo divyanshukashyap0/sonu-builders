@@ -13,21 +13,21 @@ export const FloatingWhatsApp: React.FC = () => {
     return (
         <>
             {/* Floating Button */}
-            <div className="fixed bottom-6 right-6 z-50">
+            <div className="hidden lg:block fixed bottom-32 right-6 z-50">
                 {isExpanded && (
-                    <div className="absolute bottom-20 right-0 w-80 max-w-[calc(100vw-3rem)] bg-white rounded-2xl shadow-luxury-hover p-6 mb-2 animate-fadeInUp">
+                    <div className="absolute bottom-20 right-0 w-80 max-w-[calc(100vw-3rem)] bg-neutral-900/95 backdrop-blur-md rounded-2xl shadow-luxury-hover p-6 mb-2 animate-fadeInUp border border-white/10">
                         <button
                             onClick={() => setIsExpanded(false)}
-                            className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
+                            className="absolute top-3 right-3 text-gray-400 hover:text-white"
                         >
                             <X className="w-5 h-5" />
                         </button>
 
                         <div className="mb-4">
-                            <h3 className="font-serif font-bold text-lg text-luxury-charcoal mb-2">
+                            <h3 className="font-serif font-bold text-lg text-white mb-2">
                                 Chat with us on WhatsApp
                             </h3>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-gray-300">
                                 Get instant answers to your interior design queries
                             </p>
                         </div>

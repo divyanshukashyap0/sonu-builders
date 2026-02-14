@@ -3,33 +3,46 @@ import { AnimatedCounter } from './AnimatedCounter';
 import { Award, Building2, Users, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+import { useSiteContent } from '../../hooks/useSiteContent';
+
 export const TrustMetrics: React.FC = () => {
+    const { content } = useSiteContent('trust_metrics', {
+        stat1: '15',
+        label1: 'Years Experience',
+        stat2: '150',
+        label2: 'Projects Completed',
+        stat3: '140',
+        label3: 'Happy Families',
+        stat4: '6',
+        label4: 'Cities Served'
+    });
+
     const metrics = [
         {
-            value: 15,
+            value: parseInt(content.stat1) || 15,
             suffix: '+',
-            label: 'Years of Excellence',
+            label: content.label1,
             icon: Award,
             color: 'text-luxury-gold'
         },
         {
-            value: 4500,
+            value: parseInt(content.stat2) || 150,
             suffix: '+',
-            label: 'Projects Completed',
+            label: content.label2,
             icon: Building2,
             color: 'text-luxury-gold'
         },
         {
-            value: 4500,
+            value: parseInt(content.stat3) || 140,
             suffix: '+',
-            label: 'Happy Families',
+            label: content.label3,
             icon: Users,
             color: 'text-luxury-gold'
         },
         {
-            value: 5,
+            value: parseInt(content.stat4) || 6,
             suffix: '',
-            label: 'Cities Served',
+            label: content.label4,
             icon: MapPin,
             color: 'text-luxury-gold'
         }
@@ -47,10 +60,10 @@ export const TrustMetrics: React.FC = () => {
     ];
 
     return (
-        <section className="bg-luxury-white py-24 sm:py-32 relative overflow-hidden">
-            {/* Background Parallax Text */}
+        <section className="bg-transparent py-24 sm:py-32 relative overflow-hidden">
+            {/* Background Parallax Text - Keeping it subtle */}
             <div className="absolute top-0 left-0 w-full h-full pointer-events-none select-none overflow-hidden opacity-[0.02]">
-                <span className="absolute top-20 left-1/2 -translate-x-1/2 text-[20rem] font-serif font-black tracking-tighter">
+                <span className="absolute top-20 left-1/2 -translate-x-1/2 text-[100px] sm:text-[120px] font-serif font-black tracking-tighter text-white whitespace-nowrap">
                     ESTABLISHED
                 </span>
             </div>
@@ -67,7 +80,7 @@ export const TrustMetrics: React.FC = () => {
                     <p className="text-luxury-gold font-bold uppercase tracking-[0.4em] text-[10px] mb-6">
                         The Standard of Luxury
                     </p>
-                    <h2 className="text-luxury-charcoal max-w-4xl mx-auto leading-tight italic">
+                    <h2 className="text-white max-w-4xl mx-auto leading-tight italic">
                         Transforming <span className="text-luxury-gold">Visionary Concepts</span> into Standing Realities.
                     </h2>
                 </motion.div>
@@ -89,12 +102,12 @@ export const TrustMetrics: React.FC = () => {
                                 onClick={() => isInteractive && setSelectedMetric(selectedMetric === 'cities' ? null : 'cities')}
                             >
                                 {/* Icon */}
-                                <div className={`inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-stone-100 mb-6 transition-all duration-500 border border-luxury-gold/5 ${isInteractive ? 'group-hover:scale-110 group-hover:bg-luxury-gold group-hover:border-luxury-gold' : 'group-hover:bg-luxury-gold/10'}`}>
+                                <div className={`inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/5 shadow-luxury mb-6 transition-all duration-500 border border-luxury-gold/10 ${isInteractive ? 'group-hover:scale-110 group-hover:bg-luxury-gold group-hover:border-luxury-gold' : 'group-hover:bg-luxury-gold/5 group-hover:border-luxury-gold/30'}`}>
                                     <Icon className={`w-8 h-8 sm:w-10 sm:h-10 transition-colors duration-500 ${isInteractive ? 'text-luxury-gold group-hover:text-white' : metric.color}`} />
                                 </div>
 
                                 {/* Counter */}
-                                <div className="text-4xl sm:text-5xl lg:text-7xl font-serif font-bold text-luxury-charcoal mb-4">
+                                <div className="text-4xl sm:text-5xl lg:text-7xl font-serif font-bold text-white mb-4">
                                     <AnimatedCounter
                                         end={metric.value}
                                         suffix={metric.suffix}
@@ -103,7 +116,7 @@ export const TrustMetrics: React.FC = () => {
                                 </div>
 
                                 {/* Label */}
-                                <p className="text-xs sm:text-sm text-luxury-charcoal/50 uppercase tracking-[0.2em] font-bold">
+                                <p className="text-xs sm:text-sm text-gray-400 uppercase tracking-[0.2em] font-bold">
                                     {metric.label} {isInteractive && <span className="block text-[10px] text-luxury-gold mt-1 opacity-0 group-hover:opacity-100 transition-opacity capitalize font-medium tracking-normal">(Click to view)</span>}
                                 </p>
 
@@ -113,13 +126,13 @@ export const TrustMetrics: React.FC = () => {
                                         initial={{ opacity: 0, y: 10, scale: 0.95 }}
                                         animate={{ opacity: 1, y: 0, scale: 1 }}
                                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                        className="absolute left-1/2 -translate-x-1/2 top-full mt-4 w-64 bg-white/90 backdrop-blur-xl border border-luxury-gold/20 shadow-2xl rounded-xl p-4 z-50 overflow-hidden"
+                                        className="absolute left-1/2 -translate-x-1/2 top-full mt-4 w-64 bg-neutral-900/90 backdrop-blur-xl border border-luxury-gold/20 shadow-2xl rounded-xl p-4 z-50 overflow-hidden"
                                     >
                                         <div className="absolute inset-0 bg-gradient-to-br from-luxury-gold/5 to-transparent pointer-events-none" />
                                         <h4 className="text-luxury-gold text-xs font-bold uppercase tracking-widest mb-3 border-b border-luxury-gold/10 pb-2">Our Reach</h4>
                                         <div className="flex flex-col gap-2">
                                             {cities.map((city, idx) => (
-                                                <div key={idx} className="text-sm font-medium text-luxury-charcoal/80 flex items-center justify-between group/city hover:bg-stone-50 p-1.5 rounded transition-colors">
+                                                <div key={idx} className="text-sm font-medium text-gray-300 flex items-center justify-between group/city hover:bg-white/5 p-1.5 rounded transition-colors">
                                                     {city}
                                                     <span className="w-1.5 h-1.5 rounded-full bg-luxury-gold/40 group-hover/city:bg-luxury-gold transition-colors" />
                                                 </div>
@@ -132,9 +145,6 @@ export const TrustMetrics: React.FC = () => {
                     })}
                 </div>
 
-                {/* Remove global click listener logic by using overlay if needed, or simple toggle as implemented is fine for now. 
-                    Ideally we add a click-away listener but for simplicity/speed standard toggle is okay. 
-                    Actually, let's add a fixed overlay to close it when clicking outside if detail is open. */}
                 {selectedMetric === 'cities' && (
                     <div className="fixed inset-0 z-40 cursor-default" onClick={() => setSelectedMetric(null)} aria-hidden="true" />
                 )}
@@ -170,7 +180,7 @@ export const TrustMetrics: React.FC = () => {
                         <p className="text-luxury-gold font-bold uppercase tracking-[0.4em] text-[10px] mb-4">
                             Trusted & Certified
                         </p>
-                        <h3 className="text-luxury-charcoal text-2xl sm:text-3xl font-serif font-bold">
+                        <h3 className="text-white text-2xl sm:text-3xl font-serif font-bold">
                             Recognized for Industry Excellence
                         </h3>
                     </div>
@@ -183,7 +193,7 @@ export const TrustMetrics: React.FC = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: 0.2 + (idx * 0.1), duration: 0.8 }}
-                                className="text-luxury-charcoal/40 text-xs sm:text-sm font-bold uppercase tracking-[0.2em] border-b border-transparent hover:border-luxury-gold/30 hover:text-luxury-charcoal transition-all cursor-default pb-1"
+                                className="text-gray-400 text-xs sm:text-sm font-bold uppercase tracking-[0.2em] border-b border-transparent hover:border-luxury-gold/30 hover:text-white transition-all cursor-default pb-1"
                             >
                                 {cert}
                             </motion.div>

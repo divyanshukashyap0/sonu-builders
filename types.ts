@@ -45,3 +45,18 @@ export interface GalleryItem {
   category?: string;
   createdAt?: number;
 }
+
+export type LeadStatus = 'New' | 'Contacted' | 'Qualified' | 'Proposal' | 'Negotiation' | 'Won' | 'Lost';
+
+export interface Lead {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  projectType: string;
+  budget?: string;
+  status: LeadStatus;
+  createdAt: any; // Firestore Timestamp or Date
+  notes?: string;
+  source?: string;
+}

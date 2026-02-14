@@ -23,6 +23,7 @@ import DataSeeder from '../components/DataSeeder';
 import LinkPreview from '../components/LinkPreview';
 import { Database, Monitor, Smartphone, X as CloseIcon } from 'lucide-react';
 import Home from './Home';
+import NotificationBar from '../components/admin/NotificationBar';
 
 type Tab = 'overview' | 'general' | 'projects' | 'testimonials' | 'images' | 'gallery' | 'users' | 'leads' | 'social' | 'branding' | 'data' | 'master' | 'appearance' | 'services_mgr' | 'about_mgr' | 'headers_mgr';
 
@@ -727,6 +728,8 @@ export default function AdminDashboard() {
                 <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-luxury-gold/5 blur-[120px] rounded-full" />
             </div>
 
+            <NotificationBar onViewLeads={() => setActiveTab('leads')} />
+
             <nav className="bg-stone-950/30 backdrop-blur-glass border-b border-white/5 sticky top-0 z-50">
                 <div className="max-w-[1600px] mx-auto px-6 sm:px-8">
                     <div className="flex justify-between h-20 items-center">
@@ -792,6 +795,16 @@ export default function AdminDashboard() {
                                         </button>
                                     );
                                 })}
+
+                                <div className="mt-4 pt-4 border-t border-white/5">
+                                    <button
+                                        onClick={() => navigate('/')}
+                                        className="w-full flex items-center gap-4 px-5 py-4 text-[10px] rounded-xl key-exit uppercase tracking-[0.2em] font-bold text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all duration-300"
+                                    >
+                                        <LogOut className="w-5 h-5" />
+                                        <span>Exit Admin</span>
+                                    </button>
+                                </div>
                             </nav>
                         </div>
                     </aside>

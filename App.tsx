@@ -1,20 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import BottomNav from './components/BottomNav';
 import FloatingActions from './components/FloatingActions';
+import Breadcrumbs from './components/Breadcrumbs';
 import Home from './pages/Home';
 import About from './pages/About';
 import Services from './pages/Services';
+import ServiceDetail from './pages/ServiceDetail';
 import Projects from './pages/Projects';
 import Contact from './pages/Contact';
 import Gallery from './pages/Gallery';
 import AITools from './pages/AITools';
-import AdminLogin from './pages/AdminLogin';
-import AdminDashboard from './pages/AdminDashboard';
+import AdminLogin from './pages/admin/Login';
+import AdminDashboard from './pages/admin/Dashboard';
+import AdminLeads from './pages/admin/Leads';
+import AdminLeadDetails from './pages/admin/LeadDetails';
+import AdminProjects from './pages/admin/Projects';
+import AdminProjectForm from './pages/admin/ProjectForm';
+import AdminFinancials from './pages/admin/Financials';
+import AdminContent from './pages/admin/Content';
+import AdminTeam from './pages/admin/Team';
+import AdminSettings from './pages/admin/Settings';
+import AdminLayout from './layouts/AdminLayout';
+import ComingSoon from './components/admin/ComingSoon';
+import CaseStudy from './pages/CaseStudy';
 import ProtectedRoute from './components/ProtectedRoute';
 import CustomCursor from './components/luxury/CustomCursor';
+import AIAssistant from './components/luxury/AIAssistant';
 import { COMPANY_NAME } from './constants';
 import { useCompanyData } from './hooks/useCompanyData';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -53,7 +67,7 @@ const ScrollToTop = () => {
 
 const AppContent: React.FC = () => {
   const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith('/admin-portal') || location.pathname.startsWith('/admin-dashboard');
+  const isAdminRoute = location.pathname.startsWith('/admin');
   const [loading, setLoading] = useState(true);
   const { theme, toggleTheme } = useTheme();
   const { name } = useCompanyData();
@@ -119,6 +133,7 @@ const AppContent: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <CustomCursor />
+      <AIAssistant />
       <AnimatePresence>
         {loading && (
           <motion.div
@@ -150,18 +165,46 @@ const AppContent: React.FC = () => {
         )}
       </AnimatePresence>
       {!isAdminRoute && <Header />}
+      {!isAdminRoute && <Breadcrumbs />}
       <main className="flex-grow">
         <div key={location.pathname} className="page-transition">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Services />} />
+            <Route path="/services/:id" element={<ServiceDetail />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/gallery" element={<Gallery />} />
+            <Route path="/case-study/:id" element={<CaseStudy />} />
             <Route path="/ai-tools" element={<AITools />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/admin-portal" element={<AdminLogin />} />
-            <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+
+
+            {/* Admin Routes */}
+            <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+
+            <Route path="/admin" element={
+              <ProtectedRoute>
+                <AdminLayout />
+              </ProtectedRoute>
+            }>
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="leads" element={<AdminLeads />} />
+              <Route path="leads/:id" element={<AdminLeadDetails />} />
+              <Route path="projects" element={<AdminProjects />} />
+              <Route path="projects/new" element={<AdminProjectForm />} />
+              <Route path="projects/edit/:id" element={<AdminProjectForm />} />
+              <Route path="financials" element={<AdminFinancials />} />
+              <Route path="content" element={<AdminContent />} />
+              <Route path="team" element={<AdminTeam />} />
+              <Route path="settings" element={<AdminSettings />} />
+              {/* Add other admin sub-routes here later */}
+            </Route>
+
+            {/* Legacy Routes - Redirect */}
+            <Route path="/admin-portal" element={<Navigate to="/admin/login" replace />} />
+            <Route path="/admin-dashboard" element={<Navigate to="/admin/dashboard" replace />} />
           </Routes>
         </div>
       </main>

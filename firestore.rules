@@ -105,6 +105,20 @@ service cloud.firestore {
     }
     
     // ========================================
+    // SITE CONTENT COLLECTION (Dynamic Content Management)
+    // ========================================
+    match /site_content/{sectionId} {
+      // Public read access for all sections
+      allow read: if true;
+      
+      // Only admins can create or update site content
+      allow create, update: if isAdmin();
+      
+      // Prevent deletion of site content sections
+      allow delete: if false;
+    }
+    
+    // ========================================
     // NOTIFICATIONS COLLECTION
     // ========================================
     match /notifications/{notificationId} {
