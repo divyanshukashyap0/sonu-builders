@@ -25,6 +25,7 @@ import AdminTeam from './pages/admin/Team';
 import AdminSettings from './pages/admin/Settings';
 import AdminLayout from './layouts/AdminLayout';
 import ComingSoon from './components/admin/ComingSoon';
+import AdminBootstrap from './pages/admin/AdminBootstrap';
 import CaseStudy from './pages/CaseStudy';
 import ProtectedRoute from './components/ProtectedRoute';
 import CustomCursor from './components/luxury/CustomCursor';
@@ -183,6 +184,7 @@ const AppContent: React.FC = () => {
             {/* Admin Routes */}
             <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
             <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/bootstrap" element={<AdminBootstrap />} />
 
             <Route path="/admin" element={
               <ProtectedRoute>
