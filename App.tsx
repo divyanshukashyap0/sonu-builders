@@ -182,7 +182,6 @@ const AppContent: React.FC = () => {
 
 
             {/* Admin Routes */}
-            <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/bootstrap" element={<AdminBootstrap />} />
 
@@ -191,7 +190,8 @@ const AppContent: React.FC = () => {
                 <AdminLayout />
               </ProtectedRoute>
             }>
-              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route index element={<AdminDashboard />} />
+              <Route path="dashboard" element={<Navigate to="/admin" replace />} />
               <Route path="leads" element={<AdminLeads />} />
               <Route path="leads/:id" element={<AdminLeadDetails />} />
               <Route path="projects" element={<AdminProjects />} />
