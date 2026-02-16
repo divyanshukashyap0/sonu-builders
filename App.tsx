@@ -1,33 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import BottomNav from './components/BottomNav';
 import FloatingActions from './components/FloatingActions';
 import Breadcrumbs from './components/Breadcrumbs';
-import Home from './pages/Home';
-import About from './pages/About';
-import Services from './pages/Services';
-import ServiceDetail from './pages/ServiceDetail';
-import Projects from './pages/Projects';
-import Contact from './pages/Contact';
-import Gallery from './pages/Gallery';
-import AITools from './pages/AITools';
-import AdminLogin from './pages/admin/Login';
-import AdminDashboard from './pages/admin/Dashboard';
-import AdminLeads from './pages/admin/Leads';
-import AdminLeadDetails from './pages/admin/LeadDetails';
-import AdminProjects from './pages/admin/Projects';
-import AdminProjectForm from './pages/admin/ProjectForm';
-import AdminFinancials from './pages/admin/Financials';
-import AdminContent from './pages/admin/Content';
-import AdminTeam from './pages/admin/Team';
-import AdminServices from './pages/admin/Services';
-import AdminSettings from './pages/admin/Settings';
+
+// Lazy Load Pages
+const Home = lazy(() => import('./pages/Home'));
+const About = lazy(() => import('./pages/About'));
+const Services = lazy(() => import('./pages/Services'));
+const ServiceDetail = lazy(() => import('./pages/ServiceDetail'));
+const Projects = lazy(() => import('./pages/Projects'));
+const Contact = lazy(() => import('./pages/Contact'));
+const Gallery = lazy(() => import('./pages/Gallery'));
+const AITools = lazy(() => import('./pages/AITools'));
+const CaseStudy = lazy(() => import('./pages/CaseStudy'));
+
+// Admin Pages
+const AdminLogin = lazy(() => import('./pages/admin/Login'));
+const AdminBootstrap = lazy(() => import('./pages/admin/AdminBootstrap'));
+const AdminDashboard = lazy(() => import('./pages/admin/Dashboard'));
+const AdminLeads = lazy(() => import('./pages/admin/Leads'));
+const AdminLeadDetails = lazy(() => import('./pages/admin/LeadDetails'));
+const AdminProjects = lazy(() => import('./pages/admin/Projects'));
+const AdminProjectForm = lazy(() => import('./pages/admin/ProjectForm'));
+const AdminFinancials = lazy(() => import('./pages/admin/Financials'));
+const AdminContent = lazy(() => import('./pages/admin/Content'));
+const AdminTeam = lazy(() => import('./pages/admin/Team'));
+const AdminServices = lazy(() => import('./pages/admin/Services'));
+const AdminSettings = lazy(() => import('./pages/admin/Settings'));
+
 import AdminLayout from './layouts/AdminLayout';
-import ComingSoon from './components/admin/ComingSoon';
-import AdminBootstrap from './pages/admin/AdminBootstrap';
-import CaseStudy from './pages/CaseStudy';
 import ProtectedRoute from './components/ProtectedRoute';
 import CustomCursor from './components/luxury/CustomCursor';
 import AIAssistant from './components/luxury/AIAssistant';
@@ -67,6 +71,14 @@ const ScrollToTop = () => {
 
   return null;
 };
+
+// Loading Component
+const PageLoader = () => (
+  <div className="flex flex-col items-center justify-center min-h-[50vh] w-full">
+    <div className="w-12 h-12 border-4 border-luxury-gold/30 border-t-luxury-gold rounded-full animate-spin"></div>
+  </div>
+);
+
 
 const AppContent: React.FC = () => {
   const location = useLocation();
@@ -171,46 +183,48 @@ const AppContent: React.FC = () => {
       {!isAdminRoute && <Breadcrumbs />}
       <main className="flex-grow">
         <div key={location.pathname} className="page-transition">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/services/:id" element={<ServiceDetail />} />
-            <Route path="/projects" element={<Projects />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/case-study/:id" element={<CaseStudy />} />
-            <Route path="/ai-tools" element={<AITools />} />
-            <Route path="/contact" element={<Contact />} />
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/services/:id" element={<ServiceDetail />} />
+              <Route path="/projects" element={<Projects />} />
+              <Route path="/gallery" element={<Gallery />} />
+              <Route path="/case-study/:id" element={<CaseStudy />} />
+              <Route path="/ai-tools" element={<AITools />} />
+              <Route path="/contact" element={<Contact />} />
 
 
-            {/* Admin Routes */}
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin/bootstrap" element={<AdminBootstrap />} />
+              {/* Admin Routes */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/bootstrap" element={<AdminBootstrap />} />
 
-            <Route path="/admin" element={
-              <ProtectedRoute>
-                <AdminLayout />
-              </ProtectedRoute>
-            }>
-              <Route index element={<AdminDashboard />} />
-              <Route path="dashboard" element={<Navigate to="/admin" replace />} />
-              <Route path="leads" element={<AdminLeads />} />
-              <Route path="leads/:id" element={<AdminLeadDetails />} />
-              <Route path="projects" element={<AdminProjects />} />
-              <Route path="projects/new" element={<AdminProjectForm />} />
-              <Route path="projects/edit/:id" element={<AdminProjectForm />} />
-              <Route path="financials" element={<AdminFinancials />} />
-              <Route path="content" element={<AdminContent />} />
-              <Route path="services" element={<AdminServices />} />
-              <Route path="team" element={<AdminTeam />} />
-              <Route path="settings" element={<AdminSettings />} />
-              {/* Add other admin sub-routes here later */}
-            </Route>
+              <Route path="/admin" element={
+                <ProtectedRoute>
+                  <AdminLayout />
+                </ProtectedRoute>
+              }>
+                <Route index element={<AdminDashboard />} />
+                <Route path="dashboard" element={<Navigate to="/admin" replace />} />
+                <Route path="leads" element={<AdminLeads />} />
+                <Route path="leads/:id" element={<AdminLeadDetails />} />
+                <Route path="projects" element={<AdminProjects />} />
+                <Route path="projects/new" element={<AdminProjectForm />} />
+                <Route path="projects/edit/:id" element={<AdminProjectForm />} />
+                <Route path="financials" element={<AdminFinancials />} />
+                <Route path="content" element={<AdminContent />} />
+                <Route path="services" element={<AdminServices />} />
+                <Route path="team" element={<AdminTeam />} />
+                <Route path="settings" element={<AdminSettings />} />
+                {/* Add other admin sub-routes here later */}
+              </Route>
 
-            {/* Legacy Routes - Redirect */}
-            <Route path="/admin-portal" element={<Navigate to="/admin/login" replace />} />
-            <Route path="/admin-dashboard" element={<Navigate to="/admin/dashboard" replace />} />
-          </Routes>
+              {/* Legacy Routes - Redirect */}
+              <Route path="/admin-portal" element={<Navigate to="/admin/login" replace />} />
+              <Route path="/admin-dashboard" element={<Navigate to="/admin/dashboard" replace />} />
+            </Routes>
+          </Suspense>
         </div>
       </main>
       {!isAdminRoute && <FloatingActions />}

@@ -5,8 +5,9 @@ import { usePerformance } from '../../context/PerformanceContext';
 const CustomCursor: React.FC = () => {
     const { isLowPowerMode } = usePerformance();
     const [isHovered, setIsHovered] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
 
-    if (isLowPowerMode) return null;
+    // Initialize these regardless of isLowPowerMode to avoid "Rendered fewer hooks" error
     const cursorX = useMotionValue(-100);
     const cursorY = useMotionValue(-100);
 
@@ -15,6 +16,15 @@ const CustomCursor: React.FC = () => {
     const springY = useSpring(cursorY, springConfig);
 
     useEffect(() => {
+        // If low power mode is active, do not attach listeners and do nothing
+        if (isLowPowerMode) return;
+
+        // Check if device is touch-only (coarse pointer)
+        const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+        if (isTouchDevice) return;
+
+        setIsVisible(true);
+
         const moveCursor = (e: MouseEvent) => {
             // Use requestAnimationFrame for smoother performance if needed, 
             // but framer-motion values are already optimized.
@@ -44,7 +54,10 @@ const CustomCursor: React.FC = () => {
             window.removeEventListener('mousemove', moveCursor);
             window.removeEventListener('mouseover', handleMouseOver);
         };
-    }, [cursorX, cursorY]);
+    }, [cursorX, cursorY, isLowPowerMode]);
+
+    // Don't render anything if low power mode or touch device (implied by isVisible)
+    if (isLowPowerMode || !isVisible) return null;
 
     return (
         <>

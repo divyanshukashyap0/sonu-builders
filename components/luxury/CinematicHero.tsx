@@ -50,7 +50,8 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
                 style={{ y: bgY }}
                 className="absolute inset-0 w-full h-full"
             >
-                {backgroundVideo ? (
+                {/* Only render video if NOT in low power mode */}
+                {!isLowPowerMode && backgroundVideo ? (
                     <video
                         autoPlay
                         muted
