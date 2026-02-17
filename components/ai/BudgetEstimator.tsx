@@ -36,7 +36,7 @@ const levelDetails = {
     luxury: {
         name: 'Luxury',
         description: 'Imported materials, bespoke design',
-        features: ['Imported fittings', 'Marble & brass', 'Designer fixtures', '5-year warranty']
+        features: ['Imported fittings', 'Marble & brass', 'Designer fixtures', '10-year warranty']
     }
 };
 
@@ -140,8 +140,8 @@ export const BudgetEstimator: React.FC = () => {
                                         key={level}
                                         onClick={() => setCurrentLevel(level)}
                                         className={`p-4 border-2 rounded-lg text-center transition-all ${currentLevel === level
-                                                ? 'border-luxury-gold bg-luxury-gold/10'
-                                                : 'border-gray-200 hover:border-luxury-gold/50'
+                                            ? 'border-luxury-gold bg-luxury-gold/10'
+                                            : 'border-gray-200 hover:border-luxury-gold/50'
                                             }`}
                                     >
                                         <p className="font-semibold text-sm text-luxury-charcoal">

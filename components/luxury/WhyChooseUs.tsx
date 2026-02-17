@@ -39,7 +39,7 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({
             description: 'Your single point of contact throughout the journey - available for queries, updates, and support.'
         },
         {
-            title: '5-Year Warranty',
+            title: '10-year Warranty',
             description: 'Complete peace of mind with comprehensive warranty coverage and post-handover support.'
         }
     ];

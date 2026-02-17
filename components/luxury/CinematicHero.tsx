@@ -23,7 +23,7 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
     subtextColor = '#e0e0e0', // Warm Gray
     title: defaultTitle = 'Where Luxury',
     emphasisText: defaultEmphasis = 'Meets Your Vision',
-    description: defaultDesc = '150+ families transformed their homes using premium materials and expert design. On-time delivery guaranteed. 5-year warranty included.'
+    description: defaultDesc = '4000+ families transformed their homes using premium materials and expert design. On-time delivery guaranteed. 10-year warranty included.'
 }) => {
     // Dynamic Content Fetching
     const { content } = useSiteContent('home_hero', {
