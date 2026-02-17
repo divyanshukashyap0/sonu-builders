@@ -200,12 +200,21 @@ const ServiceManager: React.FC = () => {
                                         </div>
                                         <div>
                                             <label className="text-xs font-bold text-gray-500 uppercase flex items-center gap-2"><Image size={12} /> Featured Image</label>
-                                            <input
-                                                type="text"
-                                                value={formData.image}
-                                                onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                                                className="w-full mt-1 bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-white/5 rounded-lg p-3 text-sm focus:ring-2 focus:ring-luxury-gold/50 outline-none"
-                                            />
+                                            <div className="flex gap-4 items-start">
+                                                <div className="flex-1">
+                                                    <input
+                                                        type="text"
+                                                        value={formData.image}
+                                                        onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                                                        className="w-full mt-1 bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-white/5 rounded-lg p-3 text-sm focus:ring-2 focus:ring-luxury-gold/50 outline-none"
+                                                    />
+                                                </div>
+                                                {formData.image && (
+                                                    <div className="w-24 h-16 mt-1 rounded-lg overflow-hidden border border-gray-200 dark:border-white/10 shrink-0">
+                                                        <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -221,7 +230,12 @@ const ServiceManager: React.FC = () => {
                                 </div>
                                 <div className="space-y-2">
                                     {formData.gallery?.map((img, idx) => (
-                                        <div key={idx} className="flex gap-2">
+                                        <div key={idx} className="flex gap-2 items-center">
+                                            {img && (
+                                                <div className="w-10 h-10 rounded-lg overflow-hidden border border-gray-200 dark:border-white/10 shrink-0">
+                                                    <img src={img} alt="Preview" className="w-full h-full object-cover" />
+                                                </div>
+                                            )}
                                             <input
                                                 type="text"
                                                 value={img}
