@@ -37,6 +37,7 @@ import CustomCursor from './components/luxury/CustomCursor';
 import AIAssistant from './components/luxury/AIAssistant';
 import { COMPANY_NAME } from './constants';
 import { useCompanyData } from './hooks/useCompanyData';
+import VideoLoader from './components/VideoLoader';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { PerformanceProvider } from './context/PerformanceContext';
@@ -83,7 +84,8 @@ const PageLoader = () => (
 const AppContent: React.FC = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
-  const [loading, setLoading] = useState(true);
+  const [isContentReady, setIsContentReady] = useState(false);
+  const [showLoader, setShowLoader] = useState(true);
   const { theme, toggleTheme } = useTheme();
   const { name } = useCompanyData();
 
@@ -126,8 +128,7 @@ const AppContent: React.FC = () => {
 
   useEffect(() => {
     const handleLoad = () => {
-      // Ensure minimum display time for branding but clear asap after
-      setTimeout(() => setLoading(false), 2000);
+      setIsContentReady(true);
     };
 
     if (document.readyState === 'complete') {
@@ -137,7 +138,7 @@ const AppContent: React.FC = () => {
     }
 
     // Safety timeout in case window.load doesn't fire or stalls
-    const safetyTimer = setTimeout(() => setLoading(false), 5000);
+    const safetyTimer = setTimeout(() => setIsContentReady(true), 5000);
 
     return () => {
       window.removeEventListener('load', handleLoad);
@@ -150,33 +151,11 @@ const AppContent: React.FC = () => {
       <CustomCursor />
       <AIAssistant />
       <AnimatePresence>
-        {loading && (
-          <motion.div
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="app-loader flex flex-col items-center justify-center bg-luxury-obsidian"
-          >
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="relative"
-            >
-              <div className="w-24 h-24 border-[1px] border-luxury-gold/20 rounded-full animate-[spin_4s_linear_infinite]" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-16 h-16 border-t border-luxury-gold rounded-full animate-spin" />
-              </div>
-            </motion.div>
-            <motion.h2
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
-              className="mt-8 text-luxury-gold tracking-[0.3em] text-sm uppercase font-light"
-            >
-              {name}
-            </motion.h2>
-          </motion.div>
+        {showLoader && (
+          <VideoLoader
+            isLoading={!isContentReady}
+            onComplete={() => setShowLoader(false)}
+          />
         )}
       </AnimatePresence>
       {!isAdminRoute && <Header />}
