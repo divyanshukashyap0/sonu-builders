@@ -4,7 +4,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import BottomNav from './components/BottomNav';
 import FloatingActions from './components/FloatingActions';
-import Breadcrumbs from './components/Breadcrumbs';
+
 
 // Lazy Load Pages
 const Home = lazy(() => import('./pages/Home'));
@@ -159,7 +159,7 @@ const AppContent: React.FC = () => {
         )}
       </AnimatePresence>
       {!isAdminRoute && <Header />}
-      {!isAdminRoute && <Breadcrumbs />}
+
       <main className="flex-grow">
         <div key={location.pathname} className="page-transition">
           <Suspense fallback={<PageLoader />}>

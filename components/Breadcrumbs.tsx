@@ -11,7 +11,7 @@ const Breadcrumbs: React.FC = () => {
     if (pathnames.length === 0) return null;
 
     return (
-        <nav aria-label="Breadcrumb" className="w-full bg-luxury-white/50 dark:bg-luxury-charcoal/50 backdrop-blur-sm border-b border-luxury-gold/5">
+        <nav aria-label="Breadcrumb" className="w-full bg-luxury-white/50 dark:bg-luxury-charcoal/50 backdrop-blur-sm border-b border-luxury-gold/5 mt-16 md:mt-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
                 <ol className="flex items-center space-x-2">
                     <li>
