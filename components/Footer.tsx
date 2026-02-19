@@ -1,100 +1,141 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../logo.png';
-import { Facebook, Twitter, Instagram, Linkedin, ArrowRight } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Linkedin, ArrowRight, MapPin, Phone, Mail } from 'lucide-react';
 import { NAV_LINKS } from '../constants';
 import { useCompanyData } from '../hooks/useCompanyData';
 import { useServices } from '../hooks/useServices';
 import TrustBar from './luxury/TrustBar';
+import Button from './Button';
 
 const Footer: React.FC = () => {
   const { name, contactInfo, socialLinks, footerDescription } = useCompanyData();
   const { services } = useServices();
 
-  return (
-    <footer className="bg-stone-50 dark:bg-luxury-obsidian text-luxury-charcoal dark:text-white/80 transition-colors duration-300 border-t border-luxury-gold/10">
-      <TrustBar />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 border-t border-luxury-gold/5">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+  const currentYear = new Date().getFullYear();
 
-          {/* Company Info */}
-          <div>
-            <Link to="/" className="inline-block mb-6">
-              <img src={logo} alt={name} className="h-12 w-auto" loading="lazy" decoding="async" />
+  return (
+    <footer className="bg-luxury-obsidian text-white relative overflow-hidden border-t border-white/5">
+      {/* Background Texture */}
+      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none" />
+
+      {/* Trust Bar Integration */}
+      <div className="relative z-10 border-b border-white/5">
+        <TrustBar />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 py-20 md:py-32 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20">
+
+          {/* Brand Column */}
+          <div className="md:col-span-4 space-y-8">
+            <Link to="/" className="inline-block">
+              <img src={logo} alt={name} className="h-16 w-auto brightness-0 invert" loading="lazy" />
             </Link>
-            <p className="text-sm leading-relaxed mb-8 font-medium">
+            <p className="text-gray-400 leading-relaxed text-sm max-w-sm">
               {footerDescription}
             </p>
-            <div className="flex space-x-6">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-luxury-charcoal/60 hover:text-luxury-gold transition-colors duration-300" aria-label="Facebook"><Facebook className="w-5 h-5" /></a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-luxury-charcoal/60 hover:text-luxury-gold transition-colors duration-300" aria-label="Twitter"><Twitter className="w-5 h-5" /></a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-luxury-charcoal/60 hover:text-luxury-gold transition-colors duration-300" aria-label="Instagram"><Instagram className="w-5 h-5" /></a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-luxury-charcoal/60 hover:text-luxury-gold transition-colors duration-300" aria-label="LinkedIn"><Linkedin className="w-5 h-5" /></a>
+            <div className="flex space-x-4">
+              {[
+                { Icon: Facebook, href: "https://facebook.com" },
+                { Icon: Twitter, href: "https://twitter.com" },
+                { Icon: Instagram, href: "https://instagram.com" },
+                { Icon: Linkedin, href: "https://linkedin.com" }
+              ].map(({ Icon, href }, idx) => (
+                <a
+                  key={idx}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/60 hover:text-luxury-gold hover:border-luxury-gold transition-all duration-300"
+                >
+                  <Icon className="w-4 h-4" />
+                </a>
+              ))}
             </div>
           </div>
 
           {/* Quick Links */}
-          <div>
-            <h4 className="text-luxury-charcoal text-sm uppercase tracking-widest font-bold mb-6">Quick Links</h4>
+          <div className="md:col-span-2">
+            <h4 className="text-luxury-gold text-xs uppercase tracking-[0.2em] font-bold mb-8">Navigation</h4>
             <ul className="space-y-4">
               {NAV_LINKS.map(link => (
                 <li key={link.path}>
-                  <Link to={link.path} className="text-sm hover:text-luxury-gold font-semibold transition-all inline-block">
+                  <Link to={link.path} className="text-sm text-gray-400 hover:text-white transition-colors duration-300 flex items-center group">
+                    <span className="w-0 overflow-hidden group-hover:w-4 transition-all duration-300 text-luxury-gold mr-0 group-hover:mr-2">•</span>
                     {link.label}
                   </Link>
                 </li>
               ))}
-              {/* Admin Login hidden for security */}
-              {/* <li>
-                <Link to="/admin-portal" className="text-xs hover:text-luxury-gold transition-all inline-block text-luxury-charcoal/40 font-bold uppercase tracking-tighter">
-                  Admin Login
-                </Link>
-              </li> */}
             </ul>
           </div>
 
           {/* Services */}
-          <div>
-            <h4 className="text-luxury-charcoal text-sm uppercase tracking-widest font-bold mb-6">Our Services</h4>
-            <ul className="space-y-4 text-sm font-semibold">
-              {services.slice(0, 5).map(service => (
-                <li key={service.id}>{service.title}</li>
+          <div className="md:col-span-3">
+            <h4 className="text-luxury-gold text-xs uppercase tracking-[0.2em] font-bold mb-8">Expertise</h4>
+            <ul className="space-y-4">
+              {services.slice(0, 6).map(service => (
+                <li key={service.id}>
+                  <Link to="/services" className="text-sm text-gray-400 hover:text-white transition-colors duration-300">
+                    {service.title}
+                  </Link>
+                </li>
               ))}
-              {services.length === 0 && (
+              {!services.length && (
                 <>
-                  <li>Residential Construction</li>
-                  <li>Commercial Development</li>
-                  <li>Project Management</li>
-                  <li>Renovation Services</li>
-                  <li>Turnkey Solutions</li>
+                  <li className="text-sm text-gray-500">Luxury Interiors</li>
+                  <li className="text-sm text-gray-500">Civil Construction</li>
+                  <li className="text-sm text-gray-500">Turnkey Projects</li>
                 </>
               )}
             </ul>
           </div>
 
           {/* Contact */}
-          <div>
-            <h4 className="text-luxury-charcoal text-sm uppercase tracking-widest font-bold mb-6">Contact Us</h4>
-            <ul className="space-y-6 text-sm">
-              <li className="flex items-start">
-                <contactInfo.icons.address className="w-5 h-5 mr-3 text-luxury-gold shrink-0" />
-                <span className="font-semibold">{contactInfo.address}</span>
+          <div className="md:col-span-3">
+            <h4 className="text-luxury-gold text-xs uppercase tracking-[0.2em] font-bold mb-8">Contact</h4>
+            <ul className="space-y-6">
+              <li className="flex items-start group">
+                <MapPin className="w-5 h-5 text-luxury-gold mt-1 mr-4 shrink-0 group-hover:text-white transition-colors" />
+                <span className="text-sm text-gray-400 leading-relaxed group-hover:text-gray-200 transition-colors">
+                  {contactInfo.address}
+                </span>
               </li>
-              <li className="flex items-center">
-                <contactInfo.icons.phone className="w-5 h-5 mr-3 text-luxury-gold shrink-0" />
-                <a href={`tel:${contactInfo.phone.replace(/\s/g, '')}`} className="hover:text-luxury-gold font-bold">{contactInfo.phone}</a>
+              <li className="flex items-center group">
+                <Phone className="w-5 h-5 text-luxury-gold mr-4 shrink-0 group-hover:text-white transition-colors" />
+                <a href={`tel:${contactInfo.phone.replace(/\s/g, '')}`} className="text-sm text-gray-400 group-hover:text-white transition-colors font-mono">
+                  {contactInfo.phone}
+                </a>
               </li>
-              <li className="flex items-center">
-                <contactInfo.icons.email className="w-5 h-5 mr-3 text-luxury-gold shrink-0" />
-                <a href={`mailto:${contactInfo.email}`} className="hover:text-luxury-gold font-bold">{contactInfo.email}</a>
+              <li className="flex items-center group">
+                <Mail className="w-5 h-5 text-luxury-gold mr-4 shrink-0 group-hover:text-white transition-colors" />
+                <a href={`mailto:${contactInfo.email}`} className="text-sm text-gray-400 group-hover:text-white transition-colors">
+                  {contactInfo.email}
+                </a>
               </li>
             </ul>
+
+            <div className="mt-8">
+              <Button to="/contact" variant="outline" className="w-full justify-center border-luxury-gold/30 text-luxury-gold hover:border-luxury-gold">
+                Get a Quote
+              </Button>
+            </div>
           </div>
 
         </div>
+      </div>
 
-        <div className="border-t border-luxury-gold/10 mt-16 pt-8 text-center text-[10px] uppercase tracking-widest font-bold text-luxury-charcoal/40">
-          <p>&copy; {new Date().getFullYear()} {name}. All rights reserved.</p>
+      {/* Bottom Bar */}
+      <div className="border-t border-white/5 bg-black/20 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-gray-500 uppercase tracking-wider">
+            &copy; {currentYear} {name}. All Rights Reserved.
+          </p>
+          <div className="flex gap-8 text-xs text-gray-500 uppercase tracking-wider">
+            <Link to="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+            <Link to="/terms" className="hover:text-white transition-colors">Terms</Link>
+            <Link to="/sitemap" className="hover:text-white transition-colors">Sitemap</Link>
+          </div>
         </div>
       </div>
     </footer>

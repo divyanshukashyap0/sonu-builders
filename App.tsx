@@ -44,6 +44,7 @@ import { PerformanceProvider } from './context/PerformanceContext';
 import { db } from './lib/firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
 
+
 // Scroll to top on route change
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -147,7 +148,9 @@ const AppContent: React.FC = () => {
   }, []);
 
   return (
+
     <div className="flex flex-col min-h-screen">
+
       <CustomCursor />
       <AIAssistant />
       <AnimatePresence>

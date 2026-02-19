@@ -11,8 +11,8 @@
   /* Primary Green */
   --primary-green-dark: #17a348;
   /* Hover Green */
-  --luxury-black: #0a0a0a;
-  /* Premium Black */
+  --luxury-black: #050505;
+  /* Richer Black for depth */
   --luxury-charcoal: #1a1a1a;
   /* Slightly warmer black for text */
   --luxury-white: #F9F8F6;
@@ -42,8 +42,10 @@
   --shadow-glow-gold: 0 0 20px rgba(212, 175, 55, 0.3);
 
   /* Typography */
-  --font-heading: 'Playfair Display', serif;
-  --font-body: 'Montserrat', sans-serif;
+  --font-heading: 'Playfair Display',
+    serif;
+  --font-body: 'Montserrat',
+    sans-serif;
 
   /* Spacing */
   --section-spacing: 120px;
@@ -55,6 +57,32 @@
   --safe-right: env(safe-area-inset-right);
   --safe-bottom: env(safe-area-inset-bottom);
   --safe-left: env(safe-area-inset-left);
+}
+
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+.text-editorial {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+  font-weight: 500;
+}
+
+.text-editorial-sub {
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
 html {

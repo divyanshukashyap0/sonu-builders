@@ -43,13 +43,17 @@ const VideoLoader: React.FC<VideoLoaderProps> = ({ isLoading, onComplete }) => {
             <video
                 ref={videoRef}
                 src="/Loader.mp4"
-                className="w-80 md:w-96 h-auto object-contain mix-blend-screen"
+                preload="auto"
+                className="w-80 md:w-96 h-auto object-contain mix-blend-screen will-change-[transform,opacity]"
                 style={{
                     maskImage: 'radial-gradient(circle, black 20%, transparent 80%)',
-                    WebkitMaskImage: 'radial-gradient(circle, black 20%, transparent 80%)'
+                    WebkitMaskImage: 'radial-gradient(circle, black 20%, transparent 80%)',
+                    transform: 'translateZ(0)' // Force GPU acceleration
                 }}
                 muted
                 playsInline
+                loop={isLoading} // Loop while loading
+                onContextMenu={(e) => e.preventDefault()}
                 onEnded={handleVideoEnded}
             />
         </motion.div>

@@ -1,8 +1,9 @@
-import React from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
 import Button from '../Button';
 import { useSiteContent } from '../../hooks/useSiteContent';
 import { usePerformance } from '../../context/PerformanceContext';
+import { ChevronDown } from 'lucide-react';
 
 interface CinematicHeroProps {
     backgroundImage?: string;
@@ -34,21 +35,55 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
         description: defaultDesc
     });
 
-
     const { isLowPowerMode } = usePerformance();
+    const targetRef = useRef<HTMLDivElement>(null);
     const { scrollY } = useScroll();
 
-    // Disable transforms in low power mode
-    const bgY = useTransform(scrollY, [0, 500], isLowPowerMode ? [0, 0] : [0, 200]);
-    const textY = useTransform(scrollY, [0, 500], isLowPowerMode ? [0, 0] : [0, -100]);
-    const opacity = useTransform(scrollY, [0, 500], [1, 0]);
+    // Smooth parallax effects - Reduced intensity for better performance/feel
+    const yRange = isLowPowerMode ? [0, 0] : [0, 500];
+    const bgY = useTransform(scrollY, [0, 500], isLowPowerMode ? ["0%", "0%"] : ["0%", "15%"]); // Was 30%
+    const textY = useTransform(scrollY, [0, 500], isLowPowerMode ? ["0%", "0%"] : ["0%", "25%"]); // Was 50%
+    const opacity = useTransform(scrollY, [0, 400], [1, 0]);
+    const scale = useTransform(scrollY, [0, 500], [1, 1.05]); // Was 1.1
+
+    const titleText = content.title || defaultTitle;
+    const subtitleText = content.subtitle || defaultEmphasis;
+
+    // Typewriter effect configuration
+    const container = {
+        hidden: { opacity: 0 },
+        visible: (i = 1) => ({
+            opacity: 1,
+            transition: { staggerChildren: 0.1, delayChildren: 0.04 * i },
+        }),
+    };
+
+    const child = {
+        visible: {
+            opacity: 1,
+            display: "inline-block", // Ensures layout stability
+            transition: {
+                duration: 0, // Instant appearance like a keystroke
+            },
+        },
+        hidden: {
+            opacity: 0,
+            display: "none", // Retains layout but hidden
+            transition: {
+                duration: 0,
+            },
+        },
+    };
 
     return (
-        <section className={`relative min-h-[100svh] flex items-center justify-center overflow-hidden ${isLowPowerMode ? 'bg-black' : 'bg-luxury-black'}`}>
+        <section
+            ref={targetRef}
+            className={`relative min-h-[100svh] flex items-center justify-center overflow-hidden ${isLowPowerMode ? 'bg-black' : 'bg-luxury-black'} group`}
+        >
             {/* Background Container with Parallax & Slow Zoom */}
             <motion.div
-                style={{ y: bgY }}
-                className="absolute inset-0 w-full h-full"
+                style={{ y: bgY, scale }}
+                className="absolute inset-0 w-full h-full will-change-transform"
             >
                 {/* Only render video if NOT in low power mode */}
                 {!isLowPowerMode && backgroundVideo ? (
@@ -57,7 +92,8 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
                         muted
                         loop
                         playsInline
-                        className="w-full h-full object-cover"
+                        onContextMenu={(e) => e.preventDefault()}
+                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                     >
                         <source src={backgroundVideo} type="video/mp4" />
                     </video>
@@ -67,7 +103,7 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
                             <img
                                 src={content.backgroundImage}
                                 alt="Luxury Interior Design"
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                                 loading="eager"
                                 onLoad={() => { }}
                                 onError={(e) => console.error('❌ Hero image failed to load:', content.backgroundImage, e)}
@@ -81,70 +117,105 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
                 )}
             </motion.div>
 
-            {/* Cinematic Gradient Overlay */}
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.3)_0%,rgba(0,0,0,0.6)_100%)] mix-blend-multiply" />
-            {!isLowPowerMode && <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]" />}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.5)_100%)]" />
+            {/* Cinematic Gradient Overlay - Enhanced for text readability - Lightens on hover */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80 transition-opacity duration-700 group-hover:opacity-80" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)] transition-opacity duration-700 group-hover:opacity-60" />
+            {!isLowPowerMode && <div className="absolute inset-0 bg-black/10 backdrop-blur-[1px] transition-all duration-700 group-hover:backdrop-blur-none group-hover:bg-black/0" />}
 
             {/* Content */}
             <motion.div
                 style={{ y: textY, opacity }}
                 className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-24 md:pt-20"
             >
-                <div className="max-w-5xl mx-auto space-y-8">
+                <div className="max-w-6xl mx-auto space-y-8">
                     {/* Badge */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="hidden md:block"
+                        className="hidden md:block mb-8"
                     >
-                        <span className="inline-block px-6 py-2 border border-luxury-gold/30 rounded-full text-luxury-gold text-sm md:text-xs uppercase tracking-[0.3em] font-bold bg-black/20 backdrop-blur-md shadow-glow-gold">
-                            {content.subtitle || defaultEmphasis}
+                        <span className="inline-block px-6 py-2 border border-luxury-gold/30 rounded-full text-luxury-gold text-xs uppercase tracking-[0.4em] font-bold bg-black/20 backdrop-blur-md shadow-glow-gold">
+                            Est. 2010 • Premium Interiors
                         </span>
                     </motion.div>
 
-                    {/* Main Heading */}
-                    <motion.h1
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
-                        className="text-2xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight text-white mb-4 md:mb-8"
-                        style={{ color: titleColor }}
-                    >
-                        {content.title || defaultTitle}
-                        <br />
-                        <span className="text-luxury-gold text-xl sm:text-5xl md:text-6xl lg:text-7xl" style={{ color: emphasisColor }}>
-                            {content.subtitle || defaultEmphasis}
-                        </span>
-                    </motion.h1>
+                    {/* Main Heading with Staggered Animation */}
+                    <div className="overflow-hidden">
+                        <motion.h1
+                            variants={container}
+                            initial="hidden"
+                            animate="visible"
+                            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-serif font-bold leading-tight text-white mb-6"
+                            style={{ color: titleColor }}
+                        >
+                            {titleText.split("").map((letter, index) => (
+                                <motion.span key={index} variants={child}>
+                                    {letter}
+                                </motion.span>
+                            ))}
+                            <br />
+                            <span className="text-luxury-gold block mt-2" style={{ color: emphasisColor }}>
+                                {subtitleText.split("").map((letter, index) => (
+                                    <motion.span key={index} variants={child}>
+                                        {letter}
+                                    </motion.span>
+                                ))}
+                                {/* Blinking Cursor */}
+                                <motion.span
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: [0, 1, 0] }}
+                                    transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+                                    className="inline-block w-[2px] h-[0.8em] bg-luxury-gold ml-1 translate-y-[0.1em]"
+                                />
+                            </span>
+                        </motion.h1>
+                    </div>
 
                     {/* Description */}
                     <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.8, delay: 0.6 }}
-                        className="text-base md:text-lg lg:text-xl text-gray-300 max-w-3xl mx-auto mb-8 md:mb-10 leading-relaxed px-4"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.8 }}
+                        className="text-base md:text-xl text-gray-200 max-w-2xl mx-auto mb-12 leading-relaxed font-light tracking-wide"
                         style={{ color: subtextColor }}
                     >
                         {content.description || defaultDesc}
                     </motion.p>
 
-                    {/* CTA Buttons - Stagger 4 */}
+                    {/* CTA Buttons */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
+                        transition={{ delay: 1, duration: 0.8 }}
                         className="flex flex-col sm:flex-row gap-6 justify-center items-center mt-12"
                     >
                         <Button to="/contact" variant="primary" className="min-w-[200px] shadow-glow-green hover:scale-105 transition-transform duration-300">
                             {content.ctaText}
                         </Button>
                         <Button to="/projects" variant="white" className="min-w-[200px] hover:shadow-glow-gold hover:scale-105 transition-transform duration-300">
-                            View Portfolio
+                            Explore Collection
                         </Button>
                     </motion.div>
                 </div>
+            </motion.div>
+
+            {/* Scroll Indicator */}
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.5, duration: 1 }}
+                className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
+                onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+            >
+                <div className="w-[1px] h-12 bg-gradient-to-b from-transparent via-luxury-gold to-transparent opacity-50" />
+                <span className="text-[10px] uppercase tracking-[0.3em] text-luxury-gold/80 font-bold mb-2">Scroll</span>
+                <motion.div
+                    animate={{ y: [0, 5, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                >
+                    <ChevronDown className="w-5 h-5 text-luxury-gold" />
+                </motion.div>
             </motion.div>
 
         </section>
