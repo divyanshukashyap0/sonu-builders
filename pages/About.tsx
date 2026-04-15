@@ -54,9 +54,9 @@ const About: React.FC = () => {
         />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-luxury-charcoal mb-10 text-center">{content.mainTitle}</h2>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-white mb-10 text-center">{content.mainTitle}</h2>
             {content.paragraphs.map((para, idx) => (
-              <p key={idx} className="text-white/90 mb-6 leading-relaxed text-lg font-medium">
+              <p key={idx} className="text-gray-300 mb-6 leading-relaxed text-lg font-medium">
                 {para}
               </p>
             ))}
@@ -67,7 +67,7 @@ const About: React.FC = () => {
                 <span className="text-xs uppercase tracking-widest text-white/70">Years</span>
               </div>
               <div className="text-center px-6 py-4 border border-luxury-gold/20 rounded-lg">
-                <span className="block text-3xl font-bold text-luxury-gold font-serif">400+</span>
+                <span className="block text-3xl font-bold text-luxury-gold font-serif">4500+</span>
                 <span className="text-xs uppercase tracking-widest text-white/70">Projects</span>
               </div>
             </div>
@@ -87,8 +87,8 @@ const About: React.FC = () => {
         </div>
       </Section>
 
-      {/* Founder / Team Section (New) */}
-      <Section className="bg-stone-50">
+      {/* Founder / Team Section */}
+      <Section className="bg-luxury-obsidian/50">
         <FounderOverview />
 
         {/* Timeline Section */}
@@ -111,12 +111,12 @@ const About: React.FC = () => {
           ].map((item) => {
             const pillar = (content as any)[item.key];
             return (
-              <div key={item.key} className="bg-white p-8 rounded-lg shadow-luxury text-center border border-luxury-gold/5 hover:border-luxury-gold/20 transition-all duration-300">
-                <div className="w-16 h-16 bg-luxury-gold/5 rounded-full flex items-center justify-center mx-auto mb-6">
+              <div key={item.key} className="bg-neutral-900/50 backdrop-blur-md p-8 rounded-lg shadow-luxury text-center border border-luxury-gold/10 hover:border-luxury-gold/30 transition-all duration-300 group">
+                <div className="w-16 h-16 bg-luxury-gold/5 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-luxury-gold transition-colors duration-500">
                   {getIcon(pillar.icon, item.color)}
                 </div>
-                <h3 className="text-xl font-bold !text-neutral-950 mb-4 font-serif">{pillar.title}</h3>
-                <p className="!text-neutral-900 text-sm leading-relaxed font-medium">
+                <h3 className="text-xl font-bold text-white mb-4 font-serif">{pillar.title}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed font-medium">
                   {pillar.content}
                 </p>
               </div>

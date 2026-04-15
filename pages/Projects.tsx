@@ -3,11 +3,13 @@ import Section from '../components/Section';
 import PageHero from '../components/luxury/PageHero';
 import ProjectFilter from '../components/luxury/ProjectFilter';
 import ImageGalleryModal from '../components/ImageGalleryModal';
+import Button from '../components/Button';
 import { ProjectCategory, Project } from '../types';
 import { useProjects } from '../hooks/useProjects';
 import { usePageHeaders } from '../hooks/usePageHeaders';
 import SEO from '../components/SEO';
-import { Maximize2, Camera } from 'lucide-react';
+import { Maximize2, Camera, Construction, Hammer, Phone } from 'lucide-react';
+import { useCompanyData } from '../hooks/useCompanyData';
 
 const Projects: React.FC = () => {
   const [filter, setFilter] = useState<string>('All');
@@ -15,6 +17,7 @@ const Projects: React.FC = () => {
 
   const { projects, loading } = useProjects();
   const { headers, loading: headersLoading } = usePageHeaders();
+  const { projectsMaintenance } = useCompanyData();
 
   const categories = ['All', ...Object.values(ProjectCategory)];
 
@@ -38,6 +41,32 @@ const Projects: React.FC = () => {
     }
     return [project.image];
   };
+
+  if (projectsMaintenance) {
+    return (
+      <div className="min-h-screen bg-luxury-white dark:bg-luxury-charcoal">
+        <PageHero
+          title="Portfolio Refresh"
+          subtitle="Our latest masterpieces are being documented"
+          backgroundImage="https://images.unsplash.com/photo-1430263326118-b75ca0da770b?w=1600&q=80"
+        />
+        <Section className="flex flex-col items-center text-center py-32">
+          <div className="w-24 h-24 bg-luxury-gold/10 rounded-full flex items-center justify-center mb-8 border border-luxury-gold/20">
+            <Construction className="w-12 h-12 text-luxury-gold animate-bounce" />
+          </div>
+          <h2 className="text-4xl font-serif font-bold text-luxury-charcoal dark:text-white mb-6">Gallery Under Refinement</h2>
+          <p className="max-w-2xl text-lg text-luxury-charcoal/70 dark:text-white/70 mb-12 leading-relaxed">
+            We are currently updating our portfolio with our newest luxury residential and commercial projects. 
+            Our digital showcase will return shortly with even more inspiration.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-6">
+            <Button to="/contact" variant="primary">Schedule a Site Visit</Button>
+            <Button to="/gallery" variant="outline">View Design Inspiration</Button>
+          </div>
+        </Section>
+      </div>
+    );
+  }
 
   if (loading || headersLoading) {
     return (

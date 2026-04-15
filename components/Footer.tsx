@@ -76,16 +76,16 @@ const Footer: React.FC = () => {
             <ul className="space-y-4">
               {services.slice(0, 6).map(service => (
                 <li key={service.id}>
-                  <Link to="/services" className="text-sm text-gray-400 hover:text-white transition-colors duration-300">
+                  <Link to={`/services/${service.id}`} className="text-sm text-gray-400 hover:text-white transition-colors duration-300">
                     {service.title}
                   </Link>
                 </li>
               ))}
               {!services.length && (
                 <>
-                  <li className="text-sm text-gray-500">Luxury Interiors</li>
-                  <li className="text-sm text-gray-500">Civil Construction</li>
-                  <li className="text-sm text-gray-500">Turnkey Projects</li>
+                  <li><Link to="/services" className="text-sm text-gray-400 hover:text-white transition-colors duration-300">Luxury Interiors</Link></li>
+                  <li><Link to="/services" className="text-sm text-gray-400 hover:text-white transition-colors duration-300">Civil Construction</Link></li>
+                  <li><Link to="/services" className="text-sm text-gray-400 hover:text-white transition-colors duration-300">Turnkey Projects</Link></li>
                 </>
               )}
             </ul>
@@ -116,7 +116,7 @@ const Footer: React.FC = () => {
             </ul>
 
             <div className="mt-8">
-              <Button to="/contact" variant="outline" className="w-full justify-center border-luxury-gold/30 text-luxury-gold hover:border-luxury-gold">
+              <Button to="/estimate" variant="outline" className="w-full justify-center border-luxury-gold/30 text-luxury-gold hover:border-luxury-gold">
                 Get a Quote
               </Button>
             </div>

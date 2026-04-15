@@ -12,7 +12,9 @@ import {
     ChevronRight,
     Menu,
     Home,
-    LayoutTemplate
+    LayoutTemplate,
+    MessageSquare,
+    Calculator
 } from 'lucide-react';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../lib/firebase';
@@ -28,6 +30,8 @@ const Sidebar: React.FC = () => {
     const menuItems = [
         { icon: LayoutDashboard, label: 'Dashboard', path: '/admin/dashboard' },
         { icon: Users, label: 'Leads', path: '/admin/leads' },
+        { icon: MessageSquare, label: 'Chat Inquiries', path: '/admin/chat-inquiries' },
+        { icon: Calculator, label: 'Project Estimates', path: '/admin/estimates' },
         { icon: Briefcase, label: 'Projects', path: '/admin/projects' },
         { icon: LayoutTemplate, label: 'Services', path: '/admin/services' },
         { icon: IndianRupee, label: 'Financials', path: '/admin/financials' },

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Save, Globe, Lock, Bell, Palette, Phone, Mail, MapPin } from 'lucide-react';
+import { Save, Globe, Lock, Bell, Palette, Phone, Mail, MapPin, User, ImageIcon } from 'lucide-react';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 import { useTheme } from '../../context/ThemeContext';
@@ -15,15 +15,43 @@ const Settings: React.FC = () => {
         address: '',
         footerDescription: '',
         yearsExperience: '15+',
-        projectsCompleted: '400+'
+        projectsCompleted: '4500+',
+        projectsMaintenance: false
+    });
+    const [founderData, setFounderData] = useState({
+        founderName: '',
+        founderTitle: '',
+        founderImage: '',
+        founderBio: ''
+    });
+    const [socialData, setSocialData] = useState({
+        facebook: '',
+        twitter: '',
+        instagram: '',
+        linkedin: '',
+        whatsapp: ''
     });
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const docSnap = await getDoc(doc(db, 'settings', 'general'));
-                if (docSnap.exists()) {
-                    setGeneralData(docSnap.data() as any);
+                const genSnap = await getDoc(doc(db, 'settings', 'general'));
+                if (genSnap.exists()) {
+                    setGeneralData(genSnap.data() as any);
+                }
+                const socSnap = await getDoc(doc(db, 'settings', 'social'));
+                if (socSnap.exists()) {
+                    setSocialData(socSnap.data() as any);
+                }
+                const aboutSnap = await getDoc(doc(db, 'site_content', 'about'));
+                if (aboutSnap.exists()) {
+                    const data = aboutSnap.data();
+                    setFounderData({
+                        founderName: data.founderName || '',
+                        founderTitle: data.founderTitle || '',
+                        founderImage: data.founderImage || '',
+                        founderBio: data.founderBio || ''
+                    });
                 }
             } catch (error) {
                 console.error("Error fetching settings:", error);
@@ -39,10 +67,22 @@ const Settings: React.FC = () => {
         setGeneralData(prev => ({ ...prev, [name]: value }));
     };
 
+    const handleFounderChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFounderData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleSocialChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setSocialData(prev => ({ ...prev, [name]: value }));
+    };
+
     const handleSave = async () => {
         setSaving(true);
         try {
             await setDoc(doc(db, 'settings', 'general'), generalData, { merge: true });
+            await setDoc(doc(db, 'settings', 'social'), socialData, { merge: true });
+            await updateDoc(doc(db, 'site_content', 'about'), founderData);
             alert('Settings saved successfully!');
         } catch (error) {
             console.error("Error saving settings:", error);
@@ -74,6 +114,28 @@ const Settings: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* General Settings */}
                 <div className="lg:col-span-2 space-y-6">
+                    <div className="bg-white dark:bg-luxury-obsidian p-6 rounded-xl border border-luxury-gold/10 shadow-sm transition-all hover:border-luxury-gold/30">
+                        <h3 className="font-bold text-lg mb-6 flex items-center gap-2 text-luxury-charcoal dark:text-white">
+                            <Lock className="text-luxury-gold" size={20} /> Page Management
+                        </h3>
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-between p-4 bg-luxury-gold/5 rounded-lg border border-luxury-gold/10">
+                                <div className="max-w-[70%]">
+                                    <p className="font-bold text-luxury-charcoal dark:text-white">Projects Maintenance Mode</p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">When enabled, the Projects page will show an 'Under Construction' message to all users.</p>
+                                </div>
+                                <button
+                                    onClick={() => setGeneralData(prev => ({ ...prev, projectsMaintenance: !prev.projectsMaintenance }))}
+                                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${generalData.projectsMaintenance ? 'bg-luxury-gold' : 'bg-gray-300 dark:bg-gray-700'}`}
+                                >
+                                    <span
+                                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${generalData.projectsMaintenance ? 'translate-x-6' : 'translate-x-1'}`}
+                                    />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="bg-white dark:bg-luxury-obsidian p-6 rounded-xl border border-luxury-gold/10 shadow-sm">
                         <h3 className="font-bold text-lg mb-6 flex items-center gap-2 text-luxury-charcoal dark:text-white">
                             <Globe className="text-luxury-gold" size={20} /> Connection Numbers
@@ -135,7 +197,7 @@ const Settings: React.FC = () => {
                                         value={generalData.projectsCompleted}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border rounded-lg dark:bg-white/5 dark:border-white/10 dark:text-white focus:border-luxury-gold outline-none"
-                                        placeholder="e.g. 400+"
+                                        placeholder="e.g. 4500+"
                                     />
                                 </div>
                             </div>
@@ -155,29 +217,139 @@ const Settings: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="bg-white dark:bg-luxury-obsidian p-6 rounded-xl border border-luxury-gold/10 shadow-sm">
+                    <div className="bg-white dark:bg-luxury-obsidian p-6 rounded-xl border border-luxury-gold/10 shadow-sm transition-all hover:border-luxury-gold/30">
+                        <h3 className="font-bold text-lg mb-6 flex items-center gap-2 text-luxury-charcoal dark:text-white">
+                            <User className="text-luxury-gold" size={20} /> Founder Profile
+                        </h3>
+                        <div className="flex flex-col md:flex-row gap-8">
+                            {/* Image Preview */}
+                            <div className="w-full md:w-1/3">
+                                <label className="block text-xs font-bold uppercase tracking-widest text-luxury-gold mb-3">Professional Photo</label>
+                                <div className="aspect-[4/5] rounded-xl overflow-hidden border border-luxury-gold/20 bg-black/40 relative group">
+                                    {founderData.founderImage ? (
+                                        <img 
+                                            src={founderData.founderImage} 
+                                            alt="Founder Preview" 
+                                            className="w-full h-full object-cover"
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full flex flex-col items-center justify-center text-gray-500">
+                                            <ImageIcon size={32} className="mb-2 opacity-20" />
+                                            <span className="text-[10px] uppercase tracking-tighter">No Image</span>
+                                        </div>
+                                    )}
+                                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-4">
+                                        <p className="text-[10px] text-white text-center uppercase tracking-widest leading-relaxed">Update URL below to change photo</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {/* Fields */}
+                            <div className="flex-1 space-y-4">
+                                <div>
+                                    <label className="block text-sm font-semibold mb-2 text-luxury-charcoal dark:text-white">Founder Name</label>
+                                    <input
+                                        type="text"
+                                        name="founderName"
+                                        value={founderData.founderName}
+                                        onChange={handleFounderChange}
+                                        className="w-full px-4 py-2 border rounded-lg dark:bg-white/5 dark:border-white/10 dark:text-white focus:border-luxury-gold outline-none"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold mb-2 text-luxury-charcoal dark:text-white">Professional Title</label>
+                                    <input
+                                        type="text"
+                                        name="founderTitle"
+                                        value={founderData.founderTitle}
+                                        onChange={handleFounderChange}
+                                        className="w-full px-4 py-2 border rounded-lg dark:bg-white/5 dark:border-white/10 dark:text-white focus:border-luxury-gold outline-none"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold mb-2 text-luxury-charcoal dark:text-white">Photo URL</label>
+                                    <div className="relative">
+                                        <ImageIcon className="absolute left-3 top-2.5 text-gray-400" size={16} />
+                                        <input
+                                            type="text"
+                                            name="founderImage"
+                                            value={founderData.founderImage}
+                                            onChange={handleFounderChange}
+                                            className="w-full pl-10 px-4 py-2 border rounded-lg dark:bg-white/5 dark:border-white/10 dark:text-white focus:border-luxury-gold outline-none"
+                                            placeholder="https://images.unsplash.com/..."
+                                        />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold mb-2 text-luxury-charcoal dark:text-white">Professional Bio</label>
+                                    <textarea
+                                        name="founderBio"
+                                        value={founderData.founderBio}
+                                        onChange={handleFounderChange}
+                                        className="w-full px-4 py-2 border rounded-lg dark:bg-white/5 dark:border-white/10 dark:text-white focus:border-luxury-gold outline-none"
+                                        rows={4}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-white dark:bg-luxury-obsidian p-6 rounded-xl border border-luxury-gold/10 shadow-sm transition-all hover:border-luxury-gold/30">
+                        <h3 className="font-bold text-lg mb-6 flex items-center gap-2 text-luxury-charcoal dark:text-white">
+                            <Globe className="text-luxury-gold" size={20} /> Social Connect
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {[
+                                { name: 'facebook', label: 'Facebook URL' },
+                                { name: 'instagram', label: 'Instagram URL' },
+                                { name: 'twitter', label: 'Twitter URL' },
+                                { name: 'linkedin', label: 'LinkedIn URL' },
+                                { name: 'whatsapp', label: 'WhatsApp Number (+91...)' }
+                            ].map((field) => (
+                                <div key={field.name}>
+                                    <label className="block text-sm font-semibold mb-2 text-luxury-charcoal dark:text-white">{field.label}</label>
+                                    <input
+                                        type="text"
+                                        name={field.name}
+                                        value={(socialData as any)[field.name]}
+                                        onChange={handleSocialChange}
+                                        className="w-full px-4 py-2 border rounded-lg dark:bg-white/5 dark:border-white/10 dark:text-white focus:border-luxury-gold outline-none"
+                                        placeholder={`Enter ${field.name} link`}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="bg-white dark:bg-luxury-obsidian p-6 rounded-xl border border-luxury-gold/10 shadow-sm opacity-60">
                         <h3 className="font-bold text-lg mb-6 flex items-center gap-2 text-luxury-charcoal dark:text-white">
                             <Palette className="text-luxury-gold" size={20} /> Appearance
                         </h3>
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="font-semibold text-luxury-charcoal dark:text-white">Theme Mode</p>
-                                <p className="text-sm text-gray-500">Toggle between light and dark themes.</p>
+                                <p className="text-sm text-gray-500 italic">Dark theme is currently enforced site-wide for luxury branding.</p>
                             </div>
-                            <button
-                                onClick={toggleTheme}
-                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:ring-offset-2 ${theme === 'dark' ? 'bg-luxury-gold' : 'bg-gray-200'}`}
-                            >
-                                <span
-                                    className={`${theme === 'dark' ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
-                                />
-                            </button>
+                            <div className="h-6 w-11 rounded-full bg-luxury-gold flex items-center px-1">
+                                <div className="h-4 w-4 rounded-full bg-white translate-x-5" />
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Sidebar Settings placeholder - kept simple for now */}
+                {/* Sidebar Info */}
                 <div className="space-y-6">
+                    <div className="bg-luxury-gold/5 p-6 rounded-xl border border-luxury-gold/20 shadow-sm">
+                        <h3 className="font-bold text-lg mb-4 text-luxury-gold">Active Dashboard</h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                            You are currently managing the core business entity settings. Changes here affect global headers, SEO, and legal identifiers.
+                        </p>
+                        <div className="p-4 bg-white/5 rounded-lg border border-white/5 space-y-2">
+                            <p className="text-[10px] uppercase tracking-widest text-gray-400">Last Synced</p>
+                            <p className="text-sm text-white font-mono">{new Date().toLocaleDateString()}</p>
+                        </div>
+                    </div>
+
                     <div className="bg-white dark:bg-luxury-obsidian p-6 rounded-xl border border-luxury-gold/10 shadow-sm opacity-50 pointer-events-none">
                         <h3 className="font-bold text-lg mb-6 flex items-center gap-2 text-luxury-charcoal dark:text-white">
                             <Lock className="text-luxury-gold" size={20} /> Security

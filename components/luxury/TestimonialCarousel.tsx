@@ -1,76 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Star, CheckCircle, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { TESTIMONIALS } from '../../constants';
 
-interface Testimonial {
-    id: number;
-    name: string;
-    role: string;
-    location: string;
-    image: string;
-    rating: number;
-    text: string;
-    verified: boolean;
-    projectType: string;
-}
-
-const testimonials: Testimonial[] = [
-    {
-        id: 1,
-        name: "Priya Sharma",
-        role: "Homeowner",
-        location: "Kalyan West",
-        image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&q=80",
-        rating: 5,
-        text: "Sonu delivered our dream home on time and within the 25L budget. The quality of German hardware and premium finishes exceeded expectations. Project manager kept us updated every week.",
-        verified: true,
-        projectType: "3BHK Luxury Interior"
-    },
-    {
-        id: 2,
-        name: "Rajesh Malhotra",
-        role: "Business Owner",
-        location: "Thane",
-        image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&q=80",
-        rating: 5,
-        text: "Exceptional attention to detail for our office space. The turnkey execution was flawless, and the team handled everything from civil work to final styling perfectly.",
-        verified: true,
-        projectType: "Commercial Office"
-    },
-    {
-        id: 3,
-        name: "Dr. Anjali Desai",
-        role: "Doctor",
-        location: "Dombivli",
-        image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&q=80",
-        rating: 5,
-        text: "We wanted a modern yet traditional look for our villa. Sonu Enterprises perfectly balanced both. The custom furniture and false ceiling designs are the talk of our family.",
-        verified: true,
-        projectType: "Villa Renovation"
-    },
-    {
-        id: 4,
-        name: "Amit Patel",
-        role: "Real Estate Investor",
-        location: "Navi Mumbai",
-        image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&q=80",
-        rating: 5,
-        text: "I've worked with many contractors, but Sonu's transparency and quality are unmatched. They delivered the project 2 weeks early with zero cost overruns.",
-        verified: true,
-        projectType: "Rental Property"
-    },
-    {
-        id: 5,
-        name: "Sneha Gupta",
-        role: "Architect",
-        location: "Mumbai",
-        image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&q=80",
-        rating: 5,
-        text: "As an architect, I'm picky about finishes. Sonu Enterprises is my go-to partner for execution. Their craftsmanship in carpentry and painting is top-tier.",
-        verified: true,
-        projectType: "Architectural Partner"
-    }
-];
+const GoogleIcon = () => (
+    <svg viewBox="0 0 24 24" className="w-4 h-4" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05" />
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
+    </svg>
+);
 
 const TestimonialCarousel: React.FC = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -81,27 +21,22 @@ const TestimonialCarousel: React.FC = () => {
         if (!isAutoPlaying) return;
         const interval = setInterval(() => {
             nextSlide();
-        }, 5000);
+        }, 6000); // Slightly slower for longer real reviews
         return () => clearInterval(interval);
     }, [currentIndex, isAutoPlaying]);
 
     const nextSlide = () => {
-        setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+        setCurrentIndex((prev) => (prev + 1) % TESTIMONIALS.length);
     };
 
     const prevSlide = () => {
-        setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+        setCurrentIndex((prev) => (prev - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
     };
-
-    // Helper to get visible items based on screen size (handled via logic or CSS, here simple logic for single/multi view)
-    // For simplicity in this bespoke component, we'll show 1 on mobile, 3 on desktop via CSS grid/hidden classes if needed,
-    // or better, just one main one tailored for impact, or a sliding track.
-    // Let's go with a sliding track of 3 items for desktop.
 
     const getVisibleTestimonials = () => {
         const items = [];
         for (let i = 0; i < 3; i++) {
-            items.push(testimonials[(currentIndex + i) % testimonials.length]);
+            items.push(TESTIMONIALS[(currentIndex + i) % TESTIMONIALS.length]);
         }
         return items;
     };
@@ -132,35 +67,37 @@ const TestimonialCarousel: React.FC = () => {
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: -50 }}
                             transition={{ duration: 0.5, delay: idx * 0.1 }}
-                            className={`bg-neutral-900/80 backend-blur-md p-8 rounded-2xl shadow-luxury hover:shadow-luxury-hover border border-white/10 relative group h-full flex flex-col ${idx !== 0 ? 'hidden md:flex' : 'flex'}`}
+                            className={`bg-neutral-900/40 backdrop-blur-xl p-8 rounded-2xl shadow-luxury hover:shadow-luxury-hover border border-white/5 relative group h-full flex flex-col ${idx !== 0 ? 'hidden md:flex' : 'flex'}`}
                         >
+                            {/* Google Verified Badge */}
+                            <div className="absolute top-6 left-8 flex items-center gap-2 px-3 py-1 bg-white/5 rounded-full border border-white/10">
+                                <GoogleIcon />
+                                <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Verified Review</span>
+                            </div>
+
                             {/* Quote Icon */}
-                            <Quote className="absolute top-6 right-6 w-8 h-8 text-luxury-gold/10 group-hover:text-luxury-gold/20 transition-colors" />
+                            <Quote className="absolute top-6 right-8 w-10 h-10 text-luxury-gold/5 group-hover:text-luxury-gold/10 transition-colors" />
 
                             {/* Stars */}
-                            <div className="flex gap-1 mb-4">
+                            <div className="flex gap-1 mt-10 mb-6">
                                 {[...Array(5)].map((_, i) => (
                                     <Star key={i} className={`w-4 h-4 ${i < item.rating ? 'text-[#FFD700] fill-[#FFD700]' : 'text-gray-600'}`} />
                                 ))}
                             </div>
 
                             {/* Content */}
-                            <p className="text-gray-300 mb-6 italic leading-relaxed flex-grow">"{item.text}"</p>
+                            <p className="text-gray-300 mb-8 italic leading-relaxed flex-grow text-sm line-clamp-[8] group-hover:line-clamp-none transition-all duration-500 overflow-hidden">
+                                "{item.content}"
+                            </p>
 
                             {/* Author */}
-                            <div className="flex items-center gap-4 mt-auto pt-6 border-t border-white/10">
-                                <div className="relative">
-                                    <img src={item.image} alt={item.name} className="w-12 h-12 rounded-full object-cover border-2 border-luxury-gold/20 group-hover:border-luxury-gold transition-colors" />
-                                    {item.verified && (
-                                        <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-0.5">
-                                            <CheckCircle className="w-4 h-4 text-primary-green fill-white" />
-                                        </div>
-                                    )}
+                            <div className="flex items-center gap-4 mt-auto pt-6 border-t border-white/5">
+                                <div className="w-10 h-10 rounded-full bg-luxury-gold/20 flex items-center justify-center text-luxury-gold font-bold text-lg">
+                                    {item.name.charAt(0)}
                                 </div>
                                 <div>
                                     <h4 className="font-bold text-white text-sm">{item.name}</h4>
-                                    <p className="text-xs text-gray-400 font-medium">{item.location}</p>
-                                    <p className="text-[10px] uppercase tracking-wider text-luxury-gold font-bold mt-1">{item.projectType}</p>
+                                    <p className="text-[10px] uppercase tracking-wider text-luxury-gold font-bold mt-0.5">{item.role}</p>
                                 </div>
                             </div>
                         </motion.div>
@@ -170,13 +107,19 @@ const TestimonialCarousel: React.FC = () => {
 
             {/* Mobile Indicators */}
             <div className="flex justify-center gap-2 mt-8 md:hidden">
-                {testimonials.map((_, idx) => (
+                {TESTIMONIALS.map((_, idx) => (
                     <button
                         key={idx}
                         onClick={() => setCurrentIndex(idx)}
                         className={`w-2 h-2 rounded-full transition-all duration-300 ${idx === currentIndex ? 'bg-luxury-gold w-6' : 'bg-gray-300'}`}
                     />
                 ))}
+            </div>
+            
+            <div className="text-center mt-12">
+               <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold flex items-center justify-center gap-2">
+                   Authenticated via <span className="text-white flex items-center gap-1"><GoogleIcon /> Google Maps Listing</span>
+               </p>
             </div>
         </div>
     );

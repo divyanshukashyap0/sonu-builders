@@ -22,6 +22,7 @@ export const NAV_LINKS: NavLink[] = [
   { label: 'Services', path: '/services' },
   { label: 'Projects', path: '/projects' },
   { label: 'Gallery', path: '/gallery' },
+  { label: 'Cost Estimator', path: '/estimate' },
   { label: 'Contact', path: '/contact' },
 ];
 
@@ -266,23 +267,44 @@ export const PROJECTS: Project[] = [
 export const TESTIMONIALS: Testimonial[] = [
   {
     id: '1',
-    name: 'Priya Sharma',
-    role: 'Home Owner',
-    content: 'Sonu Interiors transformed our 3BHK into a dream home! The modular kitchen is beautiful and functional. Highly recommend!',
+    name: 'Aashish Bhawnani',
+    role: 'TV Unit & Cupboards',
+    content: 'We recently got two cupboards and one wall TV unit made in our flat... by Sonu Enterprises & Building Developers and our experience has been excellent. The team is extremely soft-spoken, polite and highly professional. Work was completed exactly within the promised schedule. Their pricing was very genuine and reasonable. They also went the extra mile by installing lights inside the cupboards. Highly recommended for reliable interior work.',
     rating: 5,
   },
   {
     id: '2',
-    name: 'Amit Patel',
-    role: 'Apartment Owner',
-    content: 'Professional team with great design sense. They understood our vision and delivered exactly what we wanted. The false ceiling work is exceptional.',
+    name: 'Vivek Gupta',
+    role: 'Flat Renovation',
+    content: 'Before starting the interiors of my flat... I met several interior designers, including Sonu, and finally chose him for my flat renovation and interiors. He met my expectations at every stage. His team is excellent and works with complete dedication and commitment. I truly appreciated his honesty and clarity. I would highly recommend him if you are looking for a reliable professional at an affordable price.',
     rating: 5,
   },
   {
     id: '3',
-    name: 'Neha Deshmukh',
-    role: 'Villa Owner',
-    content: 'From custom wardrobes to living room design, everything was executed perfectly. Great quality and on-time delivery!',
+    name: 'Honey Khatri',
+    role: 'Interior Design',
+    content: 'Amazing work! The design, detailing and finishing were beyond my expectations. Very professional approach and timely completion. Highly recommended for anyone looking for classy interiors.',
+    rating: 5,
+  },
+  {
+    id: '4',
+    name: 'Madhu Gupta (Renu)',
+    role: 'Home Owner',
+    content: 'Best services ever ... Thanks a lot for making my house look like my dream house.',
+    rating: 5,
+  },
+  {
+    id: '5',
+    name: 'Secret',
+    role: 'Luxury Home Design',
+    content: 'Working with Mr. Sonu was an absolute pleasure. Their creativity, professionalism, and commitment to quality were evident throughout the project. The design perfectly balances functionality and elegance. My home now feels both luxurious and comfortable. I would strongly recommend them to anyone looking for top-notch interior design services.',
+    rating: 5,
+  },
+  {
+    id: '6',
+    name: 'Madhu Nair',
+    role: 'Client',
+    content: 'Very honest, sincere, hardworking persons with full dedication and quality. Excellent contractors for multiple solutions.',
     rating: 5,
   },
 ];

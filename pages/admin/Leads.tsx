@@ -8,16 +8,18 @@ import {
     Calendar,
     LayoutGrid,
     List as ListIcon,
-    Loader2
+    Loader2,
+    Trash2
 } from 'lucide-react';
 import { Lead, LeadStatus } from '../../types';
 import { useLeads } from '../../hooks/useLeads';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Leads: React.FC = () => {
-    const { leads, loading, error } = useLeads();
+    const { leads, loading, error, deleteLead } = useLeads();
     const [viewMode, setViewMode] = useState<'list' | 'kanban'>('list');
     const [searchTerm, setSearchTerm] = useState('');
+    const [deletingId, setDeletingId] = useState<string | null>(null);
 
     const filteredLeads = leads.filter(lead =>
         lead.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -34,6 +36,20 @@ const Leads: React.FC = () => {
             case 'Won': return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300';
             case 'Lost': return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300';
             default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+        }
+    };
+
+    const handleDelete = async (e: React.MouseEvent, id: string) => {
+        e.stopPropagation();
+        if (window.confirm("Are you sure you want to delete this lead? This action cannot be undone.")) {
+            setDeletingId(id);
+            try {
+                await deleteLead(id);
+            } catch (err) {
+                alert("Failed to delete lead. Please try again.");
+            } finally {
+                setDeletingId(null);
+            }
         }
     };
 
@@ -148,7 +164,15 @@ const Leads: React.FC = () => {
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4 text-right">
-                                                <div className="relative">
+                                                <div className="flex items-center justify-end gap-2">
+                                                    <button
+                                                        onClick={(e) => handleDelete(e, lead.id)}
+                                                        disabled={deletingId === lead.id}
+                                                        className="p-2 text-gray-400 hover:text-red-500 transition-colors rounded-full hover:bg-red-50 dark:hover:bg-red-900/10"
+                                                        title="Delete Lead"
+                                                    >
+                                                        {deletingId === lead.id ? <Loader2 size={16} className="animate-spin" /> : <Trash2 size={18} />}
+                                                    </button>
                                                     <button onClick={e => e.stopPropagation()} className="p-2 text-gray-400 hover:text-luxury-gold transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-white/10">
                                                         <MoreVertical size={18} />
                                                     </button>

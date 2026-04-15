@@ -38,20 +38,25 @@ const VideoLoader: React.FC<VideoLoaderProps> = ({ isLoading, onComplete }) => {
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black"
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm pointer-events-none"
         >
             <video
                 ref={videoRef}
                 src="/Loader.mp4"
                 preload="auto"
-                className="w-80 md:w-96 h-auto object-contain mix-blend-screen will-change-[transform,opacity]"
+                className="w-[28rem] h-auto object-contain mix-blend-screen pointer-events-none"
                 style={{
-                    maskImage: 'radial-gradient(circle, black 20%, transparent 80%)',
-                    WebkitMaskImage: 'radial-gradient(circle, black 20%, transparent 80%)',
-                    transform: 'translateZ(0)' // Force GPU acceleration
+                    transform: 'translateZ(0)', // Force GPU acceleration
+                    WebkitMaskImage: 'radial-gradient(circle, black 40%, transparent 70%)',
+                    maskImage: 'radial-gradient(circle, black 40%, transparent 70%)',
+                    filter: 'contrast(1.2) brightness(1.1)' // Crushes compression grays to pure black making it perfectly transparent!
                 }}
                 muted
                 playsInline
+                disablePictureInPicture
+                disableRemotePlayback
+                controls={false}
+                controlsList="nodownload nofullscreen noremoteplayback"
                 loop={isLoading} // Loop while loading
                 onContextMenu={(e) => e.preventDefault()}
                 onEnded={handleVideoEnded}

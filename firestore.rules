@@ -128,6 +128,28 @@ service cloud.firestore {
       // Only admins can create/manage notifications
       allow create, update, delete: if isAdmin();
     }
+
+    // ========================================
+    // ESTIMATES COLLECTION
+    // ========================================
+    match /estimates/{estimateId} {
+      // Anyone can submit an estimate
+      allow create: if true;
+      
+      // Only admins can read, update, or delete
+      allow read, update, delete: if isAdmin();
+    }
+
+    // ========================================
+    // CHAT INQUIRIES COLLECTION
+    // ========================================
+    match /chat_inquiries/{inquiryId} {
+      // Anyone can submit a chat inquiry
+      allow create: if true;
+      
+      // Only admins can read, update, or delete
+      allow read, update, delete: if isAdmin();
+    }
     
     // ========================================
     // DEFAULT DENY ALL

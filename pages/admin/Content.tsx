@@ -239,7 +239,7 @@ const Content: React.FC = () => {
                             sectionId="trust_metrics"
                             title="Trust Metrics"
                             fields={[
-                                { key: 'stat1', label: 'Stat 1 (e.g., 400+)', type: 'text' },
+                                { key: 'stat1', label: 'Stat 1 (e.g., 4500+)', type: 'text' },
                                 { key: 'label1', label: 'Label 1', type: 'text' },
                                 { key: 'stat2', label: 'Stat 2', type: 'text' },
                                 { key: 'label2', label: 'Label 2', type: 'text' },

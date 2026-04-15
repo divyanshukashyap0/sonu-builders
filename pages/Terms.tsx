@@ -26,9 +26,9 @@ const Terms: React.FC = () => {
         title={`Terms and Conditions | ${name}`} 
         description={`Standard terms and conditions for engaging with ${name} for interior design and construction services.`}
       />
-      <div className="pt-24 min-h-screen bg-luxury-white dark:bg-luxury-charcoal">
+      <div className="pt-24 min-h-screen bg-neutral-950">
         <Section className="py-20">
-          <div className="max-w-4xl mx-auto bg-white dark:bg-luxury-obsidian p-10 md:p-16 shadow-luxury rounded-sm">
+          <div className="max-w-4xl mx-auto bg-neutral-900 border border-white/5 p-10 md:p-16 shadow-luxury rounded-sm">
             <h1 className="text-3xl md:text-5xl font-serif font-bold text-luxury-charcoal dark:text-white mb-6">
               Terms and Conditions
             </h1>

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Send, CheckCircle, ShieldCheck, ArrowRight } from 'lucide-react';
 import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 import { useSiteContent } from '../../hooks/useSiteContent';
+import { useCompanyData } from '../../hooks/useCompanyData';
 import { motion } from 'framer-motion';
 
 interface LeadCaptureFormProps {
@@ -21,14 +22,33 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
         backgroundImage: defaultBg
     });
 
+    const { contactInfo } = useCompanyData();
+
     const [formData, setFormData] = useState({
         name: '',
         phone: '',
         email: '',
         city: '',
         propertyType: '',
+        budget: '',
         whatsappOptIn: false
     });
+
+    useEffect(() => {
+        const detectCity = async () => {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                if (data.city) {
+                    setFormData(prev => ({ ...prev, city: data.city }));
+                }
+            } catch (error) {
+                console.error("Geolocation failed:", error);
+            }
+        };
+        detectCity();
+    }, []);
+
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [touched, setTouched] = useState<Record<string, boolean>>({});
@@ -40,11 +60,56 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
         try {
             await addDoc(collection(db, 'leads'), {
                 ...formData,
-                source: 'Web Lead Form',
+                source: 'Web Lead Capture Form',
                 status: 'New',
                 createdAt: new Date(),
-                budget: 'Not specified'
+                budget: formData.budget || 'Not specified'
             });
+
+            const form = document.createElement('form');
+            form.action = `https://formsubmit.co/${encodeURIComponent(contactInfo.email)}`;
+            form.method = 'POST';
+
+            const payload = {
+                name: formData.name,
+                phone: formData.phone,
+                email: formData.email,
+                city: formData.city,
+                propertyType: formData.propertyType,
+                budget: formData.budget || 'Not specified',
+                whatsappOptIn: formData.whatsappOptIn ? 'Yes' : 'No',
+                source: 'Web Lead Capture Form'
+            };
+
+            for (const [key, value] of Object.entries(payload)) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = String(value);
+                form.appendChild(input);
+            }
+
+            const subjectInput = document.createElement('input');
+            subjectInput.type = 'hidden';
+            subjectInput.name = '_subject';
+            subjectInput.value = 'New Request from Lead Capture Form';
+            form.appendChild(subjectInput);
+
+            const nextInput = document.createElement('input');
+            nextInput.type = 'hidden';
+            nextInput.name = '_next';
+            nextInput.value = `${window.location.origin}/?sent=1`;
+            form.appendChild(nextInput);
+
+            const captchaInput = document.createElement('input');
+            captchaInput.type = 'hidden';
+            captchaInput.name = '_captcha';
+            captchaInput.value = 'false';
+            form.appendChild(captchaInput);
+
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
 
             setFormData({
                 name: '',
@@ -245,7 +310,7 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
 
                                 <div>
                                     <label htmlFor="propertyType" className="block text-sm md:text-xs font-bold uppercase tracking-widest text-neutral-400 mb-2">
-                                        Property Type *
+                                        Project Type *
                                     </label>
                                     <div className="relative">
                                         <select
@@ -259,12 +324,32 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
                                                 }`}
                                         >
                                             <option value="" disabled className="bg-neutral-900">Select property type</option>
-                                            <option value="apartment" className="bg-neutral-900">Apartment / Flat</option>
-                                            <option value="villa" className="bg-neutral-900">Villa / Independent House</option>
-                                            <option value="penthouse" className="bg-neutral-900">Penthouse</option>
-                                            <option value="office" className="bg-neutral-900">Office</option>
-                                            <option value="commercial" className="bg-neutral-900">Commercial Space</option>
-                                            <option value="other" className="bg-neutral-900">Other</option>
+                                            <option value="Residential Interiors" className="bg-neutral-900">Residential Interiors</option>
+                                            <option value="Commercial Spaces" className="bg-neutral-900">Commercial Spaces</option>
+                                            <option value="Turnkey Architecture" className="bg-neutral-900">Turnkey Architecture</option>
+                                            <option value="Other" className="bg-neutral-900">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label htmlFor="budget" className="block text-sm md:text-xs font-bold uppercase tracking-widest text-neutral-400 mb-2">
+                                        Estimated Budget
+                                    </label>
+                                    <div className="relative">
+                                        <select
+                                            id="budget"
+                                            name="budget"
+                                            value={formData.budget}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-4 bg-white/5 border border-white/10 text-white rounded-lg focus:ring-1 focus:ring-luxury-gold focus:border-luxury-gold transition-all appearance-none outline-none hover:bg-white/10 text-base"
+                                        >
+                                            <option value="" disabled className="bg-neutral-900">Select budget constraint</option>
+                                            <option value="Under ₹5L" className="bg-neutral-900">Under ₹5 Lakhs</option>
+                                            <option value="₹5L - ₹15L" className="bg-neutral-900">₹5L - ₹15 Lakhs</option>
+                                            <option value="₹15L - ₹30L" className="bg-neutral-900">₹15L - ₹30 Lakhs</option>
+                                            <option value="₹30L+" className="bg-neutral-900">Above ₹30 Lakhs</option>
+                                            <option value="Not decided yet" className="bg-neutral-900">Not decided yet</option>
                                         </select>
                                     </div>
                                 </div>

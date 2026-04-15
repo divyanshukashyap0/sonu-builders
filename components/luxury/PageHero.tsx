@@ -25,8 +25,8 @@ const PageHero: React.FC<PageHeroProps> = ({ title, subtitle, backgroundImage })
                     />
                 )}
                 {/* Overlay for readability - sophisticated cinematic gradient */}
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.2)_0%,rgba(0,0,0,0.6)_100%)]" />
-                <div className="absolute inset-0 bg-black/10" />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.5)_100%)]" />
+                <div className="absolute inset-0 bg-black/5" />
             </div>
 
             {/* Content - Aligned Bottom Left */}

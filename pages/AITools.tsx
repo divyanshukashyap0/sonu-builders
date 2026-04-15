@@ -61,17 +61,21 @@ const AITools: React.FC = () => {
                             <StyleFinderQuiz />
                         </div>
                     ) : (
-                        <div>
-                            <div className="text-center mb-8">
-                                <h2 className="text-3xl font-serif font-bold text-luxury-charcoal mb-3">
-                                    Estimate Your Project Cost
-                                </h2>
-                                <p className="text-gray-600 max-w-2xl mx-auto">
-                                    Get an instant cost estimate by selecting rooms and quality levels
+                             <div className="bg-white dark:bg-luxury-obsidian rounded-2xl p-12 shadow-luxury border border-luxury-gold/10 text-center max-w-4xl mx-auto">
+                                <div className="w-20 h-20 bg-luxury-gold text-white rounded-full flex items-center justify-center mx-auto mb-8 shadow-glow-gold">
+                                    <Calculator className="w-10 h-10" />
+                                </div>
+                                <h3 className="text-3xl font-serif font-bold text-luxury-charcoal dark:text-white mb-4">Precision Cost Estimator</h3>
+                                <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
+                                    Access our most powerful budgeting tool on its dedicated page. Calculate costs for over 20+ room types with real-time market rates.
                                 </p>
-                            </div>
-                            <BudgetEstimator />
-                        </div>
+                                <a 
+                                    href="/estimate"
+                                    className="inline-flex items-center gap-3 bg-luxury-gold text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest hover:shadow-glow-gold hover:-translate-y-1 transition-all group"
+                                >
+                                    Launch Smart Estimator <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+                                </a>
+                             </div>
                     )}
                 </div>
             </Section>

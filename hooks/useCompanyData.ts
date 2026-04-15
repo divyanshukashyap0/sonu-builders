@@ -9,7 +9,8 @@ export const useCompanyData = () => {
         phone: COMPANY_PHONE,
         email: COMPANY_EMAIL,
         address: COMPANY_ADDRESS,
-        footerDescription: 'Delivering quality construction and reliable real-estate solutions with integrity and expertise. Building trust, creating landmarks.'
+        footerDescription: 'Delivering quality construction and reliable real-estate solutions with integrity and expertise. Building trust, creating landmarks.',
+        projectsMaintenance: false
     });
     const [social, setSocial] = useState({
         facebook: '',

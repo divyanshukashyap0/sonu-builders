@@ -29,8 +29,10 @@ export const useLeads = () => {
                 const leadsData: Lead[] = snapshot.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data(),
-                    // Handle Firestore timestamps safely
-                    createdAt: doc.data().createdAt?.toDate() || new Date()
+                    // Handle Firestore timestamps and strings safely
+                    createdAt: typeof doc.data().createdAt?.toDate === 'function' 
+                        ? doc.data().createdAt.toDate() 
+                        : new Date(doc.data().createdAt || Date.now())
                 } as Lead));
 
                 setLeads(leadsData);

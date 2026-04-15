@@ -10,7 +10,7 @@ const FounderOverview: React.FC = () => {
     if (loading) return null;
 
     return (
-        <section className="bg-white overflow-hidden py-24 border-y border-luxury-gold/10">
+        <section className="bg-transparent overflow-hidden py-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col lg:flex-row items-center gap-16">
                     {/* Image Column */}
@@ -46,7 +46,7 @@ const FounderOverview: React.FC = () => {
                             <p className="text-luxury-gold font-bold uppercase tracking-[0.3em] mb-4 text-xs">
                                 Meet Our Visionary
                             </p>
-                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold !text-neutral-950 leading-tight mb-2">
+                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white leading-tight mb-2">
                                 {content.founderName}
                             </h2>
                             <p className="text-luxury-gold font-bold uppercase tracking-widest text-sm mb-6">
@@ -54,7 +54,7 @@ const FounderOverview: React.FC = () => {
                             </p>
                         </div>
 
-                        <p className="text-lg !text-neutral-900 leading-relaxed font-medium">
+                        <p className="text-lg text-gray-400 leading-relaxed font-medium">
                             {content.founderBio}
                         </p>
 

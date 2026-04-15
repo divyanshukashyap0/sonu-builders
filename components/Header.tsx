@@ -5,8 +5,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Phone } from 'lucide-react';
 import { NAV_LINKS } from '../constants';
 import { useCompanyData } from '../hooks/useCompanyData';
-import { useTheme } from '../context/ThemeContext';
-import { Moon, Sun } from 'lucide-react';
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,7 +13,6 @@ const Header: React.FC = () => {
   const lastScrollY = useRef(0);
   const location = useLocation();
   const { name, phone } = useCompanyData();
-  const { theme, toggleTheme } = useTheme();
 
   // Scroll effect for hide/show and background
   useEffect(() => {
@@ -94,13 +91,6 @@ const Header: React.FC = () => {
                 {phone}
               </a>
 
-              <button
-                onClick={toggleTheme}
-                className="p-2 ml-2 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-luxury-charcoal dark:text-white"
-                aria-label="Toggle theme"
-              >
-                {theme === 'dark' ? <Sun className="w-5 h-5 text-luxury-gold" /> : <Moon className="w-5 h-5 text-luxury-gold" />}
-              </button>
             </nav>
 
             {/* Mobile Menu Button */}
@@ -120,7 +110,7 @@ const Header: React.FC = () => {
       {/* Mobile Menu Portal */}
       {isOpen && createPortal(
         <div
-          className={`md:hidden fixed inset-0 z-[99999] bg-white dark:bg-brand-dark/95 backdrop-blur-md transition-all duration-500 ease-in-out ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          className={`md:hidden fixed inset-0 z-[99999] bg-luxury-obsidian/95 backdrop-blur-md transition-all duration-500 ease-in-out ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
             }`}
           style={{ height: '100dvh' }}
         >
@@ -129,7 +119,7 @@ const Header: React.FC = () => {
               <Link to="/" onClick={() => setIsOpen(false)}>
                 <img src={logo} alt={name} className="h-10 w-auto" />
               </Link>
-              <button onClick={() => setIsOpen(false)} className="text-luxury-charcoal dark:text-white p-2 border border-brand-gold/20 rounded-full">
+              <button onClick={() => setIsOpen(false)} className="text-white p-2 border border-luxury-gold/20 rounded-full bg-white/5">
                 <X className="h-6 w-6" />
               </button>
             </div>
@@ -141,8 +131,8 @@ const Header: React.FC = () => {
                   to={link.path}
                   onClick={() => setIsOpen(false)}
                   className={`text-2xl font-serif font-bold ${location.pathname === link.path
-                    ? 'text-brand-gold underline underline-offset-8'
-                    : 'text-luxury-charcoal dark:text-stone-300 hover:text-brand-gold dark:hover:text-white transition-colors'
+                    ? 'text-luxury-gold underline underline-offset-8'
+                    : 'text-stone-300 hover:text-white transition-colors'
                     }`}
                 >
                   {link.label}
@@ -150,8 +140,9 @@ const Header: React.FC = () => {
               ))}
               <a
                 href={`tel:${phone.replace(/\s/g, '')}`}
-                className="text-xl font-bold text-brand-gold border-t border-brand-gold/10 pt-6 mt-4"
+                className="text-xl font-bold text-luxury-gold border-t border-white/10 pt-6 mt-4 inline-flex items-center gap-2"
               >
+                <Phone size={18} />
                 {phone}
               </a>
             </div>

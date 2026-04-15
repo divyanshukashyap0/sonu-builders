@@ -13,6 +13,7 @@ const Services = lazy(() => import('./pages/Services'));
 const ServiceDetail = lazy(() => import('./pages/ServiceDetail'));
 const Projects = lazy(() => import('./pages/Projects'));
 const Contact = lazy(() => import('./pages/Contact'));
+const Estimate = lazy(() => import('./pages/Estimate'));
 const Gallery = lazy(() => import('./pages/Gallery'));
 const AITools = lazy(() => import('./pages/AITools'));
 const CaseStudy = lazy(() => import('./pages/CaseStudy'));
@@ -32,6 +33,8 @@ const AdminContent = lazy(() => import('./pages/admin/Content'));
 const AdminTeam = lazy(() => import('./pages/admin/Team'));
 const AdminServices = lazy(() => import('./pages/admin/Services'));
 const AdminSettings = lazy(() => import('./pages/admin/Settings'));
+const AdminChatInquiries = lazy(() => import('./pages/admin/ChatInquiries'));
+const AdminEstimates = lazy(() => import('./pages/admin/Estimates'));
 
 import AdminLayout from './layouts/AdminLayout';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -88,9 +91,16 @@ const AppContent: React.FC = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
   const [isContentReady, setIsContentReady] = useState(false);
-  const [showLoader, setShowLoader] = useState(true);
+  const [showLoader, setShowLoader] = useState(() => {
+    return sessionStorage.getItem('hasSeenLoader') !== 'true';
+  });
   const { theme, toggleTheme } = useTheme();
   const { name } = useCompanyData();
+
+  const handleLoaderComplete = () => {
+    setShowLoader(false);
+    sessionStorage.setItem('hasSeenLoader', 'true');
+  };
 
   useEffect(() => {
     const unsub = onSnapshot(doc(db, 'settings', 'master'), (docSnap) => {
@@ -159,7 +169,7 @@ const AppContent: React.FC = () => {
         {showLoader && (
           <VideoLoader
             isLoading={!isContentReady}
-            onComplete={() => setShowLoader(false)}
+            onComplete={handleLoaderComplete}
           />
         )}
       </AnimatePresence>
@@ -175,6 +185,7 @@ const AppContent: React.FC = () => {
               <Route path="/services/:id" element={<ServiceDetail />} />
               <Route path="/projects" element={<Projects />} />
               <Route path="/gallery" element={<Gallery />} />
+              <Route path="/estimate" element={<Estimate />} />
               <Route path="/case-study/:id" element={<CaseStudy />} />
               <Route path="/ai-tools" element={<AITools />} />
               <Route path="/contact" element={<Contact />} />
@@ -203,6 +214,8 @@ const AppContent: React.FC = () => {
                 <Route path="services" element={<AdminServices />} />
                 <Route path="team" element={<AdminTeam />} />
                 <Route path="settings" element={<AdminSettings />} />
+                <Route path="chat-inquiries" element={<AdminChatInquiries />} />
+                <Route path="estimates" element={<AdminEstimates />} />
                 {/* Add other admin sub-routes here later */}
               </Route>
 

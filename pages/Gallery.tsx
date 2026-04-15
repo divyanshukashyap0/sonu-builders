@@ -1,23 +1,49 @@
 import React, { useMemo, useState } from 'react';
 import Section from '../components/Section';
 import PageHero from '../components/luxury/PageHero';
-import { useGallery } from '../hooks/useGallery';
+import { useServices } from '../hooks/useServices';
 import { usePageHeaders } from '../hooks/usePageHeaders';
 import ImageGalleryModal from '../components/ImageGalleryModal';
 
 const Gallery: React.FC = () => {
-  const { items, loading } = useGallery();
+  const { services, loading } = useServices();
   const { headers, loading: headersLoading } = usePageHeaders();
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalImages, setModalImages] = useState<string[]>([]);
   const [modalTitle, setModalTitle] = useState<string | undefined>(undefined);
 
+  // Transform services gallery images into flat list of GalleryItems
+  const items = useMemo(() => {
+    const allItems: any[] = [];
+    services.forEach((service) => {
+        // Add main service image if it exists
+        if (service.image) {
+            allItems.push({
+                id: `${service.id}-main`,
+                url: service.image,
+                title: `${service.title} Overview`,
+                category: service.title
+            });
+        }
+        // Add all gallery images
+        if (service.gallery && Array.isArray(service.gallery)) {
+            service.gallery.forEach((url, index) => {
+                allItems.push({
+                    id: `${service.id}-${index}`,
+                    url,
+                    title: `${service.title} Project`,
+                    category: service.title
+                });
+            });
+        }
+    });
+    return allItems;
+  }, [services]);
+
   const categories = useMemo(() => {
-    const base = ['Living Room', 'Bedroom', 'Kitchen', 'Office', 'Commercial'];
     const cats = Array.from(new Set(items.map(i => (i.category || '')))).filter(Boolean);
-    const merged = Array.from(new Set([...base, ...cats]));
-    return ['All', ...merged];
+    return ['All', ...cats];
   }, [items]);
 
   const visible = useMemo(() => {

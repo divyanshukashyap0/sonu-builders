@@ -44,7 +44,6 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
     const bgY = useTransform(scrollY, [0, 500], isLowPowerMode ? ["0%", "0%"] : ["0%", "15%"]); // Was 30%
     const textY = useTransform(scrollY, [0, 500], isLowPowerMode ? ["0%", "0%"] : ["0%", "25%"]); // Was 50%
     const opacity = useTransform(scrollY, [0, 400], [1, 0]);
-    const scale = useTransform(scrollY, [0, 500], [1, 1.05]); // Was 1.1
 
     const titleText = content.title || defaultTitle;
     const subtitleText = content.subtitle || defaultEmphasis;
@@ -80,9 +79,9 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
             ref={targetRef}
             className={`relative min-h-[100svh] flex items-center justify-center overflow-hidden ${isLowPowerMode ? 'bg-black' : 'bg-luxury-black'} group`}
         >
-            {/* Background Container with Parallax & Slow Zoom */}
+            {/* Background Container with Parallax */}
             <motion.div
-                style={{ y: bgY, scale }}
+                style={{ y: bgY }}
                 className="absolute inset-0 w-full h-full will-change-transform"
             >
                 {/* Only render video if NOT in low power mode */}
@@ -93,7 +92,7 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
                         loop
                         playsInline
                         onContextMenu={(e) => e.preventDefault()}
-                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                        className="w-full h-full object-cover"
                     >
                         <source src={backgroundVideo} type="video/mp4" />
                     </video>
@@ -103,7 +102,7 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
                             <img
                                 src={content.backgroundImage}
                                 alt="Luxury Interior Design"
-                                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                                className="w-full h-full object-cover"
                                 loading="eager"
                                 onLoad={() => { }}
                                 onError={(e) => console.error('❌ Hero image failed to load:', content.backgroundImage, e)}

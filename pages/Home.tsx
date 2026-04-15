@@ -104,27 +104,43 @@ const Home: React.FC = () => {
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.slice(0, 6).map((service, idx) => {
               const IconComponent = (Icons as any)[service.icon] || Icons.Home;
               return (
                 <motion.div
                   key={service.id}
                   variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 30 } }}
-                  className="group bg-white dark:bg-luxury-obsidian p-12 shadow-luxury hover:shadow-luxury-hover transition-all duration-700 border border-luxury-gold/5 dark:border-white/5"
+                  className="group relative h-[500px] overflow-hidden shadow-luxury hover:shadow-luxury-hover transition-all duration-700 bg-luxury-charcoal"
                 >
-                  <div className="w-20 h-20 bg-luxury-gold/5 flex items-center justify-center mb-10 group-hover:bg-luxury-gold transition-all duration-500">
-                    <IconComponent className="w-8 h-8 text-luxury-gold group-hover:text-white transition-colors" />
-                  </div>
-                  <h3 className="text-2xl font-serif font-bold text-luxury-charcoal dark:text-white mb-4">
-                    {service.title}
-                  </h3>
-                  <p className="text-luxury-charcoal/60 dark:text-white/60 mb-8 leading-relaxed text-base">{service.description}</p>
-                  <Link
-                    to="/services"
-                    className="text-luxury-gold font-bold text-xs uppercase tracking-[0.2em] inline-flex items-center group-hover:tracking-[0.3em] transition-all"
-                  >
-                    Discover More <ArrowRight className="w-4 h-4 ml-2" />
+                  <Link to={`/services/${service.id}`} className="block h-full w-full">
+                    {/* Background Image (Design Inspiration) */}
+                    <div className="absolute inset-0 z-0">
+                      <img
+                        src={service.image || "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&q=80"}
+                        alt={service.title}
+                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000 opacity-60 group-hover:opacity-80"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-luxury-obsidian via-luxury-obsidian/40 to-transparent" />
+                    </div>
+
+                    {/* Content */}
+                    <div className="absolute inset-0 z-10 p-10 flex flex-col justify-end">
+                      <div className="w-16 h-16 bg-luxury-gold/20 backdrop-blur-sm flex items-center justify-center mb-6 group-hover:bg-luxury-gold transition-all duration-500 rounded-sm">
+                        <IconComponent className="w-6 h-6 text-luxury-gold group-hover:text-white transition-colors" />
+                      </div>
+                      <h3 className="text-3xl font-serif font-bold text-white mb-4 leading-tight">
+                        {service.title}
+                      </h3>
+                      <p className="text-white/80 mb-8 leading-relaxed text-sm opacity-0 group-hover:opacity-100 dark:group-hover:text-white/90 transition-all duration-500 translate-y-4 group-hover:translate-y-0 line-clamp-2">
+                        {service.description}
+                      </p>
+                      <div
+                        className="text-luxury-gold font-bold text-xs uppercase tracking-[0.2em] inline-flex items-center group-hover:tracking-[0.3em] transition-all"
+                      >
+                        Discover Design <ArrowRight className="w-4 h-4 ml-2" />
+                      </div>
+                    </div>
                   </Link>
                 </motion.div>
               );
@@ -212,9 +228,19 @@ const Home: React.FC = () => {
           <p className="text-luxury-gold font-bold uppercase tracking-[0.2em] mb-3 text-xs">
             Client Experiences
           </p>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-luxury-charcoal dark:text-white">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-luxury-charcoal dark:text-white mb-6">
             Reflections of Excellence
           </h2>
+          <div className="flex items-center justify-center gap-4 py-3 px-6 bg-white/5 backdrop-blur-sm rounded-full border border-white/10 w-fit mx-auto">
+            <div className="flex items-center gap-1">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-4 h-4 text-[#FFD700] fill-[#FFD700]" />
+              ))}
+            </div>
+            <p className="text-sm font-bold text-white tracking-wide">
+              4.9/5.0 <span className="text-gray-400 font-medium ml-1">on Google Maps</span>
+            </p>
+          </div>
         </div>
 
         <div className="relative z-10">

@@ -65,3 +65,29 @@ export interface Lead {
   notes?: string;
   source?: string;
 }
+export interface ChatInquiry {
+  id: string;
+  name: string;
+  phone: string;
+  problem: string;
+  createdAt: any; // Firestore Timestamp or Date
+  status: 'New' | 'Responded' | 'Archived';
+}
+export interface RoomEstimate {
+  name: string;
+  area: number;
+  level: 'basic' | 'premium' | 'luxury';
+}
+
+export interface ProjectEstimate {
+  id: string;
+  userName: string;
+  userPhone: string;
+  userEmail?: string;
+  city?: string;
+  timeline: string;
+  rooms: RoomEstimate[];
+  totalBudget: number;
+  status: 'New' | 'Quote Sent' | 'Followed Up';
+  createdAt: any;
+}
