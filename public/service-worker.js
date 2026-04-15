@@ -1,5 +1,6 @@
-const CACHE_VERSION = 'v2';
-const CACHE_NAME = `sonu-pwa-${CACHE_VERSION}`;
+const urlParams = new URL(self.location.href).searchParams;
+const VERSION = urlParams.get('v') || 'v2';
+const CACHE_NAME = `sonu-pwa-${VERSION}`;
 const CORE_ASSETS = [
   '/',
   '/index.html',
