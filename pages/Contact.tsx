@@ -103,7 +103,7 @@ const Contact: React.FC = () => {
       <SEO
         title="Contact Us"
         description="Get in touch with Sonu Enterprises for a free consultation. Visit our office or contact us for your interior design needs."
-        canonical="https://sonuenterprises.com/contact"
+        canonical="https://sonu-builders.in/contact"
       />
       <PageHero
         title={headers.contact.title}

@@ -33,7 +33,7 @@ const Services: React.FC = () => {
       <SEO
         title="Services"
         description="Explore our premium services: Interior Design, Modular Kitchens, Turnkey Construction, and more. Tailored solutions for luxury living."
-        canonical="https://sonuenterprises.com/services"
+        canonical="https://sonu-builders.in/services"
       />
       <PageHero
         title={headers.services.title}

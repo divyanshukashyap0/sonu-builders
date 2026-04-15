@@ -125,7 +125,7 @@ const Login: React.FC = () => {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="w-full bg-black/20 border border-white/10 rounded-xl py-4 pl-12 pr-4 text-white placeholder-neutral-600 focus:outline-none focus:border-luxury-gold/50 focus:bg-black/40 transition-all font-sans text-sm"
-                                    placeholder="admin@sonuenterprises.com"
+                                    placeholder="admin@sonu-builders.in"
                                 />
                             </div>
                         </div>

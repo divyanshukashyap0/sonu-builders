@@ -31,7 +31,7 @@ const About: React.FC = () => {
       <SEO
         title="About Us"
         description="Learn about Sonu Enterprises, our 15-year legacy, and our mission to deliver premium interior design and construction services."
-        canonical="https://sonuenterprises.com/about"
+        canonical="https://sonu-builders.in/about"
       />
       {/* Distinct Page Hero */}
       <CinematicHero

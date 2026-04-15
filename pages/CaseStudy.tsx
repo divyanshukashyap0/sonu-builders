@@ -51,7 +51,7 @@ const CaseStudy: React.FC = () => {
             <SEO
                 title={data.title}
                 description={data.challenge}
-                canonical={`https://sonuenterprises.com/case-study/${data.id}`}
+                canonical={`https://sonu-builders.in/case-study/${data.id}`}
                 ogImage={data.heroImage}
                 ogType="article"
             />

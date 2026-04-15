@@ -45,7 +45,7 @@ const ServiceDetail: React.FC = () => {
             <SEO
                 title={`${service.title} - Luxury Services`}
                 description={service.description}
-                canonical={`https://sonuenterprises.com/services/${id}`}
+                canonical={`https://sonu-builders.in/services/${id}`}
             />
 
             <PageHero

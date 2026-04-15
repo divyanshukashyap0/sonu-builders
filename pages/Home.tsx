@@ -48,7 +48,7 @@ const Home: React.FC = () => {
       <SEO
         title="Home"
         description="Sonu Enterprises & Building Developers - Where Luxury Meets Your Vision. Expert interior design and construction services in Mumbai & Thane."
-        canonical="https://sonuenterprises.com/"
+        canonical="https://sonu-builders.in/"
         schema={organizationSchema}
       />
       {/* Cinematic Hero Section */}

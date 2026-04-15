@@ -55,7 +55,7 @@ const Projects: React.FC = () => {
       <SEO
         title="Our Projects"
         description="Browse our portfolio of luxury interiors and completed construction projects. See why 4000+ families trust us."
-        canonical="https://sonuenterprises.com/projects"
+        canonical="https://sonu-builders.in/projects"
       />
       <PageHero
         title={headers.projects.title}
