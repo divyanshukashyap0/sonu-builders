@@ -4,7 +4,7 @@ import AdminSectionEditor from '../../components/admin/AdminSectionEditor';
 import ServiceManager from '../../components/admin/ServiceManager';
 
 const Content: React.FC = () => {
-    const [activeView, setActiveView] = useState<'testimonials' | 'gallery' | 'blog' | 'page-headers' | 'home-hero' | 'about-page' | 'philosophy' | 'lead-capture' | 'trust-metrics' | 'why-choose-us' | 'services' | null>(null);
+    const [activeView, setActiveView] = useState<'testimonials' | 'gallery' | 'blog' | 'page-headers' | 'home-hero' | 'about-page' | 'philosophy' | 'lead-capture' | 'trust-metrics' | 'why-choose-us' | 'services' | 'legal' | null>(null);
 
     // Mock Data for demonstration
     const testimonials = [
@@ -176,6 +176,17 @@ const Content: React.FC = () => {
                         <h3 className="text-xl font-serif text-white mb-2">Service Details</h3>
                         <p className="text-sm text-neutral-400">Manage all service categories, features, tips, and galleries.</p>
                     </div>
+
+                    {/* Legal Card */}
+                    <div
+                        onClick={() => setActiveView('legal')}
+                        className="group relative bg-neutral-900/50 backdrop-blur-sm border border-white/5 rounded-2xl p-6 hover:border-luxury-gold/30 transition-all cursor-pointer overflow-hidden"
+                    >
+                        <div className="absolute inset-0 bg-gradient-to-br from-luxury-gold/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <FileText className="w-8 h-8 text-neutral-500 mb-4" />
+                        <h3 className="text-xl font-serif text-white mb-2">Legal Pages</h3>
+                        <p className="text-sm text-neutral-400">Edit Terms and Conditions and Privacy Policy content.</p>
+                    </div>
                 </div>
             ) : (
                 <div className="bg-white dark:bg-neutral-900/50 backdrop-blur-md rounded-2xl p-6 border border-white/5 shadow-xl">
@@ -337,6 +348,16 @@ const Content: React.FC = () => {
                                 ]}
                             />
                         </div>
+                    )}
+
+                    {activeView === 'legal' && (
+                        <AdminSectionEditor
+                            sectionId="legal"
+                            title="Legal Pages Content"
+                            fields={[
+                                { key: 'termsContent', label: 'Terms and Conditions Content (Use double newlines for paragraphs)', type: 'textarea' },
+                            ]}
+                        />
                     )}
                 </div>
             )}

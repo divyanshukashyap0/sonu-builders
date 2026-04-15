@@ -16,7 +16,9 @@ const Contact = lazy(() => import('./pages/Contact'));
 const Gallery = lazy(() => import('./pages/Gallery'));
 const AITools = lazy(() => import('./pages/AITools'));
 const CaseStudy = lazy(() => import('./pages/CaseStudy'));
-
+const Terms = lazy(() => import('./pages/Terms'));
+const Privacy = lazy(() => import('./pages/Privacy'));
+const Sitemap = lazy(() => import('./pages/Sitemap'));
 // Admin Pages
 const AdminLogin = lazy(() => import('./pages/admin/Login'));
 const AdminBootstrap = lazy(() => import('./pages/admin/AdminBootstrap'));
@@ -176,7 +178,9 @@ const AppContent: React.FC = () => {
               <Route path="/case-study/:id" element={<CaseStudy />} />
               <Route path="/ai-tools" element={<AITools />} />
               <Route path="/contact" element={<Contact />} />
-
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/sitemap" element={<Sitemap />} />
 
               {/* Admin Routes */}
               <Route path="/admin/login" element={<AdminLogin />} />

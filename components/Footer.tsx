@@ -134,10 +134,10 @@ const Footer: React.FC = () => {
           <div className="flex gap-8 text-xs text-gray-500 uppercase tracking-wider">
             <Link to="/privacy" className="hover:text-white transition-colors">Privacy</Link>
             <Link to="/terms" className="hover:text-white transition-colors">Terms</Link>
-            <Link to="/sitemap" className="hover:text-white transition-colors">Sitemap</Link>
           </div>
         </div>
       </div>
+
     </footer>
   );
 };
