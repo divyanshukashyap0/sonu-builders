@@ -3,7 +3,6 @@ import { Phone, Mail, MapPin, Send } from 'lucide-react';
 import PageHero from '../components/luxury/PageHero';
 import Section from '../components/Section';
 import Button from '../components/Button';
-import QuoteCalculator from '../components/interactive/QuoteCalculator';
 import { useCompanyData } from '../hooks/useCompanyData';
 import { usePageHeaders } from '../hooks/usePageHeaders';
 import { addDoc, collection } from 'firebase/firestore';
@@ -137,10 +136,6 @@ const Contact: React.FC = () => {
       />
 
       <Section>
-        <div className="max-w-4xl mx-auto mb-20">
-          <QuoteCalculator />
-        </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
           {/* Contact Info */}
           <div>
