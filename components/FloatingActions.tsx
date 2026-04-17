@@ -1,6 +1,7 @@
 import React from 'react';
 import { MessageCircle, Phone } from 'lucide-react';
 import { COMPANY_PHONE, COMPANY_NAME } from '../constants';
+import { logCallAction } from '../lib/tracking';
 
 const FloatingActions: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ const FloatingActions: React.FC = () => {
         </a>
         <a
           href={`tel:${COMPANY_PHONE.replace(/[^0-9]/g, '')}`}
+          onClick={logCallAction}
           className="bg-brand-blue text-white p-3 rounded-full shadow-lg shadow-brand-blue/20 hover:scale-105 transition-all flex items-center justify-center md:hidden"
           aria-label="Call Us"
         >

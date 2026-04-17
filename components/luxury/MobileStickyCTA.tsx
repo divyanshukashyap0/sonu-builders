@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Phone, MessageCircle } from 'lucide-react';
 import { useCompanyData } from '../../hooks/useCompanyData';
+import { logCallAction } from '../../lib/tracking';
 
 export const MobileStickyCTA: React.FC = () => {
     const { phone, name } = useCompanyData();
@@ -17,6 +18,7 @@ export const MobileStickyCTA: React.FC = () => {
     }, []);
 
     const handleCall = () => {
+        logCallAction();
         window.location.href = `tel:${phone}`;
     };
 

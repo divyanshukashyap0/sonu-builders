@@ -15,7 +15,7 @@ const Sitemap: React.FC = () => {
     { name: 'Gallery', path: '/gallery' },
     { name: 'AI Interior Tools', path: '/ai-tools' },
     { name: 'Contact Us', path: '/contact' },
-    { name: 'Privacy Policy', path: '/privacy' },
+    { name: 'Privacy Policy', path: '/privacy-policy' },
     { name: 'Terms and Conditions', path: '/terms' },
     { name: 'Admin Portal', path: '/admin/login' },
   ];

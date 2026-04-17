@@ -7,14 +7,16 @@ import FloatingActions from './components/FloatingActions';
 
 
 // Lazy Load Pages
-const Home = lazy(() => import('./pages/Home'));
-const About = lazy(() => import('./pages/About'));
-const Services = lazy(() => import('./pages/Services'));
+import Home from './pages/Home';
+import About from './pages/About';
+import Services from './pages/Services';
+import Projects from './pages/Projects';
+import Contact from './pages/Contact';
+import Estimate from './pages/Estimate';
+import Gallery from './pages/Gallery';
+
+// Lazy Load Pages (Lower priority/Utility)
 const ServiceDetail = lazy(() => import('./pages/ServiceDetail'));
-const Projects = lazy(() => import('./pages/Projects'));
-const Contact = lazy(() => import('./pages/Contact'));
-const Estimate = lazy(() => import('./pages/Estimate'));
-const Gallery = lazy(() => import('./pages/Gallery'));
 const AITools = lazy(() => import('./pages/AITools'));
 const CaseStudy = lazy(() => import('./pages/CaseStudy'));
 const Terms = lazy(() => import('./pages/Terms'));
@@ -35,6 +37,7 @@ const AdminServices = lazy(() => import('./pages/admin/Services'));
 const AdminSettings = lazy(() => import('./pages/admin/Settings'));
 const AdminChatInquiries = lazy(() => import('./pages/admin/ChatInquiries'));
 const AdminEstimates = lazy(() => import('./pages/admin/Estimates'));
+const AdminCallLogs = lazy(() => import('./pages/admin/CallLogs'));
 
 import AdminLayout from './layouts/AdminLayout';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -161,7 +164,16 @@ const AppContent: React.FC = () => {
 
   return (
 
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen relative">
+      {/* Global Low-Opacity Background Image */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <img 
+          src="/images/site-bg.png" 
+          className="w-full h-full object-cover opacity-[0.05] grayscale brightness-[1.2]" 
+          alt="Global Architecture Background"
+        />
+        <div className="absolute inset-0 bg-neutral-950/20" />
+      </div>
 
       <CustomCursor />
       <AIAssistant />
@@ -175,7 +187,7 @@ const AppContent: React.FC = () => {
       </AnimatePresence>
       {!isAdminRoute && <Header />}
 
-      <main className="flex-grow">
+      <main className="flex-grow overflow-x-hidden">
         <div key={location.pathname} className="page-transition">
           <Suspense fallback={<PageLoader />}>
             <Routes>
@@ -190,7 +202,7 @@ const AppContent: React.FC = () => {
               <Route path="/ai-tools" element={<AITools />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/terms" element={<Terms />} />
-              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/privacy-policy" element={<Privacy />} />
               <Route path="/sitemap" element={<Sitemap />} />
 
               {/* Admin Routes */}
@@ -216,6 +228,7 @@ const AppContent: React.FC = () => {
                 <Route path="settings" element={<AdminSettings />} />
                 <Route path="chat-inquiries" element={<AdminChatInquiries />} />
                 <Route path="estimates" element={<AdminEstimates />} />
+                <Route path="call-logs" element={<AdminCallLogs />} />
                 {/* Add other admin sub-routes here later */}
               </Route>
 

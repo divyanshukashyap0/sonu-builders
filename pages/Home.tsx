@@ -10,6 +10,7 @@ import { useImages } from '../hooks/useImages';
 import { useServices } from '../hooks/useServices';
 import { useCompanyData } from '../hooks/useCompanyData';
 import * as Icons from 'lucide-react';
+import { ServiceCardSkeleton, ProjectCardSkeleton } from '../components/Skeleton';
 
 // Luxury Components
 import CinematicHero from '../components/luxury/CinematicHero';
@@ -27,10 +28,10 @@ import { db } from '../lib/firebase';
 import { motion } from 'framer-motion';
 
 const Home: React.FC = () => {
-  const { projects } = useProjects();
+  const { projects, loading: projectsLoading } = useProjects();
   const { testimonials } = useTestimonials();
   const { images } = useImages();
-  const { services } = useServices();
+  const { services, loading: servicesLoading } = useServices();
   const { name, phone } = useCompanyData();
   const [brandingData, setBrandingData] = React.useState<any>(null);
 
@@ -105,46 +106,50 @@ const Home: React.FC = () => {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.slice(0, 6).map((service, idx) => {
-              const IconComponent = (Icons as any)[service.icon] || Icons.Home;
-              return (
-                <motion.div
-                  key={service.id}
-                  variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 30 } }}
-                  className="group relative h-[500px] overflow-hidden shadow-luxury hover:shadow-luxury-hover transition-all duration-700 bg-luxury-charcoal"
-                >
-                  <Link to={`/services/${service.id}`} className="block h-full w-full">
-                    {/* Background Image (Design Inspiration) */}
-                    <div className="absolute inset-0 z-0">
-                      <img
-                        src={service.image || "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&q=80"}
-                        alt={service.title}
-                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000 opacity-60 group-hover:opacity-80"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-luxury-obsidian via-luxury-obsidian/40 to-transparent" />
-                    </div>
+            {servicesLoading ? (
+              [...Array(6)].map((_, i) => <ServiceCardSkeleton key={i} />)
+            ) : (
+              services.slice(0, 6).map((service, idx) => {
+                const IconComponent = (Icons as any)[service.icon] || Icons.Home;
+                return (
+                  <motion.div
+                    key={service.id}
+                    variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 30 } }}
+                    className="group relative h-[500px] overflow-hidden shadow-luxury hover:shadow-luxury-hover transition-all duration-700 bg-luxury-charcoal"
+                  >
+                    <Link to={`/services/${service.id}`} className="block h-full w-full">
+                      {/* Background Image (Design Inspiration) */}
+                      <div className="absolute inset-0 z-0">
+                        <img
+                          src={service.image || "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&q=80"}
+                          alt={service.title}
+                          className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000 opacity-60 group-hover:opacity-80"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-luxury-obsidian via-luxury-obsidian/40 to-transparent" />
+                      </div>
 
-                    {/* Content */}
-                    <div className="absolute inset-0 z-10 p-10 flex flex-col justify-end">
-                      <div className="w-16 h-16 bg-luxury-gold/20 backdrop-blur-sm flex items-center justify-center mb-6 group-hover:bg-luxury-gold transition-all duration-500 rounded-sm">
-                        <IconComponent className="w-6 h-6 text-luxury-gold group-hover:text-white transition-colors" />
+                      {/* Content */}
+                      <div className="absolute inset-0 z-10 p-10 flex flex-col justify-end">
+                        <div className="w-16 h-16 bg-luxury-gold/20 backdrop-blur-sm flex items-center justify-center mb-6 group-hover:bg-luxury-gold transition-all duration-500 rounded-sm">
+                          <IconComponent className="w-6 h-6 text-luxury-gold group-hover:text-white transition-colors" />
+                        </div>
+                        <h3 className="text-3xl font-serif font-bold text-white mb-4 leading-tight">
+                          {service.title}
+                        </h3>
+                        <p className="text-white/80 mb-8 leading-relaxed text-sm opacity-0 group-hover:opacity-100 dark:group-hover:text-white/90 transition-all duration-500 translate-y-4 group-hover:translate-y-0 line-clamp-2">
+                          {service.description}
+                        </p>
+                        <div
+                          className="text-luxury-gold font-bold text-xs uppercase tracking-[0.2em] inline-flex items-center group-hover:tracking-[0.3em] transition-all"
+                        >
+                          Discover Design <ArrowRight className="w-4 h-4 ml-2" />
+                        </div>
                       </div>
-                      <h3 className="text-3xl font-serif font-bold text-white mb-4 leading-tight">
-                        {service.title}
-                      </h3>
-                      <p className="text-white/80 mb-8 leading-relaxed text-sm opacity-0 group-hover:opacity-100 dark:group-hover:text-white/90 transition-all duration-500 translate-y-4 group-hover:translate-y-0 line-clamp-2">
-                        {service.description}
-                      </p>
-                      <div
-                        className="text-luxury-gold font-bold text-xs uppercase tracking-[0.2em] inline-flex items-center group-hover:tracking-[0.3em] transition-all"
-                      >
-                        Discover Design <ArrowRight className="w-4 h-4 ml-2" />
-                      </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              );
-            })}
+                    </Link>
+                  </motion.div>
+                );
+              })
+            )}
           </div>
 
           <div className="text-center mt-20">
@@ -184,34 +189,39 @@ const Home: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {projects.slice(0, 6).map((project) => (
-              <motion.div
-                key={project.id}
-                variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 30 } }}
-                className="group relative overflow-hidden shadow-luxury"
-              >
-                <div className="aspect-[4/5] overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-luxury-obsidian/90 via-luxury-obsidian/40 to-transparent p-10 flex flex-col justify-end translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
-                  <span className="text-luxury-gold text-[10px] uppercase tracking-[0.3em] font-bold mb-3">
-                    {project.category}
-                  </span>
-                  <h3 className="text-2xl font-serif font-bold text-white mb-2">
-                    {project.title}
-                  </h3>
-                  <p className="text-white/60 text-xs uppercase tracking-widest flex items-center">
-                    <span className="mr-2 h-[1px] w-4 bg-luxury-gold" /> {project.location}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+            {projectsLoading ? (
+              [...Array(3)].map((_, i) => <ProjectCardSkeleton key={i} />)
+            ) : (
+              projects.slice(0, 6).map((project) => (
+                <motion.div
+                  key={project.id}
+                  variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 30 } }}
+                  className="group relative overflow-hidden shadow-luxury"
+                >
+                  <div className="aspect-[4/5] overflow-hidden">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-luxury-obsidian/90 via-luxury-obsidian/40 to-transparent p-10 flex flex-col justify-end translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
+                    <span className="text-luxury-gold text-[10px] uppercase tracking-[0.3em] font-bold mb-3">
+                      {project.category}
+                    </span>
+                    <h3 className="text-2xl font-serif font-bold text-white mb-2">
+                      {project.title}
+                    </h3>
+                    <p className="text-white/60 text-xs uppercase tracking-widest flex items-center">
+                      <span className="mr-2 h-[1px] w-4 bg-luxury-gold" /> {project.location}
+                    </p>
+                  </div>
+                </motion.div>
+              ))
+            )}
           </div>
+
         </Section>
       </motion.div>
 

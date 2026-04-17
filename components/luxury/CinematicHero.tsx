@@ -77,7 +77,7 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
     return (
         <section
             ref={targetRef}
-            className={`relative min-h-[100svh] flex items-center justify-center overflow-hidden ${isLowPowerMode ? 'bg-black' : 'bg-luxury-black'} group`}
+            className={`relative min-h-[100svh] flex items-center justify-center overflow-hidden w-full ${isLowPowerMode ? 'bg-black' : 'bg-luxury-black'} group`}
         >
             {/* Background Container with Parallax */}
             <motion.div

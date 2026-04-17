@@ -7,6 +7,7 @@ import { useCompanyData } from '../hooks/useCompanyData';
 import { useServices } from '../hooks/useServices';
 import TrustBar from './luxury/TrustBar';
 import Button from './Button';
+import { logCallAction } from '../lib/tracking';
 
 const Footer: React.FC = () => {
   const { name, contactInfo, socialLinks, footerDescription } = useCompanyData();
@@ -103,7 +104,11 @@ const Footer: React.FC = () => {
               </li>
               <li className="flex items-center group">
                 <Phone className="w-5 h-5 text-luxury-gold mr-4 shrink-0 group-hover:text-white transition-colors" />
-                <a href={`tel:${contactInfo.phone.replace(/\s/g, '')}`} className="text-sm text-gray-400 group-hover:text-white transition-colors font-mono">
+                <a 
+                  href={`tel:${contactInfo.phone.replace(/\s/g, '')}`} 
+                  onClick={logCallAction}
+                  className="text-sm text-gray-400 group-hover:text-white transition-colors font-mono"
+                >
                   {contactInfo.phone}
                 </a>
               </li>
@@ -132,7 +137,7 @@ const Footer: React.FC = () => {
             &copy; {currentYear} {name}. All Rights Reserved.
           </p>
           <div className="flex gap-8 text-xs text-gray-500 uppercase tracking-wider">
-            <Link to="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+            <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy</Link>
             <Link to="/terms" className="hover:text-white transition-colors">Terms</Link>
           </div>
         </div>

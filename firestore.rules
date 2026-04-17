@@ -141,6 +141,17 @@ service cloud.firestore {
     }
 
     // ========================================
+    // CALL LOGS COLLECTION (Tracking)
+    // ========================================
+    match /call_logs/{logId} {
+      // Anyone can log a call click
+      allow create: if true;
+      
+      // Only admins can read or manage logs
+      allow read, update, delete: if isAdmin();
+    }
+    
+    // ========================================
     // CHAT INQUIRIES COLLECTION
     // ========================================
     match /chat_inquiries/{inquiryId} {

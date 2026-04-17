@@ -14,7 +14,8 @@ import {
     Home,
     LayoutTemplate,
     MessageSquare,
-    Calculator
+    Calculator,
+    PhoneCall
 } from 'lucide-react';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../lib/firebase';
@@ -32,6 +33,7 @@ const Sidebar: React.FC = () => {
         { icon: Users, label: 'Leads', path: '/admin/leads' },
         { icon: MessageSquare, label: 'Chat Inquiries', path: '/admin/chat-inquiries' },
         { icon: Calculator, label: 'Project Estimates', path: '/admin/estimates' },
+        { icon: PhoneCall, label: 'Call tracking', path: '/admin/call-logs' },
         { icon: Briefcase, label: 'Projects', path: '/admin/projects' },
         { icon: LayoutTemplate, label: 'Services', path: '/admin/services' },
         { icon: IndianRupee, label: 'Financials', path: '/admin/financials' },
@@ -53,10 +55,10 @@ const Sidebar: React.FC = () => {
         <>
             {/* Mobile Toggle Button */}
             <button
-                className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-luxury-gold text-white rounded-md shadow-lg"
+                className="lg:hidden fixed top-3 left-4 z-[100] p-2.5 bg-luxury-gold text-luxury-charcoal rounded-full shadow-lg active:scale-90 transition-transform flex items-center justify-center border border-white/10"
                 onClick={toggleMobile}
             >
-                <Menu size={24} />
+                {mobileOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
 
             {/* Sidebar Container */}

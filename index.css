@@ -87,6 +87,8 @@
 
 html {
   height: 100%;
+  width: 100%;
+  overflow-x: hidden;
   scroll-behavior: smooth;
   overflow-y: scroll;
   /* Force scrollbar to prevent width jumping */
@@ -94,6 +96,8 @@ html {
 
 body {
   min-height: 100svh;
+  max-width: 100vw;
+  overflow-x: hidden;
   padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
   background-color: var(--luxury-black);
   /* Force Dark Theme */
@@ -145,18 +149,44 @@ h6 {
 }
 
 h1 {
-  font-size: clamp(3rem, 8vw, 5rem);
+  font-size: clamp(2.5rem, 8vw, 5rem);
   font-weight: 800;
   letter-spacing: -0.04em;
   text-transform: uppercase;
+  line-height: 1.1;
   touch-action: manipulation;
   /* Faster touch response */
 }
 
 @media (max-width: 640px) {
   :root {
-    --section-spacing: 4rem;
+    --section-spacing: 3.5rem;
+    --card-padding: 1.25rem;
   }
+}
+
+/* Tablet & PC Max Widths */
+.container-premium {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  max-width: 1536px; /* Optimized for PC/Ultra-wide */
+}
+
+@media (min-width: 768px) {
+  .container-premium {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.responsive-table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  scrollbar-width: thin;
 }
 
 .mobile-haptic:active {
@@ -282,6 +312,39 @@ img[loading="lazy"] {
   to {
     transform: rotate(360deg);
   }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2.5s infinite linear;
+}
+
+.img-placeholder {
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(26, 26, 26, 0.5); /* Semi-transparent luxury charcoal */
+}
+
+.img-placeholder::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.05), 
+    transparent
+  );
+  animation: shimmer 2s infinite linear;
 }
 
 /* Smooth reveal animations */
