@@ -568,31 +568,23 @@ a {
    FIX ALL INVISIBLE TEXT ISSUES
    =============================================== */
 
-/* 1. HERO SECTION FIXES */
+/* Hero Section Refinements */
 .hero-heading {
-  color: #FFFFFF;
+  color: var(--luxury-white);
   font-weight: 700;
 }
 
 .hero-subtitle,
 .hero-description {
-  color: #FFFFFF !important;
-  /* Fix: was #d4c5a0 */
+  color: var(--luxury-white) !important;
+  opacity: 0.9;
   font-weight: 300;
   font-size: 1.1rem;
 }
 
-/* Remove invisible background text */
-.background-large-text,
-[class*="how-you-live"],
-[class*="background-text"] {
-  display: none !important;
-}
-
-/* 2. NAVIGATION FIXES */
+/* Navigation */
 nav a {
-  color: #FFFFFF !important;
-  /* Fix: was #999999 */
+  color: var(--luxury-white) !important;
   font-weight: 500;
   transition: color 0.3s ease;
 }
@@ -600,15 +592,14 @@ nav a {
 nav a:hover,
 nav a.active {
   color: var(--luxury-gold);
-  border-bottom: 2px solid var(--luxury-gold);
 }
 
-/* 3. STATISTICS LABELS FIXES */
+/* Statistics Labels */
 .stats-label,
 [class*="stat-label"],
 [class*="counter-label"] {
-  color: #2a2a26 !important;
-  /* Fix: was #A9A9A9 */
+  color: var(--luxury-gold) !important;
+  opacity: 0.8;
   font-weight: 600;
   font-size: 0.9rem;
   letter-spacing: 1px;
@@ -616,98 +607,39 @@ nav a.active {
 }
 
 .stats-number {
-  color: #FFFFFF;
+  color: var(--luxury-white);
   font-size: 2.5rem;
   font-weight: 700;
 }
 
-/* 4. CERTIFICATION LABELS FIXES */
-.certification-label,
-.cert-text,
-[class*="cert"],
-[class*="badge"] {
-  color: #333333 !important;
-  /* Fix: was #BFBFBF */
-  font-weight: 600;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-}
-
-/* 5. BADGE/PILL ELEMENTS - KEEP GREEN (ALREADY GOOD) */
-.badge,
-.pill {
-  color: #00D4AA;
-  border: 1px solid #00D4AA;
-}
-
-/* 6. FORM LABELS */
+/* Form Labels */
 .form-label,
 label {
-  color: #FFFFFF;
+  color: var(--luxury-white);
   font-weight: 500;
 }
 
-/* 7. BUTTON TEXT */
-.btn,
-button {
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.btn-primary {
-  background-color: #00D4AA;
-  color: #FFFFFF;
-}
-
-.btn-primary:hover {
-  background-color: #00B894;
-  box-shadow: 0 4px 12px rgba(0, 212, 170, 0.4);
-}
-
-/* 8. SECONDARY TEXT IMPROVEMENTS */
+/* Secondary Text */
 .subtitle,
 .description {
-  color: #FFFFFF;
+  color: var(--luxury-white);
+  opacity: 0.9;
   font-weight: 300;
   line-height: 1.6;
 }
 
-/* 9. IMPORTANT: ENSURE TEXT SHADOW ON DARK BACKGROUNDS */
-.hero-content,
-.hero-section,
-[class*="hero"] {
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-}
-
-/* ===============================================
-   DARK MODE SELECT & INPUT REFINEMENTS
-   =============================================== */
-
-/* Ensure dropdown lists have dark background on all browsers */
+/* Dropdown Options */
 select option {
-  background-color: #0a0a0a; /* Explicit obsidian black */
-  color: #FFFFFF;
+  background-color: var(--luxury-black);
+  color: var(--luxury-white);
 }
 
-/* Style for standard select fields */
-select {
-  appearance: none !important;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23D4AF37'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E") !important;
-  background-repeat: no-repeat !important;
-  background-position: right 1rem center !important;
-  background-size: 1.25em !important;
-  padding-right: 2.5rem !important;
+/* Layout Consistency */
+.dark body {
+  color: var(--luxury-white);
+  background-color: var(--luxury-black);
 }
 
-/* Custom scrollbar for dropdowns if supported */
-select::-webkit-scrollbar {
-  width: 6px;
-}
-select::-webkit-scrollbar-thumb {
-  background: #D4AF37;
-}
-
-/* Fix for mobile menu background consistency */
-.mobile-menu-open {
-  overflow: hidden;
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+  color: var(--luxury-white);
 }

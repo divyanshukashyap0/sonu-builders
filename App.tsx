@@ -117,6 +117,34 @@ const PageLoader = () => (
 );
 
 
+const THEME_PRESETS = {
+  'obsidian_copper': {
+    '--luxury-black': '#110d0a',
+    '--luxury-charcoal': '#1a1614',
+    '--luxury-gold': '#b87333',
+    '--luxury-gold-light': '#d4a373',
+    '--luxury-white': '#f5f5f5',
+    '--obsidian': '#110d0a'
+  },
+  'royal_gold': {
+    '--luxury-black': '#000000',
+    '--luxury-charcoal': '#0a0a0a',
+    '--luxury-gold': '#D4AF37',
+    '--luxury-gold-light': '#F4DFB0',
+    '--luxury-white': '#FFFFFF',
+    '--obsidian': '#000000'
+  },
+  'industrial_luxury': {
+    '--luxury-black': '#1a1a1a',
+    '--luxury-charcoal': '#4a4a4a',
+    '--luxury-gold': '#b87333',
+    '--luxury-gold-light': '#d4a373',
+    '--luxury-white': '#e0e0e0',
+    '--obsidian': '#1a1a1a',
+    '--premium-stone': '#4a4a4a'
+  }
+};
+
 const AppContent: React.FC = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
@@ -128,62 +156,40 @@ const AppContent: React.FC = () => {
       if (docSnap.exists()) {
         const data = docSnap.data();
         if (data.siteTitle) document.title = data.siteTitle;
-        if (data.themeOverride && data.themeOverride !== 'auto') {
-          // Enforce theme if overridden by admin
-          if (data.themeOverride !== theme) {
-            toggleTheme();
-          }
-        }
       }
     });
     return () => unsub();
-  }, [theme, toggleTheme]);
+  }, []);
 
   useEffect(() => {
-    const THEME_PRESETS = {
-      'obsidian_copper': {
-        '--luxury-black': '#110d0a',
-        '--luxury-charcoal': '#1a1614',
-        '--luxury-gold': '#b87333',
-        '--luxury-gold-light': '#d4a373',
-        '--luxury-white': '#f5f5f5',
-        '--obsidian': '#110d0a'
-      },
-      'royal_gold': {
-        '--luxury-black': '#000000',
-        '--luxury-charcoal': '#0a0a0a',
-        '--luxury-gold': '#D4AF37',
-        '--luxury-gold-light': '#F4DFB0',
-        '--luxury-white': '#FFFFFF',
-        '--obsidian': '#000000'
-      },
-      'industrial_luxury': {
-        '--luxury-black': '#1a1a1a',
-        '--luxury-charcoal': '#4a4a4a',
-        '--luxury-gold': '#b87333',
-        '--luxury-gold-light': '#d4a373',
-        '--luxury-white': '#e0e0e0',
-        '--obsidian': '#1a1a1a',
-        '--premium-stone': '#4a4a4a'
-      }
-    };
-
     const unsub = onSnapshot(doc(db, 'settings', 'appearance'), (docSnap) => {
       if (docSnap.exists()) {
         const data = docSnap.data();
         const activeThemeId = data.activeTheme || 'royal_gold';
-        const root = document.documentElement;
+        console.log(`[Luxury Theme] Applying preset: ${activeThemeId}`);
         
         const selectedPreset = THEME_PRESETS[activeThemeId as keyof typeof THEME_PRESETS] || THEME_PRESETS.royal_gold;
 
-        // Apply all variables from the preset
-        Object.entries(selectedPreset).forEach(([variable, value]) => {
-          root.style.setProperty(variable, value);
-        });
+        // Create or update dynamic style tag for highest priority
+        let styleTag = document.getElementById('luxury-theme-vars') as HTMLStyleElement;
+        if (!styleTag) {
+          styleTag = document.createElement('style');
+          styleTag.id = 'luxury-theme-vars';
+          document.head.appendChild(styleTag);
+        }
 
-        // Add compatibility mappings
-        root.style.setProperty('--gold-accent', selectedPreset['--luxury-gold']);
-        root.style.setProperty('--charcoal', selectedPreset['--luxury-charcoal']);
+        const varDefinitions = Object.entries(selectedPreset)
+          .map(([variable, value]) => `${variable}: ${value} !important;`)
+          .join('\n    ');
+
+        styleTag.innerHTML = `
+:root {
+    ${varDefinitions}
+    --gold-accent: ${selectedPreset['--luxury-gold']} !important;
+    --charcoal: ${selectedPreset['--luxury-charcoal']} !important;
+    --brand-green: ${selectedPreset['--luxury-gold']} !important;
+}
+        `;
       }
     });
     return () => unsub();

@@ -21,9 +21,9 @@ interface CinematicHeroProps {
 export const CinematicHero: React.FC<CinematicHeroProps> = ({
     backgroundImage: defaultBg = '',
     backgroundVideo: defaultVideo = '',
-    titleColor = '#FFFFFF',
-    emphasisColor = '#D4AF37', // Luxury Gold
-    subtextColor = '#e0e0e0', // Warm Gray
+    titleColor = 'var(--luxury-white)',
+    emphasisColor = 'var(--luxury-gold)',
+    subtextColor = 'rgba(255, 255, 255, 0.8)',
     title: defaultTitle = 'Where Luxury',
     emphasisText: defaultEmphasis = 'Meets Your Vision',
     description: defaultDesc = '4000+ families transformed their homes using premium materials and expert design. On-time delivery guaranteed. 10-year warranty included.'
