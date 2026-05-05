@@ -83,12 +83,12 @@ const Home: React.FC = () => {
         )}
 
         {/* Services Preview */}
-        <Section className="bg-luxury-white dark:bg-luxury-charcoal pt-20 pb-20">
+        <Section className="bg-black pt-20 pb-20">
           <div className="text-center mb-24">
             <p className="text-luxury-gold font-bold uppercase tracking-[0.3em] mb-4 text-xs">
               Our Expertise
             </p>
-            <h2 className="text-luxury-charcoal dark:text-white">
+            <h2 className="text-white dark:text-white">
               Crafting Exceptional Environments
             </h2>
           </div>
@@ -155,13 +155,13 @@ const Home: React.FC = () => {
         </div>
 
         {/* Featured Projects */}
-        <Section className="bg-luxury-white dark:bg-luxury-charcoal">
+        <Section className="bg-black">
           <div className="flex justify-between items-end mb-20">
             <div>
               <p className="text-luxury-gold font-bold uppercase tracking-[0.3em] mb-4 text-xs">
                 Portfolio
               </p>
-              <h2 className="text-luxury-charcoal dark:text-white">
+              <h2 className="text-white dark:text-white">
                 The Gallery of Works
               </h2>
             </div>
@@ -216,13 +216,13 @@ const Home: React.FC = () => {
       </div>
 
       {/* Testimonials */}
-      <Section className="bg-luxury-white dark:bg-luxury-charcoal relative overflow-hidden">
+      <Section className="bg-black relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-luxury-gold/5 to-transparent opacity-50" />
         <div className="text-center mb-16 relative z-10">
           <p className="text-luxury-gold font-bold uppercase tracking-[0.2em] mb-3 text-xs">
             Client Experiences
           </p>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-luxury-charcoal dark:text-white mb-6">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-white dark:text-white mb-6">
             Reflections of Excellence
           </h2>
           <div className="flex items-center justify-center gap-4 py-3 px-6 bg-white/5 backdrop-blur-sm rounded-full border border-white/10 w-fit mx-auto">
@@ -246,14 +246,14 @@ const Home: React.FC = () => {
       <LeadCaptureForm />
 
       {/* CTA Section */}
-      <Section className="bg-luxury-white dark:bg-luxury-charcoal border-y border-luxury-gold/10 relative overflow-hidden">
+      <Section className="bg-black border-y border-luxury-gold/10 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-luxury-gold/5 rounded-full -mr-48 -mt-48 blur-3xl opacity-50" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-luxury-gold/5 rounded-full -ml-48 -mb-48 blur-3xl opacity-50" />
-        <div className="text-center text-luxury-charcoal max-w-4xl mx-auto relative z-10">
+        <div className="text-center text-white max-w-4xl mx-auto relative z-10">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-6 dark:text-white">
             Ready to Transform Your Space?
           </h2>
-          <p className="text-luxury-charcoal/70 dark:text-white/70 text-lg mb-10 max-w-2xl mx-auto leading-relaxed font-medium">
+          <p className="text-white/70 dark:text-white/70 text-lg mb-10 max-w-2xl mx-auto leading-relaxed font-medium">
             Contact us today for a free consultation. Let's discuss how we can bring your interior design vision to life with precision and elegance.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-6">

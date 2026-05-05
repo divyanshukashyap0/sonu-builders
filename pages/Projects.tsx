@@ -54,7 +54,7 @@ const Projects: React.FC = () => {
 
   if (projectsMaintenance) {
     return (
-      <div className="min-h-screen bg-luxury-white dark:bg-luxury-charcoal">
+      <div className="min-h-screen bg-black">
         <PageHero
           title="Portfolio Refresh"
           subtitle="Our latest masterpieces are being documented"

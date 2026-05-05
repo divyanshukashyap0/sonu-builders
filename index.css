@@ -10,18 +10,18 @@
   /* Primary Green */
   --primary-green-dark: #17a348;
   /* Hover Green */
-  --luxury-black: #050505;
+  --luxury-black: #000000;
   /* Richer Black for depth */
   --luxury-charcoal: #1a1a1a;
   /* Slightly warmer black for text */
-  --luxury-white: #F9F8F6;
-  /* Softened White */
-  --warm-gray: #e0e0e0;
-  /* Premium Soft Gray */
-  --ivory-pearl: #F2F0E9;
-  /* Warm Beige/Off-White for main background */
-  --premium-stone: #E6E4DC;
-  /* Secondary background */
+  --luxury-white: #000000;
+  /* soft white -> pure black */
+  --warm-gray: #1a1a1a;
+  /* Soft Gray -> Dark Charcoal */
+  --ivory-pearl: #000000;
+  /* Warm Beige -> pure black */
+  --premium-stone: #0a0a0a;
+  /* Secondary bg -> Richer Black */
 
   /* Legacy/Compatibility mapping */
   --gold-accent: var(--luxury-gold);

@@ -101,7 +101,7 @@ const BrandingSection: React.FC<BrandingSectionProps> = ({
                         <motion.div
                             animate={{ y: [0, -10, 0] }}
                             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                            className="absolute -bottom-10 -right-10 bg-neutral-900 border border-white/10 p-8 shadow-2xl rounded-sm hidden md:block z-20"
+                            className="absolute -bottom-10 -right-10 bg-black border border-white/10 p-8 shadow-2xl rounded-sm hidden md:block z-20"
                         >
                             <p className="text-luxury-gold font-serif text-3xl font-bold">{content.yearsExperience}</p>
                             <p className="text-white text-xs uppercase tracking-tighter font-semibold">Years of Excellence</p>
