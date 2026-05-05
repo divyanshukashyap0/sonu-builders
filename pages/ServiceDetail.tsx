@@ -152,6 +152,36 @@ const ServiceDetail: React.FC = () => {
                     </div>
                 </Section>
             )}
+
+            {/* Service Videos */}
+            {service.videos && service.videos.length > 0 && (
+                <Section>
+                    <div className="text-center mb-12">
+                        <h2 className="text-3xl font-serif font-bold text-white mb-4">Video Showcases</h2>
+                        <p className="text-luxury-gold uppercase tracking-[0.3em] text-[10px] font-bold">Experience our expertise in motion</p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {service.videos.map((video, idx) => (
+                            <motion.div
+                                key={idx}
+                                whileHover={{ y: -10 }}
+                                className="aspect-video rounded-xl overflow-hidden shadow-luxury border border-white/20 group bg-black relative"
+                            >
+                                <iframe
+                                    width="100%"
+                                    height="100%"
+                                    src={video.includes('youtube.com/embed/') ? video : `https://www.youtube.com/embed/${video.split('v=')[1]?.split('&')[0] || video.split('/').pop()}?mute=1&autoplay=0`}
+                                    title="YouTube video player"
+                                    frameBorder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                    className="w-full h-full"
+                                ></iframe>
+                            </motion.div>
+                        ))}
+                    </div>
+                </Section>
+            )}
         </div>
     );
 };

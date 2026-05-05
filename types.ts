@@ -36,6 +36,7 @@ export interface Service {
   features?: string[];
   suggestions?: string[];
   gallery?: string[];
+  videos?: string[];
 }
 
 export interface NavLink {

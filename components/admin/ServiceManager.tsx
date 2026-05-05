@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { useServices } from '../../hooks/useServices';
-import { Plus, Trash2, Edit, Save, X, Image, List, Lightbulb, Award, ChevronRight, Search, Loader2 } from 'lucide-react';
+import { Plus, Trash2, Edit, Save, X, Image, List, Lightbulb, Award, ChevronRight, Search, Loader2, Upload, Youtube } from 'lucide-react';
 import { Service } from '../../types';
 import CloudinaryImageInput from './media/CloudinaryImageInput';
+import { useCloudinary } from '../../hooks/useCloudinary';
+import { useToast } from '../../context/ToastContext';
 
 const ServiceManager: React.FC = () => {
     const { services, loading, addService, updateService, deleteService } = useServices();
+    const { uploadToCloudinary } = useCloudinary();
+    const { showToast } = useToast();
     const [editingId, setEditingId] = useState<string | null>(null);
     const [isAdding, setIsAdding] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+    const [bulkUploading, setBulkUploading] = useState(false);
 
     const [formData, setFormData] = useState<Partial<Service>>({
         title: '',
@@ -18,7 +23,8 @@ const ServiceManager: React.FC = () => {
         image: '',
         features: [],
         suggestions: [],
-        gallery: []
+        gallery: [],
+        videos: []
     });
 
     const handleEdit = (service: Service) => {
@@ -38,7 +44,8 @@ const ServiceManager: React.FC = () => {
             image: '',
             features: [],
             suggestions: [],
-            gallery: []
+            gallery: [],
+            videos: []
         });
     };
 
@@ -61,19 +68,47 @@ const ServiceManager: React.FC = () => {
         }
     };
 
-    const handleArrayUpdate = (field: 'features' | 'suggestions' | 'gallery', index: number, value: string) => {
+    const handleArrayUpdate = (field: 'features' | 'suggestions' | 'gallery' | 'videos', index: number, value: string) => {
         const newArray = [...(formData[field] || [])];
         newArray[index] = value;
         setFormData({ ...formData, [field]: newArray });
     };
 
-    const addArrayItem = (field: 'features' | 'suggestions' | 'gallery') => {
+    const addArrayItem = (field: 'features' | 'suggestions' | 'gallery' | 'videos') => {
         setFormData({ ...formData, [field]: [...(formData[field] || []), ''] });
     };
 
-    const removeArrayItem = (field: 'features' | 'suggestions' | 'gallery', index: number) => {
+    const removeArrayItem = (field: 'features' | 'suggestions' | 'gallery' | 'videos', index: number) => {
         const newArray = (formData[field] || []).filter((_, i) => i !== index);
         setFormData({ ...formData, [field]: newArray });
+    };
+
+    const handleBulkUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (!files || files.length === 0) return;
+
+        setBulkUploading(true);
+        const uploadedUrls: string[] = [];
+
+        try {
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const result = await uploadToCloudinary(file, 'services_gallery');
+                uploadedUrls.push(result.url);
+            }
+
+            setFormData(prev => ({
+                ...prev,
+                gallery: [...(prev.gallery || []), ...uploadedUrls]
+            }));
+            showToast(`Successfully uploaded ${uploadedUrls.length} images`, 'success');
+        } catch (error) {
+            console.error('Bulk upload error:', error);
+            showToast('Failed to upload some images', 'error');
+        } finally {
+            setBulkUploading(false);
+            if (e.target) e.target.value = '';
+        }
     };
 
     const filteredServices = services.filter(s =>
@@ -228,24 +263,49 @@ const ServiceManager: React.FC = () => {
                             <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl border border-luxury-gold/10">
                                 <div className="flex justify-between items-center mb-4">
                                     <h4 className="text-xs font-bold uppercase tracking-tighter text-luxury-gold">Image Gallery</h4>
-                                    <button onClick={() => addArrayItem('gallery')} className="text-luxury-gold hover:underline font-bold text-xs flex items-center gap-1">
-                                        <Plus size={14} /> Add Image
-                                    </button>
+                                    <div className="flex gap-4">
+                                        <label className={`text-luxury-gold hover:underline font-bold text-xs flex items-center gap-1 cursor-pointer ${bulkUploading ? 'opacity-50 pointer-events-none' : ''}`}>
+                                            <input type="file" multiple accept="image/*" className="hidden" onChange={handleBulkUpload} disabled={bulkUploading} />
+                                            {bulkUploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+                                            Bulk Upload
+                                        </label>
+                                        <button onClick={() => addArrayItem('gallery')} className="text-luxury-gold hover:underline font-bold text-xs flex items-center gap-1">
+                                            <Plus size={14} /> Add One
+                                        </button>
+                                    </div>
                                 </div>
-                                <div className="space-y-2">
+                                <div className="grid grid-cols-2 gap-4">
                                     {formData.gallery?.map((img, idx) => (
-                                        <div key={idx} className="flex gap-2 items-start bg-gray-50 dark:bg-white/5 p-2 rounded-lg border border-gray-100 dark:border-white/5">
-                                            <div className="flex-1">
+                                        img ? (
+                                            <div key={idx} className="relative group aspect-video bg-gray-100 dark:bg-white/5 rounded-lg overflow-hidden border border-gray-100 dark:border-white/5">
+                                                <img src={img.includes('cloudinary.com') ? img.replace('/upload/', '/upload/w_400,f_auto,q_auto/') : img} alt="" className="w-full h-full object-cover" />
+                                                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                                    <button onClick={() => removeArrayItem('gallery', idx)} className="p-2 bg-red-500 text-white rounded-full hover:scale-110 transition-transform">
+                                                        <Trash2 size={14} />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div key={idx} className="col-span-2 bg-gray-50 dark:bg-white/5 p-4 rounded-xl border border-luxury-gold/20">
+                                                <div className="flex justify-between items-start mb-2">
+                                                    <span className="text-[10px] font-bold uppercase text-luxury-gold">Manual Gallery Entry</span>
+                                                    <button onClick={() => removeArrayItem('gallery', idx)} className="text-red-500 hover:text-red-600"><X size={14} /></button>
+                                                </div>
                                                 <CloudinaryImageInput
-                                                    label={`Image #${idx + 1}`}
+                                                    label={`Image/Video URL`}
                                                     value={img}
                                                     onChange={(url) => handleArrayUpdate('gallery', idx, url)}
                                                     folder="services_gallery"
                                                 />
                                             </div>
-                                            <button onClick={() => removeArrayItem('gallery', idx)} className="mt-8 p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-colors"><Trash2 size={16} /></button>
-                                        </div>
+                                        )
                                     ))}
+                                    {formData.gallery?.length === 0 && (
+                                        <div className="col-span-2 py-8 border-2 border-dashed border-gray-200 dark:border-white/5 rounded-xl flex flex-col items-center justify-center text-gray-400">
+                                            <Image size={24} className="mb-2 opacity-20" />
+                                            <p className="text-[10px] uppercase font-bold tracking-widest">No images added</p>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -297,6 +357,51 @@ const ServiceManager: React.FC = () => {
                                             <button onClick={() => removeArrayItem('suggestions', idx)} className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-colors align-top"><Trash2 size={16} /></button>
                                         </div>
                                     ))}
+                                </div>
+                            </div>
+
+                            {/* Videos List */}
+                            <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl border border-luxury-gold/10">
+                                <div className="flex justify-between items-center mb-4">
+                                    <h4 className="text-xs font-bold uppercase tracking-tighter text-luxury-gold flex items-center gap-2"><Youtube size={14} /> YouTube Videos</h4>
+                                    <button onClick={() => addArrayItem('videos')} className="text-luxury-gold hover:underline font-bold text-xs flex items-center gap-1">
+                                        <Plus size={14} /> Add Video
+                                    </button>
+                                </div>
+                                <div className="space-y-4">
+                                    {formData.videos?.map((video, idx) => (
+                                        <div key={idx} className="space-y-2 bg-gray-50 dark:bg-white/5 p-3 rounded-lg border border-gray-100 dark:border-white/5">
+                                            <div className="flex gap-2">
+                                                <input
+                                                    type="text"
+                                                    value={video}
+                                                    onChange={(e) => handleArrayUpdate('videos', idx, e.target.value)}
+                                                    placeholder="YouTube Video URL..."
+                                                    className="flex-1 bg-white dark:bg-neutral-800 border border-gray-200 dark:border-white/5 rounded-lg p-2 text-xs"
+                                                />
+                                                <button onClick={() => removeArrayItem('videos', idx)} className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-colors"><Trash2 size={16} /></button>
+                                            </div>
+                                            {video && (
+                                                <div className="aspect-video rounded-lg overflow-hidden bg-black border border-white/5">
+                                                    <iframe
+                                                        width="100%"
+                                                        height="100%"
+                                                        src={video.includes('youtube.com/embed/') ? video : `https://www.youtube.com/embed/${video.split('v=')[1]?.split('&')[0] || video.split('/').pop()}?mute=1&autoplay=0`}
+                                                        title="YouTube video player"
+                                                        frameBorder="0"
+                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                        allowFullScreen
+                                                    ></iframe>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                    {formData.videos?.length === 0 && (
+                                        <div className="py-8 border-2 border-dashed border-gray-200 dark:border-white/5 rounded-xl flex flex-col items-center justify-center text-gray-400">
+                                            <Youtube size={24} className="mb-2 opacity-20" />
+                                            <p className="text-[10px] uppercase font-bold tracking-widest">No videos added</p>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
