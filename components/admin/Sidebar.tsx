@@ -15,7 +15,9 @@ import {
     LayoutTemplate,
     MessageSquare,
     Calculator,
-    PhoneCall
+    PhoneCall,
+    Image as ImageIcon,
+    X
 } from 'lucide-react';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../lib/firebase';
@@ -36,6 +38,7 @@ const Sidebar: React.FC = () => {
         { icon: PhoneCall, label: 'Call tracking', path: '/admin/call-logs' },
         { icon: Briefcase, label: 'Projects', path: '/admin/projects' },
         { icon: LayoutTemplate, label: 'Services', path: '/admin/services' },
+        { icon: ImageIcon, label: 'Media Library', path: '/admin/media' },
         { icon: IndianRupee, label: 'Financials', path: '/admin/financials' },
         { icon: FileText, label: 'Content', path: '/admin/content' },
         { icon: Users, label: 'Team', path: '/admin/team' }, // Changed Icon to Users for Team

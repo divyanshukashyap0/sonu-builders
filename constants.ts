@@ -269,7 +269,7 @@ export const TESTIMONIALS: Testimonial[] = [
     id: '1',
     name: 'Aashish Bhawnani',
     role: 'TV Unit & Cupboards',
-    content: 'We recently got two cupboards and one wall TV unit made in our flat... by Sonu Enterprises & Building Developers and our experience has been excellent. The team is extremely soft-spoken, polite and highly professional. Work was completed exactly within the promised schedule. Their pricing was very genuine and reasonable. They also went the extra mile by installing lights inside the cupboards. Highly recommended for reliable interior work.',
+    content: 'We recently got two cupboards and one wall TV unit made in our flat... by Sonu Enterprises   and our experience has been excellent. The team is extremely soft-spoken, polite and highly professional. Work was completed exactly within the promised schedule. Their pricing was very genuine and reasonable. They also went the extra mile by installing lights inside the cupboards. Highly recommended for reliable interior work.',
     rating: 5,
   },
   {

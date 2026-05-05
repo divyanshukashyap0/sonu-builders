@@ -12,6 +12,7 @@ import { Maximize2, Camera, Construction, Hammer, Phone } from 'lucide-react';
 import { useCompanyData } from '../hooks/useCompanyData';
 
 import { ProjectCardSkeleton } from '../components/Skeleton';
+import MediaRenderer from '../components/ui/MediaRenderer';
 
 const Projects: React.FC = () => {
   const [filter, setFilter] = useState<string>('All');
@@ -114,15 +115,12 @@ const Projects: React.FC = () => {
                 onClick={() => openGallery(project)}
               >
                 <div className="relative overflow-hidden aspect-w-4 aspect-h-3 bg-gradient-to-br from-neutral-800 to-neutral-900">
-                  <img
-                    src={project.image || 'https://placehold.co/800x600/1a1a1a/d4af37?text=No+Image'}
+                  <MediaRenderer
+                    src={project.image || ''}
                     alt={project.title}
-                    className="w-full h-64 object-cover transform group-hover:scale-110 transition-transform duration-700"
+                    className="w-full h-64 object-cover transform group-hover:scale-110 transition-transform duration-[2000ms] ease-out"
                     loading={projectsLoading ? 'lazy' : 'eager'}
-                    decoding="async"
-                    onError={(e) => {
-                      e.currentTarget.src = 'https://placehold.co/800x600/1a1a1a/d4af37?text=No+Image';
-                    }}
+                    showPlayIcon
                   />
 
                   {/* Overlay */}

@@ -5,6 +5,7 @@ import { useProjects } from '../../hooks/useProjects';
 import { Project, ProjectCategory } from '../../types';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
+import CloudinaryImageInput from '../../components/admin/media/CloudinaryImageInput';
 
 const ProjectForm: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -124,29 +125,15 @@ const ProjectForm: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Image URL (Simple for now, can implement Upload later) */}
-                <div>
-                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Main Image URL *</label>
-                    <div className="flex gap-4 items-start">
-                        <div className="flex-1">
-                            <input
-                                type="url"
-                                name="image"
-                                value={formData.image}
-                                onChange={handleChange}
-                                required
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-white/10 rounded-lg bg-gray-50 dark:bg-white/5 focus:outline-none focus:border-luxury-gold transition-colors"
-                                placeholder="https://..."
-                            />
-                            <p className="text-xs text-gray-500 mt-1">Paste a direct link to an image.</p>
-                        </div>
-                        {formData.image && (
-                            <div className="w-24 h-16 rounded-lg overflow-hidden border border-gray-200">
-                                <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
-                            </div>
-                        )}
-                    </div>
-                </div>
+                {/* Main Image Upload */}
+                <CloudinaryImageInput
+                    label="Main Image"
+                    value={formData.image || ''}
+                    onChange={(url) => setFormData(prev => ({ ...prev, image: url }))}
+                    required
+                    folder="projects"
+                    placeholder="https://..."
+                />
 
                 <div>
                     <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Description *</label>

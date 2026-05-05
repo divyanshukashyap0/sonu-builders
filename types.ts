@@ -91,3 +91,17 @@ export interface ProjectEstimate {
   status: 'New' | 'Quote Sent' | 'Followed Up';
   createdAt: any;
 }
+
+export interface CloudinaryMedia {
+  id: string;
+  url: string;
+  public_id: string;
+  bytes: number;
+  width: number;
+  height: number;
+  format: string;
+  createdAt: number;
+  tags?: string[];
+  folder?: string;
+  resource_type?: string;
+}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import MediaRenderer from './ui/MediaRenderer';
 
 interface ImageGalleryModalProps {
   isOpen: boolean;
@@ -78,13 +79,28 @@ const ImageGalleryModal: React.FC<ImageGalleryModalProps> = ({ isOpen, onClose, 
           </button>
         )}
 
-        <div className="relative max-w-full max-h-full" onClick={(e) => e.stopPropagation()}>
-          <img
-            src={images[currentIndex]}
-            alt={`Gallery image ${currentIndex + 1}`}
-            className="max-h-[85vh] md:max-h-[85vh] max-w-full object-contain rounded-sm shadow-2xl animate-fadeIn border border-white/10"
-            decoding="async"
-          />
+        <div className="relative max-w-full max-h-full w-full h-[70vh] flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+          {images[currentIndex].includes('youtube.com') || images[currentIndex].includes('youtu.be') ? (
+            <div className="w-full h-full max-w-4xl max-h-full">
+              <iframe
+                src={`https://www.youtube.com/embed/${((url) => {
+                  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+                  const match = url.match(regExp);
+                  return (match && match[2].length === 11) ? match[2] : '';
+                })(images[currentIndex])}?autoplay=1&mute=0&controls=1&rel=0&modestbranding=1`}
+                className="w-full h-full rounded-lg border border-white/10"
+                allow="autoplay; encrypted-media; fullscreen"
+                title="Gallery Video"
+              />
+            </div>
+          ) : (
+            <MediaRenderer
+              src={images[currentIndex]}
+              alt={`Gallery image ${currentIndex + 1}`}
+              className="max-h-[85vh] md:max-h-[85vh] max-w-full rounded-sm shadow-2xl animate-fadeIn border border-white/10"
+              objectFit="contain"
+            />
+          )}
         </div>
 
         {images.length > 1 && (

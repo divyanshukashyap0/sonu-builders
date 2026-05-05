@@ -17,8 +17,9 @@ const Footer: React.FC = () => {
 
   return (
     <footer className="bg-luxury-obsidian text-white relative overflow-hidden border-t border-white/5">
-      {/* Background Texture */}
-      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none" />
+      {/* Background Texture - Using CSS pattern to avoid CORS issues */}
+      <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none" 
+           style={{ backgroundImage: `radial-gradient(#d4af37 0.5px, transparent 0px)`, backgroundSize: '40px 40px' }} />
 
       {/* Trust Bar Integration */}
       <div className="relative z-10 border-b border-white/5">

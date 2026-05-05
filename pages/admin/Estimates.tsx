@@ -9,7 +9,7 @@ const AdminEstimates: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedEstimate, setSelectedEstimate] = useState<ProjectEstimate | null>(null);
 
-    const filteredEstimates = estimates.filter(est => 
+    const filteredEstimates = estimates.filter(est =>
         est.userName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         est.userPhone.includes(searchTerm) ||
         est.city?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -49,7 +49,7 @@ const AdminEstimates: React.FC = () => {
                     <h2 className="text-2xl font-serif font-bold text-luxury-charcoal dark:text-white">Project Estimates</h2>
                     <p className="text-gray-500 dark:text-gray-400 text-sm">Track detailed user requirements and budget expectations.</p>
                 </div>
-                
+
                 <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                     <input
@@ -81,15 +81,15 @@ const AdminEstimates: React.FC = () => {
                                     <div className="text-xs text-gray-500 font-mono">{est.userPhone}</div>
                                 </td>
                                 <td className="px-6 py-4">
-                                    <div className="text-sm text-luxury-charcoal dark:text-white flex items-center gap-1"><MapPin size={12}/> {est.city || 'Unknown'}</div>
-                                    <div className="text-xs text-luxury-gold font-bold uppercase tracking-tighter flex items-center gap-1"><Calendar size={12}/> {est.timeline}</div>
+                                    <div className="text-sm text-luxury-charcoal dark:text-white flex items-center gap-1"><MapPin size={12} /> {est.city || 'Unknown'}</div>
+                                    <div className="text-xs text-luxury-gold font-bold uppercase tracking-tighter flex items-center gap-1"><Calendar size={12} /> {est.timeline}</div>
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className="text-lg font-serif font-bold text-luxury-gold">{formatCurrency(est.totalBudget)}</div>
                                     <div className="text-[10px] text-gray-400">{formatDate(est.createdAt)}</div>
                                 </td>
                                 <td className="px-6 py-4">
-                                    <button 
+                                    <button
                                         onClick={() => setSelectedEstimate(est)}
                                         className="flex items-center gap-2 px-3 py-1.5 bg-luxury-gold/10 text-luxury-gold rounded-lg text-xs font-bold border border-luxury-gold/20 hover:bg-luxury-gold hover:text-white transition-all"
                                     >
@@ -98,8 +98,8 @@ const AdminEstimates: React.FC = () => {
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className="flex items-center gap-3">
-                                        <button onClick={() => setSelectedEstimate(est)} className="p-2 text-luxury-gold hover:bg-luxury-gold/10 rounded-lg"><Eye size={18}/></button>
-                                        <button onClick={() => handleDelete(est.id)} className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg"><Trash2 size={18}/></button>
+                                        <button onClick={() => setSelectedEstimate(est)} className="p-2 text-luxury-gold hover:bg-luxury-gold/10 rounded-lg"><Eye size={18} /></button>
+                                        <button onClick={() => handleDelete(est.id)} className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg"><Trash2 size={18} /></button>
                                     </div>
                                 </td>
                             </tr>
@@ -118,7 +118,7 @@ const AdminEstimates: React.FC = () => {
             <AnimatePresence>
                 {selectedEstimate && (
                     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-                        <motion.div 
+                        <motion.div
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.9, opacity: 0 }}
@@ -144,7 +144,7 @@ const AdminEstimates: React.FC = () => {
                                         <p className="text-xs text-gray-500 italic">Timeline: {selectedEstimate.timeline}</p>
                                     </div>
                                 </div>
-                                
+
                                 <div>
                                     <p className="text-[10px] uppercase tracking-widest text-gray-500 font-bold mb-4">Inventory Breakdown</p>
                                     <div className="space-y-3">
@@ -165,7 +165,7 @@ const AdminEstimates: React.FC = () => {
                             </div>
                             <div className="p-8 bg-gray-50 dark:bg-black/20 space-y-4">
                                 <div className="grid grid-cols-2 gap-4">
-                                    <button 
+                                    <button
                                         onClick={() => {
                                             const hour = new Date().getHours();
                                             const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
@@ -176,12 +176,12 @@ const AdminEstimates: React.FC = () => {
                                     >
                                         <MessageSquare size={16} /> WhatsApp User
                                     </button>
-                                    <button 
+                                    <button
                                         onClick={() => {
                                             const hour = new Date().getHours();
                                             const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
                                             const subject = encodeURIComponent(`Regarding your Project Estimate for - ${selectedEstimate.city || 'Mumbai'}`);
-                                            const body = encodeURIComponent(`${greeting} ${selectedEstimate.userName},\n\nI hope you're having a productive day.\n\nThis is Sonu Singh from Sonu Enterprises & Building Developers. I'm following up on the interior design estimate you created on our portal.\n\nSUMMARY:\n- Estimated Budget: ${formatCurrency(selectedEstimate.totalBudget)}\n- Timeline: ${selectedEstimate.timeline}\n- Inventory: ${selectedEstimate.rooms?.length} rooms\n\nI have the full room-by-room breakdown ready for you. Please let me know if you'd like to schedule a site visit or a consultation call.\n\nBest regards,\n\nSonu Singh\nSonu Enterprises & Building Developers`);
+                                            const body = encodeURIComponent(`${greeting} ${selectedEstimate.userName},\n\nI hope you're having a productive day.\n\nThis is Sonu Singh from Sonu Enterprises  . I'm following up on the interior design estimate you created on our portal.\n\nSUMMARY:\n- Estimated Budget: ${formatCurrency(selectedEstimate.totalBudget)}\n- Timeline: ${selectedEstimate.timeline}\n- Inventory: ${selectedEstimate.rooms?.length} rooms\n\nI have the full room-by-room breakdown ready for you. Please let me know if you'd like to schedule a site visit or a consultation call.\n\nBest regards,\n\nSonu Singh\nSonu Enterprises  `);
                                             window.location.href = `mailto:${selectedEstimate.userEmail || ''}?subject=${subject}&body=${body}`;
                                         }}
                                         className="flex items-center justify-center gap-2 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-blue-500/20"

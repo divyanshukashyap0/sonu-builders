@@ -48,7 +48,7 @@ const Home: React.FC = () => {
     <>
       <SEO
         title="Home"
-        description="Sonu Enterprises & Building Developers - Where Luxury Meets Your Vision. Expert interior design and construction services in Mumbai & Thane."
+        description="Sonu Enterprises   - Where Luxury Meets Your Vision. Expert interior design and construction services in Mumbai & Thane."
         canonical="https://sonu-builders.in/"
         schema={organizationSchema}
       />
@@ -201,7 +201,7 @@ const Home: React.FC = () => {
                       <span className="mr-2 h-[1px] w-4 bg-luxury-gold" /> {project.location}
                     </p>
                   </div>
-                  </div>
+                </div>
               ))
             )}
           </div>

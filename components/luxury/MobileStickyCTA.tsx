@@ -32,23 +32,23 @@ export const MobileStickyCTA: React.FC = () => {
     if (!isVisible) return null;
 
     return (
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 shadow-luxury pb-safe">
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-luxury-black border-t border-white/5 shadow-luxury pb-safe">
             <div className="grid grid-cols-2 gap-0">
                 {/* Call Button */}
                 <button
                     onClick={handleCall}
-                    className="flex items-center justify-center gap-2 py-4 px-6 bg-luxury-charcoal text-white font-semibold transition-colors active:bg-luxury-charcoal/90"
+                    className="flex items-center justify-center gap-2 py-4 px-6 bg-luxury-charcoal text-white font-bold uppercase tracking-widest text-[10px] transition-all active:scale-95"
                 >
-                    <Phone className="w-5 h-5" />
+                    <Phone className="w-4 h-4 text-luxury-gold" />
                     <span>Call Now</span>
                 </button>
 
                 {/* WhatsApp Button */}
                 <button
                     onClick={handleWhatsApp}
-                    className="flex items-center justify-center gap-2 py-4 px-6 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold transition-colors active:from-green-600 active:to-green-700"
+                    className="flex items-center justify-center gap-2 py-4 px-6 bg-luxury-gold text-luxury-black font-bold uppercase tracking-widest text-[10px] transition-all active:scale-95 shadow-glow-gold"
                 >
-                    <MessageCircle className="w-5 h-5" />
+                    <MessageCircle className="w-4 h-4" />
                     <span>WhatsApp</span>
                 </button>
             </div>

@@ -9,6 +9,7 @@ import SEO from '../components/SEO';
 import * as Icons from 'lucide-react';
 
 import { ServiceCardSkeleton, Skeleton } from '../components/Skeleton';
+import MediaRenderer from '../components/ui/MediaRenderer';
 
 const Services: React.FC = () => {
   const { services, loading: servicesLoading } = useServices();
@@ -58,10 +59,12 @@ const Services: React.FC = () => {
               <Link to={`/services/${service.id}`} key={service.id} className="bg-white dark:bg-luxury-charcoal border border-luxury-gold/10 hover:border-luxury-gold/40 rounded-xl overflow-hidden hover:shadow-luxury-hover transition-all duration-500 flex flex-col group block h-full">
                 {/* Service Card Image */}
                 <div className="relative h-48 overflow-hidden bg-luxury-obsidian">
-                  <img
+                  <MediaRenderer
                     src={service.image || "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&q=80"}
                     alt={service.title}
                     className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000 opacity-60 group-hover:opacity-100"
+                    loading="lazy"
+                    showPlayIcon
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-luxury-obsidian/80 to-transparent" />
                   <div className="absolute top-4 left-4 w-12 h-12 bg-luxury-gold flex items-center justify-center rounded-lg shadow-luxury transform group-hover:-translate-y-1 transition-transform">

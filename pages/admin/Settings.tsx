@@ -3,6 +3,7 @@ import { Save, Globe, Lock, Bell, Palette, Phone, Mail, MapPin, User, ImageIcon 
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 import { useTheme } from '../../context/ThemeContext';
+import CloudinaryImageInput from '../../components/admin/media/CloudinaryImageInput';
 
 const Settings: React.FC = () => {
     const [loading, setLoading] = useState(true);
@@ -32,6 +33,28 @@ const Settings: React.FC = () => {
         whatsapp: ''
     });
 
+    const [themeData, setThemeData] = useState({
+        activeTheme: 'royal_gold' as 'obsidian_copper' | 'royal_gold' | 'industrial_luxury'
+    });
+
+    const LUXURY_THEMES = {
+        'obsidian_copper': {
+            name: 'Obsidian Copper',
+            description: 'Dark charcoal with deep copper accents',
+            preview: '#b87333'
+        },
+        'royal_gold': {
+            name: 'Royal Gold',
+            description: 'True black with 24k luxury gold',
+            preview: '#D4AF37'
+        },
+        'industrial_luxury': {
+            name: 'Industrial Luxury',
+            description: 'Dark concrete grey with copper highlights',
+            preview: '#4a4a4a'
+        }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -42,6 +65,10 @@ const Settings: React.FC = () => {
                 const socSnap = await getDoc(doc(db, 'settings', 'social'));
                 if (socSnap.exists()) {
                     setSocialData(socSnap.data() as any);
+                }
+                const appSnap = await getDoc(doc(db, 'settings', 'appearance'));
+                if (appSnap.exists()) {
+                    setThemeData(appSnap.data() as any);
                 }
                 const aboutSnap = await getDoc(doc(db, 'site_content', 'about'));
                 if (aboutSnap.exists()) {
@@ -82,8 +109,9 @@ const Settings: React.FC = () => {
         try {
             await setDoc(doc(db, 'settings', 'general'), generalData, { merge: true });
             await setDoc(doc(db, 'settings', 'social'), socialData, { merge: true });
+            await setDoc(doc(db, 'settings', 'appearance'), themeData, { merge: true });
             await updateDoc(doc(db, 'site_content', 'about'), founderData);
-            alert('Settings saved successfully!');
+            alert('Settings saved successfully! The new theme is now active for all users.');
         } catch (error) {
             console.error("Error saving settings:", error);
             alert('Failed to save settings.');
@@ -321,17 +349,47 @@ const Settings: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="bg-white dark:bg-luxury-obsidian p-6 rounded-xl border border-luxury-gold/10 shadow-sm opacity-60">
+                    <div className="bg-white dark:bg-luxury-obsidian p-6 rounded-xl border border-luxury-gold/10 shadow-sm transition-all hover:border-luxury-gold/30">
                         <h3 className="font-bold text-lg mb-6 flex items-center gap-2 text-luxury-charcoal dark:text-white">
-                            <Palette className="text-luxury-gold" size={20} /> Appearance
+                            <Palette className="text-luxury-gold" size={20} /> Branding & Watermarking
                         </h3>
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="font-semibold text-luxury-charcoal dark:text-white">Theme Mode</p>
-                                <p className="text-sm text-gray-500 italic">Dark theme is currently enforced site-wide for luxury branding.</p>
+                        <div className="space-y-6">
+                            <div className="p-4 bg-luxury-gold/5 rounded-lg border border-luxury-gold/10">
+                                <p className="text-sm font-bold text-luxury-charcoal dark:text-white mb-2">Watermark Logo</p>
+                                <p className="text-xs text-gray-500 mb-4">Upload your official logo (PNG with transparency recommended). This will be applied to the bottom-right corner of all portfolio and service images at 50% opacity.</p>
+                                <CloudinaryImageInput
+                                    label="Watermark Logo Asset"
+                                    value={generalData.watermarkLogo || ''}
+                                    onChange={(url) => setGeneralData(prev => ({ ...prev, watermarkLogo: url }))}
+                                    folder="branding"
+                                    publicId="branding/website_watermark_logo"
+                                />
                             </div>
-                            <div className="h-6 w-11 rounded-full bg-luxury-gold flex items-center px-1">
-                                <div className="h-4 w-4 rounded-full bg-white translate-x-5" />
+                            
+                            <div className="p-4 bg-luxury-gold/5 rounded-lg border border-luxury-gold/10">
+                                <h4 className="font-bold text-luxury-charcoal dark:text-white mb-4">Active Luxury Theme</h4>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    {Object.entries(LUXURY_THEMES).map(([id, themeInfo]) => (
+                                        <button
+                                            key={id}
+                                            onClick={() => setThemeData({ activeTheme: id as any })}
+                                            className={`p-4 rounded-xl border-2 transition-all text-left group ${themeData.activeTheme === id 
+                                                ? 'border-luxury-gold bg-luxury-gold/10 ring-2 ring-luxury-gold/20' 
+                                                : 'border-white/5 bg-white/5 hover:border-white/20'}`}
+                                        >
+                                            <div 
+                                                className="w-8 h-8 rounded-full mb-3 shadow-lg" 
+                                                style={{ backgroundColor: themeInfo.preview }}
+                                            />
+                                            <p className={`font-bold text-xs uppercase tracking-widest ${themeData.activeTheme === id ? 'text-luxury-gold' : 'text-white'}`}>
+                                                {themeInfo.name}
+                                            </p>
+                                            <p className="text-[10px] text-gray-400 mt-1 line-clamp-2">
+                                                {themeInfo.description}
+                                            </p>
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>

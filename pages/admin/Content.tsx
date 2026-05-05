@@ -201,7 +201,8 @@ const Content: React.FC = () => {
                                 { key: 'subtitle', label: 'Subtitle (Emphasis)', type: 'text', placeholder: 'Meets Your Vision' },
                                 { key: 'description', label: 'Description', type: 'textarea', placeholder: 'Short intro text...' },
                                 { key: 'ctaText', label: 'Button Text', type: 'text', placeholder: 'Get a Consultation' },
-                                { key: 'backgroundImage', label: 'Background Image URL', type: 'image' }
+                                { key: 'backgroundImage', label: 'Background Image URL', type: 'image' },
+                                { key: 'backgroundVideo', label: 'Background YouTube URL (Optional)', type: 'text', placeholder: 'https://youtube.com/watch?v=...' }
                             ]}
                         />
                     )}
@@ -215,7 +216,8 @@ const Content: React.FC = () => {
                                 { key: 'subtitle', label: 'Subtitle', type: 'text', placeholder: 'Our Vision' },
                                 { key: 'description', label: 'Description', type: 'textarea', placeholder: 'Mission statement...' },
                                 { key: 'yearsExperience', label: 'Years Experience', type: 'text', placeholder: '15+' },
-                                { key: 'imageUrl', label: 'Side Image URL', type: 'image' }
+                                { key: 'imageUrl', label: 'Side Image URL', type: 'image' },
+                                { key: 'videoUrl', label: 'Feature Video URL (YouTube)', type: 'text', placeholder: 'https://youtube.com/watch?v=...' }
                             ]}
                         />
                     )}

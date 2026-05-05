@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useSiteContent } from '../../hooks/useSiteContent';
+import YouTubeBackground from '../ui/YouTubeBackground';
 
 interface BrandingSectionProps {
     title?: string;
     subtitle?: string;
     description?: string;
     imageUrl?: string;
+    videoUrl?: string;
     buttonText?: string;
     buttonLink?: string;
 }
@@ -16,6 +18,7 @@ const BrandingSection: React.FC<BrandingSectionProps> = ({
     subtitle: defaultSubtitle = "Our Vision",
     description: defaultDesc = "We believe that every space has a story to tell. Our mission is to translate your personality into a tangible, high-end reality through precision, trust, and timeless interior design.",
     imageUrl: defaultImg = "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1200&q=80",
+    videoUrl: defaultVideo = "",
     buttonText = "Explore Our Philosophy",
     buttonLink = "/about"
 }) => {
@@ -25,6 +28,7 @@ const BrandingSection: React.FC<BrandingSectionProps> = ({
         subtitle: defaultSubtitle,
         description: defaultDesc,
         imageUrl: defaultImg,
+        videoUrl: defaultVideo,
         yearsExperience: '15+',
     });
 
@@ -66,20 +70,26 @@ const BrandingSection: React.FC<BrandingSectionProps> = ({
                         </motion.div>
                     </motion.div>
 
-                    {/* Image Content */}
+                    {/* Image/Video Content */}
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 1, ease: "easeOut" }}
                         viewport={{ once: true }}
-                        className="flex-1 relative"
+                        className="flex-1 relative min-h-[500px]"
                     >
-                        <div className="relative z-10 rounded-lg overflow-hidden shadow-2xl">
-                            <img
-                                src={content.imageUrl}
-                                alt="Luxury Interior Vision"
-                                className="w-full h-[500px] object-cover transition-all duration-700 hover:scale-105"
-                            />
+                        <div className="relative z-10 rounded-lg overflow-hidden shadow-2xl h-[500px]">
+                            {content.videoUrl ? (
+                                <div className="absolute inset-0">
+                                    <YouTubeBackground videoUrl={content.videoUrl} overlayOpacity={0.2} />
+                                </div>
+                            ) : (
+                                <img
+                                    src={content.imageUrl}
+                                    alt="Luxury Interior Vision"
+                                    className="w-full h-full object-cover transition-all duration-700 hover:scale-105"
+                                />
+                            )}
                             <div className="absolute inset-0 bg-black/20 pointer-events-none" />
                         </div>
 

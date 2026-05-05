@@ -12,7 +12,7 @@ const AdminLayout: React.FC = () => {
     const [isNotifOpen, setIsNotifOpen] = useState(false);
 
     return (
-        <div className="flex min-h-screen bg-gray-50 dark:bg-[#0f0f0f] overflow-x-hidden">
+        <div className="flex min-h-screen bg-[#0a0a0a] overflow-x-hidden text-white">
             {/* Sidebar */}
             <Sidebar />
 
@@ -20,10 +20,10 @@ const AdminLayout: React.FC = () => {
             <div className="flex-1 lg:ml-64 flex flex-col transition-all duration-300 w-full min-w-0">
 
                 {/* Top Header */}
-                <header className="h-16 bg-white dark:bg-luxury-obsidian border-b border-luxury-gold/10 flex items-center justify-between px-4 sm:pr-6 md:px-6 sticky top-0 z-30 shadow-sm">
+                <header className="h-16 bg-luxury-obsidian border-b border-luxury-gold/10 flex items-center justify-between px-4 sm:pr-6 md:px-6 sticky top-0 z-30 shadow-sm">
 
                     {/* PC/Tablet Search Bar */}
-                    <div className="hidden sm:flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg px-3 py-2 w-64 md:w-96 border border-transparent focus-within:border-luxury-gold/50 transition-colors">
+                    <div className="hidden sm:flex items-center bg-white/5 rounded-lg px-3 py-2 w-64 md:w-96 border border-transparent focus-within:border-luxury-gold/50 transition-colors">
                         <Search className="w-4 h-4 text-gray-400 mr-2" />
                         <input
                             type="text"

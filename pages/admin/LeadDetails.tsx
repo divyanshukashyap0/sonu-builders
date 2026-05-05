@@ -34,8 +34,8 @@ const LeadDetails: React.FC = () => {
                 setLead({
                     id: docSnap.id,
                     ...data,
-                    createdAt: typeof data.createdAt?.toDate === 'function' 
-                        ? data.createdAt.toDate() 
+                    createdAt: typeof data.createdAt?.toDate === 'function'
+                        ? data.createdAt.toDate()
                         : new Date(data.createdAt || Date.now())
                 } as Lead);
                 setStatus(data.status as LeadStatus);
@@ -218,23 +218,23 @@ const LeadDetails: React.FC = () => {
                         </div>
 
                         <div className="mt-6 pt-4 border-t border-gray-100 dark:border-white/5 grid grid-cols-2 gap-3">
-                            <button 
+                            <button
                                 onClick={() => {
                                     const hour = new Date().getHours();
                                     const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
-                                    const message = encodeURIComponent(`${greeting} ${lead.name},\n\nI hope you're doing well. This is Sonu Singh from Sonu Enterprises & Building Developers.\n\nI'm following up on your inquiry for a ${lead.projectType} project. I've reviewed your requirements and would love to discuss the details further.\n\nWhen would be a good time to connect?\n\nBest regards,\nSonu Singh`);
+                                    const message = encodeURIComponent(`${greeting} ${lead.name},\n\nI hope you're doing well. This is Sonu Singh from Sonu Enterprises  .\n\nI'm following up on your inquiry for a ${lead.projectType} project. I've reviewed your requirements and would love to discuss the details further.\n\nWhen would be a good time to connect?\n\nBest regards,\nSonu Singh`);
                                     window.open(`https://wa.me/${lead.phone.replace(/[^0-9]/g, '')}?text=${message}`, '_blank');
                                 }}
                                 className="flex items-center justify-center gap-2 w-full py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg text-xs font-bold transition-colors"
                             >
                                 <MessageSquare size={14} /> WhatsApp
                             </button>
-                            <button 
+                            <button
                                 onClick={() => {
                                     const hour = new Date().getHours();
                                     const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
                                     const subject = encodeURIComponent(`Discussion regarding your ${lead.projectType} Project`);
-                                    const body = encodeURIComponent(`${greeting} ${lead.name},\n\nI hope you're having a productive day.\n\nThis is Sonu Singh from Sonu Enterprises & Building Developers. I'm following up on your inquiry for your ${lead.projectType} project (Budget: ${lead.budget || 'To be discussed'}).\n\nI have reviewed your notes: "${lead.notes || 'No specific notes'}"\n\nPlease let me know a convenient time for a brief call to discuss the next steps.\n\nBest regards,\n\nSonu Singh\nSonu Enterprises & Building Developers`);
+                                    const body = encodeURIComponent(`${greeting} ${lead.name},\n\nI hope you're having a productive day.\n\nThis is Sonu Singh from Sonu Enterprises  . I'm following up on your inquiry for your ${lead.projectType} project (Budget: ${lead.budget || 'To be discussed'}).\n\nI have reviewed your notes: "${lead.notes || 'No specific notes'}"\n\nPlease let me know a convenient time for a brief call to discuss the next steps.\n\nBest regards,\n\nSonu Singh\nSonu Enterprises  `);
                                     window.location.href = `mailto:${lead.email}?subject=${subject}&body=${body}`;
                                 }}
                                 className="flex items-center justify-center gap-2 w-full py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-xs font-bold transition-colors"

@@ -163,6 +163,17 @@ service cloud.firestore {
     }
     
     // ========================================
+    // MEDIA COLLECTION
+    // ========================================
+    match /media/{mediaId} {
+      // Public read access for the library
+      allow read: if true;
+      
+      // Only admins can upload or delete
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ========================================
     // DEFAULT DENY ALL
     // ========================================
     // Deny all other access by default

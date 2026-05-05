@@ -38,6 +38,7 @@ const AdminSettings = lazy(() => import('./pages/admin/Settings'));
 const AdminChatInquiries = lazy(() => import('./pages/admin/ChatInquiries'));
 const AdminEstimates = lazy(() => import('./pages/admin/Estimates'));
 const AdminCallLogs = lazy(() => import('./pages/admin/CallLogs'));
+const AdminMediaLibrary = lazy(() => import('./pages/admin/MediaLibrary'));
 
 import AdminLayout from './layouts/AdminLayout';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -48,6 +49,7 @@ import { useCompanyData } from './hooks/useCompanyData';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { PerformanceProvider } from './context/PerformanceContext';
+import { ToastProvider } from './context/ToastContext';
 import { db } from './lib/firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
 
@@ -112,21 +114,50 @@ const AppContent: React.FC = () => {
   }, [theme, toggleTheme]);
 
   useEffect(() => {
+    const THEME_PRESETS = {
+      'obsidian_copper': {
+        '--luxury-black': '#110d0a',
+        '--luxury-charcoal': '#1a1614',
+        '--luxury-gold': '#b87333',
+        '--luxury-gold-light': '#d4a373',
+        '--luxury-white': '#f5f5f5',
+        '--obsidian': '#110d0a'
+      },
+      'royal_gold': {
+        '--luxury-black': '#000000',
+        '--luxury-charcoal': '#0a0a0a',
+        '--luxury-gold': '#D4AF37',
+        '--luxury-gold-light': '#F4DFB0',
+        '--luxury-white': '#FFFFFF',
+        '--obsidian': '#000000'
+      },
+      'industrial_luxury': {
+        '--luxury-black': '#1a1a1a',
+        '--luxury-charcoal': '#4a4a4a',
+        '--luxury-gold': '#b87333',
+        '--luxury-gold-light': '#d4a373',
+        '--luxury-white': '#e0e0e0',
+        '--obsidian': '#1a1a1a',
+        '--premium-stone': '#4a4a4a'
+      }
+    };
+
     const unsub = onSnapshot(doc(db, 'settings', 'appearance'), (docSnap) => {
       if (docSnap.exists()) {
         const data = docSnap.data();
+        const activeThemeId = data.activeTheme || 'royal_gold';
         const root = document.documentElement;
+        
+        const selectedPreset = THEME_PRESETS[activeThemeId as keyof typeof THEME_PRESETS] || THEME_PRESETS.royal_gold;
 
-        // Map appearance data to CSS variables
-        if (data.luxuryWhite) root.style.setProperty('--luxury-white', data.luxuryWhite);
-        if (data.warmBeige) root.style.setProperty('--warm-beige', data.warmBeige);
-        if (data.charcoal) root.style.setProperty('--charcoal', data.charcoal);
-        if (data.goldAccent) root.style.setProperty('--gold-accent', data.goldAccent);
-        if (data.bronze) root.style.setProperty('--bronze', data.bronze);
-        if (data.obsidian) root.style.setProperty('--obsidian', data.obsidian);
-        if (data.champagne) root.style.setProperty('--champagne', data.champagne);
-        if (data.premiumStone) root.style.setProperty('--premium-stone', data.premiumStone);
-        if (data.ivoryPearl) root.style.setProperty('--ivory-pearl', data.ivoryPearl);
+        // Apply all variables from the preset
+        Object.entries(selectedPreset).forEach(([variable, value]) => {
+          root.style.setProperty(variable, value);
+        });
+
+        // Add compatibility mappings
+        root.style.setProperty('--gold-accent', selectedPreset['--luxury-gold']);
+        root.style.setProperty('--charcoal', selectedPreset['--luxury-charcoal']);
       }
     });
     return () => unsub();
@@ -193,6 +224,7 @@ const AppContent: React.FC = () => {
                 <Route path="chat-inquiries" element={<AdminChatInquiries />} />
                 <Route path="estimates" element={<AdminEstimates />} />
                 <Route path="call-logs" element={<AdminCallLogs />} />
+                <Route path="media" element={<AdminMediaLibrary />} />
                 {/* Add other admin sub-routes here later */}
               </Route>
 
@@ -214,10 +246,12 @@ const App: React.FC = () => {
   return (
     <PerformanceProvider>
       <ThemeProvider>
-        <Router>
-          <ScrollToTop />
-          <AppContent />
-        </Router>
+        <ToastProvider>
+          <Router>
+            <ScrollToTop />
+            <AppContent />
+          </Router>
+        </ToastProvider>
       </ThemeProvider>
     </PerformanceProvider>
   );

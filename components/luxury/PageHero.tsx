@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import MediaRenderer from '../ui/MediaRenderer';
 
 interface PageHeroProps {
     title: string;
@@ -15,13 +16,11 @@ const PageHero: React.FC<PageHeroProps> = ({ title, subtitle, backgroundImage })
             {/* Background Image */}
             <div className="absolute inset-0 z-0 bg-gradient-to-br from-neutral-900 to-neutral-800">
                 {backgroundImage && (
-                    <img
+                    <MediaRenderer
                         src={backgroundImage}
                         alt=""
                         className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-[2s]"
-                        onError={(e) => {
-                            e.currentTarget.style.display = 'none';
-                        }}
+                        loading="eager"
                     />
                 )}
                 {/* Overlay for readability - sophisticated cinematic gradient */}

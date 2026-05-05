@@ -13,6 +13,7 @@ import {
 import { useTeam } from '../../hooks/useTeam';
 import { TeamMember } from '../../types';
 import { motion, AnimatePresence } from 'framer-motion';
+import CloudinaryImageInput from '../../components/admin/media/CloudinaryImageInput';
 
 // Simple Modal Component
 const Modal = ({ isOpen, onClose, title, children }: { isOpen: boolean; onClose: () => void; title: string; children: React.ReactNode }) => {
@@ -259,22 +260,13 @@ const Team: React.FC = () => {
                         </div>
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Profile Image URL</label>
-                        <div className="flex gap-2">
-                            <input
-                                type="url"
-                                value={formData.image || ''}
-                                onChange={e => setFormData({ ...formData, image: e.target.value })}
-                                className="flex-1 px-4 py-2 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg focus:ring-2 focus:ring-luxury-gold/20 focus:border-luxury-gold outline-none transition-all dark:text-white"
-                                placeholder="https://..."
-                            />
-                            {formData.image && (
-                                <div className="w-10 h-10 rounded-lg overflow-hidden border border-gray-200">
-                                    <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
-                                </div>
-                            )}
-                        </div>
-                        <p className="text-xs text-gray-400 mt-1">Paste a direct image link (e.g. from Unsplash or your storage bucket).</p>
+                        <CloudinaryImageInput
+                            label="Profile Image"
+                            value={formData.image || ''}
+                            onChange={url => setFormData({ ...formData, image: url })}
+                            folder="team"
+                            placeholder="https://..."
+                        />
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Bio (Optional)</label>

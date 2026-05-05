@@ -4,6 +4,8 @@ import Button from '../Button';
 import { useSiteContent } from '../../hooks/useSiteContent';
 import { usePerformance } from '../../context/PerformanceContext';
 import { ChevronDown } from 'lucide-react';
+import YouTubeBackground from '../ui/YouTubeBackground';
+import MediaRenderer from '../ui/MediaRenderer';
 
 interface CinematicHeroProps {
     backgroundImage?: string;
@@ -18,7 +20,7 @@ interface CinematicHeroProps {
 
 export const CinematicHero: React.FC<CinematicHeroProps> = ({
     backgroundImage: defaultBg = '',
-    backgroundVideo,
+    backgroundVideo: defaultVideo = '',
     titleColor = '#FFFFFF',
     emphasisColor = '#D4AF37', // Luxury Gold
     subtextColor = '#e0e0e0', // Warm Gray
@@ -32,6 +34,7 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
         subtitle: defaultEmphasis,
         ctaText: 'Get a Consultation',
         backgroundImage: defaultBg,
+        backgroundVideo: defaultVideo,
         description: defaultDesc
     });
 
@@ -84,35 +87,29 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
                 style={{ y: bgY }}
                 className="absolute inset-0 w-full h-full will-change-transform"
             >
-                {/* Only render video if NOT in low power mode */}
-                {!isLowPowerMode && backgroundVideo ? (
-                    <video
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        onContextMenu={(e) => e.preventDefault()}
-                        className="w-full h-full object-cover"
-                    >
-                        <source src={backgroundVideo} type="video/mp4" />
-                    </video>
-                ) : (
-                    content.backgroundImage ? (
-                        <>
-                            <img
-                                src={content.backgroundImage}
-                                alt="Luxury Interior Design"
-                                className="w-full h-full object-cover"
-                                loading="eager"
-                                onLoad={() => { }}
-                                onError={(e) => console.error('❌ Hero image failed to load:', content.backgroundImage, e)}
-                            />
-                        </>
+                {/* Priority: 1. YouTube Video (if not in low power), 2. Local/Direct Video, 3. Background Image */}
+                {!isLowPowerMode && (content.backgroundVideo || defaultVideo) ? (
+                    (content.backgroundVideo || defaultVideo).includes('youtube.com') || (content.backgroundVideo || defaultVideo).includes('youtu.be') ? (
+                        <YouTubeBackground videoUrl={content.backgroundVideo || defaultVideo || ''} overlayOpacity={0} />
                     ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-luxury-charcoal to-luxury-obsidian flex items-center justify-center">
-                            <p className="text-neutral-600 text-sm">No background image set</p>
-                        </div>
+                        <video
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            onContextMenu={(e) => e.preventDefault()}
+                            className="w-full h-full object-cover"
+                        >
+                            <source src={content.backgroundVideo || defaultVideo} type="video/mp4" />
+                        </video>
                     )
+                ) : (
+                    <MediaRenderer
+                        src={content.backgroundImage || ''}
+                        alt="Luxury Interior Design"
+                        className="w-full h-full object-cover"
+                        loading="eager"
+                    />
                 )}
             </motion.div>
 

@@ -102,36 +102,43 @@ const Projects: React.FC = () => {
                             <AnimatePresence>
                                 {filteredProjects.map((project) => (
                                     <motion.tr
-                                        key={project.id}
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0 }}
-                                        className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"
-                                    >
-                                        <td className="px-6 py-4 w-24">
-                                            <img src={project.image} alt={project.title} className="w-16 h-12 object-cover rounded-lg" />
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <p className="font-bold text-luxury-charcoal dark:text-white">{project.title}</p>
-                                            <p className="text-xs text-gray-500">{project.description?.substring(0, 50)}...</p>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-white/10 dark:text-gray-300">
-                                                {project.category}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <div className="flex items-center justify-end gap-2">
-                                                <button onClick={() => navigate(`/admin/projects/edit/${project.id}`)} className="p-2 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full transition-colors">
-                                                    <Edit size={16} />
-                                                </button>
-                                                <button onClick={() => handleDelete(project.id)} className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-colors">
-                                                    <Trash2 size={16} />
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </motion.tr>
-                                ))}
+                                         key={project.id}
+                                         initial={{ opacity: 0 }}
+                                         animate={{ opacity: 1 }}
+                                         exit={{ opacity: 0 }}
+                                         onClick={() => navigate(`/admin/projects/edit/${project.id}`)}
+                                         className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer"
+                                     >
+                                         <td className="px-6 py-4 w-24">
+                                             <img src={project.image} alt={project.title} className="w-16 h-12 object-cover rounded-lg" />
+                                         </td>
+                                         <td className="px-6 py-4">
+                                             <p className="font-bold text-luxury-charcoal dark:text-white">{project.title}</p>
+                                             <p className="text-xs text-gray-500">{project.description?.substring(0, 50)}...</p>
+                                         </td>
+                                         <td className="px-6 py-4">
+                                             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-white/10 dark:text-gray-300">
+                                                 {project.category}
+                                             </span>
+                                         </td>
+                                         <td className="px-6 py-4 text-right">
+                                             <div className="flex items-center justify-end gap-2">
+                                                 <div className="p-2 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full transition-colors">
+                                                     <Edit size={16} />
+                                                 </div>
+                                                 <button 
+                                                     onClick={(e) => {
+                                                         e.stopPropagation();
+                                                         handleDelete(project.id);
+                                                     }} 
+                                                     className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-colors"
+                                                 >
+                                                     <Trash2 size={16} />
+                                                 </button>
+                                             </div>
+                                         </td>
+                                     </motion.tr>
+                                 ))}
                             </AnimatePresence>
                         </tbody>
                     </table>
@@ -148,15 +155,22 @@ const Projects: React.FC = () => {
                                 layout
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                className="bg-white dark:bg-luxury-obsidian rounded-xl border border-luxury-gold/10 overflow-hidden shadow-sm group"
+                                onClick={() => navigate(`/admin/projects/edit/${project.id}`)}
+                                className="bg-white dark:bg-luxury-obsidian rounded-xl border border-luxury-gold/10 overflow-hidden shadow-sm group cursor-pointer"
                             >
                                 <div className="h-48 relative overflow-hidden">
                                     <img src={project.image} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                                        <button onClick={() => navigate(`/admin/projects/edit/${project.id}`)} className="p-2 bg-white text-luxury-charcoal rounded-full hover:bg-luxury-gold hover:text-white transition-colors">
+                                        <div className="p-2 bg-white text-luxury-charcoal rounded-full hover:bg-luxury-gold hover:text-white transition-colors">
                                             <Edit size={16} />
-                                        </button>
-                                        <button onClick={() => handleDelete(project.id)} className="p-2 bg-white text-red-500 rounded-full hover:bg-red-500 hover:text-white transition-colors">
+                                        </div>
+                                        <button 
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleDelete(project.id);
+                                            }} 
+                                            className="p-2 bg-white text-red-500 rounded-full hover:bg-red-500 hover:text-white transition-colors"
+                                        >
                                             <Trash2 size={16} />
                                         </button>
                                     </div>

@@ -21,7 +21,8 @@ const EstimatePage: React.FC = () => {
             />
 
             <Section className="relative overflow-hidden pt-20 pb-0">
-                <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none" />
+                <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none" 
+                     style={{ backgroundImage: `radial-gradient(#d4af37 0.5px, transparent 0px)`, backgroundSize: '40px 40px' }} />
                 
                 <div className="max-w-7xl mx-auto px-4 relative z-10">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 import { Loader2, Save, Image, Type, CheckCircle } from 'lucide-react';
+import CloudinaryImageInput from './media/CloudinaryImageInput';
 
 interface FieldConfig {
     key: string;
@@ -103,6 +104,14 @@ const AdminSectionEditor: React.FC<AdminSectionEditorProps> = ({ sectionId, titl
                                 rows={4}
                                 className="w-full bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-white/10 rounded-lg p-3 text-sm focus:ring-2 focus:ring-luxury-gold/50 outline-none transition-all text-luxury-charcoal dark:text-white"
                             />
+                        ) : field.type === 'image' ? (
+                            <CloudinaryImageInput
+                                label=""
+                                value={getNestedValue(data, field.key) || ''}
+                                onChange={(url) => handleChange(field.key, url)}
+                                folder="site_content"
+                                placeholder="https://..."
+                            />
                         ) : (
                             <input
                                 type="text"
@@ -111,19 +120,6 @@ const AdminSectionEditor: React.FC<AdminSectionEditorProps> = ({ sectionId, titl
                                 placeholder={field.placeholder}
                                 className="w-full bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-white/10 rounded-lg p-3 text-sm focus:ring-2 focus:ring-luxury-gold/50 outline-none transition-all text-luxury-charcoal dark:text-white"
                             />
-                        )}
-
-                        {field.type === 'image' && getNestedValue(data, field.key) && (
-                            <div className="mt-2 relative group w-fit">
-                                <img
-                                    src={getNestedValue(data, field.key)}
-                                    alt="Preview"
-                                    className="h-20 w-auto rounded-lg border border-gray-200 dark:border-white/10 object-cover"
-                                />
-                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-lg pointer-events-none">
-                                    <span className="text-white text-xs">Preview</span>
-                                </div>
-                            </div>
                         )}
                     </div>
                 ))}

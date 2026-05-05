@@ -1,5 +1,5 @@
 const urlParams = new URL(self.location.href).searchParams;
-const VERSION = urlParams.get('v') || 'v3';
+const VERSION = urlParams.get('v') || 'v4';
 const CACHE_NAME = `sonu-pwa-${VERSION}`;
 const CORE_ASSETS = [
   '/',
@@ -107,7 +107,7 @@ self.addEventListener('fetch', (event) => {
         cache.put(request, networkResponse.clone());
         return networkResponse;
       } catch (error) {
-        console.warn('Fetch failed for:', request.url, error);
+        // Suppress warning as the UI handles fallbacks
         return new Response('', { status: 404, statusText: 'Not Found' });
       }
     })());

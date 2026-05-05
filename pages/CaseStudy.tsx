@@ -5,6 +5,7 @@ import { ArrowLeft, Calendar, MapPin, DollarSign, CheckCircle, Ruler } from 'luc
 import Section from '../components/Section';
 import Button from '../components/Button';
 import SEO from '../components/SEO';
+import MediaRenderer from '../components/ui/MediaRenderer';
 
 // Mock Data for a single case study (In real app, fetch based on ID)
 const caseStudyData = {
@@ -57,10 +58,11 @@ const CaseStudy: React.FC = () => {
             />
             {/* Hero */}
             <div className="relative h-[60vh] md:h-[80vh] w-full overflow-hidden">
-                <img
+                <MediaRenderer
                     src={data.heroImage}
                     alt={data.title}
                     className="absolute inset-0 w-full h-full object-cover"
+                    loading="eager"
                 />
                 <div className="absolute inset-0 bg-black/50" />
                 <div className="absolute inset-0 flex items-center justify-center text-center p-4">
@@ -132,7 +134,12 @@ const CaseStudy: React.FC = () => {
                             whileHover={{ y: -10 }}
                             className="bg-white p-2 shadow-lg"
                         >
-                            <img src={img} alt={`Gallery ${idx + 1}`} className="w-full h-64 object-cover" />
+                            <MediaRenderer 
+                                src={img} 
+                                alt={`Gallery ${idx + 1}`} 
+                                className="w-full h-64 object-cover" 
+                                showPlayIcon
+                            />
                         </motion.div>
                     ))}
                 </div>

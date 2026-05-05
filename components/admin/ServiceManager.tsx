@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useServices } from '../../hooks/useServices';
 import { Plus, Trash2, Edit, Save, X, Image, List, Lightbulb, Award, ChevronRight, Search, Loader2 } from 'lucide-react';
 import { Service } from '../../types';
+import CloudinaryImageInput from './media/CloudinaryImageInput';
 
 const ServiceManager: React.FC = () => {
     const { services, loading, addService, updateService, deleteService } = useServices();
@@ -109,16 +110,28 @@ const ServiceManager: React.FC = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {filteredServices.map(service => (
-                            <div key={service.id} className="bg-white dark:bg-neutral-900 border border-luxury-gold/10 rounded-xl overflow-hidden shadow-sm group hover:border-luxury-gold/40 transition-all">
+                            <div 
+                                key={service.id} 
+                                onClick={() => handleEdit(service)}
+                                className="bg-white dark:bg-neutral-900 border border-luxury-gold/10 rounded-xl overflow-hidden shadow-sm group hover:border-luxury-gold/40 transition-all cursor-pointer"
+                            >
                                 <div className="h-32 bg-luxury-obsidian relative overflow-hidden">
                                     {service.image ? (
                                         <img src={service.image} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" alt={service.title} />
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center text-luxury-gold/20 font-serif italic">No Image</div>
                                     )}
-                                    <div className="absolute top-2 right-2 flex gap-2">
-                                        <button onClick={() => handleEdit(service)} className="p-2 bg-white/90 dark:bg-neutral-800/90 rounded-full text-blue-500 shadow-sm hover:scale-110 transition-transform"><Edit size={16} /></button>
-                                        <button onClick={() => deleteService(service.id)} className="p-2 bg-white/90 dark:bg-neutral-800/90 rounded-full text-red-500 shadow-sm hover:scale-110 transition-transform"><Trash2 size={16} /></button>
+                                    <div className="absolute top-2 right-2 flex gap-2 z-10">
+                                        <div className="p-2 bg-white/90 dark:bg-neutral-800/90 rounded-full text-blue-500 shadow-sm group-hover:scale-110 transition-transform"><Edit size={16} /></div>
+                                        <button 
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                deleteService(service.id);
+                                            }} 
+                                            className="p-2 bg-white/90 dark:bg-neutral-800/90 rounded-full text-red-500 shadow-sm hover:scale-110 transition-transform"
+                                        >
+                                            <Trash2 size={16} />
+                                        </button>
                                     </div>
                                 </div>
                                 <div className="p-4">
@@ -199,22 +212,13 @@ const ServiceManager: React.FC = () => {
                                             />
                                         </div>
                                         <div>
-                                            <label className="text-xs font-bold text-gray-500 uppercase flex items-center gap-2"><Image size={12} /> Featured Image</label>
-                                            <div className="flex gap-4 items-start">
-                                                <div className="flex-1">
-                                                    <input
-                                                        type="text"
-                                                        value={formData.image}
-                                                        onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                                                        className="w-full mt-1 bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-white/5 rounded-lg p-3 text-sm focus:ring-2 focus:ring-luxury-gold/50 outline-none"
-                                                    />
-                                                </div>
-                                                {formData.image && (
-                                                    <div className="w-24 h-16 mt-1 rounded-lg overflow-hidden border border-gray-200 dark:border-white/10 shrink-0">
-                                                        <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
-                                                    </div>
-                                                )}
-                                            </div>
+                                            <CloudinaryImageInput
+                                                label="Featured Image"
+                                                value={formData.image || ''}
+                                                onChange={(url) => setFormData({ ...formData, image: url })}
+                                                folder="services"
+                                                placeholder="https://..."
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -230,20 +234,16 @@ const ServiceManager: React.FC = () => {
                                 </div>
                                 <div className="space-y-2">
                                     {formData.gallery?.map((img, idx) => (
-                                        <div key={idx} className="flex gap-2 items-center">
-                                            {img && (
-                                                <div className="w-10 h-10 rounded-lg overflow-hidden border border-gray-200 dark:border-white/10 shrink-0">
-                                                    <img src={img} alt="Preview" className="w-full h-full object-cover" />
-                                                </div>
-                                            )}
-                                            <input
-                                                type="text"
-                                                value={img}
-                                                onChange={(e) => handleArrayUpdate('gallery', idx, e.target.value)}
-                                                placeholder="Image URL..."
-                                                className="flex-1 bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-white/5 rounded-lg p-2 text-xs"
-                                            />
-                                            <button onClick={() => removeArrayItem('gallery', idx)} className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-colors"><Trash2 size={16} /></button>
+                                        <div key={idx} className="flex gap-2 items-start bg-gray-50 dark:bg-white/5 p-2 rounded-lg border border-gray-100 dark:border-white/5">
+                                            <div className="flex-1">
+                                                <CloudinaryImageInput
+                                                    label={`Image #${idx + 1}`}
+                                                    value={img}
+                                                    onChange={(url) => handleArrayUpdate('gallery', idx, url)}
+                                                    folder="services_gallery"
+                                                />
+                                            </div>
+                                            <button onClick={() => removeArrayItem('gallery', idx)} className="mt-8 p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-colors"><Trash2 size={16} /></button>
                                         </div>
                                     ))}
                                 </div>

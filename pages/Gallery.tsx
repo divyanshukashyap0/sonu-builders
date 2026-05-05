@@ -4,6 +4,7 @@ import PageHero from '../components/luxury/PageHero';
 import { useServices } from '../hooks/useServices';
 import { usePageHeaders } from '../hooks/usePageHeaders';
 import ImageGalleryModal from '../components/ImageGalleryModal';
+import MediaRenderer from '../components/ui/MediaRenderer';
 
 const Gallery: React.FC = () => {
   const { services, loading } = useServices();
@@ -115,14 +116,11 @@ const GalleryCard: React.FC<{ item: any; onOpen: () => void }> = ({ item, onOpen
       onClick={onOpen}
     >
       <div className="aspect-w-4 aspect-h-3 relative">
-        <div className={`absolute inset-0 bg-slate-200 animate-pulse ${loaded ? 'opacity-0' : 'opacity-100'}`} />
-        <img
+        <MediaRenderer
           src={item.url}
           alt={item.title || 'Gallery image'}
-          className={`w-full h-64 object-cover transform transition-transform duration-500 ${loaded ? 'group-hover:scale-105' : 'scale-100'}`}
+          className={`w-full h-64 transition-all duration-[2000ms] cubic-bezier-[0.2,0,0,1] group-hover:scale-110`}
           loading="lazy"
-          decoding="async"
-          onLoad={() => setLoaded(true)}
         />
       </div>
       <div className="absolute inset-0 bg-gradient-to-t from-luxury-charcoal/80 via-luxury-charcoal/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
