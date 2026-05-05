@@ -2,6 +2,7 @@ import React from 'react';
 import YouTubeBackground from './YouTubeBackground';
 import { Play } from 'lucide-react';
 import { useCompanyData } from '../../hooks/useCompanyData';
+import logo from '../../logo.png';
 
 interface MediaRendererProps {
   src: string;
@@ -91,7 +92,7 @@ const MediaRenderer: React.FC<MediaRendererProps> = ({
       {/* Local Watermark Overlay Fallback (For non-Cloudinary or as double-check) */}
       <div className="absolute bottom-3 right-3 pointer-events-none opacity-80 select-none z-10 w-12 md:w-20">
         <img 
-          src="/logo.png" 
+          src={logo} 
           alt="Watermark" 
           className="w-full h-auto" 
         />
