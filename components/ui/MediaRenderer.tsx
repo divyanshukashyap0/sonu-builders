@@ -13,10 +13,10 @@ interface MediaRendererProps {
   objectFit?: 'cover' | 'contain';
 }
 
-const MediaRenderer: React.FC<MediaRendererProps> = ({ 
-  src, 
-  alt = "", 
-  className = "", 
+const MediaRenderer: React.FC<MediaRendererProps> = ({
+  src,
+  alt = "",
+  className = "",
   loading = 'lazy',
   showPlayIcon = false,
   objectFit = 'cover'
@@ -28,7 +28,7 @@ const MediaRenderer: React.FC<MediaRendererProps> = ({
   // Apply watermark to Cloudinary images
   const getWatermarkedUrl = (url: string) => {
     if (!url) return 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1920&q=80'; // High-quality luxury default
-    
+
     // Only apply if Cloudinary image and watermarkLogo is a valid URL in settings
     const isCloudinary = url.includes('cloudinary.com');
     const hasWatermarkConfig = watermarkLogo && watermarkLogo.length > 5;
@@ -64,18 +64,18 @@ const MediaRenderer: React.FC<MediaRendererProps> = ({
   return (
     <div className={`relative overflow-hidden group/media ${className}`}>
       {isActuallyVideo ? (
-        <video 
-          src={src} 
+        <video
+          src={src}
           className={`w-full h-full object-${objectFit}`}
-          autoPlay 
-          muted 
-          loop 
+          autoPlay
+          muted
+          loop
           playsInline
         />
       ) : (
-        <img 
-          src={finalSrc} 
-          alt={alt} 
+        <img
+          src={finalSrc}
+          alt={alt}
           className={`w-full h-full object-${objectFit}`}
           loading={loading}
           onError={(e) => {
@@ -91,10 +91,10 @@ const MediaRenderer: React.FC<MediaRendererProps> = ({
 
       {/* Local Watermark Overlay Fallback (For non-Cloudinary or as double-check) */}
       <div className="absolute bottom-3 right-3 pointer-events-none opacity-80 select-none z-10 w-12 md:w-20">
-        <img 
-          src={logo} 
-          alt="Watermark" 
-          className="w-full h-auto" 
+        <img
+          src={logo}
+          alt="Sonu Enterprises"
+          className="w-full h-auto"
         />
       </div>
 
