@@ -54,6 +54,32 @@ import { db } from './lib/firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
 
 
+// Listen for chunk load errors and force a refresh
+const ChunkErrorListener = ({ children }: { children: React.ReactNode }) => {
+  useEffect(() => {
+    const handleError = (error: ErrorEvent | PromiseRejectionEvent) => {
+      const message = 'message' in error ? error.message : (error as any).reason?.message;
+      if (
+        message?.includes('Failed to fetch dynamically imported module') ||
+        message?.includes('error loading dynamically imported module') ||
+        message?.includes('Importing a module script failed')
+      ) {
+        console.warn('Chunk loading failed. Forcing a hard reload to sync with new deployment...');
+        window.location.reload();
+      }
+    };
+
+    window.addEventListener('error', handleError);
+    window.addEventListener('unhandledrejection', handleError);
+    return () => {
+      window.removeEventListener('error', handleError);
+      window.removeEventListener('unhandledrejection', handleError);
+    };
+  }, []);
+
+  return <>{children}</>;
+};
+
 // Scroll to top on route change
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -249,7 +275,9 @@ const App: React.FC = () => {
         <ToastProvider>
           <Router>
             <ScrollToTop />
-            <AppContent />
+            <ChunkErrorListener>
+              <AppContent />
+            </ChunkErrorListener>
           </Router>
         </ToastProvider>
       </ThemeProvider>

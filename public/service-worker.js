@@ -1,5 +1,5 @@
 const urlParams = new URL(self.location.href).searchParams;
-const VERSION = urlParams.get('v') || 'v4';
+const VERSION = urlParams.get('v') || 'v5';
 const CACHE_NAME = `sonu-pwa-${VERSION}`;
 const CORE_ASSETS = [
   '/',
@@ -18,7 +18,11 @@ self.addEventListener('activate', (event) => {
     }
     const keys = await caches.keys();
     await Promise.all(keys.map((key) => {
-      if (key !== CACHE_NAME) return caches.delete(key);
+      // Clear ALL old caches that don't match the new version
+      if (key !== CACHE_NAME) {
+        console.log('SW: Purging old cache', key);
+        return caches.delete(key);
+      }
     }));
     await self.clients.claim();
   })());
@@ -73,6 +77,10 @@ self.addEventListener('fetch', (event) => {
 
   // Handle same-origin assets
   if (url.origin === self.location.origin) {
+    // If it's a JS/CSS file, don't fallback to index.html if it fails
+    // This prevents the "MIME type text/html" error
+    const isModule = url.pathname.endsWith('.js') || url.pathname.endsWith('.css');
+
     event.respondWith((async () => {
       const cache = await caches.open(CACHE_NAME);
       const cached = await cache.match(request);
@@ -84,11 +92,15 @@ self.addEventListener('fetch', (event) => {
         }
         return networkResponse;
       } catch (err) {
+        // If it's a critical module that failed to fetch and isn't in cache,
+        // we let the error bubble up to ChunkErrorListener in App.tsx
         if (cached) return cached;
-        return new Response('Network error occurred', { 
-          status: 408, 
-          headers: { 'Content-Type': 'text/plain' } 
-        });
+        
+        if (isModule) {
+          return new Response('Asset failed to load', { status: 404 });
+        }
+
+        return new Response('Network error', { status: 408 });
       }
     })());
     return;
