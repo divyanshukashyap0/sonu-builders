@@ -1,21 +1,21 @@
 {
     "framework": "vite",
     "cleanUrls": true,
-    "rewrites": [
+    "routes": [
         {
             "handle": "filesystem"
         },
         {
-            "source": "/api/:path*",
-            "destination": "/api/:path*"
+            "src": "/api/(.*)",
+            "dest": "/api/$1"
         },
         {
-            "source": "/favicon.ico",
-            "destination": "/favicon.png"
+            "src": "/favicon.ico",
+            "dest": "/favicon.png"
         },
         {
-            "source": "/((?!api/).*)",
-            "destination": "/index.html"
+            "src": "/(.*)",
+            "dest": "/index.html"
         }
     ]
 }
