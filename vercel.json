@@ -3,6 +3,9 @@
     "cleanUrls": true,
     "rewrites": [
         {
+            "handle": "filesystem"
+        },
+        {
             "source": "/api/:path*",
             "destination": "/api/:path*"
         },
