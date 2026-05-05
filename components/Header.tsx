@@ -62,7 +62,7 @@ const Header: React.FC = () => {
             <img
               src={logo}
               alt={name}
-              className={`transition-all duration-500 object-contain ${scrolled ? 'h-8 md:h-10' : 'h-10 md:h-14'}`}
+              className={`transition-all duration-500 ${scrolled ? 'h-12 md:h-16' : 'h-20 md:h-28'}`}
               loading="eager"
             />
           </Link>
@@ -114,7 +114,7 @@ const Header: React.FC = () => {
           <div className="flex flex-col h-full p-8 space-y-8 overflow-y-auto">
             <div className="flex justify-between items-center">
               <Link to="/" onClick={() => setIsOpen(false)}>
-                <img src={logo} alt={name} className="h-10 w-auto" />
+                <img src={logo} alt={name} className="h-16 w-auto" loading="eager" />
               </Link>
               <button onClick={() => setIsOpen(false)} className="text-white p-2 border border-luxury-gold/20 rounded-full bg-white/5 min-w-[44px] min-h-[44px]">
                 <X className="h-6 w-6" />

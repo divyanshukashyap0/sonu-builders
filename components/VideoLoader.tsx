@@ -38,21 +38,18 @@ const VideoLoader: React.FC<VideoLoaderProps> = ({ isLoading, onComplete }) => {
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm pointer-events-none"
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-transparent pointer-events-none overflow-hidden"
         >
             <video
                 ref={videoRef}
-                src="/Loader.mp4"
-                preload="auto"
-                className="w-[28rem] h-auto object-contain mix-blend-screen pointer-events-none"
-                style={{
-                    transform: 'translateZ(0)', // Force GPU acceleration
-                    WebkitMaskImage: 'radial-gradient(circle, black 40%, transparent 70%)',
-                    maskImage: 'radial-gradient(circle, black 40%, transparent 70%)',
-                    filter: 'contrast(1.2) brightness(1.1)' // Crushes compression grays to pure black making it perfectly transparent!
-                }}
+                autoPlay
                 muted
                 playsInline
+                preload="auto"
+                className="w-[40rem] h-auto object-contain pointer-events-none"
+                style={{
+                    transform: 'translateZ(0)', // Force GPU acceleration
+                }}
                 disablePictureInPicture
                 disableRemotePlayback
                 controls={false}
@@ -60,7 +57,10 @@ const VideoLoader: React.FC<VideoLoaderProps> = ({ isLoading, onComplete }) => {
                 loop={isLoading} // Loop while loading
                 onContextMenu={(e) => e.preventDefault()}
                 onEnded={handleVideoEnded}
-            />
+            >
+                <source src="/loader.webm" type="video/webm" />
+                <source src="/loader.mp4" type="video/mp4" />
+            </video>
         </motion.div>
     );
 };

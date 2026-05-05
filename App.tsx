@@ -45,7 +45,6 @@ import CustomCursor from './components/luxury/CustomCursor';
 import AIAssistant from './components/luxury/AIAssistant';
 import { COMPANY_NAME } from './constants';
 import { useCompanyData } from './hooks/useCompanyData';
-import VideoLoader from './components/VideoLoader';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { PerformanceProvider } from './context/PerformanceContext';
@@ -93,17 +92,8 @@ const PageLoader = () => (
 const AppContent: React.FC = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
-  const [isContentReady, setIsContentReady] = useState(false);
-  const [showLoader, setShowLoader] = useState(() => {
-    return sessionStorage.getItem('hasSeenLoader') !== 'true';
-  });
-  const { theme, toggleTheme } = useTheme();
+   const { theme, toggleTheme } = useTheme();
   const { name } = useCompanyData();
-
-  const handleLoaderComplete = () => {
-    setShowLoader(false);
-    sessionStorage.setItem('hasSeenLoader', 'true');
-  };
 
   useEffect(() => {
     const unsub = onSnapshot(doc(db, 'settings', 'master'), (docSnap) => {
@@ -142,25 +132,7 @@ const AppContent: React.FC = () => {
     return () => unsub();
   }, []);
 
-  useEffect(() => {
-    const handleLoad = () => {
-      setIsContentReady(true);
-    };
 
-    if (document.readyState === 'complete') {
-      handleLoad();
-    } else {
-      window.addEventListener('load', handleLoad);
-    }
-
-    // Safety timeout in case window.load doesn't fire or stalls
-    const safetyTimer = setTimeout(() => setIsContentReady(true), 5000);
-
-    return () => {
-      window.removeEventListener('load', handleLoad);
-      clearTimeout(safetyTimer);
-    };
-  }, []);
 
   return (
 
@@ -177,14 +149,6 @@ const AppContent: React.FC = () => {
 
       <CustomCursor />
       <AIAssistant />
-      <AnimatePresence>
-        {showLoader && (
-          <VideoLoader
-            isLoading={!isContentReady}
-            onComplete={handleLoaderComplete}
-          />
-        )}
-      </AnimatePresence>
       {!isAdminRoute && <Header />}
 
       <main className="flex-grow overflow-x-hidden">

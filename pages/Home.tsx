@@ -63,23 +63,14 @@ const Home: React.FC = () => {
         description={brandingData?.description}
       />
 
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={{
-          visible: { transition: { staggerChildren: 0.15 } },
-          hidden: {}
-        }}
-      >
-        {/* Trust Metrics Section */}
-        <motion.div variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 30 } }}>
+      <div>
+        <div>
           <TrustMetrics />
-        </motion.div>
+        </div>
 
         {/* Dynamic Branding Section */}
         {brandingData && (
-          <motion.div variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 30 } }}>
+          <div>
             <BrandingSection
               title={brandingData.title}
               subtitle={brandingData.subtitle}
@@ -88,22 +79,19 @@ const Home: React.FC = () => {
               buttonText={brandingData.buttonText}
               buttonLink={brandingData.buttonLink}
             />
-          </motion.div>
+          </div>
         )}
 
         {/* Services Preview */}
         <Section className="bg-luxury-white dark:bg-luxury-charcoal pt-20 pb-20">
-          <motion.div
-            variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 30 } }}
-            className="text-center mb-24"
-          >
+          <div className="text-center mb-24">
             <p className="text-luxury-gold font-bold uppercase tracking-[0.3em] mb-4 text-xs">
               Our Expertise
             </p>
             <h2 className="text-luxury-charcoal dark:text-white">
               Crafting Exceptional Environments
             </h2>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {servicesLoading ? (
@@ -112,9 +100,8 @@ const Home: React.FC = () => {
               services.slice(0, 6).map((service, idx) => {
                 const IconComponent = (Icons as any)[service.icon] || Icons.Home;
                 return (
-                  <motion.div
+                  <div
                     key={service.id}
-                    variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 30 } }}
                     className="group relative h-[500px] overflow-hidden shadow-luxury hover:shadow-luxury-hover transition-all duration-700 bg-luxury-charcoal"
                   >
                     <Link to={`/services/${service.id}`} className="block h-full w-full">
@@ -146,7 +133,7 @@ const Home: React.FC = () => {
                         </div>
                       </div>
                     </Link>
-                  </motion.div>
+                  </div>
                 );
               })
             )}
@@ -159,15 +146,13 @@ const Home: React.FC = () => {
           </div>
         </Section>
 
-        {/* Why Choose Us Section */}
-        <motion.div variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 30 } }}>
+        <div>
           <WhyChooseUs />
-        </motion.div>
+        </div>
 
-        {/* Process Timeline */}
-        <motion.div variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 30 } }}>
+        <div>
           <ProcessTimeline />
-        </motion.div>
+        </div>
 
         {/* Featured Projects */}
         <Section className="bg-luxury-white dark:bg-luxury-charcoal">
@@ -193,9 +178,8 @@ const Home: React.FC = () => {
               [...Array(3)].map((_, i) => <ProjectCardSkeleton key={i} />)
             ) : (
               projects.slice(0, 6).map((project) => (
-                <motion.div
+                <div
                   key={project.id}
-                  variants={{ visible: { opacity: 1, y: 0 }, hidden: { opacity: 0, y: 30 } }}
                   className="group relative overflow-hidden shadow-luxury"
                 >
                   <div className="aspect-[4/5] overflow-hidden">
@@ -203,7 +187,7 @@ const Home: React.FC = () => {
                       src={project.image}
                       alt={project.title}
                       className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000"
-                      loading="lazy"
+                      loading="eager"
                     />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-luxury-obsidian/90 via-luxury-obsidian/40 to-transparent p-10 flex flex-col justify-end translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
@@ -217,13 +201,13 @@ const Home: React.FC = () => {
                       <span className="mr-2 h-[1px] w-4 bg-luxury-gold" /> {project.location}
                     </p>
                   </div>
-                </motion.div>
+                  </div>
               ))
             )}
           </div>
 
         </Section>
-      </motion.div>
+      </div>
 
       <div className="mt-8 text-center md:hidden">
         <Button to="/projects" variant="outline" fullWidth className="border-2 border-luxury-gold text-luxury-gold">

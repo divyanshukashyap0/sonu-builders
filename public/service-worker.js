@@ -1,5 +1,5 @@
 const urlParams = new URL(self.location.href).searchParams;
-const VERSION = urlParams.get('v') || 'v2';
+const VERSION = urlParams.get('v') || 'v3';
 const CACHE_NAME = `sonu-pwa-${VERSION}`;
 const CORE_ASSETS = [
   '/',
@@ -42,8 +42,16 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  if (request.method !== 'GET') return;
+  // Don't intercept admin routes, non-GET requests, or non-HTTP(S) requests
+  if (
+    url.pathname.startsWith('/admin') || 
+    request.method !== 'GET' || 
+    !url.protocol.startsWith('http')
+  ) {
+    return;
+  }
 
+  // Handle navigation requests (SPA support)
   if (request.mode === 'navigate') {
     event.respondWith((async () => {
       try {
@@ -63,21 +71,30 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Handle same-origin assets
   if (url.origin === self.location.origin) {
     event.respondWith((async () => {
       const cache = await caches.open(CACHE_NAME);
       const cached = await cache.match(request);
-      const fetchPromise = fetch(request).then((networkResponse) => {
+      
+      try {
+        const networkResponse = await fetch(request);
         if (networkResponse && networkResponse.status === 200) {
           cache.put(request, networkResponse.clone());
         }
         return networkResponse;
-      }).catch(() => undefined);
-      return cached || fetchPromise || new Response(null, { status: 504 });
+      } catch (err) {
+        if (cached) return cached;
+        return new Response('Network error occurred', { 
+          status: 408, 
+          headers: { 'Content-Type': 'text/plain' } 
+        });
+      }
     })());
     return;
   }
 
+  // Handle images and fonts (Cross-origin)
   if (request.destination === 'image' || request.destination === 'font') {
     event.respondWith((async () => {
       const cache = await caches.open(CACHE_NAME);

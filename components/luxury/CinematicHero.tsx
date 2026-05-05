@@ -141,25 +141,14 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
 
                     {/* Main Heading with Staggered Animation */}
                     <div className="overflow-hidden">
-                        <motion.h1
-                            variants={container}
-                            initial="hidden"
-                            animate="visible"
+                        <h1
                             className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-serif font-bold leading-tight text-white mb-6"
                             style={{ color: titleColor }}
                         >
-                            {titleText.split("").map((letter, index) => (
-                                <motion.span key={index} variants={child}>
-                                    {letter}
-                                </motion.span>
-                            ))}
+                            {titleText}
                             <br />
                             <span className="text-luxury-gold block mt-2" style={{ color: emphasisColor }}>
-                                {subtitleText.split("").map((letter, index) => (
-                                    <motion.span key={index} variants={child}>
-                                        {letter}
-                                    </motion.span>
-                                ))}
+                                {subtitleText}
                                 {/* Blinking Cursor */}
                                 <motion.span
                                     initial={{ opacity: 0 }}
@@ -168,7 +157,7 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
                                     className="inline-block w-[2px] h-[0.8em] bg-luxury-gold ml-1 translate-y-[0.1em]"
                                 />
                             </span>
-                        </motion.h1>
+                        </h1>
                     </div>
 
                     {/* Description */}

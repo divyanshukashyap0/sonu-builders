@@ -31,18 +31,18 @@ const Footer: React.FC = () => {
           {/* Brand Column */}
           <div className="md:col-span-4 space-y-8">
             <Link to="/" className="inline-block">
-              <img src={logo} alt={name} className="h-16 w-auto brightness-0 invert" loading="lazy" />
+              <img src={logo} alt={name} className="h-24 md:h-32 w-auto" loading="eager" />
             </Link>
             <p className="text-gray-400 leading-relaxed text-sm max-w-sm">
               {footerDescription}
             </p>
             <div className="flex space-x-4">
               {[
-                { Icon: Facebook, href: "https://facebook.com" },
-                { Icon: Twitter, href: "https://twitter.com" },
-                { Icon: Instagram, href: "https://instagram.com" },
-                { Icon: Linkedin, href: "https://linkedin.com" }
-              ].map(({ Icon, href }, idx) => (
+                { Icon: Facebook, href: socialLinks.facebook },
+                { Icon: Twitter, href: socialLinks.twitter },
+                { Icon: Instagram, href: socialLinks.instagram },
+                { Icon: Linkedin, href: socialLinks.linkedin }
+              ].filter(link => link.href).map(({ Icon, href }, idx) => (
                 <a
                   key={idx}
                   href={href}
