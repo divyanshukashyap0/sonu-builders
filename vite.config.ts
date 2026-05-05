@@ -21,12 +21,16 @@ export default defineConfig(({ mode }) => {
       }
     },
     build: {
+      target: 'esnext',
+      cssCodeSplit: true,
+      chunkSizeWarningLimit: 1000,
       rollupOptions: {
         output: {
           manualChunks: {
-            vendor: ['react', 'react-dom', 'react-router-dom', 'framer-motion'],
-            ui: ['lucide-react'],
-            firebase: ['firebase/app', 'firebase/firestore']
+            'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+            'vendor-motion': ['framer-motion'],
+            'vendor-ui': ['lucide-react', 'recharts'],
+            'vendor-firebase': ['firebase/app', 'firebase/firestore', 'firebase/auth']
           }
         }
       }
