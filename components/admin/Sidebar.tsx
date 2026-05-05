@@ -71,11 +71,13 @@ const Sidebar: React.FC = () => {
       `}>
 
                 {/* Header / Logo */}
-                <div className="h-16 flex items-center justify-center border-b border-luxury-gold/10 relative">
+                <div className="h-16 flex items-center px-6 border-b border-luxury-gold/10 relative">
                     {!collapsed ? (
-                        <h1 className="text-xl font-serif font-bold tracking-widest text-luxury-gold">SONU ADMIN</h1>
+                        <div className="text-lg font-serif font-bold tracking-wider text-luxury-gold whitespace-nowrap">
+                            SONU <span className="text-white opacity-80">ADMIN</span>
+                        </div>
                     ) : (
-                        <span className="text-xl font-bold text-luxury-gold">S</span>
+                        <div className="text-xl font-bold text-luxury-gold mx-auto">S</div>
                     )}
 
                     {/* Collapse Toggle (Desktop) */}
