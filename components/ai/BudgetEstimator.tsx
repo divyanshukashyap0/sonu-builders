@@ -49,8 +49,8 @@ export const BudgetEstimator: React.FC = () => {
     useEffect(() => {
         const fetchGeoData = async () => {
             try {
-                // Try ip-api.com as it's more lenient for development/CORS
-                const response = await fetch('https://demo.ip-api.com/json/').catch(() => null);
+                // Try ipapi.co for reliable detection
+                const response = await fetch('https://ipapi.co/json/').catch(() => null);
                 if (response && response.ok) {
                     const data = await response.json();
                     if (data.city) setLeadData(prev => ({ ...prev, city: data.city }));

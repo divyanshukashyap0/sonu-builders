@@ -569,3 +569,17 @@ select option {
 .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
   color: var(--luxury-white);
 }
+
+/* Dynamic Theme Utility Classes */
+.bg-theme-background { background-color: var(--theme-background) !important; }
+.bg-theme-secondary { background-color: var(--theme-secondary) !important; }
+.bg-theme-accent { background-color: var(--theme-accent) !important; }
+.bg-theme-card { background-color: var(--theme-card) !important; }
+
+.text-theme-text { color: var(--theme-text) !important; }
+.text-theme-accent { color: var(--theme-accent) !important; }
+.text-theme-muted { color: var(--theme-muted) !important; }
+.text-theme-secondary { color: var(--theme-secondary) !important; }
+
+.border-theme-border { border-color: var(--theme-border) !important; }
+.border-theme-accent { border-color: var(--theme-accent) !important; }

@@ -166,7 +166,7 @@ const Home: React.FC = () => {
               </h2>
             </div>
             <Link
-              to="/projects"
+              to="/gallery"
               className="hidden md:flex text-theme-accent font-bold items-center hover:underline uppercase tracking-widest text-xs"
             >
               See the Collection <ArrowRight className="w-4 h-4 ml-2" />

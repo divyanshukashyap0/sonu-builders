@@ -107,7 +107,7 @@ const Header: React.FC = () => {
       {/* Mobile Menu Portal */}
       {isOpen && createPortal(
         <div
-          className={`md:hidden fixed inset-0 z-[99999] bg-theme-background transition-all duration-500 ease-in-out w-full overflow-hidden ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          className={`md:hidden fixed inset-0 z-[99999] bg-theme-background backdrop-blur-3xl transition-all duration-500 ease-in-out w-full overflow-hidden ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
             }`}
           style={{ height: '100dvh' }}
         >

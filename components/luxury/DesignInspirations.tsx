@@ -13,6 +13,7 @@ import { useDesignInspirations } from '../../hooks/useDesignInspirations';
 import { useServices } from '../../hooks/useServices';
 import { useProjects } from '../../hooks/useProjects';
 import { useSiteSettings } from '../../hooks/useSiteSettings';
+import MediaRenderer from '../ui/MediaRenderer';
 
 const DesignInspirations: React.FC<{ isSection?: boolean }> = ({ isSection = false }) => {
     const navigate = useNavigate();
@@ -175,7 +176,7 @@ const DesignInspirations: React.FC<{ isSection?: boolean }> = ({ isSection = fal
                                 onClick={() => handleItemClick(item)}
                             >
                                 <div className="relative overflow-hidden rounded-xl bg-neutral-900 border border-white/10 shadow-2xl">
-                                    <img 
+                                    <MediaRenderer 
                                         src={item.image} 
                                         alt={item.title} 
                                         className="w-full h-auto transition-transform duration-1000 group-hover:scale-110 opacity-80 group-hover:opacity-100"

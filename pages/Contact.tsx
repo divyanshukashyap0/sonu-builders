@@ -39,7 +39,7 @@ const Contact: React.FC = () => {
     // Auto-detect city via IP
     const fetchGeoData = async () => {
       try {
-        const response = await fetch('https://demo.ip-api.com/json/').catch(() => null);
+        const response = await fetch('https://ipapi.co/json/').catch(() => null);
         if (response && response.ok) {
           const data = await response.json();
           if (data.city) {

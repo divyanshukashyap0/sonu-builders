@@ -31,10 +31,27 @@ const MediaRenderer: React.FC<MediaRendererProps> = ({
 
     const isCloudinary = url.includes('cloudinary.com');
     // If it's a Cloudinary URL and we have a watermark public ID set in Firestore
-    if (isCloudinary && watermarkLogo && watermarkLogo.length > 2 && !url.includes(watermarkLogo)) {
+    if (isCloudinary && watermarkLogo && watermarkLogo.length > 2) {
+      // Avoid recursive watermarking or watermarking the logo itself
+      if (url.includes(watermarkLogo) || url.includes('website_watermark_logo')) return url;
+
+      let publicId = watermarkLogo;
+
+      // Extract public ID if watermarkLogo is a full URL
+      if (watermarkLogo.includes('/upload/')) {
+        const parts = watermarkLogo.split('/upload/');
+        if (parts.length > 1) {
+          // Remove version if present (e.g., v1777980625/)
+          let pathPart = parts[1].replace(/^v\d+\//, '');
+          // Remove file extension (e.g., .png)
+          pathPart = pathPart.replace(/\.[^/.]+$/, "");
+          publicId = pathPart;
+        }
+      }
+
       // Format the public ID for Cloudinary layer (replace / with :)
-      const publicId = watermarkLogo.replace(/\//g, ':');
-      const watermarkTransform = `l_${publicId},o_50,g_south_east,w_150,x_20,y_20/`;
+      const formattedPublicId = publicId.replace(/\//g, ':');
+      const watermarkTransform = `l_${formattedPublicId},o_50,g_south_east,w_150,x_20,y_20/`;
       
       if (url.includes('/upload/')) {
         return url.replace('/upload/', `/upload/${watermarkTransform}`);
@@ -77,7 +94,7 @@ const MediaRenderer: React.FC<MediaRendererProps> = ({
         <img
           src={finalSrc}
           alt={alt}
-          className={`w-full h-full object-${objectFit}`}
+          className={`w-full ${className.includes('h-auto') ? 'h-auto' : 'h-full'} object-${objectFit}`}
           loading={loading}
           onError={(e) => {
             const target = e.target as HTMLImageElement;
@@ -92,13 +109,16 @@ const MediaRenderer: React.FC<MediaRendererProps> = ({
       )}
 
       {/* Local Watermark Overlay Fallback (For non-Cloudinary or as double-check) */}
-      <div className="absolute bottom-3 right-3 pointer-events-none opacity-80 select-none z-10 w-12 md:w-20">
-        <img
-          src={logo}
-          alt="Sonu Enterprises"
-          className="w-full h-auto"
-        />
-      </div>
+      {/* Hide if already watermarked via Cloudinary or if the image itself is a branding asset */}
+      {!finalSrc.includes('/upload/l_') && !src.includes('branding') && !src.includes('logo') && (
+        <div className="absolute bottom-3 right-3 pointer-events-none opacity-80 select-none z-10 w-12 md:w-20">
+          <img
+            src={logo}
+            alt="Sonu Enterprises"
+            className="w-full h-auto"
+          />
+        </div>
+      )}
 
       {/* Video Play Overlay */}
       {showPlayIcon && isActuallyVideo && (

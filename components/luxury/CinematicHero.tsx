@@ -178,7 +178,7 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
                         <Button to="/contact" variant="primary" className="min-w-[200px] shadow-glow-green hover:scale-105 transition-transform duration-300">
                             {content.ctaText}
                         </Button>
-                        <Button to="/projects" variant="white" className="min-w-[200px] hover:shadow-glow-gold hover:scale-105 transition-transform duration-300">
+                        <Button to="/gallery" variant="white" className="min-w-[200px] hover:shadow-glow-gold hover:scale-105 transition-transform duration-300">
                             Explore Collection
                         </Button>
                     </motion.div>

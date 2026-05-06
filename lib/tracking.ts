@@ -45,29 +45,24 @@ const normalizeGeoData = (data: any, provider: string) => {
  */
 export const logCallAction = async () => {
     const providers = [
-        { name: 'ip-api', url: 'https://demo.ip-api.com/json/?fields=66842623' }, // Lenient for dev
+        { name: 'ipapi', url: 'https://ipapi.co/json/' },
         { name: 'freeipapi', url: 'https://freeipapi.com/api/json' },
         { name: 'ipify', url: 'https://api.ipify.org?format=json' }
     ];
 
     let geoData = null;
+    let lastError = null;
 
     for (const provider of providers) {
         try {
             const response = await fetch(provider.url, { mode: 'cors' });
             if (response.ok) {
                 const data = await response.json();
-                if (provider.name === 'ip-api') {
-                    geoData = {
-                        ip: data.query, city: data.city, region: data.regionName, country: data.country,
-                        location: `${data.city}, ${data.regionName}, ${data.country}`, provider: 'ip-api.com'
-                    };
-                } else {
-                    geoData = normalizeGeoData(data, provider.name);
-                }
+                geoData = normalizeGeoData(data, provider.name);
                 if (geoData) break;
             }
         } catch (e) {
+            lastError = e;
             // Silently continue to next provider
         }
     }

@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useParams, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, CheckCircle, Clock, DollarSign } from 'lucide-react';
 import PageHero from '../components/luxury/PageHero';
 import Section from '../components/Section';
@@ -24,6 +25,25 @@ const ServiceDetail: React.FC = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [id]);
+
+    // Keyboard navigation for lightbox
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (lightboxIndex === null || !service?.gallery) return;
+            
+            if (e.key === 'Escape') {
+                setLightboxIndex(null);
+                document.body.style.overflow = 'auto';
+            } else if (e.key === 'ArrowRight') {
+                setLightboxIndex(prev => (prev !== null && prev < (service.gallery?.length || 0) - 1 ? prev + 1 : prev));
+            } else if (e.key === 'ArrowLeft') {
+                setLightboxIndex(prev => (prev !== null && prev > 0 ? prev - 1 : prev));
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [lightboxIndex, service?.gallery]);
 
     if (loading) {
         return (
@@ -135,12 +155,12 @@ const ServiceDetail: React.FC = () => {
                         <h2 className="text-3xl font-serif font-bold text-white mb-4">Service Gallery</h2>
                         <p className="text-luxury-gold uppercase tracking-[0.3em] text-[10px] font-bold">Explore our completed works in {service.title}</p>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="columns-1 md:columns-2 gap-8 space-y-8">
                         {service.gallery.map((img, idx) => (
                             <motion.div
                                 key={idx}
                                 whileHover={{ y: -10 }}
-                                className="aspect-video rounded-xl overflow-hidden shadow-luxury border border-white/20 group cursor-pointer"
+                                className="break-inside-avoid rounded-xl overflow-hidden shadow-luxury border border-white/20 group cursor-pointer relative"
                                 onClick={() => {
                                     setLightboxIndex(idx);
                                     document.body.style.overflow = 'hidden';
@@ -149,7 +169,7 @@ const ServiceDetail: React.FC = () => {
                                 <MediaRenderer 
                                     src={img} 
                                     alt={`${service.title} inspiration ${idx + 1}`} 
-                                    className="w-full h-full object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-110" 
+                                    className="w-full h-auto transition-transform duration-[2000ms] ease-out group-hover:scale-110" 
                                     showPlayIcon
                                 />
                             </motion.div>
@@ -160,36 +180,88 @@ const ServiceDetail: React.FC = () => {
 
             {/* Lightbox for Gallery */}
             <AnimatePresence>
-                {lightboxIndex !== null && service.gallery && (
+                {lightboxIndex !== null && service.gallery && typeof document !== 'undefined' && createPortal(
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[10000] bg-black/95 backdrop-blur-2xl flex items-center justify-center p-4 md:p-12"
+                        className="fixed inset-0 z-[999999] bg-black/98 backdrop-blur-3xl flex items-center justify-center overflow-hidden"
                         onClick={() => {
                             setLightboxIndex(null);
                             document.body.style.overflow = 'auto';
                         }}
                     >
-                        <button className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors p-2 z-[10001]">
-                            <Icons.X size={32} />
+                        {/* Close Button */}
+                        <button 
+                            className="absolute top-6 right-6 text-white/70 hover:text-white transition-all p-3 z-[1000001] bg-white/10 rounded-full hover:bg-white/20 backdrop-blur-md"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setLightboxIndex(null);
+                                document.body.style.overflow = 'auto';
+                            }}
+                        >
+                            <Icons.X size={28} />
                         </button>
 
-                        <div className="relative max-w-7xl max-h-full flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
-                            <motion.img
+                        {/* Navigation Buttons */}
+                        {service.gallery.length > 1 && (
+                            <>
+                                <button 
+                                    className={`absolute left-4 md:left-10 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-all p-5 z-[1000001] rounded-full hover:bg-white/10 ${lightboxIndex === 0 ? 'opacity-20 pointer-events-none' : ''}`}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setLightboxIndex(prev => prev !== null && prev > 0 ? prev - 1 : prev);
+                                    }}
+                                >
+                                    <Icons.ChevronLeft size={64} />
+                                </button>
+                                <button 
+                                    className={`absolute right-4 md:right-10 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-all p-5 z-[1000001] rounded-full hover:bg-white/10 ${lightboxIndex === service.gallery.length - 1 ? 'opacity-20 pointer-events-none' : ''}`}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setLightboxIndex(prev => prev !== null && service.gallery && prev < service.gallery.length - 1 ? prev + 1 : prev);
+                                    }}
+                                >
+                                    <Icons.ChevronRight size={64} />
+                                </button>
+                            </>
+                        )}
+
+                        <div className="w-full h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+                            <motion.div
                                 key={lightboxIndex}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                src={service.gallery[lightboxIndex]}
-                                alt={service.title}
-                                className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl border border-white/10"
-                            />
-                            <div className="mt-8 text-center">
-                                <h3 className="text-2xl font-serif font-bold text-white">{service.title}</h3>
-                                <p className="text-luxury-gold uppercase tracking-[0.2em] text-[10px] font-bold mt-2">Luxury Execution</p>
-                            </div>
+                                initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                transition={{ type: "spring", damping: 30, stiffness: 300 }}
+                                className="w-full h-full max-w-[95vw] max-h-[95vh] flex items-center justify-center shadow-[0_0_80px_rgba(0,0,0,0.8)]"
+                            >
+                                <MediaRenderer
+                                    src={service.gallery[lightboxIndex]}
+                                    alt={service.title}
+                                    className="w-full h-full"
+                                    objectFit="contain"
+                                    loading="eager"
+                                />
+                            </motion.div>
+                            
+                            {/* Floating Caption */}
+                            <motion.div 
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="absolute bottom-10 left-0 right-0 text-center pointer-events-none px-4"
+                            >
+                                <div className="inline-block bg-black/40 backdrop-blur-2xl px-10 py-5 rounded-3xl border border-white/5 shadow-2xl">
+                                    <h3 className="text-xl md:text-3xl font-serif font-bold text-white tracking-tight">{service.title}</h3>
+                                    <div className="flex items-center justify-center gap-4 mt-3">
+                                        <div className="h-[1px] w-12 bg-luxury-gold/30" />
+                                        <p className="text-luxury-gold uppercase tracking-[0.4em] text-[10px] font-black">{lightboxIndex + 1} / {service.gallery.length}</p>
+                                        <div className="h-[1px] w-12 bg-luxury-gold/30" />
+                                    </div>
+                                </div>
+                            </motion.div>
                         </div>
-                    </motion.div>
+                    </motion.div>,
+                    document.body
                 )}
             </AnimatePresence>
 
