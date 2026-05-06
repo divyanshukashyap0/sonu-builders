@@ -34,7 +34,8 @@ const Settings: React.FC = () => {
     });
 
     const [themeData, setThemeData] = useState({
-        activeTheme: 'royal_gold' as 'obsidian_copper' | 'royal_gold' | 'industrial_luxury'
+        activeTheme: 'royal_gold' as 'obsidian_copper' | 'royal_gold' | 'industrial_luxury',
+        backgroundImage: ''
     });
 
     const LUXURY_THEMES = {
@@ -363,6 +364,18 @@ const Settings: React.FC = () => {
                                     onChange={(url) => setGeneralData(prev => ({ ...prev, watermarkLogo: url }))}
                                     folder="branding"
                                     publicId="branding/website_watermark_logo"
+                                />
+                            </div>
+
+                            <div className="p-4 bg-luxury-gold/5 rounded-lg border border-luxury-gold/10">
+                                <p className="text-sm font-bold text-luxury-charcoal dark:text-white mb-2">Global Background Image</p>
+                                <p className="text-xs text-gray-500 mb-4">Choose a subtle background image for the entire website. This will be shown at very low opacity (5%).</p>
+                                <CloudinaryImageInput
+                                    label="Site Background Image"
+                                    value={themeData.backgroundImage || ''}
+                                    onChange={(url) => setThemeData(prev => ({ ...prev, backgroundImage: url }))}
+                                    folder="branding"
+                                    publicId="branding/site_background"
                                 />
                             </div>
                             

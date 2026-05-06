@@ -35,18 +35,22 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
     });
 
     useEffect(() => {
-        const detectCity = async () => {
+        const fetchGeoData = async () => {
             try {
-                const response = await fetch('https://ipapi.co/json/');
-                const data = await response.json();
-                if (data.city) {
-                    setFormData(prev => ({ ...prev, city: data.city }));
+                // Try ip-api.com as it's more lenient for development/CORS
+                const response = await fetch('https://demo.ip-api.com/json/').catch(() => null);
+                if (response && response.ok) {
+                    const data = await response.json();
+                    if (data.city) {
+                        setFormData(prev => ({ ...prev, city: data.city }));
+                    }
                 }
             } catch (error) {
-                console.error("Geolocation failed:", error);
+                // Silent fallback
+                setFormData(prev => ({ ...prev, city: 'Mumbai' }));
             }
         };
-        detectCity();
+        fetchGeoData();
     }, []);
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -144,7 +148,7 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
     };
 
     return (
-        <section className="relative py-24 overflow-hidden border-t border-luxury-gold/5 bg-neutral-950">
+        <section className="relative py-24 overflow-hidden border-t border-luxury-gold/5 bg-transparent">
             {/* Background Image with Overlay */}
             <div className="absolute inset-0 z-0">
                 <img

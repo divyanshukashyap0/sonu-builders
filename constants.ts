@@ -22,7 +22,6 @@ export const NAV_LINKS: NavLink[] = [
   { label: 'Services', path: '/services' },
   { label: 'Projects', path: '/projects' },
   { label: 'Gallery', path: '/gallery' },
-  { label: 'Cost Estimator', path: '/estimate' },
   { label: 'Contact', path: '/contact' },
 ];
 

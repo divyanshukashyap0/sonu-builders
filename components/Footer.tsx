@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-luxury-obsidian text-white relative overflow-hidden border-t border-white/5">
+    <footer className="bg-black/40 backdrop-blur-md text-white relative overflow-hidden border-t border-white/5">
       {/* Background Texture - Using CSS pattern to avoid CORS issues */}
       <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none" 
            style={{ backgroundImage: `radial-gradient(#d4af37 0.5px, transparent 0px)`, backgroundSize: '40px 40px' }} />
@@ -122,8 +122,8 @@ const Footer: React.FC = () => {
             </ul>
 
             <div className="mt-8">
-              <Button to="/estimate" variant="outline" className="w-full justify-center border-luxury-gold/30 text-luxury-gold hover:border-luxury-gold">
-                Get a Quote
+              <Button to="/contact" variant="outline" className="w-full justify-center border-luxury-gold/30 text-luxury-gold hover:border-luxury-gold">
+                Request Consultation
               </Button>
             </div>
           </div>

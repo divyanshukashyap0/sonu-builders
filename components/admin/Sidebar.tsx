@@ -17,6 +17,7 @@ import {
     Calculator,
     PhoneCall,
     Image as ImageIcon,
+    Palette,
     X
 } from 'lucide-react';
 import { signOut } from 'firebase/auth';
@@ -35,6 +36,7 @@ const Sidebar: React.FC = () => {
         { icon: Users, label: 'Leads', path: '/admin/leads' },
         { icon: MessageSquare, label: 'Chat Inquiries', path: '/admin/chat-inquiries' },
         { icon: Calculator, label: 'Project Estimates', path: '/admin/estimates' },
+        { icon: IndianRupee, label: 'Estimation Pricing', path: '/admin/estimation-pricing' },
         { icon: PhoneCall, label: 'Call tracking', path: '/admin/call-logs' },
         { icon: Briefcase, label: 'Projects', path: '/admin/projects' },
         { icon: LayoutTemplate, label: 'Services', path: '/admin/services' },
@@ -42,6 +44,7 @@ const Sidebar: React.FC = () => {
         { icon: IndianRupee, label: 'Financials', path: '/admin/financials' },
         { icon: FileText, label: 'Content', path: '/admin/content' },
         { icon: Users, label: 'Team', path: '/admin/team' }, // Changed Icon to Users for Team
+        { icon: Palette, label: 'Appearance', path: '/admin/appearance' },
         { icon: Settings, label: 'Settings', path: '/admin/settings' },
     ];
 

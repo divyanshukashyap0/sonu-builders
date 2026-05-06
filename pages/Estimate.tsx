@@ -1,14 +1,14 @@
 import React from 'react';
 import Section from '../components/Section';
 import PageHero from '../components/luxury/PageHero';
-import { BudgetEstimator } from '../components/ai/BudgetEstimator';
+import { InteriorEstimator } from '../components/ai/InteriorEstimator';
 import SEO from '../components/SEO';
 import { Calculator, ShieldCheck, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const EstimatePage: React.FC = () => {
     return (
-        <div className="page-transition min-h-screen bg-luxury-white dark:bg-luxury-charcoal">
+        <div className="page-transition min-h-screen bg-transparent text-white">
             <SEO 
                 title="Project Cost Estimator" 
                 description="Get an instant luxury interior design and construction estimate for your project. Professional budget planning at your fingertips."
@@ -74,24 +74,24 @@ const EstimatePage: React.FC = () => {
                         </motion.div>
                     </div>
 
-                    <BudgetEstimator />
+                    <InteriorEstimator />
 
                     
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-24">
-                        <div className="p-8 bg-white dark:bg-luxury-obsidian rounded-2xl border border-luxury-gold/10 shadow-sm text-center">
+                        <div className="p-8 bg-black/40 backdrop-blur-md rounded-2xl border border-white/10 shadow-sm text-center">
                             <ShieldCheck className="w-10 h-10 text-luxury-gold mx-auto mb-4" />
-                            <h4 className="font-bold text-luxury-charcoal dark:text-white mb-2 uppercase tracking-widest text-xs">Verified Rates</h4>
-                            <p className="text-sm text-gray-500">Estimates are balanced against current luxury market materials and labor costs.</p>
+                            <h4 className="font-bold text-white mb-2 uppercase tracking-widest text-xs">Verified Rates</h4>
+                            <p className="text-sm text-gray-400">Estimates are balanced against current luxury market materials and labor costs.</p>
                         </div>
-                        <div className="p-8 bg-white dark:bg-luxury-obsidian rounded-2xl border border-luxury-gold/10 shadow-sm text-center">
+                        <div className="p-8 bg-black/40 backdrop-blur-md rounded-2xl border border-white/10 shadow-sm text-center">
                             <Sparkles className="w-10 h-10 text-luxury-gold mx-auto mb-4" />
-                            <h4 className="font-bold text-luxury-charcoal dark:text-white mb-2 uppercase tracking-widest text-xs">Bespoke Options</h4>
-                            <p className="text-sm text-gray-500">From essential quality to ultra-luxury imported finishes, we cover every tier.</p>
+                            <h4 className="font-bold text-white mb-2 uppercase tracking-widest text-xs">Bespoke Options</h4>
+                            <p className="text-sm text-gray-400">From essential quality to ultra-luxury imported finishes, we cover every tier.</p>
                         </div>
-                        <div className="p-8 bg-white dark:bg-luxury-obsidian rounded-2xl border border-luxury-gold/10 shadow-sm text-center">
+                        <div className="p-8 bg-black/40 backdrop-blur-md rounded-2xl border border-white/10 shadow-sm text-center">
                             <Calculator className="w-10 h-10 text-luxury-gold mx-auto mb-4" />
-                            <h4 className="font-bold text-luxury-charcoal dark:text-white mb-2 uppercase tracking-widest text-xs">Real-time sync</h4>
-                            <p className="text-sm text-gray-500">Your final quote calculation includes GST and technical overheads automatically.</p>
+                            <h4 className="font-bold text-white mb-2 uppercase tracking-widest text-xs">Real-time sync</h4>
+                            <p className="text-sm text-gray-400">Your final quote calculation includes GST and technical overheads automatically.</p>
                         </div>
                     </div>
                 </div>

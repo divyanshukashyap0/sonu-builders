@@ -78,6 +78,11 @@ export interface RoomEstimate {
   name: string;
   area: number;
   level: 'basic' | 'premium' | 'luxury';
+  tiles?: string;
+  color?: string;
+  hasTvUnit?: boolean;
+  hasModularKitchen?: boolean;
+  wardrobeSize?: number; // in sqft
 }
 
 export interface ProjectEstimate {
@@ -86,6 +91,7 @@ export interface ProjectEstimate {
   userPhone: string;
   userEmail?: string;
   city?: string;
+  address?: string;
   timeline: string;
   rooms: RoomEstimate[];
   totalBudget: number;

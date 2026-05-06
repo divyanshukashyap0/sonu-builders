@@ -1,13 +1,29 @@
 import React, { useState } from 'react';
-import { Calculator, Trash2, Search, User, Phone, MapPin, Calendar, Layers, Eye, X } from 'lucide-react';
+import { Calculator, Trash2, Search, User, Phone, MapPin, Calendar, Layers, Eye, X, MessageSquare, Mail, Download } from 'lucide-react';
 import { useEstimates } from '../../hooks/useEstimates';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ProjectEstimate } from '../../types';
+import { ProjectEstimate, RoomEstimate } from '../../types';
+import { useEstimationCosts } from '../../hooks/useEstimationCosts';
 
 const AdminEstimates: React.FC = () => {
-    const { estimates, loading, deleteEstimate, updateEstimateStatus } = useEstimates();
+    const { estimates, loading, deleteEstimate } = useEstimates();
+    const { costs } = useEstimationCosts();
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedEstimate, setSelectedEstimate] = useState<ProjectEstimate | null>(null);
+
+    const calculateRoomCost = (room: RoomEstimate) => {
+        if (!costs) return room.area * (room.level === 'luxury' ? 3500 : room.level === 'premium' ? 2000 : 1200);
+        
+        let base = room.area * costs.baseRates[room.level];
+        const tileRate = (costs.tiles as any)[room.tiles || 'vitrified'] || 0;
+        base += room.area * tileRate;
+        const paintRate = (costs.color as any)[room.color || 'plasticEmulsion'] || 0;
+        base += room.area * paintRate;
+        if (room.hasTvUnit) base += costs.fixedItems.tvUnit;
+        if (room.hasModularKitchen) base += costs.fixedItems.modularKitchenBase;
+        if (room.wardrobeSize) base += room.wardrobeSize * costs.fixedItems.wardrobePerSqFt;
+        return base;
+    };
 
     const filteredEstimates = estimates.filter(est =>
         est.userName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -16,8 +32,6 @@ const AdminEstimates: React.FC = () => {
     );
 
     const formatCurrency = (val: number) => {
-        if (val >= 10000000) return `₹${(val / 10000000).toFixed(2)} Cr`;
-        if (val >= 100000) return `₹${(val / 100000).toFixed(2)} L`;
         return `₹${val.toLocaleString('en-IN')}`;
     };
 
@@ -93,7 +107,7 @@ const AdminEstimates: React.FC = () => {
                                         onClick={() => setSelectedEstimate(est)}
                                         className="flex items-center gap-2 px-3 py-1.5 bg-luxury-gold/10 text-luxury-gold rounded-lg text-xs font-bold border border-luxury-gold/20 hover:bg-luxury-gold hover:text-white transition-all"
                                     >
-                                        <Layers size={14} /> {est.rooms?.length} Rooms
+                                        <Layers size={14} /> {est.rooms?.length} Spaces
                                     </button>
                                 </td>
                                 <td className="px-6 py-4">
@@ -122,11 +136,11 @@ const AdminEstimates: React.FC = () => {
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.9, opacity: 0 }}
-                            className="bg-white dark:bg-luxury-obsidian w-full max-w-2xl rounded-2xl border border-luxury-gold/20 shadow-2xl overflow-hidden"
+                            className="bg-white dark:bg-luxury-obsidian w-full max-w-3xl rounded-2xl border border-luxury-gold/20 shadow-2xl overflow-hidden"
                         >
                             <div className="p-6 border-b border-luxury-gold/10 flex justify-between items-center bg-luxury-gold/5">
                                 <h3 className="text-xl font-serif font-bold text-luxury-charcoal dark:text-white flex items-center gap-2">
-                                    <Calculator className="text-luxury-gold" /> Estimate Breakdown
+                                    <Calculator className="text-luxury-gold" /> Detailed Estimate Breakdown
                                 </h3>
                                 <button onClick={() => setSelectedEstimate(null)} className="p-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-full"><X size={20} className="dark:text-white" /></button>
                             </div>
@@ -134,29 +148,50 @@ const AdminEstimates: React.FC = () => {
                                 <div className="grid grid-cols-2 gap-8 py-4 border-b border-gray-100 dark:border-white/5">
                                     <div>
                                         <p className="text-[10px] uppercase tracking-widest text-gray-500 font-bold mb-1">User Information</p>
-                                        <p className="font-bold dark:text-white">{selectedEstimate.userName}</p>
+                                        <p className="font-bold dark:text-white text-lg">{selectedEstimate.userName}</p>
                                         <p className="text-sm font-mono text-luxury-gold">{selectedEstimate.userPhone}</p>
                                         <p className="text-xs text-gray-500">{selectedEstimate.userEmail}</p>
+                                        <p className="text-xs text-gray-400 mt-2"><MapPin size={10} className="inline mr-1" /> {selectedEstimate.city}</p>
                                     </div>
                                     <div className="text-right">
-                                        <p className="text-[10px] uppercase tracking-widest text-gray-500 font-bold mb-1">Total Investment</p>
-                                        <p className="text-3xl font-serif font-bold text-luxury-gold">{formatCurrency(selectedEstimate.totalBudget)}</p>
-                                        <p className="text-xs text-gray-500 italic">Timeline: {selectedEstimate.timeline}</p>
+                                        <p className="text-[10px] uppercase tracking-widest text-gray-500 font-bold mb-1">Estimated Investment</p>
+                                        <p className="text-4xl font-serif font-bold text-luxury-gold">{formatCurrency(selectedEstimate.totalBudget)}</p>
+                                        <p className="text-xs text-gray-500 italic mt-1">Timeline: {selectedEstimate.timeline}</p>
                                     </div>
                                 </div>
 
                                 <div>
-                                    <p className="text-[10px] uppercase tracking-widest text-gray-500 font-bold mb-4">Inventory Breakdown</p>
-                                    <div className="space-y-3">
+                                    <p className="text-[10px] uppercase tracking-widest text-gray-500 font-bold mb-4">Space-by-Space Inventory</p>
+                                    <div className="space-y-4">
                                         {selectedEstimate.rooms?.map((r, i) => (
-                                            <div key={i} className="flex justify-between items-center p-4 bg-gray-50 dark:bg-white/5 rounded-xl border border-gray-100 dark:border-white/10">
-                                                <div>
-                                                    <span className="font-bold text-luxury-charcoal dark:text-white">{r.name}</span>
-                                                    <span className="text-[10px] uppercase font-bold text-luxury-gold ml-3 tracking-widest">{r.level}</span>
+                                            <div key={i} className="p-5 bg-gray-50 dark:bg-white/5 rounded-2xl border border-gray-100 dark:border-white/10">
+                                                <div className="flex justify-between items-start mb-3">
+                                                    <div>
+                                                        <span className="font-bold text-luxury-charcoal dark:text-white text-lg">{r.name}</span>
+                                                        <span className="text-[10px] uppercase font-bold text-luxury-gold ml-3 tracking-widest bg-luxury-gold/10 px-2 py-0.5 rounded">{r.level}</span>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <div className="font-bold font-mono dark:text-white text-lg">{formatCurrency(calculateRoomCost(r))}</div>
+                                                        <div className="text-[10px] text-gray-500">{r.area} sqft</div>
+                                                    </div>
                                                 </div>
-                                                <div className="text-right">
-                                                    <div className="font-bold font-mono dark:text-white">{formatCurrency(r.area * (r.level === 'luxury' ? 3500 : r.level === 'premium' ? 2000 : 1200))}</div>
-                                                    <div className="text-[10px] text-gray-500">{r.area} sqft</div>
+                                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 pt-4 border-t border-gray-200/50 dark:border-white/5">
+                                                    <div className="text-[10px]">
+                                                        <p className="text-gray-400 uppercase tracking-tighter">Tiles</p>
+                                                        <p className="font-bold dark:text-white truncate">{r.tiles || 'Standard'}</p>
+                                                    </div>
+                                                    <div className="text-[10px]">
+                                                        <p className="text-gray-400 uppercase tracking-tighter">Painting</p>
+                                                        <p className="font-bold dark:text-white truncate">{r.color || 'Standard'}</p>
+                                                    </div>
+                                                    <div className="text-[10px]">
+                                                        <p className="text-gray-400 uppercase tracking-tighter">Features</p>
+                                                        <div className="flex gap-1 mt-1">
+                                                            {r.hasTvUnit && <span className="bg-blue-500/20 text-blue-400 px-1 rounded">TV</span>}
+                                                            {r.hasModularKitchen && <span className="bg-green-500/20 text-green-400 px-1 rounded">Kitchen</span>}
+                                                            {r.wardrobeSize ? <span className="bg-purple-500/20 text-purple-400 px-1 rounded">Wardrobe</span> : null}
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         ))}

@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import BottomNav from './components/BottomNav';
 import FloatingActions from './components/FloatingActions';
+import { DynamicBackground } from './components/DynamicBackground';
 
 
 // Lazy Load Pages
@@ -12,7 +13,6 @@ import About from './pages/About';
 import Services from './pages/Services';
 import Projects from './pages/Projects';
 import Contact from './pages/Contact';
-import Estimate from './pages/Estimate';
 import Gallery from './pages/Gallery';
 
 // Lazy Load Pages (Lower priority/Utility)
@@ -36,14 +36,15 @@ const AdminTeam = lazy(() => import('./pages/admin/Team'));
 const AdminServices = lazy(() => import('./pages/admin/Services'));
 const AdminSettings = lazy(() => import('./pages/admin/Settings'));
 const AdminChatInquiries = lazy(() => import('./pages/admin/ChatInquiries'));
-const AdminEstimates = lazy(() => import('./pages/admin/Estimates'));
 const AdminCallLogs = lazy(() => import('./pages/admin/CallLogs'));
 const AdminMediaLibrary = lazy(() => import('./pages/admin/MediaLibrary'));
+const AppearanceSettings = lazy(() => import('./pages/admin/AppearanceSettings'));
 
 import AdminLayout from './layouts/AdminLayout';
 import ProtectedRoute from './components/ProtectedRoute';
 import CustomCursor from './components/luxury/CustomCursor';
 import AIAssistant from './components/luxury/AIAssistant';
+import PremiumLoader from './components/luxury/PremiumLoader';
 import { COMPANY_NAME } from './constants';
 import { useCompanyData } from './hooks/useCompanyData';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -148,8 +149,17 @@ const THEME_PRESETS = {
 const AppContent: React.FC = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
-   const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const { name } = useCompanyData();
+ 
+  useEffect(() => {
+    if (isInitialLoading) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [isInitialLoading]);
 
   useEffect(() => {
     const unsub = onSnapshot(doc(db, 'settings', 'master'), (docSnap) => {
@@ -166,6 +176,7 @@ const AppContent: React.FC = () => {
       if (docSnap.exists()) {
         const data = docSnap.data();
         const activeThemeId = data.activeTheme || 'royal_gold';
+
         console.log(`[Luxury Theme] Applying preset: ${activeThemeId}`);
         
         const selectedPreset = THEME_PRESETS[activeThemeId as keyof typeof THEME_PRESETS] || THEME_PRESETS.royal_gold;
@@ -198,17 +209,10 @@ const AppContent: React.FC = () => {
 
 
   return (
-
-    <div className="flex flex-col min-h-screen relative">
-      {/* Global Low-Opacity Background Image */}
-      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <img 
-          src="/images/site-bg.png" 
-          className="w-full h-full object-cover opacity-[0.05] grayscale brightness-[1.2]" 
-          alt="Global Architecture Background"
-        />
-        <div className="absolute inset-0 bg-neutral-950/20" />
-      </div>
+    <>
+      <PremiumLoader onComplete={() => setIsInitialLoading(false)} />
+      <div className="flex flex-col min-h-screen relative">
+      <DynamicBackground />
 
       <CustomCursor />
       <AIAssistant />
@@ -224,7 +228,6 @@ const AppContent: React.FC = () => {
               <Route path="/services/:id" element={<ServiceDetail />} />
               <Route path="/projects" element={<Projects />} />
               <Route path="/gallery" element={<Gallery />} />
-              <Route path="/estimate" element={<Estimate />} />
               <Route path="/case-study/:id" element={<CaseStudy />} />
               <Route path="/ai-tools" element={<AITools />} />
               <Route path="/contact" element={<Contact />} />
@@ -254,10 +257,9 @@ const AppContent: React.FC = () => {
                 <Route path="team" element={<AdminTeam />} />
                 <Route path="settings" element={<AdminSettings />} />
                 <Route path="chat-inquiries" element={<AdminChatInquiries />} />
-                <Route path="estimates" element={<AdminEstimates />} />
+                <Route path="appearance" element={<AppearanceSettings />} />
                 <Route path="call-logs" element={<AdminCallLogs />} />
                 <Route path="media" element={<AdminMediaLibrary />} />
-                {/* Add other admin sub-routes here later */}
               </Route>
 
               {/* Legacy Routes - Redirect */}
@@ -271,6 +273,7 @@ const AppContent: React.FC = () => {
       {!isAdminRoute && <Footer />}
       {!isAdminRoute && <BottomNav />}
     </div>
+    </>
   );
 };
 

@@ -27,7 +27,7 @@ const trustItems = [
 
 const TrustBar: React.FC = () => {
     return (
-        <div className="bg-luxury-black text-white py-12 border-t border-white/10 relative overflow-hidden">
+        <div className="bg-transparent text-white py-12 border-t border-white/10 relative overflow-hidden">
             {/* Background Glow */}
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-luxury-gold/5 rounded-full blur-[100px]" />
 
