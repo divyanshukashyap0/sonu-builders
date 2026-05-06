@@ -49,10 +49,10 @@ const CloudinaryUploader: React.FC = () => {
 
   const validateFile = (file: File) => {
     const isImage = file.type.startsWith('image/');
-    const isUnder 20MB = file.size <= 20 * 1024 * 1024;
+    const isUnder20MB = file.size <= 20 * 1024 * 1024;
     
     if (!isImage) return 'Only image files are allowed';
-    if (!isUnder 20MB) return 'File size must be under 20MB for high-res architectural renders';
+    if (!isUnder20MB) return 'File size must be under 20MB for high-res architectural renders';
     return null;
   };
 
