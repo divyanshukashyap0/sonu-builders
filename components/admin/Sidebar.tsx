@@ -35,11 +35,10 @@ const Sidebar: React.FC = () => {
         { icon: LayoutDashboard, label: 'Dashboard', path: '/admin/dashboard' },
         { icon: Users, label: 'Leads', path: '/admin/leads' },
         { icon: MessageSquare, label: 'Chat Inquiries', path: '/admin/chat-inquiries' },
-        { icon: Calculator, label: 'Project Estimates', path: '/admin/estimates' },
-        { icon: IndianRupee, label: 'Estimation Pricing', path: '/admin/estimation-pricing' },
         { icon: PhoneCall, label: 'Call tracking', path: '/admin/call-logs' },
         { icon: Briefcase, label: 'Projects', path: '/admin/projects' },
         { icon: LayoutTemplate, label: 'Services', path: '/admin/services' },
+        { icon: Palette, label: 'Design Inspirations', path: '/admin/inspirations' },
         { icon: ImageIcon, label: 'Media Library', path: '/admin/media' },
         { icon: IndianRupee, label: 'Financials', path: '/admin/financials' },
         { icon: FileText, label: 'Content', path: '/admin/content' },
@@ -94,6 +93,22 @@ const Sidebar: React.FC = () => {
 
                 {/* Navigation Items */}
                 <div className="flex-1 overflow-y-auto py-6 space-y-2 px-3 scrollbar-thin scrollbar-thumb-luxury-gold/20">
+                    {/* Exit Admin Button - Moved to Top */}
+                    <button
+                        onClick={() => navigate('/')}
+                        className={`flex items-center w-full px-3 py-3 rounded-lg text-luxury-gold hover:bg-luxury-gold/10 hover:text-white transition-all duration-200 group mb-4 border-b border-luxury-gold/10 pb-4
+                        ${collapsed ? 'justify-center' : ''}
+                        `}
+                    >
+                        <Home size={22} className={`min-w-[22px] ${collapsed ? '' : 'mr-3'}`} />
+                        {!collapsed && <span className="font-bold uppercase tracking-widest text-[10px]">Back to Website</span>}
+                        {collapsed && (
+                            <div className="absolute left-full ml-2 px-2 py-1 bg-luxury-charcoal text-luxury-gold text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-luxury-gold/20 z-50 pointer-events-none">
+                                Exit Admin
+                            </div>
+                        )}
+                    </button>
+
                     {menuItems.map((item) => (
                         <NavLink
                             key={item.path}
@@ -124,24 +139,6 @@ const Sidebar: React.FC = () => {
 
                 {/* Footer / Actions */}
                 <div className="p-4 border-t border-luxury-gold/10 space-y-2">
-                    {/* Exit Admin Button */}
-                    <button
-                        onClick={() => navigate('/')}
-                        className={`flex items-center w-full px-3 py-3 rounded-lg text-luxury-gold hover:bg-luxury-gold/10 hover:text-white transition-all duration-200 group
-              ${collapsed ? 'justify-center' : ''}
-            `}
-                    >
-                        <Home size={22} className={`min-w-[22px] ${collapsed ? '' : 'mr-3'}`} />
-                        {!collapsed && <span>Exit Admin</span>}
-
-                        {/* Tooltip for collapsed mode */}
-                        {collapsed && (
-                            <div className="absolute left-full ml-2 px-2 py-1 bg-luxury-charcoal text-luxury-gold text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-luxury-gold/20 z-50 pointer-events-none">
-                                Exit Admin
-                            </div>
-                        )}
-                    </button>
-
                     {/* Logout Button */}
                     <button
                         onClick={handleLogout}

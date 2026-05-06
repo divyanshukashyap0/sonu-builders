@@ -9,7 +9,7 @@ interface SectionProps {
 }
 
 const Section: React.FC<SectionProps> = ({ children, className = '', id, colored = false, reveal = false }) => {
-  const bgClass = colored ? 'bg-black/40' : 'bg-transparent';
+  const bgClass = colored ? 'bg-theme-secondary/20' : 'bg-transparent';
   const ref = useRef<HTMLElement | null>(null);
 
   useEffect(() => {

@@ -9,7 +9,8 @@ import {
     LayoutGrid,
     List as ListIcon,
     Loader2,
-    Trash2
+    Trash2,
+    ExternalLink
 } from 'lucide-react';
 import { Lead, LeadStatus } from '../../types';
 import { useLeads } from '../../hooks/useLeads';
@@ -114,6 +115,7 @@ const Leads: React.FC = () => {
                                     <tr>
                                         <th className="px-6 py-4">Name / Contact</th>
                                         <th className="px-6 py-4">Project Details</th>
+                                        <th className="px-6 py-4">Reference</th>
                                         <th className="px-6 py-4">Status</th>
                                         <th className="px-6 py-4">Source</th>
                                         <th className="px-6 py-4">Date</th>
@@ -150,6 +152,27 @@ const Leads: React.FC = () => {
                                                 <td className="px-6 py-4">
                                                     <p className="text-sm font-medium text-luxury-charcoal dark:text-white">{lead.projectType}</p>
                                                     <p className="text-xs text-gray-500 mt-1">Budget: {lead.budget || 'N/A'}</p>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    {lead.referredDesign && lead.referredDesign !== 'None' ? (
+                                                        <div className="flex flex-col gap-1">
+                                                            <span className="text-[10px] bg-luxury-gold/10 text-luxury-gold border border-luxury-gold/20 px-2 py-1 rounded font-bold uppercase tracking-wider inline-block w-fit">
+                                                                {lead.referredDesign}
+                                                            </span>
+                                                            {lead.referredDesignId && (
+                                                                <a 
+                                                                    href={`/gallery/item/${lead.referredDesignId}`} 
+                                                                    target="_blank" 
+                                                                    rel="noreferrer"
+                                                                    className="text-[9px] text-luxury-gold hover:underline flex items-center gap-1 font-bold uppercase tracking-tighter"
+                                                                >
+                                                                    View Design <ExternalLink size={10} />
+                                                                </a>
+                                                            )}
+                                                        </div>
+                                                    ) : (
+                                                        <span className="text-xs text-gray-400 italic">Direct Inquiry</span>
+                                                    )}
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(lead.status)}`}>

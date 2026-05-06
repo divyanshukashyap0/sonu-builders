@@ -148,6 +148,12 @@ const LeadDetails: React.FC = () => {
                                 <p className="text-gray-800 dark:text-gray-200 font-medium mt-1">{lead.source || 'Direct'}</p>
                             </div>
                             <div>
+                                <label className="text-xs uppercase text-gray-400 font-bold tracking-wider">Inspiration Source</label>
+                                <p className="text-luxury-gold font-bold mt-1 uppercase tracking-wider text-sm">
+                                    {lead.referredDesign && lead.referredDesign !== 'None' ? lead.referredDesign : 'Direct Contact'}
+                                </p>
+                            </div>
+                            <div>
                                 <label className="text-xs uppercase text-gray-400 font-bold tracking-wider">Created At</label>
                                 <p className="text-gray-800 dark:text-gray-200 font-medium mt-1">{lead.createdAt instanceof Date ? lead.createdAt.toLocaleDateString() : 'N/A'}</p>
                             </div>

@@ -7,6 +7,7 @@ import { useServices } from '../hooks/useServices';
 import { usePageHeaders } from '../hooks/usePageHeaders';
 import SEO from '../components/SEO';
 import * as Icons from 'lucide-react';
+import DesignInspirations from '../components/luxury/DesignInspirations';
 
 import { ServiceCardSkeleton, Skeleton } from '../components/Skeleton';
 import MediaRenderer from '../components/ui/MediaRenderer';
@@ -28,10 +29,10 @@ const Services: React.FC = () => {
   } : headers.services;
 
   return (
-    <div>
+    <div className="bg-white dark:bg-luxury-obsidian">
       <SEO
-        title="Services"
-        description="Explore our premium services: Interior Design, Modular Kitchens, Turnkey Construction, and more. Tailored solutions for luxury living."
+        title="Premium Services"
+        description="Explore our world-class interior design and construction services. From modular kitchens to full-home luxury renovations."
         canonical="https://sonu-builders.in/services"
       />
       <PageHero
@@ -41,69 +42,67 @@ const Services: React.FC = () => {
       />
 
       <Section className="relative">
-        {/* Subtle Section Background Pattern - More prominent for texture */}
-        <div
-          className="absolute inset-0 opacity-[0.07] pointer-events-none"
-          style={{
-            backgroundImage: 'url("https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1920&q=80")',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundAttachment: 'fixed'
-          }}
-        />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="text-center mb-20">
+          <span className="text-theme-accent font-bold uppercase tracking-[0.4em] text-xs mb-4 block">Core Offerings</span>
+          <h2 className="text-4xl md:text-5xl font-serif font-bold text-theme-text">Professional Solutions</h2>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {servicesLoading ? (
             [...Array(6)].map((_, i) => <ServiceCardSkeleton key={i} />)
           ) : (
             services.map((service) => (
-              <Link to={`/services/${service.id}`} key={service.id} className="bg-white dark:bg-luxury-charcoal border border-luxury-gold/10 hover:border-luxury-gold/40 rounded-xl overflow-hidden hover:shadow-luxury-hover transition-all duration-500 flex flex-col group block h-full">
-                {/* Service Card Image */}
-                <div className="relative h-48 overflow-hidden bg-luxury-obsidian">
+              <Link to={`/services/${service.id}`} key={service.id} className="bg-theme-card border border-theme-border hover:border-theme-accent rounded-sm overflow-hidden hover:shadow-2xl transition-all duration-700 flex flex-col group block h-full">
+                <div className="relative h-64 overflow-hidden bg-theme-background">
                   <MediaRenderer
                     src={service.image || "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&q=80"}
                     alt={service.title}
                     className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000 opacity-60 group-hover:opacity-100"
                     loading="lazy"
-                    showPlayIcon
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-luxury-obsidian/80 to-transparent" />
-                  <div className="absolute top-4 left-4 w-12 h-12 bg-luxury-gold flex items-center justify-center rounded-lg shadow-luxury transform group-hover:-translate-y-1 transition-transform">
+                  <div className="absolute inset-0 bg-gradient-to-t from-theme-background/90 via-transparent to-transparent" />
+                  <div className="absolute top-6 left-6 w-14 h-14 bg-theme-accent flex items-center justify-center rounded-sm shadow-lg transform group-hover:-translate-y-1 transition-transform">
                     {getIcon(service.icon as unknown as string)}
                   </div>
                 </div>
-                <div className="p-8 flex-1">
-                  <h3 className="text-xl font-bold text-luxury-charcoal dark:text-white mb-3 font-serif">{service.title}</h3>
-                  <p className="text-luxury-charcoal/70 dark:text-white/70 leading-relaxed text-sm font-medium">
+                <div className="p-10 flex-1">
+                  <h3 className="text-2xl font-bold text-theme-text mb-4 font-serif">{service.title}</h3>
+                  <p className="text-theme-muted leading-relaxed text-sm font-medium line-clamp-3">
                     {service.description}
                   </p>
                 </div>
-                <div className="bg-luxury-gold/5 px-8 py-4 border-t border-luxury-gold/5">
-                  <ul className="text-[10px] uppercase tracking-widest font-bold text-luxury-gold/60 space-y-2">
-                    <li className="flex items-center"><span className="w-1.5 h-1.5 bg-luxury-gold rounded-full mr-2"></span>Expert Team</li>
-                    <li className="flex items-center"><span className="w-1.5 h-1.5 bg-luxury-gold rounded-full mr-2"></span>Quality Materials</li>
-                    <li className="flex items-center"><span className="w-1.5 h-1.5 bg-luxury-gold rounded-full mr-2"></span>On-time Completion</li>
-                  </ul>
+                <div className="bg-theme-accent/5 px-10 py-6 border-t border-theme-border/10">
+                  <div className="flex items-center text-theme-accent font-bold text-[10px] uppercase tracking-widest group-hover:translate-x-2 transition-transform">
+                    Explore Details <Icons.ArrowRight className="w-4 h-4 ml-2" />
+                  </div>
                 </div>
               </Link>
             ))
           )}
         </div>
 
-
         {services.length === 0 && (
           <div className="text-center py-20">
-            <p className="text-stone-400 italic">Our executive offerings are currently being curated.</p>
+            <p className="text-theme-muted italic">Our executive offerings are currently being curated.</p>
           </div>
         )}
       </Section>
 
-      <Section colored>
+      {/* Massive Design Inspirations Gallery integrated here */}
+      <div className="border-t border-theme-border/10">
+        <DesignInspirations isSection={true} />
+      </div>
+
+      <Section colored className="text-theme-text">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-serif font-bold text-luxury-charcoal mb-6">Need a Custom Solution?</h2>
-          <p className="text-luxury-charcoal/70 mb-8 text-lg font-medium">
-            Every project is unique. We offer tailored construction packages designed to meet your specific requirements and budget.
+          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-8">Need a Bespoke Solution?</h2>
+          <p className="text-theme-muted mb-12 text-lg font-medium leading-relaxed">
+            Every project is unique. We offer tailored construction packages and custom design services crafted specifically for your lifestyle and vision.
           </p>
-          <Button to="/contact">Discuss Your Project</Button>
+          <div className="flex flex-col sm:flex-row justify-center gap-6">
+            <Button to="/contact" className="px-12 py-5 text-lg rounded-sm">Discuss Your Project</Button>
+            <Button to="/contact" variant="outline" className="px-12 py-5 text-lg rounded-sm">Book Consultation</Button>
+          </div>
         </div>
       </Section>
     </div>
@@ -111,3 +110,4 @@ const Services: React.FC = () => {
 };
 
 export default Services;
+

@@ -27,14 +27,15 @@ const MediaRenderer: React.FC<MediaRendererProps> = ({
 
   // Apply watermark to Cloudinary images
   const getWatermarkedUrl = (url: string) => {
-    if (!url) return 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1920&q=80'; // High-quality luxury default
+    if (!url) return 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1920&q=80';
 
-    // Only apply if Cloudinary image and watermarkLogo is a valid URL in settings
     const isCloudinary = url.includes('cloudinary.com');
-    const hasWatermarkConfig = watermarkLogo && watermarkLogo.length > 5;
-
-    if (isCloudinary && hasWatermarkConfig && !url.includes('website_watermark_logo')) {
-      const watermarkTransform = 'l_branding:website_watermark_logo,o_50,g_south_east,w_150,x_20,y_20/';
+    // If it's a Cloudinary URL and we have a watermark public ID set in Firestore
+    if (isCloudinary && watermarkLogo && watermarkLogo.length > 2 && !url.includes(watermarkLogo)) {
+      // Format the public ID for Cloudinary layer (replace / with :)
+      const publicId = watermarkLogo.replace(/\//g, ':');
+      const watermarkTransform = `l_${publicId},o_50,g_south_east,w_150,x_20,y_20/`;
+      
       if (url.includes('/upload/')) {
         return url.replace('/upload/', `/upload/${watermarkTransform}`);
       }
@@ -80,8 +81,9 @@ const MediaRenderer: React.FC<MediaRendererProps> = ({
           loading={loading}
           onError={(e) => {
             const target = e.target as HTMLImageElement;
-            if (target.src.includes('l_branding:website_watermark_logo')) {
-              target.src = target.src.replace(/l_branding:website_watermark_logo,[^/]+\//, '');
+            // If the watermarked URL fails, strip the transformation and try original
+            if (target.src.includes('/upload/l_')) {
+              target.src = target.src.replace(/\/upload\/l_[^/]+\//, '/upload/');
               return;
             }
             target.src = 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1200&q=60';

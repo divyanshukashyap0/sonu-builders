@@ -13,7 +13,7 @@ import About from './pages/About';
 import Services from './pages/Services';
 import Projects from './pages/Projects';
 import Contact from './pages/Contact';
-import Gallery from './pages/Gallery';
+import Gallery from './pages/DesignInspirationsPage';
 
 // Lazy Load Pages (Lower priority/Utility)
 const ServiceDetail = lazy(() => import('./pages/ServiceDetail'));
@@ -39,12 +39,15 @@ const AdminChatInquiries = lazy(() => import('./pages/admin/ChatInquiries'));
 const AdminCallLogs = lazy(() => import('./pages/admin/CallLogs'));
 const AdminMediaLibrary = lazy(() => import('./pages/admin/MediaLibrary'));
 const AppearanceSettings = lazy(() => import('./pages/admin/AppearanceSettings'));
+const AdminInspirations = lazy(() => import('./pages/admin/InspirationManager'));
+const InspirationDetail = lazy(() => import('./pages/InspirationDetail'));
 
 import AdminLayout from './layouts/AdminLayout';
 import ProtectedRoute from './components/ProtectedRoute';
 import CustomCursor from './components/luxury/CustomCursor';
 import AIAssistant from './components/luxury/AIAssistant';
 import PremiumLoader from './components/luxury/PremiumLoader';
+import ThemeSwitcher from './components/luxury/ThemeSwitcher';
 import { COMPANY_NAME } from './constants';
 import { useCompanyData } from './hooks/useCompanyData';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -118,39 +121,13 @@ const PageLoader = () => (
 );
 
 
-const THEME_PRESETS = {
-  'obsidian_copper': {
-    '--luxury-black': '#110d0a',
-    '--luxury-charcoal': '#1a1614',
-    '--luxury-gold': '#b87333',
-    '--luxury-gold-light': '#d4a373',
-    '--luxury-white': '#f5f5f5',
-    '--obsidian': '#110d0a'
-  },
-  'royal_gold': {
-    '--luxury-black': '#000000',
-    '--luxury-charcoal': '#0a0a0a',
-    '--luxury-gold': '#D4AF37',
-    '--luxury-gold-light': '#F4DFB0',
-    '--luxury-white': '#FFFFFF',
-    '--obsidian': '#000000'
-  },
-  'industrial_luxury': {
-    '--luxury-black': '#1a1a1a',
-    '--luxury-charcoal': '#4a4a4a',
-    '--luxury-gold': '#b87333',
-    '--luxury-gold-light': '#d4a373',
-    '--luxury-white': '#e0e0e0',
-    '--obsidian': '#1a1a1a',
-    '--premium-stone': '#4a4a4a'
-  }
-};
-
 const AppContent: React.FC = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
-  const { theme, toggleTheme } = useTheme();
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [isInitialLoading, setIsInitialLoading] = useState(() => {
+    // Check if this is the first time the user is visiting in this session
+    return !sessionStorage.getItem('sonu_builders_loaded');
+  });
   const { name } = useCompanyData();
  
   useEffect(() => {
@@ -160,6 +137,11 @@ const AppContent: React.FC = () => {
       document.body.style.overflow = 'auto';
     }
   }, [isInitialLoading]);
+
+  const handleLoadingComplete = () => {
+    setIsInitialLoading(false);
+    sessionStorage.setItem('sonu_builders_loaded', 'true');
+  };
 
   useEffect(() => {
     const unsub = onSnapshot(doc(db, 'settings', 'master'), (docSnap) => {
@@ -171,46 +153,13 @@ const AppContent: React.FC = () => {
     return () => unsub();
   }, []);
 
-  useEffect(() => {
-    const unsub = onSnapshot(doc(db, 'settings', 'appearance'), (docSnap) => {
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        const activeThemeId = data.activeTheme || 'royal_gold';
-
-        console.log(`[Luxury Theme] Applying preset: ${activeThemeId}`);
-        
-        const selectedPreset = THEME_PRESETS[activeThemeId as keyof typeof THEME_PRESETS] || THEME_PRESETS.royal_gold;
-
-        // Create or update dynamic style tag for highest priority
-        let styleTag = document.getElementById('luxury-theme-vars') as HTMLStyleElement;
-        if (!styleTag) {
-          styleTag = document.createElement('style');
-          styleTag.id = 'luxury-theme-vars';
-          document.head.appendChild(styleTag);
-        }
-
-        const varDefinitions = Object.entries(selectedPreset)
-          .map(([variable, value]) => `${variable}: ${value} !important;`)
-          .join('\n    ');
-
-        styleTag.innerHTML = `
-:root {
-    ${varDefinitions}
-    --gold-accent: ${selectedPreset['--luxury-gold']} !important;
-    --charcoal: ${selectedPreset['--luxury-charcoal']} !important;
-    --brand-green: ${selectedPreset['--luxury-gold']} !important;
-}
-        `;
-      }
-    });
-    return () => unsub();
-  }, []);
-
-
-
   return (
     <>
-      <PremiumLoader onComplete={() => setIsInitialLoading(false)} />
+      <AnimatePresence>
+        {isInitialLoading && (
+          <PremiumLoader onComplete={handleLoadingComplete} />
+        )}
+      </AnimatePresence>
       <div className="flex flex-col min-h-screen relative">
       <DynamicBackground />
 
@@ -228,6 +177,8 @@ const AppContent: React.FC = () => {
               <Route path="/services/:id" element={<ServiceDetail />} />
               <Route path="/projects" element={<Projects />} />
               <Route path="/gallery" element={<Gallery />} />
+              <Route path="/gallery/:category" element={<Gallery />} />
+              <Route path="/gallery/item/:itemId" element={<InspirationDetail />} />
               <Route path="/case-study/:id" element={<CaseStudy />} />
               <Route path="/ai-tools" element={<AITools />} />
               <Route path="/contact" element={<Contact />} />
@@ -260,6 +211,7 @@ const AppContent: React.FC = () => {
                 <Route path="appearance" element={<AppearanceSettings />} />
                 <Route path="call-logs" element={<AdminCallLogs />} />
                 <Route path="media" element={<AdminMediaLibrary />} />
+                <Route path="inspirations" element={<AdminInspirations />} />
               </Route>
 
               {/* Legacy Routes - Redirect */}

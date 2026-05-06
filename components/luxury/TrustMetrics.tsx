@@ -74,7 +74,7 @@ export const TrustMetrics: React.FC = () => {
                     <p className="text-luxury-gold font-bold uppercase tracking-[0.4em] text-[10px] mb-6">
                         The Standard of Luxury
                     </p>
-                    <h2 className="text-white max-w-4xl mx-auto leading-tight italic mb-12">
+                    <h2 className="text-white max-w-4xl mx-auto leading-tight italic mb-12 font-serif">
                         Transforming <span className="text-luxury-gold">Visionary Concepts</span> into Standing Realities.
                     </h2>
 

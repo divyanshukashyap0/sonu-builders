@@ -61,6 +61,8 @@ const Contact: React.FC = () => {
     e.preventDefault();
     setStatus('submitting');
     try {
+      const subject = searchParams.get('subject');
+      const designId = searchParams.get('designId');
       const payload = {
         name: formData.name,
         email: formData.email,
@@ -69,6 +71,8 @@ const Contact: React.FC = () => {
         projectType: formData.projectType || 'General Inquiry',
         budget: formData.budget || 'Not specified',
         notes: formData.notes,
+        referredDesign: subject || 'None',
+        referredDesignId: designId || null,
         source: 'Contact Page Form',
         status: 'New',
         createdAt: new Date().toISOString()
@@ -88,7 +92,7 @@ const Contact: React.FC = () => {
       const subjectInput = document.createElement('input');
       subjectInput.type = 'hidden';
       subjectInput.name = '_subject';
-      subjectInput.value = 'Detailed Inquiry from Contact Form';
+      subjectInput.value = subject ? `Inquiry for ${subject}` : 'Detailed Inquiry from Contact Form';
       form.appendChild(subjectInput);
       const nextInput = document.createElement('input');
       nextInput.type = 'hidden';

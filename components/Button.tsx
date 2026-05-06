@@ -26,11 +26,11 @@ const Button: React.FC<ButtonProps> = ({
   const baseStyles = "inline-flex items-center justify-center px-10 py-6 text-base md:text-sm font-bold uppercase tracking-[0.2em] transition-all duration-500 rounded-sm focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed";
 
   const variants = {
-    primary: "bg-gradient-to-r from-luxury-gold to-[#8E6D45] text-white shadow-lg hover:shadow-glow-gold hover:scale-105 active:scale-95 border border-transparent",
-    secondary: "bg-transparent border-2 border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-white shadow-none hover:shadow-glow-gold hover:scale-105 active:scale-95",
-    white: "bg-transparent border-2 border-white text-white hover:bg-white/10 hover:border-luxury-gold hover:text-white shadow-none hover:shadow-glow-green hover:scale-105 active:scale-95",
-    outline: "border-2 border-luxury-charcoal text-luxury-charcoal dark:border-white dark:text-white hover:bg-luxury-charcoal hover:text-white dark:hover:bg-white dark:hover:text-luxury-charcoal hover:scale-105 active:scale-95",
-    ghost: "bg-transparent text-luxury-charcoal dark:text-white hover:bg-black/5 dark:hover:bg-white/10 hover:scale-105 active:scale-95"
+    primary: "bg-theme-accent text-theme-background shadow-lg hover:shadow-[0_0_30px_rgba(var(--theme-accent-rgb),0.3)] hover:scale-[1.02] active:scale-95 border border-theme-accent",
+    secondary: "bg-transparent border-2 border-theme-accent text-theme-accent hover:bg-theme-accent hover:text-theme-background shadow-none hover:scale-[1.02] active:scale-95",
+    white: "bg-transparent border-2 border-theme-text text-theme-text hover:bg-theme-text/10 hover:border-theme-accent hover:scale-[1.02] active:scale-95",
+    outline: "border-2 border-theme-border text-theme-text hover:bg-theme-accent hover:text-theme-background hover:border-theme-accent hover:scale-[1.02] active:scale-95",
+    ghost: "bg-transparent text-theme-text hover:bg-theme-secondary/20 hover:scale-[1.02] active:scale-95"
   };
 
   const widthClass = fullWidth ? 'w-full' : '';

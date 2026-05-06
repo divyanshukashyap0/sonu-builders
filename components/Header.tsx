@@ -74,8 +74,8 @@ const Header: React.FC = () => {
                 key={link.path}
                 to={link.path}
                 className={`text-[11px] uppercase tracking-[0.18em] font-bold transition-all duration-300 ${location.pathname === link.path
-                  ? 'text-luxury-gold border-b-2 border-luxury-gold pb-1'
-                  : 'text-white hover:text-luxury-gold'
+                  ? 'text-theme-accent border-b-2 border-theme-accent pb-1'
+                  : 'text-theme-text hover:text-theme-accent'
                   }`}
               >
                 {link.label}
@@ -84,7 +84,7 @@ const Header: React.FC = () => {
             <a
               href={`tel:${phone.replace(/\s/g, '')}`}
               onClick={logCallAction}
-              className="inline-flex items-center px-4 py-2 rounded-md text-[11px] uppercase tracking-wide font-bold transition-all transform hover:scale-105 bg-luxury-gold text-white hover:brightness-95 shadow-glow-gold"
+              className="inline-flex items-center px-4 py-2 rounded-md text-[11px] uppercase tracking-wide font-bold transition-all transform hover:scale-105 bg-theme-accent text-theme-background hover:brightness-95 shadow-lg"
             >
               <Phone className="w-3 h-3 mr-2" />
               {phone}
@@ -98,7 +98,7 @@ const Header: React.FC = () => {
               className="focus:outline-none p-2 min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors"
               aria-label={isOpen ? 'Close menu' : 'Open menu'}
             >
-              {isOpen ? <X className="h-6 w-6 text-white" /> : <Menu className="h-6 w-6 text-white" />}
+              {isOpen ? <X className="h-6 w-6 text-theme-text" /> : <Menu className="h-6 w-6 text-theme-text" />}
             </button>
           </div>
         </div>
@@ -107,7 +107,7 @@ const Header: React.FC = () => {
       {/* Mobile Menu Portal */}
       {isOpen && createPortal(
         <div
-          className={`md:hidden fixed inset-0 z-[99999] bg-luxury-obsidian/95 backdrop-blur-md transition-all duration-500 ease-in-out w-full overflow-hidden ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          className={`md:hidden fixed inset-0 z-[99999] bg-theme-background transition-all duration-500 ease-in-out w-full overflow-hidden ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
             }`}
           style={{ height: '100dvh' }}
         >
@@ -116,7 +116,7 @@ const Header: React.FC = () => {
               <Link to="/" onClick={() => setIsOpen(false)}>
                 <img src={logo} alt={name} className="h-16 w-auto" loading="eager" />
               </Link>
-              <button onClick={() => setIsOpen(false)} className="text-white p-2 border border-luxury-gold/20 rounded-full bg-white/5 min-w-[44px] min-h-[44px]">
+              <button onClick={() => setIsOpen(false)} className="text-theme-text p-2 border border-theme-accent/20 rounded-full bg-theme-text/5 min-w-[44px] min-h-[44px]">
                 <X className="h-6 w-6" />
               </button>
             </div>
@@ -128,8 +128,8 @@ const Header: React.FC = () => {
                   to={link.path}
                   onClick={() => setIsOpen(false)}
                   className={`text-2xl font-serif font-bold ${location.pathname === link.path
-                    ? 'text-luxury-gold underline underline-offset-8'
-                    : 'text-stone-300 hover:text-white transition-colors'
+                    ? 'text-theme-accent underline underline-offset-8'
+                    : 'text-theme-muted hover:text-theme-text transition-colors'
                     }`}
                 >
                   {link.label}
@@ -138,7 +138,7 @@ const Header: React.FC = () => {
               <a
                 href={`tel:${phone.replace(/\s/g, '')}`}
                 onClick={logCallAction}
-                className="text-xl font-bold text-luxury-gold border-t border-white/10 pt-6 mt-4 inline-flex items-center gap-2"
+                className="text-xl font-bold text-theme-accent border-t border-theme-border/30 pt-6 mt-4 inline-flex items-center gap-2"
               >
                 <Phone size={18} />
                 {phone}

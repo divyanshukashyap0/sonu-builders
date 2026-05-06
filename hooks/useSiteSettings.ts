@@ -5,7 +5,8 @@ import { db } from '../lib/firebase';
 export interface SiteSettings {
     backgroundColor: string;
     backgroundImage: string;
-    backgroundBlur: number; // 0 to 100
+    backgroundBlur: number;
+    activeTheme?: string;
 }
 
 export const useSiteSettings = () => {
@@ -20,7 +21,8 @@ export const useSiteSettings = () => {
                 const defaults: SiteSettings = {
                     backgroundColor: '#050505',
                     backgroundImage: '',
-                    backgroundBlur: 25
+                    backgroundBlur: 25,
+                    activeTheme: 'luxury-white'
                 };
                 setDoc(doc(db, 'settings', 'appearance'), defaults);
                 setSettings(defaults);
