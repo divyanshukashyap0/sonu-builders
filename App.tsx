@@ -41,6 +41,7 @@ const AdminMediaLibrary = lazy(() => import('./pages/admin/MediaLibrary'));
 const AppearanceSettings = lazy(() => import('./pages/admin/AppearanceSettings'));
 const AdminInspirations = lazy(() => import('./pages/admin/InspirationManager'));
 const InspirationDetail = lazy(() => import('./pages/InspirationDetail'));
+const GalleryMediaDetail = lazy(() => import('./pages/GalleryMediaDetail'));
 
 import AdminLayout from './layouts/AdminLayout';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -59,7 +60,7 @@ import { doc, onSnapshot } from 'firebase/firestore';
 
 
 // Listen for chunk load errors and force a refresh
-const ChunkErrorListener = ({ children }: { children: React.ReactNode }) => {
+const ChunkErrorListener = ({ children }: { children: React.SuspenseProps['children'] }) => {
   useEffect(() => {
     const handleError = (error: ErrorEvent | PromiseRejectionEvent) => {
       const message = 'message' in error ? error.message : (error as any).reason?.message;
@@ -179,6 +180,7 @@ const AppContent: React.FC = () => {
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/gallery/:category" element={<Gallery />} />
               <Route path="/gallery/item/:itemId" element={<InspirationDetail />} />
+              <Route path="/gallery/media" element={<GalleryMediaDetail />} />
               <Route path="/case-study/:id" element={<CaseStudy />} />
               <Route path="/ai-tools" element={<AITools />} />
               <Route path="/contact" element={<Contact />} />

@@ -157,8 +157,8 @@ const InspirationManager: React.FC = () => {
         <div className="space-y-8 p-6">
             <div className="flex justify-between items-center">
                 <div>
-                    <h2 className="text-3xl font-serif font-bold text-white">Design Inspirations</h2>
-                    <p className="text-gray-400">Manage your premium interior design gallery</p>
+                    <h2 className="text-3xl font-serif font-bold text-white">Gallery Manager</h2>
+                    <p className="text-gray-400">Manage your premium interior design and service gallery items</p>
                 </div>
                 <div className="flex gap-4">
                     {inspirations.length === 0 && (
@@ -173,7 +173,7 @@ const InspirationManager: React.FC = () => {
                         onClick={() => { resetForm(); setIsModalOpen(true); }}
                         className="flex items-center gap-2 bg-luxury-gold text-white px-6 py-3 rounded-lg font-bold shadow-glow-gold hover:scale-105 transition-all"
                     >
-                        <Plus size={20} /> Add Inspiration
+                        <Plus size={20} /> Add New Gallery Item
                     </button>
                 </div>
             </div>
@@ -258,7 +258,7 @@ const InspirationManager: React.FC = () => {
                             className="relative w-full max-w-2xl bg-luxury-obsidian border border-white/10 rounded-2xl overflow-hidden shadow-2xl"
                         >
                             <div className="p-6 border-b border-white/10 flex justify-between items-center">
-                                <h3 className="text-xl font-bold text-white">{editingId ? 'Edit Inspiration' : 'Add New Inspiration'}</h3>
+                                <h3 className="text-xl font-bold text-white">{editingId ? 'Edit Gallery Item' : 'Add New Gallery Item'}</h3>
                                 <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-white"><X size={24} /></button>
                             </div>
                             

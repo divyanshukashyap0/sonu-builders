@@ -38,7 +38,7 @@ const Sidebar: React.FC = () => {
         { icon: PhoneCall, label: 'Call tracking', path: '/admin/call-logs' },
         { icon: Briefcase, label: 'Projects', path: '/admin/projects' },
         { icon: LayoutTemplate, label: 'Services', path: '/admin/services' },
-        { icon: Palette, label: 'Design Inspirations', path: '/admin/inspirations' },
+        { icon: Palette, label: 'Gallery Manager', path: '/admin/inspirations' },
         { icon: ImageIcon, label: 'Media Library', path: '/admin/media' },
         { icon: IndianRupee, label: 'Financials', path: '/admin/financials' },
         { icon: FileText, label: 'Content', path: '/admin/content' },

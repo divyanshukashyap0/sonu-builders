@@ -1,131 +1,157 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
     Search, 
     ChevronRight, 
     Maximize2,
-    Heart
+    Image as ImageIcon
 } from 'lucide-react';
 import Section from '../Section';
 import Button from '../Button';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useDesignInspirations } from '../../hooks/useDesignInspirations';
+import { useServices } from '../../hooks/useServices';
+import { useProjects } from '../../hooks/useProjects';
+import { useSiteSettings } from '../../hooks/useSiteSettings';
 
-import { useDesignInspirations, DesignInspiration as DesignItem } from '../../hooks/useDesignInspirations';
-
-const CATEGORIES = [
-    { id: 'all', label: 'All Designs' },
-    { id: 'kitchen', label: 'Modular Kitchen' },
-    { id: 'bedroom', label: 'Master Bedroom' },
-    { id: 'living', label: 'Living Room' },
-    { id: 'bathroom', label: 'Bathroom' },
-    { id: 'bhk', label: '1/2/3 BHK Plans' },
-    { id: 'wardrobe', label: 'Wardrobe' },
-    { id: 'study', label: 'Study Room' },
-    { id: 'kids', label: 'Kid\'s Bedroom' },
-    { id: 'tv-unit', label: 'TV Unit' },
-    { id: 'pooja', label: 'Pooja Room' },
-    { id: 'ceiling', label: 'False Ceiling' },
-    { id: 'dining', label: 'Dining Room' },
-    { id: 'foyer', label: 'Foyer/Entrance' },
-    { id: 'office', label: 'Home Office' },
-    { id: 'balcony', label: 'Balcony' },
-    { id: 'flooring', label: 'Flooring' },
-    { id: 'wallpaper', label: 'Wallpaper' },
-    { id: 'paint', label: 'Wall Paint' },
-    { id: 'staircase', label: 'Staircase' },
-    { id: 'bar', label: 'Home Bar' },
-];
-
-interface DesignInspirationsProps {
-    isSection?: boolean;
-}
-
-const DesignInspirations: React.FC<DesignInspirationsProps> = ({ isSection = false }) => {
-    const { category: urlCategory } = useParams();
+const DesignInspirations: React.FC<{ isSection?: boolean }> = ({ isSection = false }) => {
     const navigate = useNavigate();
-    const { inspirations: DESIGN_DATA, loading } = useDesignInspirations();
-    const [selectedCategory, setSelectedCategory] = useState(urlCategory || 'all');
+    const { inspirations, loading: loadingInspirations } = useDesignInspirations();
+    const { services, loading: loadingServices } = useServices();
+    const { projects, loading: loadingProjects } = useProjects();
+    const { settings } = useSiteSettings();
     const [searchQuery, setSearchQuery] = useState('');
-    const [favorites, setFavorites] = useState<string[]>([]);
 
-    useEffect(() => {
-        if (urlCategory && urlCategory !== 'item') {
-            setSelectedCategory(urlCategory);
-        }
-    }, [urlCategory]);
+    // Combine inspirations, service gallery images, and project images
+    const allItems = [
+        ...inspirations.map(item => ({
+            id: item.id,
+            type: 'inspiration',
+            image: item.image,
+            title: item.title,
+            description: item.description,
+            category: item.category,
+            style: item.style || 'Modern'
+        })),
+        ...services.flatMap(service => (service.gallery || []).map((url, idx) => ({
+            id: `service-${service.id}-${idx}`,
+            type: 'service-media',
+            image: url,
+            title: `${service.title} - Showcase`,
+            description: `Experience the luxury of our ${service.title.toLowerCase()} service.`,
+            category: service.title.toLowerCase().replace(/\s+/g, '-'),
+            style: 'Luxury',
+            serviceId: service.id,
+            originalUrl: url
+        }))),
+        ...projects.flatMap(project => [
+            {
+                id: `project-main-${project.id}`,
+                type: 'service-media',
+                image: project.image,
+                title: project.title,
+                description: project.description,
+                category: 'completed-projects',
+                style: project.category,
+                serviceId: project.id
+            },
+            ...(project.gallery || []).map((url, idx) => ({
+                id: `project-gal-${project.id}-${idx}`,
+                type: 'service-media',
+                image: url,
+                title: `${project.title} - Perspective`,
+                description: project.description,
+                category: 'completed-projects',
+                style: project.category,
+                serviceId: project.id
+            }))
+        ])
+    ];
 
-    const handleCategoryChange = (catId: string) => {
-        setSelectedCategory(catId);
-        if (!isSection) {
-            navigate(`/gallery/${catId === 'all' ? '' : catId}`);
-        }
-    };
+    // Remove duplicates if the same image URL is in both
+    const uniqueItems = allItems.filter((item, index, self) =>
+        index === self.findIndex((t) => t.image === item.image)
+    );
 
-    const handleItemClick = (item: DesignItem) => {
-        navigate(`/gallery/item/${item.id}`);
-    };
-
-    const filteredDesigns = DESIGN_DATA.filter(item => {
-        const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
+    const filteredItems = uniqueItems.filter(item => {
         const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                              item.description.toLowerCase().includes(searchQuery.toLowerCase());
-        return matchesCategory && matchesSearch;
+        return matchesSearch;
     });
 
-    const toggleFavorite = (id: string) => {
-        setFavorites(prev => 
-            prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id]
-        );
+    const handleItemClick = (item: any) => {
+        if (item.type === 'inspiration') {
+            navigate(`/gallery/item/${item.id}`);
+        } else {
+            navigate(`/gallery/media?url=${encodeURIComponent(item.image)}&title=${encodeURIComponent(item.title)}&desc=${encodeURIComponent(item.description)}`);
+        }
     };
 
-    if (loading && DESIGN_DATA.length === 0) {
+    const loading = loadingInspirations || loadingServices || loadingProjects;
+
+    if (loading && allItems.length === 0) {
         return (
             <div className="flex items-center justify-center py-40">
-                <div className="w-10 h-10 border-4 border-theme-accent/30 border-t-theme-accent rounded-full animate-spin"></div>
+                <div className="w-10 h-10 border-4 border-luxury-gold/30 border-t-luxury-gold rounded-full animate-spin"></div>
             </div>
         );
     }
 
     return (
-        <div className={`bg-theme-background ${!isSection ? 'min-h-screen' : ''}`}>
-            {/* Header Section - Only show if not used as a section */}
+        <div className={`bg-[#050505] ${!isSection ? 'min-h-screen' : ''}`}>
+            {/* Header Section */}
             {!isSection && (
-                <div className="relative pt-20 pb-20 overflow-hidden">
-                    <div className="absolute top-0 right-0 w-[50%] h-full bg-theme-accent/5 -skew-x-12 transform translate-x-20" />
+                <div className="relative pt-40 pb-24 overflow-hidden">
+                    {/* Admin-Controlled Background Image */}
+                    {settings?.galleryBackgroundImage && (
+                        <div className="absolute inset-0 z-0">
+                            <motion.img 
+                                initial={{ scale: 1.2, opacity: 0 }}
+                                animate={{ scale: 1, opacity: settings?.galleryOverlayOpacity ?? 0.4 }}
+                                transition={{ duration: 2 }}
+                                src={settings?.galleryBackgroundImage} 
+                                className="w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/80 to-transparent" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent" />
+                        </div>
+                    )}
+                    
+                    <div className="absolute top-0 right-0 w-[60%] h-full bg-luxury-gold/5 -skew-x-12 transform translate-x-32 z-0" />
+                    
                     <div className="container-premium relative z-10">
                         <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="max-w-3xl"
+                            initial={{ opacity: 0, x: -30 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            className="max-w-4xl"
                         >
-                            <span className="text-theme-accent font-bold uppercase tracking-[0.4em] text-xs mb-6 block">
-                                Design Inspirations
+                            <span className="text-luxury-gold font-bold uppercase tracking-[0.4em] text-[10px] mb-6 block">
+                                Complete Media Gallery
                             </span>
-                            <h1 className="text-5xl md:text-7xl font-serif font-bold text-theme-text mb-8 leading-tight">
-                                Explore Premium <br />
-                                <span className="text-theme-accent italic">Interior Designs</span>
+                            <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-8 leading-tight">
+                                Our Work <br />
+                                <span className="text-luxury-gold italic">All Projects</span>
                             </h1>
-                            <p className="text-lg text-theme-muted mb-12 font-medium">
-                                Luxury spaces crafted to inspire your dream home. Browse our curated collection of world-class interior concepts.
+                            <p className="text-lg text-gray-400 mb-12 font-medium">
+                                Explore every project and service detail. From modular kitchens to full home renovations, see how we bring luxury to life.
                             </p>
 
                             <div className="flex flex-wrap gap-4 items-center">
                                 <div className="relative flex-1 min-w-[300px]">
-                                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-theme-accent w-5 h-5" />
+                                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-luxury-gold w-5 h-5" />
                                     <input 
                                         type="text" 
-                                        placeholder="Search by room, style, or material..."
-                                        className="w-full pl-12 pr-6 py-4 bg-theme-background border border-theme-border/20 rounded-sm focus:border-theme-accent outline-none transition-all text-theme-text"
+                                        placeholder="Search by service, style, or room..."
+                                        className="w-full pl-12 pr-6 py-4 bg-white/5 border border-white/10 rounded-lg focus:border-luxury-gold/50 outline-none transition-all text-white backdrop-blur-sm"
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
                                     />
                                 </div>
                                 <Button 
                                     to="/contact"
-                                    variant="primary" 
-                                    className="px-8 py-4 h-full rounded-sm"
+                                    className="px-8 py-4 h-full shadow-glow-gold"
                                 >
-                                    Book Consultation
+                                    Get a Quote
                                 </Button>
                             </div>
                         </motion.div>
@@ -133,30 +159,11 @@ const DesignInspirations: React.FC<DesignInspirationsProps> = ({ isSection = fal
                 </div>
             )}
 
-            {/* Category Filter */}
-            <div className="sticky top-16 z-30 bg-theme-background/80 backdrop-blur-xl border-y border-theme-border/10 py-4">
-                <div className="container-premium flex items-center gap-4 overflow-x-auto no-scrollbar py-2">
-                    {CATEGORIES.map(cat => (
-                        <button
-                            key={cat.id}
-                            onClick={() => handleCategoryChange(cat.id)}
-                            className={`whitespace-nowrap px-6 py-2 rounded-full text-[11px] uppercase tracking-widest font-bold transition-all duration-300 ${
-                                selectedCategory === cat.id
-                                ? 'bg-theme-accent text-white shadow-lg'
-                                : 'text-theme-muted hover:text-theme-accent'
-                            }`}
-                        >
-                            {cat.label}
-                        </button>
-                    ))}
-                </div>
-            </div>
-
             {/* Gallery Grid */}
             <Section className={`${isSection ? 'pt-10' : 'py-20'}`}>
                 <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
                     <AnimatePresence mode="popLayout">
-                        {filteredDesigns.map((item) => (
+                        {filteredItems.map((item) => (
                             <motion.div
                                 layout
                                 key={item.id}
@@ -167,33 +174,25 @@ const DesignInspirations: React.FC<DesignInspirationsProps> = ({ isSection = fal
                                 className="break-inside-avoid relative group cursor-pointer"
                                 onClick={() => handleItemClick(item)}
                             >
-                                <div className="relative overflow-hidden rounded-sm bg-theme-background border border-theme-border/10">
+                                <div className="relative overflow-hidden rounded-xl bg-neutral-900 border border-white/10 shadow-2xl">
                                     <img 
                                         src={item.image} 
                                         alt={item.title} 
-                                        className="w-full h-auto transition-transform duration-1000 group-hover:scale-110 opacity-90 group-hover:opacity-100"
+                                        className="w-full h-auto transition-transform duration-1000 group-hover:scale-110 opacity-80 group-hover:opacity-100"
                                         loading="lazy"
                                     />
                                     
                                     {/* Overlay */}
                                     <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-8">
                                         <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                                            <span className="text-theme-accent text-[10px] uppercase tracking-[0.3em] font-bold mb-3 block">
+                                            <span className="text-luxury-gold text-[10px] uppercase tracking-[0.3em] font-bold mb-2 block">
                                                 {item.style} • {item.category.replace('-', ' ')}
                                             </span>
-                                            <h3 className="text-2xl font-serif font-bold text-white mb-2">
-                                                {item.title}
-                                            </h3>
                                             <div className="flex items-center justify-between">
-                                                <button 
-                                                    onClick={(e) => { e.stopPropagation(); toggleFavorite(item.id); }}
-                                                    className={`p-2 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all ${
-                                                        favorites.includes(item.id) ? 'bg-theme-accent text-white border-theme-accent' : 'text-white'
-                                                    }`}
-                                                >
-                                                    <Heart size={16} fill={favorites.includes(item.id) ? "currentColor" : "none"} />
-                                                </button>
-                                                <div className="text-theme-accent flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest">
+                                                <h3 className="text-xl font-serif font-bold text-white">
+                                                    {item.title}
+                                                </h3>
+                                                <div className="text-luxury-gold flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest">
                                                     View Details <ChevronRight size={14} />
                                                 </div>
                                             </div>
@@ -212,57 +211,21 @@ const DesignInspirations: React.FC<DesignInspirationsProps> = ({ isSection = fal
                     </AnimatePresence>
                 </div>
 
-                {filteredDesigns.length === 0 && (
+                {filteredItems.length === 0 && (
                     <div className="text-center py-40">
-                        <p className="text-theme-muted font-serif text-2xl italic">
-                            No designs found matching your search.
+                        <ImageIcon size={48} className="mx-auto text-luxury-gold/20 mb-6" />
+                        <p className="text-gray-500 font-serif text-2xl italic">
+                            No images found matching your search.
                         </p>
                         <button 
-                            onClick={() => {handleCategoryChange('all'); setSearchQuery('');}}
-                            className="mt-6 text-theme-accent font-bold uppercase tracking-widest text-xs hover:underline"
+                            onClick={() => setSearchQuery('')}
+                            className="mt-6 text-luxury-gold font-bold uppercase tracking-widest text-[10px] hover:underline"
                         >
-                            Clear All Filters
+                            Clear Search
                         </button>
                     </div>
                 )}
             </Section>
-
-            {/* Premium CTA Section */}
-            {!isSection && (
-                <Section className="bg-luxury-obsidian py-32 overflow-hidden relative">
-                    <div className="absolute inset-0 bg-theme-accent/5 pointer-events-none" />
-                    <div className="container-premium relative z-10 text-center">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            className="max-w-4xl mx-auto"
-                        >
-                            <h2 className="text-4xl md:text-6xl font-serif font-bold text-white mb-8">
-                                Inspired by Our <span className="text-theme-accent">Luxury Designs?</span>
-                            </h2>
-                            <p className="text-white/60 text-lg mb-12 max-w-2xl mx-auto font-medium">
-                                Our designers can bring any of these inspirations to your home with a personalized touch. Get started with a professional consultation today.
-                            </p>
-                            <div className="flex flex-col sm:flex-row justify-center gap-6">
-                                <Button 
-                                    to="/contact"
-                                    className="bg-theme-accent text-white px-12 py-5 text-lg rounded-sm"
-                                >
-                                    Get Free Quote
-                                </Button>
-                                <Button 
-                                    to="/contact"
-                                    variant="outline" 
-                                    className="border-white/20 text-white hover:bg-white hover:text-black px-12 py-5 text-lg rounded-sm"
-                                >
-                                    Book Consultation
-                                </Button>
-                            </div>
-                        </motion.div>
-                    </div>
-                </Section>
-            )}
         </div>
     );
 };

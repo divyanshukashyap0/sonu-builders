@@ -91,75 +91,91 @@ const Projects: React.FC = () => {
         backgroundImage={headerData.backgroundImage}
       />
 
-      <Section>
-        {/* Filter */}
-        <ProjectFilter
-          categories={categories}
-          activeCategory={filter}
-          onSelectCategory={setFilter}
-          counts={categories.reduce((acc, cat) => {
-            acc[cat] = cat === 'All' ? projects.length : projects.filter(p => p.category === cat).length;
-            return acc;
-          }, {} as Record<string, number>)}
-        />
+      <Section className="relative overflow-visible">
+        {/* Background Text */}
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none select-none overflow-hidden -z-10">
+            <span className="absolute top-20 -left-10 text-[8rem] md:text-[14rem] font-serif font-black text-white/[0.02] leading-none tracking-tighter lowercase whitespace-nowrap opacity-50">
+                projects
+            </span>
+        </div>
+
+        {/* Decorative Image Layer (Image on top of images background) */}
+        <div className="absolute top-40 right-0 w-[40%] aspect-square bg-luxury-gold/5 rounded-full blur-[120px] -z-10" />
+
+        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+            <div className="relative">
+                <span className="text-luxury-gold font-bold uppercase tracking-[0.4em] text-[10px] mb-4 block">Portfolio</span>
+                <h2 className="text-5xl md:text-7xl font-serif font-bold text-white relative">
+                    Curated <br />
+                    <span className="text-luxury-gold italic">Architectural</span> Works
+                </h2>
+            </div>
+            
+            {/* Filter */}
+            <ProjectFilter
+              categories={categories}
+              activeCategory={filter}
+              onSelectCategory={setFilter}
+              counts={categories.reduce((acc, cat) => {
+                acc[cat] = cat === 'All' ? projects.length : projects.filter(p => p.category === cat).length;
+                return acc;
+              }, {} as Record<string, number>)}
+            />
+        </div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
           {projectsLoading ? (
             [...Array(6)].map((_, i) => <ProjectCardSkeleton key={i} />)
           ) : (
             filteredProjects.map((project) => (
-              <div
+              <motion.div
+                layout
                 key={project.id}
-                className="group bg-white dark:bg-luxury-charcoal rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer border border-transparent hover:border-brand-gold/40"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="group relative bg-[#0a0a0a] rounded-2xl overflow-hidden border border-white/5 hover:border-luxury-gold/50 transition-all duration-700 cursor-pointer shadow-2xl"
                 onClick={() => openGallery(project)}
               >
-                <div className="relative overflow-hidden aspect-w-4 aspect-h-3 bg-gradient-to-br from-neutral-800 to-neutral-900">
+                <div className="relative overflow-hidden aspect-[4/5]">
                   <MediaRenderer
                     src={project.image || ''}
                     alt={project.title}
-                    className="w-full h-64 object-cover transform group-hover:scale-110 transition-transform duration-[2000ms] ease-out"
+                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-[3000ms] ease-out opacity-70 group-hover:opacity-100"
                     loading={projectsLoading ? 'lazy' : 'eager'}
-                    showPlayIcon
                   />
 
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-10">
-                    <div className="bg-white/20 backdrop-blur-md p-3 rounded-full text-white">
-                      <Maximize2 className="w-6 h-6" />
+                  {/* Glassmorphism Info Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent p-10 flex flex-col justify-end">
+                    <div className="translate-y-8 group-hover:translate-y-0 transition-transform duration-700">
+                        <div className="flex items-center gap-3 mb-4">
+                            <span className="h-[1px] w-8 bg-luxury-gold" />
+                            <span className="text-luxury-gold text-[10px] uppercase tracking-[0.4em] font-bold">
+                                {project.category}
+                            </span>
+                        </div>
+                        <h3 className="text-3xl font-serif font-bold text-white mb-4 leading-tight">{project.title}</h3>
+                        
+                        <div className="flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
+                            <p className="text-gray-400 text-xs font-medium uppercase tracking-widest flex items-center">
+                                <span className="mr-2">📍</span> {project.location}
+                            </p>
+                            <div className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 text-white">
+                                <Maximize2 size={18} />
+                            </div>
+                        </div>
                     </div>
                   </div>
 
-                  {/* Gallery Count */}
+                  {/* Gallery Count Badge */}
                   {project.gallery && project.gallery.length > 1 && (
-                    <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded text-xs flex items-center z-20">
-                      <Camera className="w-3 h-3 mr-1" />
+                    <div className="absolute top-6 left-6 bg-black/40 backdrop-blur-xl text-white px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest border border-white/10 flex items-center z-20">
+                      <Camera className="w-3 h-3 mr-2 text-luxury-gold" />
                       {project.gallery.length} Photos
                     </div>
                   )}
                 </div>
-
-                <div className="p-6">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-xl font-bold text-luxury-charcoal group-hover:text-luxury-gold transition-colors">{project.title}</h3>
-                    <span className="inline-block px-2 py-1 bg-luxury-gold/10 text-luxury-gold text-[10px] uppercase tracking-tighter font-bold rounded-sm">
-                      {project.category}
-                    </span>
-                  </div>
-
-                  <p className="text-[10px] uppercase tracking-widest font-bold text-luxury-gold mb-3 flex items-center">
-                    <span className="text-luxury-gold mr-1.5 opacity-60">📍</span> {project.location}
-                  </p>
-                  <p className="text-luxury-charcoal/70 text-sm leading-relaxed mb-6 line-clamp-3 font-medium">
-                    {project.description}
-                  </p>
-
-                  <div className="text-[10px] text-luxury-gold/60 font-bold uppercase tracking-widest border-t border-luxury-gold/10 pt-4 flex justify-between items-center">
-                    <span>{project.completionDate ? `Completed: ${project.completionDate}` : 'Ongoing'}</span>
-                    <span className="text-luxury-gold font-bold transition-colors group-hover:text-luxury-charcoal">View Details</span>
-                  </div>
-                </div>
-              </div>
+              </motion.div>
             ))
           )}
         </div>

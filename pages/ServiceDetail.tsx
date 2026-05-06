@@ -14,6 +14,7 @@ import MediaRenderer from '../components/ui/MediaRenderer';
 const ServiceDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const { services, loading } = useServices();
+    const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
     // Find service from Firestore first, then fallback to constants
     const serviceFromHook = services.find(s => s.id === id);
@@ -131,15 +132,19 @@ const ServiceDetail: React.FC = () => {
             {service.gallery && service.gallery.length > 0 && (
                 <Section colored>
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl font-serif font-bold text-white mb-4">Design Inspiration</h2>
-                        <p className="text-luxury-gold uppercase tracking-[0.3em] text-[10px] font-bold">A glimpse into our {service.title} accomplishments</p>
+                        <h2 className="text-3xl font-serif font-bold text-white mb-4">Service Gallery</h2>
+                        <p className="text-luxury-gold uppercase tracking-[0.3em] text-[10px] font-bold">Explore our completed works in {service.title}</p>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {service.gallery.map((img, idx) => (
                             <motion.div
                                 key={idx}
                                 whileHover={{ y: -10 }}
-                                className="aspect-video rounded-xl overflow-hidden shadow-luxury border border-white/20 group"
+                                className="aspect-video rounded-xl overflow-hidden shadow-luxury border border-white/20 group cursor-pointer"
+                                onClick={() => {
+                                    setLightboxIndex(idx);
+                                    document.body.style.overflow = 'hidden';
+                                }}
                             >
                                 <MediaRenderer 
                                     src={img} 
@@ -152,6 +157,41 @@ const ServiceDetail: React.FC = () => {
                     </div>
                 </Section>
             )}
+
+            {/* Lightbox for Gallery */}
+            <AnimatePresence>
+                {lightboxIndex !== null && service.gallery && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[10000] bg-black/95 backdrop-blur-2xl flex items-center justify-center p-4 md:p-12"
+                        onClick={() => {
+                            setLightboxIndex(null);
+                            document.body.style.overflow = 'auto';
+                        }}
+                    >
+                        <button className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors p-2 z-[10001]">
+                            <Icons.X size={32} />
+                        </button>
+
+                        <div className="relative max-w-7xl max-h-full flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
+                            <motion.img
+                                key={lightboxIndex}
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                src={service.gallery[lightboxIndex]}
+                                alt={service.title}
+                                className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl border border-white/10"
+                            />
+                            <div className="mt-8 text-center">
+                                <h3 className="text-2xl font-serif font-bold text-white">{service.title}</h3>
+                                <p className="text-luxury-gold uppercase tracking-[0.2em] text-[10px] font-bold mt-2">Luxury Execution</p>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {/* Service Videos */}
             {service.videos && service.videos.length > 0 && (

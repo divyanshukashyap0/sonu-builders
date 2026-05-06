@@ -5,6 +5,8 @@ import { db } from '../lib/firebase';
 export interface SiteSettings {
     backgroundColor: string;
     backgroundImage: string;
+    galleryBackgroundImage?: string;
+    galleryOverlayOpacity?: number;
     backgroundBlur: number;
     activeTheme?: string;
 }
@@ -21,6 +23,8 @@ export const useSiteSettings = () => {
                 const defaults: SiteSettings = {
                     backgroundColor: '#050505',
                     backgroundImage: '',
+                    galleryBackgroundImage: '',
+                    galleryOverlayOpacity: 0.4,
                     backgroundBlur: 25,
                     activeTheme: 'luxury-white'
                 };

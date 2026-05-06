@@ -3,7 +3,7 @@ import { db } from '../lib/firebase';
 import { collection, addDoc, deleteDoc, doc, query, orderBy, onSnapshot } from 'firebase/firestore';
 import { CloudinaryMedia } from '../types';
 
-const API_BASE_URL = 'http://localhost:5000/api/cloudinary'; // Adjust based on your server config
+const API_BASE_URL = '/api/cloudinary'; // Proxied via Vite in dev, relative in prod
 
 export const useCloudinary = () => {
   const [loading, setLoading] = useState(false);

@@ -116,13 +116,13 @@ const AppearanceSettings: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                {/* Background Image / Branding Overlay */}
+                {/* Hero Overlay Image */}
                 <div className="bg-white dark:bg-luxury-obsidian p-10 rounded-[2.5rem] border border-luxury-gold/10 shadow-2xl space-y-8">
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 bg-luxury-gold/10 rounded-2xl flex items-center justify-center text-luxury-gold">
                             <ImageIcon size={24} />
                         </div>
-                        <h3 className="font-bold text-xl dark:text-white">Hero Overlay Image</h3>
+                        <h3 className="font-bold text-xl dark:text-white">Main Hero Image</h3>
                     </div>
 
                     <div className="space-y-6">
@@ -157,10 +157,7 @@ const AppearanceSettings: React.FC = () => {
                             />
                             <label className="flex items-center justify-center px-6 bg-luxury-gold/10 text-luxury-gold rounded-2xl cursor-pointer hover:bg-luxury-gold/20 transition-all border border-luxury-gold/20 shrink-0">
                                 {uploading ? (
-                                    <div className="flex items-center gap-3">
-                                        <Loader2 size={18} className="animate-spin" />
-                                        <span className="text-sm font-bold">{uploadProgress}%</span>
-                                    </div>
+                                    <Loader2 size={18} className="animate-spin" />
                                 ) : (
                                     <>
                                         <Upload size={22} />
@@ -172,19 +169,77 @@ const AppearanceSettings: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Cinematic Effects */}
+                {/* Gallery Background Image */}
                 <div className="bg-white dark:bg-luxury-obsidian p-10 rounded-[2.5rem] border border-luxury-gold/10 shadow-2xl space-y-8">
+                    <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-luxury-gold/10 rounded-2xl flex items-center justify-center text-luxury-gold">
+                            <ImageIcon size={24} />
+                        </div>
+                        <h3 className="font-bold text-xl dark:text-white">Gallery Background</h3>
+                    </div>
+
+                    <div className="space-y-6">
+                        <div className="relative group">
+                            {localSettings.galleryBackgroundImage ? (
+                                <div className="aspect-video rounded-3xl overflow-hidden border border-white/10 relative shadow-inner">
+                                    <img src={localSettings.galleryBackgroundImage} alt="Preview" className="w-full h-full object-cover" />
+                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+                                        <button 
+                                            onClick={() => setLocalSettings({...localSettings, galleryBackgroundImage: ''})}
+                                            className="p-3 bg-red-500 text-white rounded-xl hover:scale-110 transition-transform"
+                                        >
+                                            <Trash2 size={20} />
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="aspect-video rounded-3xl border-2 border-dashed border-luxury-gold/20 flex flex-col items-center justify-center text-gray-500 gap-4 bg-gray-50 dark:bg-white/5">
+                                    <ImageIcon size={48} className="opacity-10" />
+                                    <p className="text-sm font-medium">No custom gallery background set</p>
+                                </div>
+                            )}
+                        </div>
+                        
+                        <div className="flex gap-4">
+                            <input 
+                                type="text" 
+                                placeholder="External Image URL"
+                                value={localSettings.galleryBackgroundImage}
+                                onChange={(e) => setLocalSettings({...localSettings, galleryBackgroundImage: e.target.value})}
+                                className="flex-1 px-5 py-4 bg-gray-50 dark:bg-white/5 border border-white/10 rounded-2xl text-sm dark:text-white focus:border-luxury-gold/50 outline-none transition-all"
+                            />
+                            <label className="flex items-center justify-center px-6 bg-luxury-gold/10 text-luxury-gold rounded-2xl cursor-pointer hover:bg-luxury-gold/20 transition-all border border-luxury-gold/20 shrink-0">
+                                {uploading ? (
+                                    <Loader2 size={18} className="animate-spin" />
+                                ) : (
+                                    <div className="relative">
+                                        <Upload size={22} />
+                                        <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" accept="image/*" onChange={async (e) => {
+                                            const file = e.target.files?.[0];
+                                            if (!file) return;
+                                            const result = await uploadToCloudinary(file, 'site_backgrounds');
+                                            setLocalSettings({ ...localSettings, galleryBackgroundImage: result.url });
+                                        }} />
+                                    </div>
+                                )}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Cinematic Effects */}
+                <div className="bg-white dark:bg-luxury-obsidian p-10 rounded-[2.5rem] border border-luxury-gold/10 shadow-2xl space-y-8 lg:col-span-2">
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 bg-luxury-gold/10 rounded-2xl flex items-center justify-center text-luxury-gold">
                             <Sparkles size={24} />
                         </div>
-                        <h3 className="font-bold text-xl dark:text-white">Cinematic Effects</h3>
+                        <h3 className="font-bold text-xl dark:text-white">Atmospheric Depth</h3>
                     </div>
 
-                    <div className="space-y-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                         <div className="space-y-4">
                             <div className="flex justify-between items-center">
-                                <label className="text-sm font-bold dark:text-white uppercase tracking-wider">Atmospheric Blur</label>
+                                <label className="text-sm font-bold dark:text-white uppercase tracking-wider">Background Blur Intensity</label>
                                 <span className="text-luxury-gold font-bold font-mono text-lg">{localSettings.backgroundBlur}%</span>
                             </div>
                             <input 
@@ -197,25 +252,38 @@ const AppearanceSettings: React.FC = () => {
                             />
                         </div>
 
-                        <div className="p-6 bg-luxury-gold/5 border border-luxury-gold/10 rounded-[2rem] space-y-4">
-                            <div className="flex items-center gap-4">
-                                <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/10 overflow-hidden shrink-0 shadow-lg">
-                                    <div 
-                                        className="w-full h-full"
-                                        style={{ 
-                                            backgroundColor: localSettings.backgroundColor,
-                                            backgroundImage: `url(${localSettings.backgroundImage})`,
-                                            backgroundSize: 'cover',
-                                            filter: `blur(${localSettings.backgroundBlur / 5}px)`
-                                        }}
-                                    />
-                                </div>
-                                <div>
-                                    <p className="text-sm font-bold dark:text-white mb-1">Atmospheric Preview</p>
-                                    <p className="text-[10px] text-gray-500 leading-relaxed font-medium">
-                                        This setting controls the "depth of field" effect for background elements, enhancing visual hierarchy.
-                                    </p>
-                                </div>
+                        <div className="space-y-4">
+                            <div className="flex justify-between items-center">
+                                <label className="text-sm font-bold dark:text-white uppercase tracking-wider">Gallery Overlay Opacity</label>
+                                <span className="text-luxury-gold font-bold font-mono text-lg">{Math.round((localSettings.galleryOverlayOpacity || 0.4) * 100)}%</span>
+                            </div>
+                            <input 
+                                type="range" 
+                                min="0" 
+                                max="100" 
+                                value={(localSettings.galleryOverlayOpacity || 0.4) * 100}
+                                onChange={(e) => setLocalSettings({...localSettings, galleryOverlayOpacity: parseInt(e.target.value) / 100})}
+                                className="w-full h-3 bg-gray-100 dark:bg-white/10 rounded-full appearance-none cursor-pointer accent-luxury-gold"
+                            />
+                        </div>
+
+                        <div className="p-6 bg-luxury-gold/5 border border-luxury-gold/10 rounded-[2rem] flex items-center gap-4 lg:col-span-2">
+                            <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/10 overflow-hidden shrink-0 shadow-lg relative">
+                                <div 
+                                    className="absolute inset-0"
+                                    style={{ 
+                                        backgroundImage: `url(${localSettings.galleryBackgroundImage || localSettings.backgroundImage})`,
+                                        backgroundSize: 'cover',
+                                        filter: `blur(${localSettings.backgroundBlur / 5}px)`,
+                                        opacity: localSettings.galleryOverlayOpacity || 0.4
+                                    }}
+                                />
+                            </div>
+                            <div>
+                                <p className="text-sm font-bold dark:text-white mb-1">Atmospheric Preview</p>
+                                <p className="text-[10px] text-gray-500 leading-relaxed font-medium">
+                                    Controls the softness and transparency of background layers for a cinematic depth effect.
+                                </p>
                             </div>
                         </div>
                     </div>
