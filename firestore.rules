@@ -185,6 +185,25 @@ service cloud.firestore {
     }
 
     // ========================================
+    // FINANCIALS COLLECTION
+    // ========================================
+    match /financials/{entryId} {
+      // Strictly private: Only admins can read or manage financials
+      allow read, create, update, delete: if isAdmin();
+    }
+
+    // ========================================
+    // TEAM COLLECTION
+    // ========================================
+    match /team/{memberId} {
+      // Public read access for the team showcase
+      allow read: if true;
+      
+      // Only admins can manage team members
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ========================================
     // DEFAULT DENY ALL
     // ========================================
     // Deny all other access by default
