@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { FileText, MessageSquare, Image, Plus, Trash2, Edit, Star, LayoutTemplate, PenTool, BarChart3, ImageIcon, Check } from 'lucide-react';
 import AdminSectionEditor from '../../components/admin/AdminSectionEditor';
 import ServiceManager from '../../components/admin/ServiceManager';
+import ProjectManager from '../../components/admin/ProjectManager';
 
 const Content: React.FC = () => {
-    const [activeView, setActiveView] = useState<'testimonials' | 'gallery' | 'blog' | 'page-headers' | 'home-hero' | 'about-page' | 'philosophy' | 'lead-capture' | 'trust-metrics' | 'why-choose-us' | 'services' | 'legal' | null>(null);
+    const [activeView, setActiveView] = useState<'testimonials' | 'gallery' | 'blog' | 'page-headers' | 'home-hero' | 'about-page' | 'philosophy' | 'lead-capture' | 'trust-metrics' | 'why-choose-us' | 'services' | 'projects' | 'legal' | null>(null);
 
     // Mock Data for demonstration
     const testimonials = [
@@ -177,6 +178,17 @@ const Content: React.FC = () => {
                         <p className="text-sm text-neutral-400">Manage all service categories, features, tips, and galleries.</p>
                     </div>
 
+                    {/* Projects Card */}
+                    <div
+                        onClick={() => setActiveView('projects')}
+                        className="group relative bg-neutral-900/50 backdrop-blur-sm border border-white/5 rounded-2xl p-6 hover:border-luxury-gold/30 transition-all cursor-pointer overflow-hidden"
+                    >
+                        <div className="absolute inset-0 bg-gradient-to-br from-luxury-gold/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <Layout className="w-8 h-8 text-luxury-gold mb-4" />
+                        <h3 className="text-xl font-serif text-white mb-2">Project Portfolio</h3>
+                        <p className="text-sm text-neutral-400">Manage detailed project stories, metadata, and high-res galleries.</p>
+                    </div>
+
                     {/* Legal Card */}
                     <div
                         onClick={() => setActiveView('legal')}
@@ -191,6 +203,7 @@ const Content: React.FC = () => {
             ) : (
                 <div className="bg-white dark:bg-neutral-900/50 backdrop-blur-md rounded-2xl p-6 border border-white/5 shadow-xl">
                     {activeView === 'services' && <ServiceManager />}
+                    {activeView === 'projects' && <ProjectManager />}
 
                     {activeView === 'home-hero' && (
                         <AdminSectionEditor

@@ -57,33 +57,36 @@ const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div className="md:col-span-2">
-            <h4 className="text-theme-accent text-xs uppercase tracking-[0.2em] font-bold mb-8">Navigation</h4>
-            <ul className="space-y-4">
-              {NAV_LINKS.map(link => (
-                <li key={link.path}>
-                  <Link to={link.path} className="text-sm text-theme-muted hover:text-theme-text transition-colors duration-300 flex items-center group">
-                    <span className="w-0 overflow-hidden group-hover:w-4 transition-all duration-300 text-theme-accent mr-0 group-hover:mr-2">•</span>
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Quick Links & Services side by side on mobile */}
+          <div className="md:col-span-5 grid grid-cols-2 gap-8">
+            {/* Quick Links */}
+            <div>
+              <h4 className="text-theme-accent text-[10px] uppercase tracking-[0.2em] font-bold mb-8">Navigation</h4>
+              <ul className="space-y-4">
+                {NAV_LINKS.map(link => (
+                  <li key={link.path}>
+                    <Link to={link.path} className="text-xs text-theme-muted hover:text-theme-text transition-colors duration-300 flex items-center group">
+                      <span className="w-0 overflow-hidden group-hover:w-4 transition-all duration-300 text-theme-accent mr-0 group-hover:mr-2">•</span>
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Services */}
-          <div className="md:col-span-3">
-            <h4 className="text-theme-accent text-xs uppercase tracking-[0.2em] font-bold mb-8">Expertise</h4>
-            <ul className="space-y-4">
-              {services.slice(0, 6).map(service => (
-                <li key={service.id}>
-                  <Link to={`/services/${service.id}`} className="text-sm text-theme-muted hover:text-theme-text transition-colors duration-300">
-                    {service.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {/* Services */}
+            <div>
+              <h4 className="text-theme-accent text-[10px] uppercase tracking-[0.2em] font-bold mb-8">Expertise</h4>
+              <ul className="space-y-4">
+                {services.slice(0, 6).map(service => (
+                  <li key={service.id}>
+                    <Link to={`/services/${service.id}`} className="text-xs text-theme-muted hover:text-theme-text transition-colors duration-300">
+                      {service.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           {/* Contact */}

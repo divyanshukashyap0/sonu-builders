@@ -3,7 +3,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { ChevronRight, Home } from 'lucide-react';
 import { NAV_LINKS } from '../constants';
 
-const Breadcrumbs: React.FC = () => {
+interface BreadcrumbsProps {
+    customLabels?: Record<string, string>;
+}
+
+const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ customLabels }) => {
     const location = useLocation();
     const pathnames = location.pathname.split('/').filter((x) => x);
 
@@ -23,12 +27,15 @@ const Breadcrumbs: React.FC = () => {
                         const to = `/${pathnames.slice(0, index + 1).join('/')}`;
                         const isLast = index === pathnames.length - 1;
 
-                        // Find readable label from constants or capitalize
-                        const navLink = NAV_LINKS.find(link => link.path === to);
-                        let label = navLink ? navLink.label : value.replace(/-/g, ' ');
+                        // Find readable label from constants, custom labels, or capitalize
+                        let label = customLabels && customLabels[value] 
+                            ? customLabels[value] 
+                            : NAV_LINKS.find(link => link.path === to)?.label || value.replace(/-/g, ' ');
 
-                        // Capitalize first letter of each word
-                        label = label.replace(/\b\w/g, l => l.toUpperCase());
+                        // Capitalize if it's not a custom label (assuming custom labels are already formatted)
+                        if (!customLabels || !customLabels[value]) {
+                            label = label.replace(/\b\w/g, l => l.toUpperCase());
+                        }
 
                         return (
                             <li key={to} className="flex items-center">

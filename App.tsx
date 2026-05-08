@@ -42,6 +42,7 @@ const AppearanceSettings = lazy(() => import('./pages/admin/AppearanceSettings')
 const AdminInspirations = lazy(() => import('./pages/admin/InspirationManager'));
 const InspirationDetail = lazy(() => import('./pages/InspirationDetail'));
 const GalleryMediaDetail = lazy(() => import('./pages/GalleryMediaDetail'));
+const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
 
 import AdminLayout from './layouts/AdminLayout';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -177,6 +178,7 @@ const AppContent: React.FC = () => {
               <Route path="/services" element={<Services />} />
               <Route path="/services/:id" element={<ServiceDetail />} />
               <Route path="/projects" element={<Projects />} />
+              <Route path="/projects/:id" element={<ProjectDetail />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/gallery/:category" element={<Gallery />} />
               <Route path="/gallery/item/:itemId" element={<InspirationDetail />} />

@@ -12,7 +12,7 @@ const PageHero: React.FC<PageHeroProps> = ({ title, subtitle, backgroundImage })
     console.log('PageHero backgroundImage:', backgroundImage);
 
     return (
-        <div className="relative h-[50vh] min-h-[350px] flex items-end pb-16 justify-start overflow-hidden group">
+        <div className="relative h-[60vh] min-h-[450px] flex items-end pb-20 pt-32 justify-start overflow-hidden group">
             {/* Background Image */}
             <div className="absolute inset-0 z-0 bg-gradient-to-br from-neutral-900 to-neutral-800">
                 {backgroundImage && (

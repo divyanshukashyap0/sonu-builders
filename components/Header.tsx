@@ -51,9 +51,9 @@ const Header: React.FC = () => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-300 ${hidden ? '-translate-y-full' : 'translate-y-0'} ${scrolled
-            ? 'bg-transparent backdrop-blur-xl py-3 border-b border-white/10 shadow-2xl'
-            : 'bg-transparent py-6 border-b border-transparent'
+        className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-700 ${hidden ? '-translate-y-full' : 'translate-y-0'} ${scrolled
+            ? 'bg-black/60 backdrop-blur-2xl py-3'
+            : 'bg-transparent py-6'
           }`}
       >
         <div className="container-premium flex items-center justify-between">

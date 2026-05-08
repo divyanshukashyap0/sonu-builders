@@ -1,10 +1,53 @@
 import React, { useState } from 'react';
 import { useServices } from '../../hooks/useServices';
-import { Plus, Trash2, Edit, Save, X, Image, List, Lightbulb, Award, ChevronRight, Search, Loader2, Upload, Youtube } from 'lucide-react';
+import { 
+    Plus, Trash2, Edit, Save, X, Image, List, Lightbulb, Award, ChevronRight, Search, Loader2, Upload, Youtube,
+    Sofa, ChefHat, Bed, AlignVerticalSpaceAround, Tv, Bath, Trees, Hexagon, Grid, Laptop, Building2, Users, ShieldCheck,
+    Coffee, Box, Droplets, Layout, Utensils, BookOpen, PenTool, Home
+} from 'lucide-react';
 import { Service } from '../../types';
 import CloudinaryImageInput from './media/CloudinaryImageInput';
 import { useCloudinary } from '../../hooks/useCloudinary';
 import { useToast } from '../../context/ToastContext';
+
+const AVAILABLE_ICONS = [
+    { id: 'Home', Icon: Home },
+    { id: 'Sofa', Icon: Sofa },
+    { id: 'ChefHat', Icon: ChefHat },
+    { id: 'Bed', Icon: Bed },
+    { id: 'AlignVerticalSpaceAround', Icon: AlignVerticalSpaceAround },
+    { id: 'Tv', Icon: Tv },
+    { id: 'Bath', Icon: Bath },
+    { id: 'Trees', Icon: Trees },
+    { id: 'Hexagon', Icon: Hexagon },
+    { id: 'Grid', Icon: Grid },
+    { id: 'Laptop', Icon: Laptop },
+    { id: 'Building2', Icon: Building2 },
+    { id: 'Users', Icon: Users },
+    { id: 'ShieldCheck', Icon: ShieldCheck },
+    { id: 'Coffee', Icon: Coffee },
+    { id: 'Box', Icon: Box },
+    { id: 'Droplets', Icon: Droplets },
+    { id: 'Layout', Icon: Layout },
+    { id: 'Utensils', Icon: Utensils },
+    { id: 'BookOpen', Icon: BookOpen },
+    { id: 'PenTool', Icon: PenTool },
+];
+
+const COMMON_FEATURES = [
+    'Premium Materials', 'Expert Craftsmanship', 'Space Optimization', 
+    '3D Visualization', 'Quality Assurance', 'Timely Delivery', 
+    'Customized Design', '10-Year Warranty', 'Smart Home Integration', 
+    'Termite Proof', 'Anti-Scratch Finish', 'Soft-Close Mechanisms', 
+    'Ergonomic Planning', 'Waterproof Materials', 'Low Maintenance',
+    'Eco-Friendly Materials', 'Italian Marble Finish', 'Hidden Storage Solutions',
+    'Mood Lighting', 'Fire-Retardant Finish', 'Scratch-Resistant Glass',
+    'German Hardware', 'Soft-Touch Laminates', 'CNC Design Work',
+    'Hand-Carved Details', 'Soundproof Panels', 'UV Protected Coating',
+    'Modular Flexibility', 'In-Built Appliances', 'Child-Safe Corners',
+    'Easy-to-Clean Surface', 'Anti-Bacterial Coating', 'Luxury Gold Accents',
+    'Mirror Finish Panels', 'Fabric Wall Paneling'
+];
 
 const ServiceManager: React.FC = () => {
     const { services, loading, addService, updateService, deleteService } = useServices();
@@ -24,7 +67,8 @@ const ServiceManager: React.FC = () => {
         features: [],
         suggestions: [],
         gallery: [],
-        videos: []
+        videos: [],
+        symbolUrl: ''
     });
 
     const handleEdit = (service: Service) => {
@@ -45,7 +89,8 @@ const ServiceManager: React.FC = () => {
             features: [],
             suggestions: [],
             gallery: [],
-            videos: []
+            videos: [],
+            symbolUrl: ''
         });
     };
 
@@ -236,25 +281,45 @@ const ServiceManager: React.FC = () => {
                                             className="w-full mt-1 bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-white/5 rounded-lg p-3 text-sm focus:ring-2 focus:ring-luxury-gold/50 outline-none"
                                         />
                                     </div>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="text-xs font-bold text-gray-500 uppercase flex items-center gap-2"><Award size={12} /> Icon Name</label>
-                                            <input
-                                                type="text"
-                                                value={formData.icon as string}
-                                                onChange={(e) => setFormData({ ...formData, icon: e.target.value as any })}
-                                                className="w-full mt-1 bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-white/5 rounded-lg p-3 text-sm focus:ring-2 focus:ring-luxury-gold/50 outline-none"
-                                            />
+                                    <div>
+                                        <label className="text-xs font-bold text-gray-500 uppercase flex items-center gap-2 mb-2"><Award size={12} /> Select Icon</label>
+                                        <div className="grid grid-cols-4 sm:grid-cols-7 gap-2 max-h-[200px] overflow-y-auto p-2 bg-gray-50 dark:bg-neutral-800 rounded-lg border border-gray-200 dark:border-white/5 no-scrollbar">
+                                            {AVAILABLE_ICONS.map(({ id, Icon }) => (
+                                                <button
+                                                    key={id}
+                                                    type="button"
+                                                    onClick={() => setFormData({ ...formData, icon: id })}
+                                                    className={`p-3 flex flex-col items-center justify-center rounded-lg transition-all border ${
+                                                        formData.icon === id 
+                                                            ? 'bg-luxury-gold text-white border-luxury-gold' 
+                                                            : 'bg-white dark:bg-neutral-900 text-gray-400 border-transparent hover:border-luxury-gold/30'
+                                                    }`}
+                                                    title={id}
+                                                >
+                                                    <Icon size={18} strokeWidth={1.5} />
+                                                </button>
+                                            ))}
                                         </div>
+                                    </div>
+                                    <div className="grid grid-cols-1 gap-4">
                                         <div>
                                             <CloudinaryImageInput
-                                                label="Featured Image"
-                                                value={formData.image || ''}
-                                                onChange={(url) => setFormData({ ...formData, image: url })}
-                                                folder="services"
-                                                placeholder="https://..."
+                                                label="Service Symbol (Custom Image Override)"
+                                                value={formData.symbolUrl || ''}
+                                                onChange={(url) => setFormData({ ...formData, symbolUrl: url })}
+                                                folder="services_symbols"
+                                                placeholder="Custom icon image..."
                                             />
                                         </div>
+                                    </div>
+                                    <div>
+                                        <CloudinaryImageInput
+                                            label="Main Featured Image"
+                                            value={formData.image || ''}
+                                            onChange={(url) => setFormData({ ...formData, image: url })}
+                                            folder="services"
+                                            placeholder="https://..."
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -317,10 +382,42 @@ const ServiceManager: React.FC = () => {
                                 <div className="flex justify-between items-center mb-4">
                                     <h4 className="text-xs font-bold uppercase tracking-tighter text-luxury-gold flex items-center gap-2"><Award size={14} /> Service Features</h4>
                                     <button onClick={() => addArrayItem('features')} className="text-luxury-gold hover:underline font-bold text-xs flex items-center gap-1">
-                                        <Plus size={14} /> Add Feature
+                                        <Plus size={14} /> Add Custom
                                     </button>
                                 </div>
-                                <div className="space-y-2">
+                                
+                                <div className="mb-6">
+                                    <p className="text-[10px] font-bold text-gray-500 uppercase mb-3">Quick Select Common Features</p>
+                                    <div className="flex flex-wrap gap-2">
+                                        {COMMON_FEATURES.map(feat => {
+                                            const isSelected = formData.features?.includes(feat);
+                                            return (
+                                                <button
+                                                    key={feat}
+                                                    type="button"
+                                                    onClick={() => {
+                                                        const current = formData.features || [];
+                                                        if (isSelected) {
+                                                            setFormData({ ...formData, features: current.filter(f => f !== feat) });
+                                                        } else {
+                                                            setFormData({ ...formData, features: [...current, feat] });
+                                                        }
+                                                    }}
+                                                    className={`px-3 py-1.5 rounded-full text-[10px] font-bold transition-all border ${
+                                                        isSelected 
+                                                            ? 'bg-luxury-gold text-white border-luxury-gold' 
+                                                            : 'bg-gray-50 dark:bg-neutral-800 text-gray-400 border-gray-200 dark:border-white/5 hover:border-luxury-gold/30'
+                                                    }`}
+                                                >
+                                                    {feat}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2 border-t border-gray-100 dark:border-white/5 pt-4">
+                                    <p className="text-[10px] font-bold text-gray-500 uppercase mb-2">Active Features</p>
                                     {formData.features?.map((feat, idx) => (
                                         <div key={idx} className="flex gap-2">
                                             <input
@@ -333,6 +430,9 @@ const ServiceManager: React.FC = () => {
                                             <button onClick={() => removeArrayItem('features', idx)} className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-colors"><Trash2 size={16} /></button>
                                         </div>
                                     ))}
+                                    {formData.features?.length === 0 && (
+                                        <p className="text-center py-4 text-xs text-gray-400 italic">No features selected yet.</p>
+                                    )}
                                 </div>
                             </div>
 

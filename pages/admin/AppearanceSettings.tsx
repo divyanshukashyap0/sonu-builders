@@ -227,6 +227,57 @@ const AppearanceSettings: React.FC = () => {
                     </div>
                 </div>
 
+                {/* Hero Slideshow Management */}
+                <div className="bg-white dark:bg-luxury-obsidian p-10 rounded-[2.5rem] border border-luxury-gold/10 shadow-2xl space-y-8 lg:col-span-2">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 bg-luxury-gold/10 rounded-2xl flex items-center justify-center text-luxury-gold">
+                                <Sparkles size={24} />
+                            </div>
+                            <div>
+                                <h3 className="font-bold text-xl dark:text-white">Hero Slideshow</h3>
+                                <p className="text-xs text-gray-500 font-medium">Manage images that cycle on the homepage hero section.</p>
+                            </div>
+                        </div>
+                        <label className="flex items-center gap-2 px-6 py-3 bg-luxury-gold text-white rounded-xl cursor-pointer hover:scale-105 transition-all shadow-glow-gold">
+                            {uploading ? <Loader2 size={18} className="animate-spin" /> : <Upload size={18} />}
+                            <span className="text-sm font-bold">Add Hero Image</span>
+                            <input type="file" className="hidden" accept="image/*" onChange={async (e) => {
+                                const file = e.target.files?.[0];
+                                if (!file) return;
+                                const result = await uploadToCloudinary(file, 'hero_slideshow');
+                                const currentSlides = localSettings.heroSlideshow || [];
+                                setLocalSettings({ ...localSettings, heroSlideshow: [...currentSlides, result.url] });
+                            }} />
+                        </label>
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                        {(localSettings.heroSlideshow || []).map((url, idx) => (
+                            <div key={idx} className="relative group aspect-video rounded-xl overflow-hidden border border-white/10 bg-gray-50 dark:bg-white/5">
+                                <img src={url} alt={`Hero ${idx + 1}`} className="w-full h-full object-cover" />
+                                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center">
+                                    <button 
+                                        onClick={() => {
+                                            const newSlides = (localSettings.heroSlideshow || []).filter((_, i) => i !== idx);
+                                            setLocalSettings({ ...localSettings, heroSlideshow: newSlides });
+                                        }}
+                                        className="p-2 bg-red-500 text-white rounded-lg hover:scale-110 transition-transform"
+                                    >
+                                        <Trash2 size={16} />
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                        {(!localSettings.heroSlideshow || localSettings.heroSlideshow.length === 0) && (
+                            <div className="col-span-full py-12 flex flex-col items-center justify-center text-gray-500 border-2 border-dashed border-luxury-gold/10 rounded-2xl">
+                                <ImageIcon size={40} className="opacity-10 mb-2" />
+                                <p className="text-sm font-medium">No hero slideshow images. Using defaults.</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
                 {/* Cinematic Effects */}
                 <div className="bg-white dark:bg-luxury-obsidian p-10 rounded-[2.5rem] border border-luxury-gold/10 shadow-2xl space-y-8 lg:col-span-2">
                     <div className="flex items-center gap-4">

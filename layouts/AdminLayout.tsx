@@ -10,25 +10,29 @@ const AdminLayout: React.FC = () => {
     const { name } = useCompanyData();
     const { notifications, markAsRead, markAllAsRead } = useNotifications();
     const [isNotifOpen, setIsNotifOpen] = useState(false);
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
     return (
-        <div className="flex min-h-screen bg-[#0a0a0a] overflow-x-hidden text-white">
+        <div className="flex min-h-screen bg-[#050505] overflow-x-hidden text-white selection:bg-luxury-gold selection:text-black">
             {/* Sidebar */}
-            <Sidebar />
+            <Sidebar onCollapse={setIsSidebarCollapsed} />
 
             {/* Main Content Area */}
-            <div className="flex-1 lg:ml-64 flex flex-col transition-all duration-300 w-full min-w-0">
+            <div 
+                className="flex-1 flex flex-col transition-all duration-500 w-full min-w-0"
+                style={{ marginLeft: window.innerWidth > 1024 ? (isSidebarCollapsed ? '90px' : '300px') : 0 }}
+            >
 
                 {/* Top Header */}
-                <header className="h-16 bg-luxury-obsidian border-b border-luxury-gold/10 flex items-center justify-between px-4 sm:pr-6 md:px-6 sticky top-0 z-30 shadow-sm">
+                <header className="h-24 bg-[#050505]/40 backdrop-blur-3xl border-b border-white/5 flex items-center justify-between px-8 md:px-12 sticky top-0 z-30 shadow-2xl">
 
-                    {/* PC/Tablet Search Bar */}
-                    <div className="hidden sm:flex items-center bg-white/5 rounded-lg px-3 py-2 w-64 md:w-96 border border-transparent focus-within:border-luxury-gold/50 transition-colors">
-                        <Search className="w-4 h-4 text-gray-400 mr-2" />
+                    {/* Intelligence Search Bar */}
+                    <div className="hidden sm:flex items-center bg-white/5 rounded-2xl px-5 py-3 w-64 md:w-96 border border-white/5 focus-within:border-luxury-gold/50 transition-all">
+                        <Search className="w-4 h-4 text-stone-500 mr-3" />
                         <input
                             type="text"
-                            placeholder="Search projects..."
-                            className="bg-transparent border-none outline-none text-sm w-full text-gray-700 dark:text-gray-200 placeholder-gray-400"
+                            placeholder="Scan masterpieces..."
+                            className="bg-transparent border-none outline-none text-[11px] font-bold w-full text-white placeholder-stone-600"
                         />
                     </div>
 

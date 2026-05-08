@@ -1,21 +1,99 @@
 export enum ProjectCategory {
+  LIVING_ROOM = 'Living Room',
+  BEDROOM = 'Bedroom',
+  KITCHEN = 'Kitchen',
+  BATHROOM = 'Bathroom',
+  TV_UNIT = 'TV Unit',
+  WARDROBE = 'Wardrobe',
+  FALSE_CEILING = 'False Ceiling',
+  BALCONY = 'Balcony',
+  DINING_ROOM = 'Dining Room',
+  POOJA_ROOM = 'Pooja Room',
+  HOME_OFFICE = 'Home Office',
+  FULL_HOME = 'Full Home Interior',
+  COMMERCIAL = 'Commercial Interior',
+  OFFICE = 'Office Interior',
   RESIDENTIAL = 'Residential',
-  COMMERCIAL = 'Commercial',
   LUXURY = 'Luxury Interiors',
   TRADITIONAL = 'Traditional Style',
   ONGOING = 'Ongoing Projects',
   UPCOMING = 'Upcoming Projects'
 }
 
+export type ProjectType = 'Residential' | 'Commercial' | 'Luxury Villa' | 'Apartment' | 'Office' | 'Retail Space' | 'Restaurant';
+export type ProjectStatus = 'Ongoing' | 'Completed' | 'Upcoming' | 'Featured';
+
 export interface Project {
   id: string;
+  slug?: string;
   title: string;
   location: string;
-  category: ProjectCategory;
-  image: string;
-  description: string;
-  completionDate?: string;
+  address?: string;
+  googleMapsUrl?: string;
+  city?: string;
+  category: ProjectCategory | string;
+  type?: ProjectType;
+  status?: ProjectStatus;
+  
+  // Media
+  image: string; // Featured/Thumbnail
+  heroImage?: string;
   gallery?: string[];
+  beforeImages?: string[];
+  afterImages?: string[];
+  videos?: string[]; // YouTube or MP4 URLs
+  instagramReelUrl?: string;
+  view360Url?: string;
+
+  // Content
+  description: string;
+  shortDescription?: string;
+  problem?: string;
+  designGoal?: string;
+  materialSelection?: string;
+  finalOutcome?: string;
+  keyFeatures?: string[];
+  clientRequirements?: string;
+  challenges?: string;
+
+  // Interior Details
+  style?: string[]; // Multi-select
+  colorPalette?: string[];
+  materialsUsed?: string[];
+  lightingType?: string[];
+
+  // Specs
+  area?: string;
+  budgetRange?: 'Basic' | 'Premium' | 'Luxury' | string;
+  duration?: string;
+  year?: string;
+  completionDate?: string;
+
+  // SEO
+  seoTitle?: string;
+  metaDescription?: string;
+  keywords?: string[];
+  ogImage?: string;
+
+  // Feature Options
+  isFeatured?: boolean;
+  showOnHome?: boolean;
+  isTrending?: boolean;
+  luxuryBadge?: boolean;
+
+  // Social
+  pinterestLink?: string;
+  whatsappShareLink?: string;
+
+  // CTA
+  ctaText?: string;
+  ctaRedirect?: 'WhatsApp' | 'Contact' | 'Inquiry';
+
+  // Stats (Auto-generated or tracked)
+  views?: number;
+  inquiryCount?: number;
+  createdAt?: any;
+  updatedAt?: any;
 }
 
 export interface Testimonial {
@@ -33,6 +111,7 @@ export interface Service {
   longDescription?: string;
   icon: any;
   image?: string;
+  symbolUrl?: string;
   features?: string[];
   suggestions?: string[];
   gallery?: string[];

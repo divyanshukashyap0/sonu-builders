@@ -8,12 +8,16 @@ import { usePageHeaders } from '../hooks/usePageHeaders';
 import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import SEO from '../components/SEO';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useLocation } from 'react-router-dom';
+import { useProjects } from '../hooks/useProjects';
 
 const Contact: React.FC = () => {
   const { contactInfo } = useCompanyData();
   const { headers, loading: headersLoading } = usePageHeaders();
+  const { incrementInquiryCount } = useProjects();
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const projectContext = location.state?.projectContext as { id: string, title: string } | undefined;
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -71,9 +75,10 @@ const Contact: React.FC = () => {
         projectType: formData.projectType || 'General Inquiry',
         budget: formData.budget || 'Not specified',
         notes: formData.notes,
-        referredDesign: subject || 'None',
-        referredDesignId: designId || null,
-        source: 'Contact Page Form',
+        projectContext: projectContext || null, // Store full context for admin traceability
+        referredDesign: projectContext?.title || subject || 'None',
+        referredDesignId: projectContext?.id || designId || null,
+        source: projectContext ? `Project Showcase: ${projectContext.title}` : 'Direct Contact Form',
         status: 'New',
         createdAt: new Date().toISOString()
       };
@@ -92,7 +97,12 @@ const Contact: React.FC = () => {
       const subjectInput = document.createElement('input');
       subjectInput.type = 'hidden';
       subjectInput.name = '_subject';
-      subjectInput.value = subject ? `Inquiry for ${subject}` : 'Detailed Inquiry from Contact Form';
+      
+      const inquirySubject = projectContext 
+        ? `Booking: ${projectContext.title} (${projectContext.category})` 
+        : (subject ? `Inquiry for ${subject}` : 'Detailed Inquiry from Sonu Enterprises');
+        
+      subjectInput.value = inquirySubject;
       form.appendChild(subjectInput);
       const nextInput = document.createElement('input');
       nextInput.type = 'hidden';
@@ -105,6 +115,10 @@ const Contact: React.FC = () => {
       captchaInput.value = 'false';
       form.appendChild(captchaInput);
       document.body.appendChild(form);
+      if (projectContext?.id) {
+        await incrementInquiryCount(projectContext.id);
+      }
+      
       form.submit();
       
       document.body.removeChild(form);
@@ -210,7 +224,14 @@ const Contact: React.FC = () => {
           {/* Contact Form */}
           <div className="bg-white dark:bg-luxury-charcoal rounded-xl shadow-luxury-hover p-8 border border-luxury-gold/5 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-luxury-gold/5 rounded-full -mr-16 -mt-16 blur-3xl" />
-            <h2 className="text-2xl font-serif font-bold text-luxury-charcoal dark:text-white mb-6 relative z-10">Send Message</h2>
+            <div className="flex items-center justify-between mb-6 relative z-10">
+              <h2 className="text-2xl font-serif font-bold text-luxury-charcoal dark:text-white">Send Message</h2>
+              {projectContext && (
+                <div className="flex items-center gap-2 px-3 py-1 bg-luxury-gold/10 border border-luxury-gold/20 rounded-full">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-luxury-gold">Project: {projectContext.title}</span>
+                </div>
+              )}
+            </div>
 
             {status === 'success' ? (
               <div className="bg-luxury-gold/10 border border-luxury-gold/30 text-luxury-gold p-10 rounded-xl text-center shadow-glow-gold relative overflow-hidden backdrop-blur-sm">

@@ -87,7 +87,7 @@ const Gallery: React.FC = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
           {visible.map((item) => (
             <GalleryCard
               key={item.id}
@@ -112,15 +112,16 @@ const GalleryCard: React.FC<{ item: any; onOpen: () => void }> = ({ item, onOpen
   const [loaded, setLoaded] = useState(false);
   return (
     <div
-      className="group relative overflow-hidden rounded-lg shadow-lg border border-transparent hover:border-brand-gold/40 cursor-pointer"
+      className="group relative overflow-hidden rounded-lg shadow-lg border border-transparent hover:border-brand-gold/40 cursor-pointer break-inside-avoid mb-6"
       onClick={onOpen}
     >
-      <div className="aspect-w-4 aspect-h-3 relative">
+      <div className="relative">
         <MediaRenderer
           src={item.url}
           alt={item.title || 'Gallery image'}
-          className={`w-full h-64 transition-all duration-[2000ms] cubic-bezier-[0.2,0,0,1] group-hover:scale-110`}
+          className={`w-full h-auto transition-all duration-[2000ms] cubic-bezier-[0.2,0,0,1] group-hover:scale-110`}
           loading="lazy"
+          objectFit="contain"
         />
       </div>
       <div className="absolute inset-0 bg-gradient-to-t from-luxury-charcoal/80 via-luxury-charcoal/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">

@@ -9,6 +9,7 @@ export interface SiteSettings {
     galleryOverlayOpacity?: number;
     backgroundBlur: number;
     activeTheme?: string;
+    heroSlideshow?: string[];
 }
 
 export const useSiteSettings = () => {
@@ -26,7 +27,8 @@ export const useSiteSettings = () => {
                     galleryBackgroundImage: '',
                     galleryOverlayOpacity: 0.4,
                     backgroundBlur: 25,
-                    activeTheme: 'luxury-white'
+                    activeTheme: 'luxury-white',
+                    heroSlideshow: []
                 };
                 setDoc(doc(db, 'settings', 'appearance'), defaults);
                 setSettings(defaults);

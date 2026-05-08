@@ -1,25 +1,23 @@
 import React, { useState } from 'react';
-import Section from '../components/Section';
-import PageHero from '../components/luxury/PageHero';
-import ProjectFilter from '../components/luxury/ProjectFilter';
-import ImageGalleryModal from '../components/ImageGalleryModal';
-import Button from '../components/Button';
+import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  ArrowRight, MapPin, Construction, 
+  Search, SlidersHorizontal, ChevronRight
+} from 'lucide-react';
 import { ProjectCategory, Project } from '../types';
 import { useProjects } from '../hooks/useProjects';
-import { usePageHeaders } from '../hooks/usePageHeaders';
-import SEO from '../components/SEO';
-import { Maximize2, Camera, Construction, Hammer, Phone } from 'lucide-react';
 import { useCompanyData } from '../hooks/useCompanyData';
-
-import { ProjectCardSkeleton } from '../components/Skeleton';
+import SEO from '../components/SEO';
+import Breadcrumbs from '../components/Breadcrumbs';
 import MediaRenderer from '../components/ui/MediaRenderer';
+import { ProjectCardSkeleton } from '../components/Skeleton';
+import Section from '../components/Section';
 
 const Projects: React.FC = () => {
+  const navigate = useNavigate();
   const [filter, setFilter] = useState<string>('All');
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-
   const { projects, loading: projectsLoading } = useProjects();
-  const { headers, loading: headersLoading } = usePageHeaders();
   const { projectsMaintenance } = useCompanyData();
 
   const categories = ['All', ...Object.values(ProjectCategory)];
@@ -28,173 +26,123 @@ const Projects: React.FC = () => {
     ? projects
     : projects.filter(p => p.category === filter);
 
-  const openGallery = (project: Project) => {
-    setSelectedProject(project);
-  };
-
-  const closeGallery = () => {
-    setSelectedProject(null);
-  };
-
-  // Helper to get all images for the selected project
-  const getProjectImages = (project: Project | null) => {
-    if (!project) return [];
-    if (project.gallery && project.gallery.length > 0) {
-      return project.gallery;
-    }
-    return [project.image];
-  };
-
-  // Pre-define dummy headers if loading
-  const headerData = headersLoading || !headers?.projects ? {
-    title: "Our Projects",
-    subtitle: "Documenting our latest masterpieces",
-    backgroundImage: ""
-  } : headers.projects;
-
   if (projectsMaintenance) {
     return (
-      <div className="min-h-screen bg-black">
-        <PageHero
-          title="Portfolio Refresh"
-          subtitle="Our latest masterpieces are being documented"
-          backgroundImage="https://images.unsplash.com/photo-1430263326118-b75ca0da770b?w=1600&q=80"
-        />
-        <Section className="flex flex-col items-center text-center py-32">
-          <div className="w-24 h-24 bg-luxury-gold/10 rounded-full flex items-center justify-center mb-8 border border-luxury-gold/20">
-            <Construction className="w-12 h-12 text-luxury-gold animate-bounce" />
-          </div>
-          <h2 className="text-4xl font-serif font-bold text-luxury-charcoal dark:text-white mb-6">Gallery Under Refinement</h2>
-          <p className="max-w-2xl text-lg text-luxury-charcoal/70 dark:text-white/70 mb-12 leading-relaxed">
-            We are currently updating our portfolio with our newest luxury residential and commercial projects. 
-            Our digital showcase will return shortly with even more inspiration.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6">
-            <Button to="/contact" variant="primary">Schedule a Site Visit</Button>
-            <Button to="/gallery" variant="outline">View Design Inspiration</Button>
-          </div>
-        </Section>
+      <div className="min-h-screen bg-[#050505] flex flex-col items-center justify-center text-center p-6">
+        <div className="w-20 h-20 bg-luxury-gold/10 rounded-full flex items-center justify-center mb-8 border border-luxury-gold/20">
+          <Construction className="w-10 h-10 text-luxury-gold" />
+        </div>
+        <h2 className="text-3xl font-serif font-bold text-white mb-4">Portfolio Under Update</h2>
+        <p className="max-w-md text-gray-400 mb-8">We are documenting our newest masterpieces. Please check back soon.</p>
+        <button onClick={() => navigate('/')} className="px-8 py-3 bg-luxury-gold text-black rounded-xl font-bold">Back to Home</button>
       </div>
     );
   }
 
   return (
-    <div>
+    <div className="min-h-screen bg-[#050505] text-white pb-20">
       <SEO
         title="Our Projects"
-        description="Browse our portfolio of luxury interiors and completed construction projects. See why 4000+ families trust us."
+        description="Browse our portfolio of luxury interiors and completed construction projects."
         canonical="https://sonu-builders.in/projects"
       />
-      <PageHero
-        title={headerData.title}
-        subtitle={headerData.subtitle}
-        backgroundImage={headerData.backgroundImage}
-      />
 
-      <Section className="relative overflow-visible">
-        {/* Background Text */}
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none select-none overflow-hidden -z-10">
-            <span className="absolute top-20 -left-10 text-[8rem] md:text-[14rem] font-serif font-black text-white/[0.02] leading-none tracking-tighter lowercase whitespace-nowrap opacity-50">
-                projects
-            </span>
+      <div className="container-premium pt-24 md:pt-32">
+        <Breadcrumbs />
+        
+        <div className="mt-8 mb-12">
+          <h1 className="text-4xl md:text-6xl font-serif font-bold mb-4">Our Projects</h1>
+          <p className="text-gray-400 text-lg max-w-xl">Crafting beautiful spaces that speak for themselves</p>
         </div>
 
-        {/* Decorative Image Layer (Image on top of images background) */}
-        <div className="absolute top-40 right-0 w-[40%] aspect-square bg-luxury-gold/5 rounded-full blur-[120px] -z-10" />
-
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-            <div className="relative">
-                <span className="text-luxury-gold font-bold uppercase tracking-[0.4em] text-[10px] mb-4 block">Portfolio</span>
-                <h2 className="text-5xl md:text-7xl font-serif font-bold text-white relative">
-                    Curated <br />
-                    <span className="text-luxury-gold italic">Architectural</span> Works
-                </h2>
-            </div>
-            
-            {/* Filter */}
-            <ProjectFilter
-              categories={categories}
-              activeCategory={filter}
-              onSelectCategory={setFilter}
-              counts={categories.reduce((acc, cat) => {
-                acc[cat] = cat === 'All' ? projects.length : projects.filter(p => p.category === cat).length;
-                return acc;
-              }, {} as Record<string, number>)}
-            />
+        {/* Filters */}
+        <div className="flex flex-wrap items-center gap-3 mb-12">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setFilter(cat)}
+              className={`px-6 py-2.5 rounded-xl text-xs font-bold tracking-widest uppercase transition-all border ${
+                filter === cat
+                  ? 'bg-luxury-gold text-black border-luxury-gold shadow-glow-gold'
+                  : 'bg-white/5 text-gray-400 border-white/10 hover:border-white/30'
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+          <button className="p-2.5 bg-white/5 border border-white/10 rounded-xl text-gray-400 hover:text-luxury-gold transition-colors">
+            <SlidersHorizontal size={18} />
+          </button>
         </div>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+        {/* Project List */}
+        <div className="space-y-8">
           {projectsLoading ? (
-            [...Array(6)].map((_, i) => <ProjectCardSkeleton key={i} />)
+            [...Array(3)].map((_, i) => <ProjectCardSkeleton key={i} />)
           ) : (
-            filteredProjects.map((project) => (
-              <motion.div
-                layout
-                key={project.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="group relative bg-[#0a0a0a] rounded-2xl overflow-hidden border border-white/5 hover:border-luxury-gold/50 transition-all duration-700 cursor-pointer shadow-2xl"
-                onClick={() => openGallery(project)}
-              >
-                <div className="relative overflow-hidden aspect-[4/5]">
-                  <MediaRenderer
-                    src={project.image || ''}
-                    alt={project.title}
-                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-[3000ms] ease-out opacity-70 group-hover:opacity-100"
-                    loading={projectsLoading ? 'lazy' : 'eager'}
-                  />
+            <div className="grid grid-cols-1 gap-8">
+              <AnimatePresence mode="popLayout">
+                {filteredProjects.map((project, idx) => (
+                  <motion.div
+                    key={project.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.5, delay: idx * 0.1 }}
+                    onClick={() => navigate(`/projects/${project.id}`)}
+                    className="group relative flex flex-col md:flex-row bg-[#0a0a0a] rounded-[2rem] overflow-hidden border border-white/5 hover:border-luxury-gold/30 transition-all cursor-pointer"
+                  >
+                    {/* Image Area */}
+                    <div className="w-full md:w-[45%] lg:w-[40%] aspect-[4/3] md:aspect-auto overflow-hidden">
+                      <MediaRenderer 
+                        src={project.image} 
+                        alt={project.title}
+                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-[2s]"
+                      />
+                      <div className="absolute top-6 right-6 md:right-auto md:left-6 px-4 py-1.5 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-[10px] font-black uppercase tracking-widest text-luxury-gold">
+                        {project.category}
+                      </div>
+                    </div>
 
-                  {/* Glassmorphism Info Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent p-10 flex flex-col justify-end">
-                    <div className="translate-y-8 group-hover:translate-y-0 transition-transform duration-700">
-                        <div className="flex items-center gap-3 mb-4">
-                            <span className="h-[1px] w-8 bg-luxury-gold" />
-                            <span className="text-luxury-gold text-[10px] uppercase tracking-[0.4em] font-bold">
-                                {project.category}
-                            </span>
+                    {/* Content Area */}
+                    <div className="flex-1 p-8 md:p-12 flex flex-col justify-center">
+                      <div className="flex items-center gap-2 text-luxury-gold/80 font-bold uppercase tracking-[0.2em] text-[10px] mb-4">
+                        <MapPin size={14} />
+                        <span>{project.location}</span>
+                      </div>
+                      
+                      <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mb-6 group-hover:text-luxury-gold transition-colors">
+                        {project.title}
+                      </h2>
+                      
+                      <p className="text-gray-400 text-lg font-light line-clamp-2 mb-8 max-w-xl">
+                        {project.description}
+                      </p>
+
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-white/50 group-hover:text-white transition-colors">
+                          Explore Project <ChevronRight size={18} className="group-hover:translate-x-2 transition-transform text-luxury-gold" />
                         </div>
-                        <h3 className="text-3xl font-serif font-bold text-white mb-4 leading-tight">{project.title}</h3>
                         
-                        <div className="flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
-                            <p className="text-gray-400 text-xs font-medium uppercase tracking-widest flex items-center">
-                                <span className="mr-2">📍</span> {project.location}
-                            </p>
-                            <div className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 text-white">
-                                <Maximize2 size={18} />
-                            </div>
+                        <div className="w-14 h-14 bg-white/5 border border-white/10 rounded-full flex items-center justify-center group-hover:bg-luxury-gold group-hover:text-black transition-all">
+                           <ArrowRight size={24} />
                         </div>
+                      </div>
                     </div>
-                  </div>
-
-                  {/* Gallery Count Badge */}
-                  {project.gallery && project.gallery.length > 1 && (
-                    <div className="absolute top-6 left-6 bg-black/40 backdrop-blur-xl text-white px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest border border-white/10 flex items-center z-20">
-                      <Camera className="w-3 h-3 mr-2 text-luxury-gold" />
-                      {project.gallery.length} Photos
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            ))
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
           )}
         </div>
 
-
-        {filteredProjects.length === 0 && (
-          <div className="text-center py-12 text-slate-500">
-            No projects found in this category.
+        {!projectsLoading && filteredProjects.length === 0 && (
+          <div className="py-32 text-center">
+            <Search className="w-12 h-12 text-white/10 mx-auto mb-6" />
+            <h3 className="text-xl font-serif text-gray-500">No projects found in this category</h3>
           </div>
         )}
-      </Section>
-
-      {/* Gallery Modal */}
-      <ImageGalleryModal
-        isOpen={!!selectedProject}
-        onClose={closeGallery}
-        images={getProjectImages(selectedProject)}
-        title={selectedProject?.title}
-      />
+      </div>
     </div>
   );
 };

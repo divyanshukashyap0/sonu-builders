@@ -79,5 +79,87 @@ export const useProjects = () => {
         }
     };
 
-    return { projects, loading, error, addProject, updateProject, deleteProject };
+    const incrementViewCount = async (id: string) => {
+        try {
+            const projectRef = doc(db, 'projects', id);
+            await updateDoc(projectRef, {
+                views: (projects.find(p => p.id === id)?.views || 0) + 1
+            });
+        } catch (err) {
+            console.error("Error incrementing view count:", err);
+        }
+    };
+
+    const incrementInquiryCount = async (id: string) => {
+        try {
+            const projectRef = doc(db, 'projects', id);
+            await updateDoc(projectRef, {
+                inquiryCount: (projects.find(p => p.id === id)?.inquiryCount || 0) + 1
+            });
+        } catch (err) {
+            console.error("Error incrementing inquiry count:", err);
+        }
+    };
+
+    const duplicateProject = async (id: string) => {
+        try {
+            const original = projects.find(p => p.id === id);
+            if (!original) return;
+            
+            const { id: _, ...rest } = original;
+            await addDoc(collection(db, 'projects'), {
+                ...rest,
+                title: `${original.title} (Copy)`,
+                slug: `${original.slug}-copy`,
+                createdAt: serverTimestamp(),
+                views: 0,
+                inquiryCount: 0
+            });
+            return true;
+        } catch (err) {
+            console.error("Error duplicating project:", err);
+            throw err;
+        }
+    };
+
+    return { projects, loading, error, addProject, updateProject, deleteProject, incrementViewCount, incrementInquiryCount, duplicateProject };
+};
+
+export const useProject = (idOrSlug: string | undefined) => {
+    const [project, setProject] = useState<Project | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (!idOrSlug) {
+            setLoading(false);
+            return;
+        }
+
+        setLoading(true);
+
+        // First try fetching by ID
+        const unsubscribe = onSnapshot(doc(db, 'projects', idOrSlug), (docSnap) => {
+            if (docSnap.exists()) {
+                setProject({ id: docSnap.id, ...docSnap.data() } as Project);
+                setLoading(false);
+            } else {
+                // If ID lookup fails, try fetching by slug
+                const q = query(collection(db, 'projects'), where('slug', '==', idOrSlug));
+                const unsubSlug = onSnapshot(q, (snapshot) => {
+                    if (!snapshot.empty) {
+                        const docData = snapshot.docs[0];
+                        setProject({ id: docData.id, ...docData.data() } as Project);
+                    } else {
+                        setProject(null);
+                    }
+                    setLoading(false);
+                });
+                return () => unsubSlug();
+            }
+        });
+
+        return () => unsubscribe();
+    }, [idOrSlug]);
+
+    return { project, loading };
 };

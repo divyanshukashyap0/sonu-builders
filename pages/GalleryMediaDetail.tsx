@@ -146,83 +146,84 @@ const GalleryMediaDetail: React.FC = () => {
                         transition={{ duration: 0.6, ease: "circOut" }}
                         src={url} 
                         alt={title} 
-                        className="absolute inset-0 w-full h-full object-cover cursor-grab active:cursor-grabbing"
+                        className="absolute inset-0 w-full h-full object-contain cursor-grab active:cursor-grabbing bg-black/50"
                     />
                 </AnimatePresence>
                 
                 {/* Side Navigation Arrows */}
-                <div className="absolute inset-y-0 left-0 w-32 flex items-center justify-center z-40">
+                <div className="absolute inset-y-0 left-0 w-16 md:w-32 flex items-center justify-center z-40">
                     <button 
                         onClick={() => navigateToItem(prevItem)}
-                        className="p-6 text-white/30 hover:text-luxury-gold transition-colors hover:bg-white/5 rounded-full"
+                        className="p-3 md:p-6 text-white/30 hover:text-luxury-gold transition-colors hover:bg-white/5 rounded-full"
                     >
-                        <ArrowLeft size={48} />
+                        <ArrowLeft size={32} className="md:w-12 md:h-12" />
                     </button>
                 </div>
-                <div className="absolute inset-y-0 right-0 w-32 flex items-center justify-center z-40">
+                <div className="absolute inset-y-0 right-0 w-16 md:w-32 flex items-center justify-center z-40">
                     <button 
                         onClick={() => navigateToItem(nextItem)}
-                        className="p-6 text-white/30 hover:text-luxury-gold transition-colors hover:bg-white/5 rounded-full"
+                        className="p-3 md:p-6 text-white/30 hover:text-luxury-gold transition-colors hover:bg-white/5 rounded-full"
                     >
-                        <ArrowRight size={48} />
+                        <ArrowRight size={32} className="md:w-12 md:h-12" />
                     </button>
                 </div>
 
                 {/* Dynamic Gradient Overlays */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-black/30 pointer-events-none" />
-                <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-transparent pointer-events-none" />
                 
                 {/* Floating Navigation & Actions */}
-                <div className="absolute top-0 left-0 right-0 p-8 pt-32 md:pt-48 flex justify-between items-center z-50">
+                <div className="absolute top-0 left-0 right-0 p-6 pt-24 md:pt-48 flex justify-between items-center z-50">
                     <motion.button 
                         initial={{ x: -20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         onClick={() => navigate('/gallery')}
-                        className="group flex items-center gap-4 bg-black/40 backdrop-blur-2xl px-8 py-4 rounded-full text-white border border-white/10 hover:bg-luxury-gold hover:text-black transition-all duration-500"
+                        className="group flex items-center gap-3 bg-black/40 backdrop-blur-2xl px-6 py-3 rounded-full text-white border border-white/10 hover:bg-luxury-gold hover:text-black transition-all duration-500"
                     >
-                        <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-                        <span className="text-[10px] uppercase font-bold tracking-[0.3em] hidden md:block">Gallery</span>
+                        <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+                        <span className="text-[9px] uppercase font-bold tracking-[0.3em]">Gallery</span>
                     </motion.button>
                 </div>
 
                 {/* Hero Content Overlay */}
-                <div className="absolute inset-x-0 bottom-0 p-10 md:p-24 lg:p-32 pointer-events-none">
+                <div className="absolute inset-x-0 bottom-0 p-8 md:p-24 lg:p-32 pointer-events-none">
                     <motion.div
                         initial={{ opacity: 0, y: 60 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.6, duration: 1 }}
                         className="max-w-6xl"
                     >
-                        <div className="flex items-center gap-6 mb-8">
+                        <div className="flex items-center gap-4 md:gap-6 mb-4 md:mb-8">
                             <motion.span 
                                 initial={{ width: 0 }}
-                                animate={{ width: 64 }}
+                                animate={{ width: 40 }}
                                 transition={{ delay: 1, duration: 0.8 }}
-                                className="h-[1px] bg-luxury-gold" 
+                                className="h-[1px] bg-luxury-gold hidden md:block" 
                             />
-                            <span className="text-luxury-gold font-bold uppercase tracking-[0.5em] text-[10px]">
+                            <span className="text-luxury-gold font-bold uppercase tracking-[0.4em] text-[8px] md:text-[10px]">
                                 Service Showcase • Modern Luxury
                             </span>
                         </div>
-                        <h1 className="text-6xl md:text-9xl font-serif font-bold text-white mb-12 leading-[0.9] tracking-tighter">
+                        <h1 className="text-3xl md:text-7xl lg:text-8xl font-serif font-bold text-white mb-8 md:mb-12 leading-[1.1] tracking-tight">
                             {title}
                         </h1>
-                        <div className="flex flex-wrap gap-8 items-center pointer-events-auto">
+                        <div className="flex flex-wrap gap-4 md:gap-8 items-center pointer-events-auto">
                             <Button 
                                 to={`/contact?subject=${encodeURIComponent(title)}`}
-                                className="px-14 py-6 text-xl shadow-glow-gold rounded-full group"
+                                className="px-10 py-4 md:px-14 md:py-6 text-sm md:text-xl shadow-glow-gold rounded-full group"
                             >
-                                Get This Quote <ArrowRight className="ml-3 group-hover:translate-x-2 transition-transform" />
+                                Get This Quote <ArrowRight className="ml-2 md:ml-3 group-hover:translate-x-2 transition-transform" />
                             </Button>
                             <button 
                                 onClick={() => document.getElementById('details')?.scrollIntoView({ behavior: 'smooth' })}
-                                className="flex items-center gap-4 bg-white/5 backdrop-blur-xl border border-white/10 text-white px-12 py-6 rounded-full text-sm font-bold uppercase tracking-[0.2em] hover:bg-white/10 transition-all duration-500"
+                                className="flex items-center gap-2 md:gap-4 bg-white/5 backdrop-blur-xl border border-white/10 text-white px-8 py-4 md:px-12 md:py-6 rounded-full text-[10px] md:text-sm font-bold uppercase tracking-[0.2em] hover:bg-white/10 transition-all duration-500"
                             >
-                                Explore Details <ChevronDown size={20} className="animate-bounce" />
+                                Explore Details <ChevronDown size={18} className="animate-bounce" />
                             </button>
                         </div>
                     </motion.div>
                 </div>
+
             </div>
 
             {/* Content Detail Section */}
