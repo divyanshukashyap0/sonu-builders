@@ -7,12 +7,15 @@ import {
     CheckCircle2, Trash, Save, Layout, Smartphone, Monitor,
     ExternalLink, Copy, TrendingUp, Award, Home, Eye, MessageCircle,
     Repeat, Hammer, Lightbulb, Palette, FileText, Target, 
-    Zap, Rocket, Share2, Globe, MousePointer2
+    Zap, Rocket, Share2, Globe, MousePointer2, Library
 } from 'lucide-react';
 import { useProjects } from '../../hooks/useProjects';
 import { Project, ProjectCategory } from '../../types';
 import MediaRenderer from '../ui/MediaRenderer';
-import ImageUploader from '../ImageUploader';
+import CloudinaryImageInput from './media/CloudinaryImageInput';
+import MediaLibraryModal from './media/MediaLibraryModal';
+import { db } from '../../lib/firebase';
+import { doc, updateDoc, increment } from 'firebase/firestore';
 
 const PROJECT_CATEGORIES = [
     'Living Room', 'Bedroom', 'Kitchen', 'Bathroom', 'TV Unit', 'Wardrobe', 
@@ -34,6 +37,7 @@ const ProjectManager: React.FC = () => {
     const [categoryFilter, setCategoryFilter] = useState('All');
     const [previewDevice, setPreviewDevice] = useState<'desktop' | 'mobile'>('desktop');
     const [isSaving, setIsSaving] = useState(false);
+    const [showGalleryPicker, setShowGalleryPicker] = useState(false);
 
     const steps = [
         { id: 1, label: 'Identity', icon: FileText },
@@ -211,16 +215,32 @@ const ProjectManager: React.FC = () => {
                                     <div className="space-y-12">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                                             <div className="space-y-4">
-                                                <label className="text-[10px] font-black uppercase tracking-widest text-luxury-gold ml-1">Cinematic Hero Banner</label>
-                                                <ImageUploader existingUrl={editingProject.heroImage} onUpload={url => setEditingProject({...editingProject, heroImage: url})} path="projects" />
+                                                <CloudinaryImageInput
+                                                    label="Cinematic Hero Banner"
+                                                    value={editingProject.heroImage || ''}
+                                                    onChange={url => setEditingProject({...editingProject, heroImage: url})}
+                                                    folder="projects"
+                                                />
                                             </div>
                                             <div className="space-y-4">
-                                                <label className="text-[10px] font-black uppercase tracking-widest text-stone-500 ml-1">Discovery Thumbnail</label>
-                                                <ImageUploader existingUrl={editingProject.image} onUpload={url => setEditingProject({...editingProject, image: url})} path="projects" />
+                                                <CloudinaryImageInput
+                                                    label="Discovery Thumbnail"
+                                                    value={editingProject.image || ''}
+                                                    onChange={url => setEditingProject({...editingProject, image: url})}
+                                                    folder="projects"
+                                                />
                                             </div>
                                         </div>
                                         <div className="space-y-6">
-                                            <label className="text-[10px] font-black uppercase tracking-widest text-luxury-gold ml-1">Visual Exhibition Gallery</label>
+                                            <div className="flex justify-between items-center">
+                                                <label className="text-[10px] font-black uppercase tracking-widest text-luxury-gold ml-1">Visual Exhibition Gallery</label>
+                                                <button 
+                                                    onClick={() => setShowGalleryPicker(true)}
+                                                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-luxury-gold text-[10px] font-black uppercase tracking-widest hover:bg-luxury-gold hover:text-stone-950 transition-all"
+                                                >
+                                                    <Library size={14} /> Browse Library
+                                                </button>
+                                            </div>
                                             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
                                                 {(editingProject.gallery || []).map((url, idx) => (
                                                     <div key={idx} className="relative aspect-square rounded-2xl overflow-hidden group">
@@ -234,22 +254,31 @@ const ProjectManager: React.FC = () => {
                                                     </div>
                                                 ))}
                                                 <div className="aspect-square">
-                                                    <ImageUploader 
+                                                    <CloudinaryImageInput 
                                                         label="Add to Gallery"
-                                                        onUpload={url => setEditingProject({...editingProject, gallery: [...(editingProject.gallery || []), url]})}
-                                                        path="projects"
+                                                        value=""
+                                                        onChange={url => setEditingProject({...editingProject, gallery: [...(editingProject.gallery || []), url]})}
+                                                        folder="projects"
                                                     />
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-8 border-t border-white/5">
                                             <div className="space-y-4">
-                                                <label className="text-[10px] font-black uppercase tracking-widest text-stone-500 ml-1">Transformation: Before</label>
-                                                <ImageUploader existingUrl={editingProject.beforeImages?.[0]} onUpload={url => setEditingProject({...editingProject, beforeImages: [url]})} path="projects" />
+                                                <CloudinaryImageInput 
+                                                    label="Transformation: Before"
+                                                    value={editingProject.beforeImages?.[0] || ''}
+                                                    onChange={url => setEditingProject({...editingProject, beforeImages: [url]})}
+                                                    folder="projects"
+                                                />
                                             </div>
                                             <div className="space-y-4">
-                                                <label className="text-[10px] font-black uppercase tracking-widest text-luxury-gold ml-1">Transformation: After</label>
-                                                <ImageUploader existingUrl={editingProject.afterImages?.[0]} onUpload={url => setEditingProject({...editingProject, afterImages: [url]})} path="projects" />
+                                                <CloudinaryImageInput 
+                                                    label="Transformation: After"
+                                                    value={editingProject.afterImages?.[0] || ''}
+                                                    onChange={url => setEditingProject({...editingProject, afterImages: [url]})}
+                                                    folder="projects"
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -625,6 +654,21 @@ const ProjectManager: React.FC = () => {
                     </table>
                 </div>
             </div>
+
+            <MediaLibraryModal 
+                isOpen={showGalleryPicker}
+                onClose={() => setShowGalleryPicker(false)}
+                multiple={true}
+                onSelectMultiple={(urls) => {
+                    setEditingProject(prev => prev ? ({
+                        ...prev,
+                        gallery: [...(prev.gallery || []), ...urls]
+                    }) : null);
+                    setShowGalleryPicker(false);
+                }}
+                title="Select Project Gallery Images"
+                subtitle="Select multiple existing renders for your project exhibition."
+            />
         </div>
     );
 };

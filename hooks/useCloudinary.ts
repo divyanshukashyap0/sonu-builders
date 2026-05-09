@@ -75,6 +75,7 @@ export const useCloudinary = () => {
               createdAt: Date.now(),
               tags: result.tags || [],
               folder: result.folder || '',
+              usageCount: 0,
             };
 
             const docRef = await addDoc(collection(db, 'media'), mediaData);

@@ -184,7 +184,7 @@ const Content: React.FC = () => {
                         className="group relative bg-neutral-900/50 backdrop-blur-sm border border-white/5 rounded-2xl p-6 hover:border-luxury-gold/30 transition-all cursor-pointer overflow-hidden"
                     >
                         <div className="absolute inset-0 bg-gradient-to-br from-luxury-gold/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                        <Layout className="w-8 h-8 text-luxury-gold mb-4" />
+                        <LayoutTemplate className="w-8 h-8 text-luxury-gold mb-4" />
                         <h3 className="text-xl font-serif text-white mb-2">Project Portfolio</h3>
                         <p className="text-sm text-neutral-400">Manage detailed project stories, metadata, and high-res galleries.</p>
                     </div>

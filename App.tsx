@@ -49,7 +49,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import CustomCursor from './components/luxury/CustomCursor';
 import AIAssistant from './components/luxury/AIAssistant';
 import PremiumLoader from './components/luxury/PremiumLoader';
-import ThemeSwitcher from './components/luxury/ThemeSwitcher';
+
 import { COMPANY_NAME } from './constants';
 import { useCompanyData } from './hooks/useCompanyData';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -209,6 +209,7 @@ const AppContent: React.FC = () => {
                 <Route path="financials" element={<AdminFinancials />} />
                 <Route path="content" element={<AdminContent />} />
                 <Route path="services" element={<AdminServices />} />
+                <Route path="services/:id" element={<AdminServices />} />
                 <Route path="team" element={<AdminTeam />} />
                 <Route path="settings" element={<AdminSettings />} />
                 <Route path="chat-inquiries" element={<AdminChatInquiries />} />

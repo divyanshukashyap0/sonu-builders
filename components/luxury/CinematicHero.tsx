@@ -1,4 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import { db } from '../../lib/firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import { CloudinaryMedia } from '../../types';
 import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
 import Button from '../Button';
 import { useSiteContent } from '../../hooks/useSiteContent';
@@ -37,6 +40,37 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
         backgroundVideo: defaultVideo,
         description: defaultDesc
     });
+
+    const [randomBg, setRandomBg] = useState<string>('');
+
+    useEffect(() => {
+        const fetchRandomBg = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, 'media'));
+                const mediaItems: string[] = [];
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data() as CloudinaryMedia;
+                    if (data.url && (data.resource_type === 'image' || !data.resource_type)) {
+                        mediaItems.push(data.url);
+                    }
+                });
+
+                if (mediaItems.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * mediaItems.length);
+                    setRandomBg(mediaItems[randomIndex]);
+                }
+            } catch (err) {
+                console.error("Error fetching random background:", err);
+            }
+        };
+
+        // Only fetch if no specific background image is forced by content/props
+        if (!content.backgroundImage && !defaultBg) {
+            fetchRandomBg();
+        }
+    }, [content.backgroundImage, defaultBg]);
+
+    const displayBg = content.backgroundImage || defaultBg || randomBg;
 
     const { isLowPowerMode } = usePerformance();
     const targetRef = useRef<HTMLDivElement>(null);
@@ -105,7 +139,7 @@ export const CinematicHero: React.FC<CinematicHeroProps> = ({
                     )
                 ) : (
                     <MediaRenderer
-                        src={content.backgroundImage || ''}
+                        src={displayBg || 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=1920'}
                         alt="Luxury Interior Design"
                         className="w-full h-full object-cover"
                         loading="eager"

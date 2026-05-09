@@ -178,6 +178,12 @@ export interface ProjectEstimate {
   createdAt: any;
 }
 
+export interface MediaUsage {
+  id: string;
+  type: 'service' | 'project';
+  title: string;
+}
+
 export interface CloudinaryMedia {
   id: string;
   url: string;
@@ -190,4 +196,6 @@ export interface CloudinaryMedia {
   tags?: string[];
   folder?: string;
   resource_type?: string;
+  usageCount?: number;
+  usedIn?: MediaUsage[];
 }

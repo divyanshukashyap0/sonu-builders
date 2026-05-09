@@ -74,34 +74,34 @@ const Home: React.FC = () => {
 
   const allMedia = React.useMemo(() => {
     const items = [
-      ...inspirations.map(item => ({ 
-        id: item.id, 
-        image: item.image, 
-        category: item.category, 
+      ...inspirations.map(item => ({
+        id: item.id,
+        image: item.image,
+        category: item.category,
         title: item.title,
-        type: 'inspiration' 
+        type: 'inspiration'
       })),
-      ...services.flatMap(s => (s.gallery || []).map((url, idx) => ({ 
-        id: `service-${s.id}-${idx}`, 
-        image: url, 
-        category: s.title, 
+      ...services.flatMap(s => (s.gallery || []).map((url, idx) => ({
+        id: `service-${s.id}-${idx}`,
+        image: url,
+        category: s.title,
         title: s.title,
-        type: 'service-media' 
+        type: 'service-media'
       }))),
       ...projects.flatMap(p => [
-        { 
-          id: `project-main-${p.id}`, 
-          image: p.image, 
-          category: p.category || 'Project', 
+        {
+          id: `project-main-${p.id}`,
+          image: p.image,
+          category: p.category || 'Project',
           title: p.title,
-          type: 'project-media' 
+          type: 'project-media'
         },
-        ...(p.gallery || []).map((url, idx) => ({ 
-          id: `project-gal-${p.id}-${idx}`, 
-          image: url, 
-          category: p.category || 'Project', 
+        ...(p.gallery || []).map((url, idx) => ({
+          id: `project-gal-${p.id}-${idx}`,
+          image: url,
+          category: p.category || 'Project',
           title: p.title,
-          type: 'project-media' 
+          type: 'project-media'
         }))
       ])
     ];
@@ -114,7 +114,7 @@ const Home: React.FC = () => {
     if (activeCategory === 'All') return true;
     const cat = item.category.toLowerCase();
     const active = activeCategory.toLowerCase();
-    
+
     // Flexible mapping
     if (active === 'kitchen' && cat.includes('kitchen')) return true;
     if (active === 'living room' && cat.includes('living')) return true;
@@ -122,28 +122,28 @@ const Home: React.FC = () => {
     if (active === 'tv unit' && cat.includes('tv')) return true;
     if (active === 'wardrobe' && cat.includes('wardrobe')) return true;
     if (active === 'balcony' && cat.includes('balcony')) return true;
-    
+
     if (active === 'more') {
       const known = ['living', 'kitchen', 'bath', 'tv', 'wardrobe', 'balcony'];
       return !known.some(k => cat.includes(k));
     }
-    
+
     return cat.includes(active);
   });
 
   const projectCategories = ['All', 'Luxury', 'Residential', 'Commercial', 'Ongoing'];
-  
+
   const filteredProjects = projects.filter(project => {
     if (activeProjectCategory === 'All') return true;
     const cat = project.category?.toLowerCase() || '';
     const active = activeProjectCategory.toLowerCase();
-    
+
     if (active === 'luxury' && cat.includes('luxury')) return true;
     if (active === 'residential' && cat.includes('residential')) return true;
     if (active === 'commercial' && cat.includes('commercial')) return true;
     if (active === 'ongoing' && cat.includes('ongoing')) return true;
     if (active === 'traditional' && cat.includes('traditional')) return true;
-    
+
     return cat.includes(active);
   });
 
@@ -160,15 +160,15 @@ const Home: React.FC = () => {
       <section className="relative min-h-[90vh] md:h-screen flex flex-col md:flex-row items-start md:items-center overflow-hidden">
         <div className="absolute inset-0 z-0 bg-[#111]">
           <AnimatePresence>
-            <motion.img 
+            <motion.img
               key={heroIndex}
-              src={heroImages[heroIndex]} 
+              src={heroImages[heroIndex]}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1.5 }}
-              alt="Hero Background" 
-              className="absolute inset-0 w-full h-full object-cover z-10" 
+              alt="Hero Background"
+              className="absolute inset-0 w-full h-full object-cover z-10"
             />
           </AnimatePresence>
           {/* Opaque dark overlay to prevent ghosting while maintaining contrast */}
@@ -178,7 +178,7 @@ const Home: React.FC = () => {
         </div>
 
         <div className="relative z-40 max-w-7xl mx-auto px-6 w-full pt-32 md:pt-20 pb-12 md:pb-0">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -275,27 +275,52 @@ const Home: React.FC = () => {
                 if (title.includes('ceiling')) return Lightbulb;
                 if (title.includes('full home')) return Layout;
                 if (title.includes('flooring')) return Grid;
-                
+
                 return (Icons as any)[s.icon] || HomeIcon;
               };
 
               const IconComponent = getSmartIcon(service);
               return (
-                <Link 
-                  key={service.id} 
-                  to={`/services/${service.id}`} 
-                  className="flex flex-col items-center justify-center p-3 md:p-6 border border-white/5 rounded-sm hover:border-[#c5a059]/50 bg-[#161616] hover:bg-[#1a1a1a] transition-all group cursor-pointer text-center aspect-square md:aspect-auto md:min-h-[160px]"
+                <Link
+                  key={service.id}
+                  to={`/services/${service.id}`}
+                  className={`relative overflow-hidden border border-white/5 rounded-sm hover:border-[#c5a059]/50 transition-all group cursor-pointer text-center aspect-square md:aspect-auto md:min-h-[160px] ${service.symbolUrl ? '' : 'flex flex-col items-center justify-center p-3 md:p-6 bg-[#161616] hover:bg-[#1a1a1a]'}`}
                 >
                   {service.symbolUrl ? (
-                    <img 
-                      src={service.symbolUrl} 
-                      className="w-10 h-10 md:w-14 md:h-14 object-contain mb-2 md:mb-4 group-hover:scale-110 transition-transform brightness-110 saturate-150" 
-                      alt="" 
-                    />
+                    <>
+                      {/* Full-bleed background image */}
+                      <img
+                        src={service.symbolUrl.replace('/upload/', '/upload/f_auto,q_auto,w_400/')}
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        alt={service.title}
+                      />
+                      {/* Gradient overlay for readability */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent group-hover:from-black/70 transition-all duration-500" />
+                      {/* Title pinned to bottom */}
+                      <span
+                        className="absolute bottom-0 left-0 right-0 p-2 md:p-3 text-[#e8d5a3] text-[10px] md:text-sm leading-tight text-center drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]"
+                        style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic', fontWeight: 1000, letterSpacing: '0.12em' }}
+                      >
+                        {service.title}
+                      </span>
+                    </>
                   ) : (
-                    <IconComponent className="w-6 h-6 md:w-10 md:h-10 text-[#c5a059] mb-2 md:mb-4 group-hover:scale-110 transition-transform" strokeWidth={1} />
+                    <>
+                      <IconComponent className="w-6 h-6 md:w-10 md:h-10 text-[#c5a059] mb-2 md:mb-4 group-hover:scale-110 transition-transform" strokeWidth={1} />
+                      <span
+                        className="text-[#c5a059] text-xs md:text-sm leading-tight"
+                        style={{
+                          fontFamily: "'Cormorant Garamond', serif",
+                          fontStyle: 'italic',
+                          fontWeight: 1000,
+                          letterSpacing: '0.1em',
+                          textShadow: 'rgba(197, 160, 89, 0.25) 10px 12px 20px'
+                        }}
+                      >
+                        {service.title}
+                      </span>
+                    </>
                   )}
-                  <span className="text-gray-300 text-[8px] md:text-xs whitespace-pre-line leading-tight">{service.title}</span>
                 </Link>
               );
             })
@@ -324,8 +349,8 @@ const Home: React.FC = () => {
           {projectCategories.map((tab, i) => {
             const isActive = activeProjectCategory === tab;
             return (
-              <button 
-                key={i} 
+              <button
+                key={i}
                 onClick={() => setActiveProjectCategory(tab)}
                 className={`shrink-0 px-6 py-2 text-[10px] md:text-xs uppercase tracking-widest border rounded-sm flex items-center transition-all duration-300 ${isActive ? 'bg-[#c5a059] text-black border-[#c5a059] font-bold' : 'border-white/10 text-gray-400 hover:border-[#c5a059] hover:text-[#c5a059]'}`}
               >
@@ -337,15 +362,15 @@ const Home: React.FC = () => {
 
         <div className="columns-2 md:columns-3 lg:columns-4 gap-2 md:gap-4 px-6 max-w-7xl mx-auto space-y-2 md:space-y-4">
           {filteredProjects.slice(0, 8).map((project, i) => (
-            <Link 
-              key={i} 
+            <Link
+              key={i}
               to={`/projects/${project.id}`}
               className="block group relative overflow-hidden rounded-sm border border-white/5 hover:border-[#c5a059]/50 transition-all duration-500 break-inside-avoid shadow-lg"
             >
-              <img 
-                src={project.image} 
-                alt={project.title} 
-                className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110" 
+              <img
+                src={project.image}
+                alt={project.title}
+                className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <h3 className="text-white font-serif text-sm mb-1">{project.title}</h3>
@@ -355,7 +380,7 @@ const Home: React.FC = () => {
                   <ArrowRight className="w-3 h-3 text-white" />
                 </div>
               </div>
-              
+
               {/* Desktop Always Visible Info (Partial) */}
               <div className="absolute bottom-0 left-0 right-0 p-3 bg-black/40 backdrop-blur-sm md:group-hover:opacity-0 transition-opacity">
                 <h3 className="text-white font-serif text-xs truncate">{project.title}</h3>
@@ -404,8 +429,8 @@ const Home: React.FC = () => {
           {['All', 'Living Room', 'Kitchen', 'Bathroom', 'TV Unit', 'Wardrobe', 'Balcony', 'More'].map((tab, i) => {
             const isActive = activeCategory === tab;
             return (
-              <button 
-                key={i} 
+              <button
+                key={i}
                 onClick={() => setActiveCategory(tab)}
                 className={`shrink-0 px-6 py-2 text-[10px] md:text-xs uppercase tracking-widest border rounded-sm flex items-center transition-all duration-300 ${isActive ? 'bg-[#c5a059] text-black border-[#c5a059] font-bold' : 'border-white/10 text-gray-400 hover:border-[#c5a059] hover:text-[#c5a059]'}`}
               >
@@ -421,13 +446,13 @@ const Home: React.FC = () => {
             ))
           ) : (
             filteredMedia.slice(0, 12).map((item, i) => {
-              const clickUrl = item.type === 'inspiration' 
-                ? `/gallery/item/${item.id}` 
+              const clickUrl = item.type === 'inspiration'
+                ? `/gallery/item/${item.id}`
                 : `/gallery/media?url=${encodeURIComponent(item.image)}&title=${encodeURIComponent(item.title)}`;
 
               return (
-                <Link 
-                  key={i} 
+                <Link
+                  key={i}
                   to={clickUrl}
                   className="block group relative overflow-hidden rounded-sm border border-white/5 hover:border-[#c5a059]/50 transition-all duration-500 break-inside-avoid"
                 >
@@ -437,7 +462,7 @@ const Home: React.FC = () => {
                     alt={item.title || "Gallery Item"}
                   />
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                     <span className="text-white text-[10px] uppercase tracking-[0.2em] font-bold border border-white/20 px-4 py-2 bg-black/50 backdrop-blur-sm">View Details</span>
+                    <span className="text-white text-[10px] uppercase tracking-[0.2em] font-bold border border-white/20 px-4 py-2 bg-black/50 backdrop-blur-sm">View Details</span>
                   </div>
                 </Link>
               );

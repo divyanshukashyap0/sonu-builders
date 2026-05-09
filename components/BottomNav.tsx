@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Grid, FolderOpen, Phone } from 'lucide-react';
+import { Home, Grid, FolderOpen, Images, Phone } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const BottomNav = () => {
@@ -8,12 +8,13 @@ const BottomNav = () => {
         { name: 'Home', icon: Home, path: '/' },
         { name: 'Services', icon: Grid, path: '/services' },
         { name: 'Projects', icon: FolderOpen, path: '/projects' },
+        { name: 'Gallery', icon: Images, path: '/gallery' },
         { name: 'Contact', icon: Phone, path: '/contact' },
     ];
 
     return (
         <div className="fixed bottom-16 inset-x-0 z-50 md:hidden flex justify-center">
-            <nav className="w-[90%] max-w-sm bg-black/80 backdrop-blur-md border border-white/20 rounded-full py-3 px-6 shadow-luxury flex justify-between items-center relative overflow-hidden">
+            <nav className="w-[95%] max-w-md bg-black/80 backdrop-blur-md border border-white/20 rounded-full py-3 px-4 shadow-luxury flex justify-between items-center relative overflow-hidden">
                 {/* Visual Glow Layer */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-luxury-gold/5 via-transparent to-luxury-gold/5 pointer-events-none" />
 

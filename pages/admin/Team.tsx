@@ -11,6 +11,7 @@ import {
     Image as ImageIcon
 } from 'lucide-react';
 import { useTeam } from '../../hooks/useTeam';
+import { useConfirmDelete } from '../../hooks/useConfirmDelete';
 import { TeamMember } from '../../types';
 import { motion, AnimatePresence } from 'framer-motion';
 import CloudinaryImageInput from '../../components/admin/media/CloudinaryImageInput';
@@ -42,6 +43,7 @@ const Modal = ({ isOpen, onClose, title, children }: { isOpen: boolean; onClose:
 
 const Team: React.FC = () => {
     const { team, loading, error, addMember, updateMember, deleteMember } = useTeam();
+    const { confirmDelete } = useConfirmDelete();
     const [searchTerm, setSearchTerm] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
@@ -90,10 +92,17 @@ const Team: React.FC = () => {
         }
     };
 
-    const handleDelete = async (id: string) => {
-        if (window.confirm("Are you sure you want to remove this team member?")) {
-            await deleteMember(id);
-        }
+    const handleDelete = (id: string) => {
+        confirmDelete(
+            async () => {
+                await deleteMember(id);
+            },
+            {
+                firstMessage: "Are you sure you want to remove this team member?",
+                secondMessage: "ARE YOU ABSOLUTELY SURE? This will permanently remove their profile from the team page.",
+                successMessage: "Team member removed."
+            }
+        );
     };
 
     if (loading) return (

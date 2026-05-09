@@ -10,11 +10,13 @@ import {
     PieChart
 } from 'lucide-react';
 import { useFinancials, FinancialRecord } from '../../hooks/useFinancials';
+import { useConfirmDelete } from '../../hooks/useConfirmDelete';
 import { motion, AnimatePresence } from 'framer-motion';
 import StatCard from '../../components/admin/StatCard';
 
 const Financials: React.FC = () => {
     const { records, loading, addRecord, deleteRecord } = useFinancials();
+    const { confirmDelete } = useConfirmDelete();
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [newRecord, setNewRecord] = useState<Partial<FinancialRecord>>({
         type: 'Income',
@@ -118,7 +120,21 @@ const Financials: React.FC = () => {
                                         {record.type === 'Income' ? '+' : '-'} ₹{Number(record.amount).toLocaleString()}
                                     </td>
                                     <td className="px-6 py-4 text-right">
-                                        <button onClick={() => deleteRecord(record.id)} className="text-gray-400 hover:text-red-500 transition-colors">
+                                        <button 
+                                            onClick={() => {
+                                                confirmDelete(
+                                                    async () => {
+                                                        await deleteRecord(record.id);
+                                                    },
+                                                    {
+                                                        firstMessage: "Delete this financial record?",
+                                                        secondMessage: "FINAL CONFIRMATION: Are you sure you want to delete this transaction from your records?",
+                                                        successMessage: "Transaction deleted."
+                                                    }
+                                                );
+                                            }}
+                                            className="text-gray-400 hover:text-red-500 transition-colors"
+                                        >
                                             <Trash2 size={16} />
                                         </button>
                                     </td>

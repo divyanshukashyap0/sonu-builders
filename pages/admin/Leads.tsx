@@ -14,10 +14,12 @@ import {
 } from 'lucide-react';
 import { Lead, LeadStatus } from '../../types';
 import { useLeads } from '../../hooks/useLeads';
+import { useConfirmDelete } from '../../hooks/useConfirmDelete';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Leads: React.FC = () => {
     const { leads, loading, error, deleteLead } = useLeads();
+    const { confirmDelete } = useConfirmDelete();
     const [viewMode, setViewMode] = useState<'list' | 'kanban'>('list');
     const [searchTerm, setSearchTerm] = useState('');
     const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -40,18 +42,23 @@ const Leads: React.FC = () => {
         }
     };
 
-    const handleDelete = async (e: React.MouseEvent, id: string) => {
+    const handleDelete = (e: React.MouseEvent, id: string) => {
         e.stopPropagation();
-        if (window.confirm("Are you sure you want to delete this lead? This action cannot be undone.")) {
-            setDeletingId(id);
-            try {
-                await deleteLead(id);
-            } catch (err) {
-                alert("Failed to delete lead. Please try again.");
-            } finally {
-                setDeletingId(null);
+        confirmDelete(
+            async () => {
+                setDeletingId(id);
+                try {
+                    await deleteLead(id);
+                } finally {
+                    setDeletingId(null);
+                }
+            },
+            {
+                firstMessage: "Delete this lead? This action cannot be undone.",
+                secondMessage: "ARE YOU ABSOLUTELY SURE? You will lose all contact information for this lead.",
+                successMessage: "Lead deleted successfully."
             }
-        }
+        );
     };
 
     if (loading) {

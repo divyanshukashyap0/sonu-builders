@@ -13,6 +13,7 @@ import {
     PlusCircle
 } from 'lucide-react';
 import { useDesignInspirations, DesignInspiration } from '../../hooks/useDesignInspirations';
+import { useConfirmDelete } from '../../hooks/useConfirmDelete';
 import { motion, AnimatePresence } from 'framer-motion';
 import CloudinaryImageInput from '../../components/admin/media/CloudinaryImageInput';
 
@@ -76,6 +77,7 @@ const INITIAL_SEED_DATA = [
 
 const InspirationManager: React.FC = () => {
     const { inspirations, loading, addInspiration, updateInspiration, deleteInspiration } = useDesignInspirations();
+    const { confirmDelete } = useConfirmDelete();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
@@ -221,7 +223,18 @@ const InspirationManager: React.FC = () => {
                                     <Edit2 size={14} />
                                 </button>
                                 <button 
-                                    onClick={() => { if(window.confirm("Delete this?")) deleteInspiration(item.id); }}
+                                    onClick={() => {
+                                        confirmDelete(
+                                            async () => {
+                                                await deleteInspiration(item.id);
+                                            },
+                                            {
+                                                firstMessage: "Delete this gallery item?",
+                                                secondMessage: "FINAL CONFIRMATION: Are you sure you want to permanently delete this design from the gallery?",
+                                                successMessage: "Gallery item deleted."
+                                            }
+                                        );
+                                    }}
                                     className="p-2 bg-black/50 backdrop-blur-md rounded-full text-white hover:bg-red-500 transition-colors"
                                 >
                                     <Trash2 size={14} />

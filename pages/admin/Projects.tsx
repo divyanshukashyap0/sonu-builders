@@ -7,6 +7,7 @@ import {
     CheckCircle2, Clock, Hammer, Inbox, ArrowUpRight
 } from 'lucide-react';
 import { useProjects } from '../../hooks/useProjects';
+import { useConfirmDelete } from '../../hooks/useConfirmDelete';
 import { useNavigate, Link } from 'react-router-dom';
 
 const PROJECT_CATEGORIES = [
@@ -17,6 +18,7 @@ const PROJECT_CATEGORIES = [
 
 const AdminProjects: React.FC = () => {
     const { projects, deleteProject, duplicateProject } = useProjects();
+    const { confirmDelete } = useConfirmDelete();
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const [categoryFilter, setCategoryFilter] = useState('All');
@@ -28,10 +30,17 @@ const AdminProjects: React.FC = () => {
         return matchesSearch && matchesCat;
     });
 
-    const handleDelete = async (id: string) => {
-        if (window.confirm("Terminate this masterpiece from the global records?")) {
-            await deleteProject(id);
-        }
+    const handleDelete = (id: string) => {
+        confirmDelete(
+            async () => {
+                await deleteProject(id);
+            },
+            {
+                firstMessage: "Terminate this masterpiece from the global records?",
+                secondMessage: "FINAL CONFIRMATION: Are you absolutely sure you want to obliterate this project? This cannot be undone.",
+                successMessage: "Project successfully removed from portfolio."
+            }
+        );
     };
 
     return (

@@ -3,16 +3,16 @@
 
 :root {
   /* Dynamic Theme Variables */
-  --theme-background: #F7F4EF;
-  --theme-secondary: #E8DDD0;
-  --theme-accent: #B87333;
-  --theme-highlight: #D4A373;
-  --theme-text: #2E2A26;
-  --theme-muted: rgba(46, 42, 38, 0.6);
-  --theme-card: #FFFFFF;
-  --theme-border: rgba(184, 115, 51, 0.2);
-  --theme-shadow: rgba(184, 115, 51, 0.1);
-  --theme-buttonText: #FFFFFF;
+  --theme-background: #0F0F0F;
+  --theme-secondary: #1B1B1B;
+  --theme-accent: #C9A227;
+  --theme-highlight: #5A3A22;
+  --theme-text: #FFFFFF;
+  --theme-muted: rgba(255, 255, 255, 0.6);
+  --theme-card: #1A1A1A;
+  --theme-border: rgba(201, 162, 39, 0.2);
+  --theme-shadow: rgba(0, 0, 0, 0.5);
+  --theme-buttonText: #0F0F0F;
 
   /* Fonts */
   --theme-font-heading: 'Playfair Display', serif;

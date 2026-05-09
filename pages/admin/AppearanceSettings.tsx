@@ -72,48 +72,7 @@ const AppearanceSettings: React.FC = () => {
                 </button>
             </div>
 
-            {/* Global Theme Selection */}
-            <div className="bg-white dark:bg-luxury-obsidian p-10 rounded-[2.5rem] border border-luxury-gold/10 shadow-2xl space-y-10">
-                <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-luxury-gold/10 rounded-2xl flex items-center justify-center text-luxury-gold">
-                        <Palette size={24} />
-                    </div>
-                    <div>
-                        <h3 className="font-bold text-xl dark:text-white">Global Visual Theme</h3>
-                        <p className="text-xs text-gray-500 font-medium">This theme will be applied to every user visiting the site.</p>
-                    </div>
-                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-                    {THEME_PREVIEWS.map((t) => (
-                        <button
-                            key={t.id}
-                            onClick={() => setLocalSettings({ ...localSettings, activeTheme: t.id })}
-                            className={`group relative flex flex-col p-6 rounded-3xl transition-all duration-500 border-2 ${
-                                localSettings.activeTheme === t.id 
-                                ? 'bg-luxury-gold/5 border-luxury-gold shadow-xl' 
-                                : 'bg-gray-50 dark:bg-white/5 border-transparent hover:border-luxury-gold/30'
-                            }`}
-                        >
-                            <div 
-                                className="w-full aspect-square rounded-2xl mb-4 shadow-inner flex items-center justify-center relative overflow-hidden"
-                                style={{ backgroundColor: t.id === 'dark-luxury' || t.id === 'contemporary' ? '#1A1A1A' : '#FFFFFF' }}
-                            >
-                                <div className="w-8 h-8 rounded-full shadow-lg" style={{ backgroundColor: t.color }} />
-                                {localSettings.activeTheme === t.id && (
-                                    <div className="absolute inset-0 bg-luxury-gold/10 flex items-center justify-center">
-                                        <div className="bg-luxury-gold text-white p-1 rounded-full">
-                                            <Save size={12} />
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                            <h4 className="text-sm font-bold dark:text-white mb-1">{t.label}</h4>
-                            <p className="text-[10px] text-gray-400 font-medium uppercase tracking-tight">{t.desc}</p>
-                        </button>
-                    ))}
-                </div>
-            </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 {/* Hero Overlay Image */}

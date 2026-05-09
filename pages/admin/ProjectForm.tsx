@@ -9,9 +9,11 @@ import {
 } from 'lucide-react';
 import { useProjects } from '../../hooks/useProjects';
 import { Project, ProjectCategory } from '../../types';
-import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
-import ImageUploader from '../../components/ImageUploader';
+import CloudinaryImageInput from '../../components/admin/media/CloudinaryImageInput';
+import MediaLibraryModal from '../../components/admin/media/MediaLibraryModal';
+import { useToast } from '../../context/ToastContext';
+import { increment, updateDoc, query, collection, where, getDocs, arrayRemove, doc } from 'firebase/firestore';
 
 const PROJECT_CATEGORIES = [
     'Living Room', 'Bedroom', 'Kitchen', 'Bathroom', 'TV Unit', 'Wardrobe', 
@@ -48,6 +50,10 @@ const ProjectForm: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [fetching, setFetching] = useState(!!id);
     const [previewDevice, setPreviewDevice] = useState<'desktop' | 'mobile'>('desktop');
+    const [showGalleryPicker, setShowGalleryPicker] = useState(false);
+    const [isDirty, setIsDirty] = useState(false);
+    const [cancelStep, setCancelStep] = useState(0);
+    const { showToast } = useToast();
 
     useEffect(() => {
         if (id) {
@@ -74,7 +80,30 @@ const ProjectForm: React.FC = () => {
 
     const handleTitleChange = (title: string) => {
         const slug = generateSlug(title);
-        setFormData(prev => ({ ...prev, title, slug }));
+        updateFormData({ title, slug });
+    };
+
+    const updateFormData = (newData: Partial<Project>) => {
+        setFormData(prev => ({ ...prev, ...newData }));
+        setIsDirty(true);
+        setCancelStep(0);
+    };
+
+    const handleCancel = () => {
+        if (!isDirty) {
+            navigate('/admin/projects');
+            return;
+        }
+
+        if (cancelStep === 0) {
+            setCancelStep(1);
+            showToast('Unsaved changes! Click back again to confirm abandonment.', 'warning');
+        } else if (cancelStep === 1) {
+            setCancelStep(2);
+            showToast('FINAL WARNING: All architectural progress will be lost. Click one last time to exit.', 'error');
+        } else {
+            navigate('/admin/projects');
+        }
     };
 
     const handleSubmit = async () => {
@@ -86,6 +115,7 @@ const ProjectForm: React.FC = () => {
             } else {
                 await addProject(formData as Omit<Project, 'id'>);
             }
+            setIsDirty(false);
             navigate('/admin/projects');
         } catch (error) {
             console.error("Error saving project:", error);
@@ -118,7 +148,14 @@ const ProjectForm: React.FC = () => {
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
                     <div className="flex items-center gap-4">
-                        <button onClick={() => navigate('/admin/projects')} className="p-3 bg-white/5 rounded-full hover:bg-luxury-gold hover:text-black transition-all">
+                        <button 
+                            onClick={handleCancel} 
+                            className={`p-3 rounded-full transition-all ${
+                                cancelStep === 1 ? 'bg-yellow-500/10 text-yellow-600' : 
+                                cancelStep === 2 ? 'bg-red-500 text-white' : 
+                                'bg-white/5 hover:bg-luxury-gold hover:text-black'
+                            }`}
+                        >
                             <ChevronLeft size={20} />
                         </button>
                         <div>
@@ -190,29 +227,29 @@ const ProjectForm: React.FC = () => {
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-[10px] font-black uppercase tracking-widest text-stone-500 ml-1">Domain Classification</label>
-                                        <select value={formData.category || ''} onChange={e => setFormData({...formData, category: e.target.value as any})} className="w-full bg-white/5 border border-white/10 rounded-2xl p-6 text-white focus:outline-none appearance-none">
+                                        <select value={formData.category || ''} onChange={e => updateFormData({ category: e.target.value as any})} className="w-full bg-white/5 border border-white/10 rounded-2xl p-6 text-white focus:outline-none appearance-none">
                                             {PROJECT_CATEGORIES.map(c => <option key={c} value={c} className="bg-stone-900">{c}</option>)}
                                         </select>
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-[10px] font-black uppercase tracking-widest text-stone-500 ml-1">Architectural Type</label>
-                                        <select value={formData.type || ''} onChange={e => setFormData({...formData, type: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl p-6 text-white focus:outline-none appearance-none">
+                                        <select value={formData.type || ''} onChange={e => updateFormData({ type: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl p-6 text-white focus:outline-none appearance-none">
                                             {PROJECT_TYPES.map(t => <option key={t} value={t} className="bg-stone-900">{t}</option>)}
                                         </select>
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-[10px] font-black uppercase tracking-widest text-stone-500 ml-1">Current Status</label>
-                                        <select value={formData.status || ''} onChange={e => setFormData({...formData, status: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl p-6 text-white focus:outline-none appearance-none">
+                                        <select value={formData.status || ''} onChange={e => updateFormData({ status: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl p-6 text-white focus:outline-none appearance-none">
                                             {PROJECT_STATUSES.map(s => <option key={s} value={s} className="bg-stone-900">{s}</option>)}
                                         </select>
                                     </div>
                                     <div className="flex items-center gap-10 p-6 bg-white/2 rounded-2xl border border-white/5">
                                         <div className="flex items-center gap-4">
-                                            <input type="checkbox" checked={formData.featured || false} onChange={e => setFormData({...formData, featured: e.target.checked})} className="w-6 h-6 accent-luxury-gold" />
+                                            <input type="checkbox" checked={formData.featured || false} onChange={e => updateFormData({ featured: e.target.checked})} className="w-6 h-6 accent-luxury-gold" />
                                             <span className="text-[10px] font-black uppercase tracking-widest text-white">Featured Project</span>
                                         </div>
                                         <div className="flex items-center gap-4">
-                                            <input type="checkbox" checked={formData.showOnHome || false} onChange={e => setFormData({...formData, showOnHome: e.target.checked})} className="w-6 h-6 accent-luxury-gold" />
+                                            <input type="checkbox" checked={formData.showOnHome || false} onChange={e => updateFormData({ showOnHome: e.target.checked})} className="w-6 h-6 accent-luxury-gold" />
                                             <span className="text-[10px] font-black uppercase tracking-widest text-white">Homepage Display</span>
                                         </div>
                                     </div>
@@ -237,7 +274,7 @@ const ProjectForm: React.FC = () => {
                                         <label className="text-[10px] font-black uppercase tracking-widest text-stone-500 ml-1">Google Maps Embed Intel</label>
                                         <div className="relative">
                                             <MapPin className="absolute left-6 top-1/2 -translate-y-1/2 text-luxury-gold" size={20} />
-                                            <input value={formData.googleMapsLink || ''} onChange={e => setFormData({...formData, googleMapsLink: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl p-6 pl-16 text-white" placeholder="https://www.google.com/maps/embed?..." />
+                                            <input value={formData.googleMapsLink || ''} onChange={e => updateFormData({ googleMapsLink: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-2xl p-6 pl-16 text-white" placeholder="https://www.google.com/maps/embed?..." />
                                         </div>
                                     </div>
                                 </div>
@@ -247,36 +284,92 @@ const ProjectForm: React.FC = () => {
                                 <div className="space-y-12">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                                         <div className="space-y-4">
-                                            <label className="text-[10px] font-black uppercase tracking-widest text-luxury-gold ml-1 flex items-center gap-2"><Sparkles size={12} /> Cinematic Hero Banner</label>
-                                            <ImageUploader existingUrl={formData.heroImage} onUpload={url => setFormData({...formData, heroImage: url})} path="projects" />
+                                            <CloudinaryImageInput 
+                                                label="Cinematic Hero Banner"
+                                                value={formData.heroImage || ''}
+                                                onChange={url => updateFormData({ heroImage: url })}
+                                                folder="projects"
+                                                usageContext={{ id: id || 'new', type: 'project', title: formData.title || 'Untitled Project' }}
+                                            />
                                         </div>
                                         <div className="space-y-4">
-                                            <label className="text-[10px] font-black uppercase tracking-widest text-stone-500 ml-1">Primary Thumbnail</label>
-                                            <ImageUploader existingUrl={formData.image} onUpload={url => setFormData({...formData, image: url})} path="projects" />
+                                            <CloudinaryImageInput 
+                                                label="Primary Thumbnail"
+                                                value={formData.image || ''}
+                                                onChange={url => updateFormData({ image: url })}
+                                                folder="projects"
+                                                usageContext={{ id: id || 'new', type: 'project', title: formData.title || 'Untitled Project' }}
+                                            />
                                         </div>
                                     </div>
                                     <div className="space-y-6">
-                                        <label className="text-[10px] font-black uppercase tracking-widest text-luxury-gold ml-1">Visual Exhibition Gallery</label>
+                                        <div className="flex justify-between items-center mb-4">
+                                            <label className="text-[10px] font-black uppercase tracking-widest text-luxury-gold ml-1">Visual Exhibition Gallery</label>
+                                            <button 
+                                                onClick={() => setShowGalleryPicker(true)}
+                                                className="px-6 py-2 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest text-luxury-gold hover:bg-luxury-gold hover:text-black transition-all"
+                                            >
+                                                Browse Library
+                                            </button>
+                                        </div>
                                         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                                             {(formData.gallery || []).map((url, idx) => (
                                                 <div key={idx} className="relative aspect-square rounded-2xl overflow-hidden group border border-white/10">
                                                     <img src={url} className="w-full h-full object-cover" alt="" />
-                                                    <button onClick={() => setFormData({...formData, gallery: formData.gallery?.filter((_, i) => i !== idx)})} className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-red-500 backdrop-blur-sm transition-all"><Trash size={24} /></button>
+                                                    <button 
+                                                        onClick={async () => {
+                                                            const newGallery = formData.gallery?.filter((_, i) => i !== idx);
+                                                            updateFormData({ gallery: newGallery });
+                                                            
+                                                            // Decrement usage in media lib
+                                                            try {
+                                                                const q = query(collection(db, 'media'), where('url', '==', url));
+                                                                const snapshot = await getDocs(q);
+                                                                snapshot.forEach(async (mediaDoc) => {
+                                                                    await updateDoc(doc(db, 'media', mediaDoc.id), {
+                                                                        usageCount: increment(-1),
+                                                                        usedIn: arrayRemove({ id: id || 'new', type: 'project', title: formData.title || 'Untitled Project' })
+                                                                    });
+                                                                });
+                                                            } catch (err) {
+                                                                console.error("Usage decrement error:", err);
+                                                            }
+                                                        }} 
+                                                        className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-red-500 backdrop-blur-sm transition-all"
+                                                    >
+                                                        <Trash size={24} />
+                                                    </button>
                                                 </div>
                                             ))}
                                             <div className="aspect-square">
-                                                <ImageUploader label="Add Shot" onUpload={url => setFormData({...formData, gallery: [...(formData.gallery || []), url]})} path="projects" />
+                                                <CloudinaryImageInput 
+                                                    label="Add Shot" 
+                                                    value=""
+                                                    onChange={url => updateFormData({ gallery: [...(formData.gallery || []), url] })} 
+                                                    folder="projects" 
+                                                    usageContext={{ id: id || 'new', type: 'project', title: formData.title || 'Untitled Project' }}
+                                                />
                                             </div>
                                         </div>
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-8 border-t border-white/5">
                                         <div className="space-y-4">
-                                            <label className="text-[10px] font-black uppercase tracking-widest text-stone-500 ml-1 italic">The Past (Before)</label>
-                                            <ImageUploader existingUrl={formData.beforeImages?.[0]} onUpload={url => setFormData({...formData, beforeImages: [url]})} path="projects" />
+                                            <CloudinaryImageInput 
+                                                label="The Past (Before)"
+                                                value={formData.beforeImages?.[0] || ''}
+                                                onChange={url => updateFormData({ beforeImages: [url] })}
+                                                folder="projects"
+                                                usageContext={{ id: id || 'new', type: 'project', title: formData.title || 'Untitled Project' }}
+                                            />
                                         </div>
                                         <div className="space-y-4">
-                                            <label className="text-[10px] font-black uppercase tracking-widest text-luxury-gold ml-1 italic">The Masterpiece (After)</label>
-                                            <ImageUploader existingUrl={formData.afterImages?.[0]} onUpload={url => setFormData({...formData, afterImages: [url]})} path="projects" />
+                                            <CloudinaryImageInput 
+                                                label="The Masterpiece (After)"
+                                                value={formData.afterImages?.[0] || ''}
+                                                onChange={url => updateFormData({ afterImages: [url] })}
+                                                folder="projects"
+                                                usageContext={{ id: id || 'new', type: 'project', title: formData.title || 'Untitled Project' }}
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -490,6 +583,22 @@ const ProjectForm: React.FC = () => {
                     </div>
                 </div>
             </div>
+
+            <MediaLibraryModal 
+                isOpen={showGalleryPicker}
+                onClose={() => setShowGalleryPicker(false)}
+                multiple={true}
+                onSelectMultiple={(urls) => {
+                    updateFormData({
+                        gallery: [...(formData.gallery || []), ...urls]
+                    });
+                    setShowGalleryPicker(false);
+                    showToast(`${urls.length} architectural shots added`, 'success');
+                }}
+                title="Select Project Assets"
+                subtitle="Curate the visual narrative for your masterpiece."
+                usageContext={{ id: id || 'new', type: 'project', title: formData.title || 'Untitled Project' }}
+            />
         </div>
     );
 };

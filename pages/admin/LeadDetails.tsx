@@ -12,6 +12,7 @@ import {
     Trash2
 } from 'lucide-react';
 import { Lead, LeadStatus } from '../../types';
+import { useConfirmDelete } from '../../hooks/useConfirmDelete';
 import { motion } from 'framer-motion';
 import { doc, onSnapshot, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
@@ -19,6 +20,7 @@ import { db } from '../../lib/firebase';
 const LeadDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const { confirmDelete } = useConfirmDelete();
 
     const [lead, setLead] = useState<Lead | null>(null);
     const [loading, setLoading] = useState(true);
@@ -59,19 +61,24 @@ const LeadDetails: React.FC = () => {
         }
     };
 
-    const handleDelete = async () => {
+    const handleDelete = () => {
         if (!id) return;
-        if (window.confirm("Are you sure you want to delete this lead? This action cannot be undone.")) {
-            setIsDeleting(true);
-            try {
-                await deleteDoc(doc(db, 'leads', id));
-                navigate('/admin/leads');
-            } catch (error) {
-                console.error("Error deleting lead:", error);
-                alert("Failed to delete lead. Please try again.");
-                setIsDeleting(false);
+        confirmDelete(
+            async () => {
+                setIsDeleting(true);
+                try {
+                    await deleteDoc(doc(db, 'leads', id));
+                    navigate('/admin/leads');
+                } finally {
+                    setIsDeleting(false);
+                }
+            },
+            {
+                firstMessage: "Delete this lead? This action cannot be undone.",
+                secondMessage: "ARE YOU ABSOLUTELY SURE? All information associated with this lead will be lost forever.",
+                successMessage: "Lead deleted."
             }
-        }
+        );
     };
 
     if (loading) return (

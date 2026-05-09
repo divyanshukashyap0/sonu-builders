@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Calculator, Trash2, Search, User, Phone, MapPin, Calendar, Layers, Eye, X, MessageSquare, Mail, Download } from 'lucide-react';
 import { useEstimates } from '../../hooks/useEstimates';
+import { useConfirmDelete } from '../../hooks/useConfirmDelete';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ProjectEstimate, RoomEstimate } from '../../types';
 import { useEstimationCosts } from '../../hooks/useEstimationCosts';
 
 const AdminEstimates: React.FC = () => {
     const { estimates, loading, deleteEstimate } = useEstimates();
+    const { confirmDelete } = useConfirmDelete();
     const { costs } = useEstimationCosts();
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedEstimate, setSelectedEstimate] = useState<ProjectEstimate | null>(null);
@@ -41,10 +43,17 @@ const AdminEstimates: React.FC = () => {
         return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
     };
 
-    const handleDelete = async (id: string) => {
-        if (window.confirm('Delete this estimate?')) {
-            await deleteEstimate(id);
-        }
+    const handleDelete = (id: string) => {
+        confirmDelete(
+            async () => {
+                await deleteEstimate(id);
+            },
+            {
+                firstMessage: "Delete this project estimate record?",
+                secondMessage: "FINAL CONFIRMATION: This will permanently remove the user's requirement data and budget calculation.",
+                successMessage: "Estimate deleted."
+            }
+        );
     };
 
     if (loading) {

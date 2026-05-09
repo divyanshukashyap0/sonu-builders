@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
-import { doc, onSnapshot } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
-import { useState } from 'react';
 
 export const DynamicBackground: React.FC = () => {
     const [settings, setSettings] = useState({
@@ -11,17 +10,26 @@ export const DynamicBackground: React.FC = () => {
     });
 
     useEffect(() => {
-        const unsub = onSnapshot(doc(db, 'settings', 'appearance'), (docSnap) => {
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                setSettings({
-                    backgroundColor: data.backgroundColor || '#050505',
-                    backgroundImage: data.backgroundImage || '',
-                    backgroundBlur: data.backgroundBlur !== undefined ? data.backgroundBlur : 25
-                });
+        // Use a one-time fetch instead of a real-time listener.
+        // The app background setting is session-stable and doesn't need live updates.
+        const fetchSettings = async () => {
+            try {
+                const docSnap = await getDoc(doc(db, 'settings', 'appearance'));
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    setSettings({
+                        backgroundColor: data.backgroundColor || '#050505',
+                        backgroundImage: data.backgroundImage || '',
+                        backgroundBlur: data.backgroundBlur !== undefined ? data.backgroundBlur : 25
+                    });
+                }
+            } catch (err) {
+                // Silently fail — background is cosmetic and has a default
+                console.warn('Could not load background settings:', err);
             }
-        });
-        return () => unsub();
+        };
+
+        fetchSettings();
     }, []);
 
     return (
@@ -38,14 +46,11 @@ export const DynamicBackground: React.FC = () => {
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
                             backgroundAttachment: 'fixed',
-                            filter: `blur(${settings.backgroundBlur / 8}px) brightness(0.8)`, // Reduced blur divisor for more clarity
+                            filter: `blur(${settings.backgroundBlur / 8}px) brightness(0.8)`,
                             opacity: 0.9
                         }}
                     />
-                    {/* Subtle noise/texture overlay for premium feel */}
                     <div className="absolute inset-0 opacity-[0.05] bg-grain pointer-events-none" />
-                    
-                    {/* Gradient overlay to ensure text contrast while keeping image visible */}
                     <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40" />
                 </>
             )}

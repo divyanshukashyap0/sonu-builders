@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Upload, Link, Loader2, Youtube, Play } from 'lucide-react';
+import { Upload, Link, Loader2, Youtube, Play, Library } from 'lucide-react';
 import { useCloudinary } from '../../../hooks/useCloudinary';
 import { useToast } from '../../../context/ToastContext';
+import { db } from '../../../lib/firebase';
+import { doc, updateDoc, increment } from 'firebase/firestore';
+import { MediaUsage } from '../../../types';
+import CloudinaryUploader from './CloudinaryUploader';
+import MediaLibraryModal from './MediaLibraryModal';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface CloudinaryImageInputProps {
   label: string;
@@ -11,6 +17,7 @@ interface CloudinaryImageInputProps {
   folder?: string;
   placeholder?: string;
   publicId?: string; // Add this
+  usageContext?: MediaUsage;
 }
 
 const CloudinaryImageInput: React.FC<CloudinaryImageInputProps> = ({
@@ -20,13 +27,15 @@ const CloudinaryImageInput: React.FC<CloudinaryImageInputProps> = ({
   required = false,
   folder = 'sonu_builders_media',
   placeholder = 'https://...',
-  publicId // Destructure this
+  publicId, // Destructure this
+  usageContext
 }) => {
   const { uploadToCloudinary, loading } = useCloudinary();
   const { showToast } = useToast();
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
   const [showUrlInput, setShowUrlInput] = useState(true);
   const [isYoutube, setIsYoutube] = useState(false);
+  const [showLibrary, setShowLibrary] = useState(false);
 
   useEffect(() => {
     const checkYoutube = (url: string) => {
@@ -45,6 +54,14 @@ const CloudinaryImageInput: React.FC<CloudinaryImageInputProps> = ({
       }, publicId); // Pass publicId
       
       onChange(result.url);
+      
+      // Increment usage count for the newly uploaded image since it's being used immediately
+      if (result.id) {
+        await updateDoc(doc(db, 'media', result.id), {
+          usageCount: increment(1)
+        });
+      }
+
       showToast('Image uploaded successfully', 'success');
       setUploadProgress(null);
     } catch (err: any) {
@@ -104,6 +121,16 @@ const CloudinaryImageInput: React.FC<CloudinaryImageInputProps> = ({
         <div className="flex-1 space-y-4">
           {!isYoutube && (
             <div className="flex gap-4">
+              {/* Browse Library Button */}
+              <button
+                type="button"
+                onClick={() => setShowLibrary(true)}
+                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-luxury-gold/30 bg-white dark:bg-white/5 text-luxury-gold hover:bg-luxury-gold hover:text-white transition-all text-xs font-bold shadow-sm"
+              >
+                <Library size={14} />
+                <span>Browse Library</span>
+              </button>
+
               {/* Upload Button */}
               <div className="relative flex-1">
                 <input
@@ -185,6 +212,17 @@ const CloudinaryImageInput: React.FC<CloudinaryImageInputProps> = ({
           )}
         </div>
       </div>
+
+      {/* Media Library Modal */}
+      <MediaLibraryModal
+        isOpen={showLibrary}
+        onClose={() => setShowLibrary(false)}
+        onSelect={(url) => {
+          onChange(url);
+          setShowLibrary(false);
+        }}
+        usageContext={usageContext}
+      />
     </div>
   );
 };

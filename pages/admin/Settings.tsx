@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Save, Globe, Lock, Bell, Palette, Phone, Mail, MapPin, User, ImageIcon } from 'lucide-react';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
-import { useTheme } from '../../context/ThemeContext';
+
 import CloudinaryImageInput from '../../components/admin/media/CloudinaryImageInput';
 
 const Settings: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
-    const { theme, toggleTheme } = useTheme();
+    // Removed theme management as it is now forced to dark mode
     const [generalData, setGeneralData] = useState({
         name: '',
         email: '',
@@ -379,31 +379,7 @@ const Settings: React.FC = () => {
                                 />
                             </div>
                             
-                            <div className="p-4 bg-luxury-gold/5 rounded-lg border border-luxury-gold/10">
-                                <h4 className="font-bold text-luxury-charcoal dark:text-white mb-4">Active Luxury Theme</h4>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    {Object.entries(LUXURY_THEMES).map(([id, themeInfo]) => (
-                                        <button
-                                            key={id}
-                                            onClick={() => setThemeData({ activeTheme: id as any })}
-                                            className={`p-4 rounded-xl border-2 transition-all text-left group ${themeData.activeTheme === id 
-                                                ? 'border-luxury-gold bg-luxury-gold/10 ring-2 ring-luxury-gold/20' 
-                                                : 'border-white/5 bg-white/5 hover:border-white/20'}`}
-                                        >
-                                            <div 
-                                                className="w-8 h-8 rounded-full mb-3 shadow-lg" 
-                                                style={{ backgroundColor: themeInfo.preview }}
-                                            />
-                                            <p className={`font-bold text-xs uppercase tracking-widest ${themeData.activeTheme === id ? 'text-luxury-gold' : 'text-white'}`}>
-                                                {themeInfo.name}
-                                            </p>
-                                            <p className="text-[10px] text-gray-400 mt-1 line-clamp-2">
-                                                {themeInfo.description}
-                                            </p>
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>

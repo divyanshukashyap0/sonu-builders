@@ -136,7 +136,7 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setTheme] = useState<ThemeType>('luxury-white');
+  const [theme, setTheme] = useState<ThemeType>('dark-luxury');
 
   useEffect(() => {
     // Listen for global theme changes from admin settings
@@ -144,8 +144,12 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       if (docSnap.exists()) {
         const data = docSnap.data();
         const activeTheme = data.activeTheme as ThemeType;
-        if (activeTheme && THEMES[activeTheme]) {
+        // Only allow dark themes or force dark-luxury if theme changing is being disabled
+        if (activeTheme === 'dark-luxury' || activeTheme === 'contemporary') {
           setTheme(activeTheme);
+        } else {
+          // Force dark-luxury if the saved theme is a light one
+          setTheme('dark-luxury');
         }
       }
     });

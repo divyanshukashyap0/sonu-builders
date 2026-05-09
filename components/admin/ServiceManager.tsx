@@ -3,12 +3,16 @@ import { useServices } from '../../hooks/useServices';
 import { 
     Plus, Trash2, Edit, Save, X, Image, List, Lightbulb, Award, ChevronRight, Search, Loader2, Upload, Youtube,
     Sofa, ChefHat, Bed, AlignVerticalSpaceAround, Tv, Bath, Trees, Hexagon, Grid, Laptop, Building2, Users, ShieldCheck,
-    Coffee, Box, Droplets, Layout, Utensils, BookOpen, PenTool, Home
+    Coffee, Box, Droplets, Layout, Utensils, BookOpen, PenTool, Home, Library
 } from 'lucide-react';
 import { Service } from '../../types';
 import CloudinaryImageInput from './media/CloudinaryImageInput';
+import MediaLibraryModal from './media/MediaLibraryModal';
 import { useCloudinary } from '../../hooks/useCloudinary';
 import { useToast } from '../../context/ToastContext';
+import { db } from '../../lib/firebase';
+import { doc, updateDoc, increment, query, collection, where, getDocs, arrayRemove } from 'firebase/firestore';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const AVAILABLE_ICONS = [
     { id: 'Home', Icon: Home },
@@ -53,10 +57,16 @@ const ServiceManager: React.FC = () => {
     const { services, loading, addService, updateService, deleteService } = useServices();
     const { uploadToCloudinary } = useCloudinary();
     const { showToast } = useToast();
+    const { id } = useParams();
+    const navigate = useNavigate();
+    
     const [editingId, setEditingId] = useState<string | null>(null);
     const [isAdding, setIsAdding] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [bulkUploading, setBulkUploading] = useState(false);
+    const [showGalleryPicker, setShowGalleryPicker] = useState(false);
+    const [isDirty, setIsDirty] = useState(false);
+    const [cancelStep, setCancelStep] = useState(0); // 0: none, 1: first check, 2: second check
 
     const [formData, setFormData] = useState<Partial<Service>>({
         title: '',
@@ -71,32 +81,58 @@ const ServiceManager: React.FC = () => {
         symbolUrl: ''
     });
 
+    // Handle URL-based editing
+    React.useEffect(() => {
+        if (id && id !== 'new' && services.length > 0) {
+            const service = services.find(s => s.id === id);
+            if (service) {
+                setEditingId(service.id);
+                setFormData(service);
+                setIsAdding(false);
+                setIsDirty(false);
+            }
+        } else if (id === 'new') {
+            setIsAdding(true);
+            setEditingId(null);
+            setIsDirty(false);
+        } else {
+            setEditingId(null);
+            setIsAdding(false);
+        }
+    }, [id, services]);
+
     const handleEdit = (service: Service) => {
-        setEditingId(service.id);
-        setFormData(service);
-        setIsAdding(false);
+        navigate(`/admin/services/${service.id}`);
     };
 
     const handleAddNew = () => {
-        setEditingId(null);
-        setIsAdding(true);
-        setFormData({
-            title: '',
-            description: '',
-            longDescription: '',
-            icon: 'Home',
-            image: '',
-            features: [],
-            suggestions: [],
-            gallery: [],
-            videos: [],
-            symbolUrl: ''
-        });
+        navigate('/admin/services/new');
     };
 
     const handleCancel = () => {
-        setEditingId(null);
-        setIsAdding(false);
+        if (!isDirty) {
+            navigate('/admin/services');
+            setCancelStep(0);
+            return;
+        }
+
+        if (cancelStep === 0) {
+            setCancelStep(1);
+            showToast('Unsaved changes! Click again to confirm abandonment.', 'warning');
+        } else if (cancelStep === 1) {
+            setCancelStep(2);
+            showToast('FINAL WARNING: All edits will be PERMANENTLY lost. Click one last time to exit.', 'error');
+        } else {
+            navigate('/admin/services');
+            setIsDirty(false);
+            setCancelStep(0);
+        }
+    };
+
+    const updateFormData = (newData: Partial<Service>) => {
+        setFormData(prev => ({ ...prev, ...newData }));
+        setIsDirty(true);
+        setCancelStep(0); // Reset cancel steps if they keep editing
     };
 
     const handleSave = async () => {
@@ -106,8 +142,8 @@ const ServiceManager: React.FC = () => {
             } else {
                 await addService(formData as Omit<Service, 'id'>);
             }
-            setEditingId(null);
-            setIsAdding(false);
+            setIsDirty(false);
+            navigate('/admin/services');
         } catch (error) {
             alert('Error saving service');
         }
@@ -116,16 +152,33 @@ const ServiceManager: React.FC = () => {
     const handleArrayUpdate = (field: 'features' | 'suggestions' | 'gallery' | 'videos', index: number, value: string) => {
         const newArray = [...(formData[field] || [])];
         newArray[index] = value;
-        setFormData({ ...formData, [field]: newArray });
+        updateFormData({ [field]: newArray });
     };
 
     const addArrayItem = (field: 'features' | 'suggestions' | 'gallery' | 'videos') => {
-        setFormData({ ...formData, [field]: [...(formData[field] || []), ''] });
+        updateFormData({ [field]: [...(formData[field] || []), ''] });
     };
 
-    const removeArrayItem = (field: 'features' | 'suggestions' | 'gallery' | 'videos', index: number) => {
+    const removeArrayItem = async (field: 'features' | 'suggestions' | 'gallery' | 'videos', index: number) => {
+        const itemToRemove = formData[field]?.[index];
         const newArray = (formData[field] || []).filter((_, i) => i !== index);
-        setFormData({ ...formData, [field]: newArray });
+        updateFormData({ [field]: newArray });
+
+        // If it's the gallery and we have a URL, decrement usage
+        if (field === 'gallery' && typeof itemToRemove === 'string' && itemToRemove.includes('cloudinary.com')) {
+            try {
+                const q = query(collection(db, 'media'), where('url', '==', itemToRemove));
+                const snapshot = await getDocs(q);
+                snapshot.forEach(async (mediaDoc) => {
+                    await updateDoc(doc(db, 'media', mediaDoc.id), {
+                        usageCount: increment(-1),
+                        usedIn: arrayRemove({ id: editingId || 'new', type: 'service', title: formData.title })
+                    });
+                });
+            } catch (err) {
+                console.error("Error updating usage count on removal:", err);
+            }
+        }
     };
 
     const handleBulkUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -146,6 +199,7 @@ const ServiceManager: React.FC = () => {
                 ...prev,
                 gallery: [...(prev.gallery || []), ...uploadedUrls]
             }));
+            setIsDirty(true);
             showToast(`Successfully uploaded ${uploadedUrls.length} images`, 'success');
         } catch (error) {
             console.error('Bulk upload error:', error);
@@ -203,15 +257,7 @@ const ServiceManager: React.FC = () => {
                                     )}
                                     <div className="absolute top-2 right-2 flex gap-2 z-10">
                                         <div className="p-2 bg-white/90 dark:bg-neutral-800/90 rounded-full text-blue-500 shadow-sm group-hover:scale-110 transition-transform"><Edit size={16} /></div>
-                                        <button 
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                deleteService(service.id);
-                                            }} 
-                                            className="p-2 bg-white/90 dark:bg-neutral-800/90 rounded-full text-red-500 shadow-sm hover:scale-110 transition-transform"
-                                        >
-                                            <Trash2 size={16} />
-                                        </button>
+                                    {/* Delete disabled as per requirements */}
                                     </div>
                                 </div>
                                 <div className="p-4">
@@ -235,9 +281,13 @@ const ServiceManager: React.FC = () => {
                         <div className="flex gap-3">
                             <button
                                 onClick={handleCancel}
-                                className="px-4 py-2 text-sm text-gray-500 hover:text-luxury-charcoal font-bold"
+                                className={`px-4 py-2 text-sm font-bold transition-all rounded-lg ${
+                                    cancelStep === 1 ? 'bg-yellow-500/10 text-yellow-600' : 
+                                    cancelStep === 2 ? 'bg-red-500 text-white' : 
+                                    'text-gray-500 hover:text-luxury-charcoal'
+                                }`}
                             >
-                                Cancel
+                                {cancelStep === 0 ? 'Cancel' : cancelStep === 1 ? 'Are you sure?' : 'FINAL CONFIRMATION'}
                             </button>
                             <button
                                 onClick={handleSave}
@@ -259,7 +309,7 @@ const ServiceManager: React.FC = () => {
                                         <input
                                             type="text"
                                             value={formData.title}
-                                            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                                            onChange={(e) => updateFormData({ title: e.target.value })}
                                             className="w-full mt-1 bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-white/5 rounded-lg p-3 text-sm focus:ring-2 focus:ring-luxury-gold/50 outline-none"
                                         />
                                     </div>
@@ -267,7 +317,7 @@ const ServiceManager: React.FC = () => {
                                         <label className="text-xs font-bold text-gray-500 uppercase">Short Description</label>
                                         <textarea
                                             value={formData.description}
-                                            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                            onChange={(e) => updateFormData({ description: e.target.value })}
                                             rows={2}
                                             className="w-full mt-1 bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-white/5 rounded-lg p-3 text-sm focus:ring-2 focus:ring-luxury-gold/50 outline-none"
                                         />
@@ -276,7 +326,7 @@ const ServiceManager: React.FC = () => {
                                         <label className="text-xs font-bold text-gray-500 uppercase">Long Description (Page Detail)</label>
                                         <textarea
                                             value={formData.longDescription}
-                                            onChange={(e) => setFormData({ ...formData, longDescription: e.target.value })}
+                                            onChange={(e) => updateFormData({ longDescription: e.target.value })}
                                             rows={4}
                                             className="w-full mt-1 bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-white/5 rounded-lg p-3 text-sm focus:ring-2 focus:ring-luxury-gold/50 outline-none"
                                         />
@@ -288,7 +338,7 @@ const ServiceManager: React.FC = () => {
                                                 <button
                                                     key={id}
                                                     type="button"
-                                                    onClick={() => setFormData({ ...formData, icon: id })}
+                                                    onClick={() => updateFormData({ icon: id })}
                                                     className={`p-3 flex flex-col items-center justify-center rounded-lg transition-all border ${
                                                         formData.icon === id 
                                                             ? 'bg-luxury-gold text-white border-luxury-gold' 
@@ -306,9 +356,10 @@ const ServiceManager: React.FC = () => {
                                             <CloudinaryImageInput
                                                 label="Service Symbol (Custom Image Override)"
                                                 value={formData.symbolUrl || ''}
-                                                onChange={(url) => setFormData({ ...formData, symbolUrl: url })}
+                                                onChange={(url) => updateFormData({ symbolUrl: url })}
                                                 folder="services_symbols"
                                                 placeholder="Custom icon image..."
+                                                usageContext={{ id: editingId || 'new', type: 'service', title: formData.title || 'Untitled Service' }}
                                             />
                                         </div>
                                     </div>
@@ -316,9 +367,10 @@ const ServiceManager: React.FC = () => {
                                         <CloudinaryImageInput
                                             label="Main Featured Image"
                                             value={formData.image || ''}
-                                            onChange={(url) => setFormData({ ...formData, image: url })}
+                                            onChange={(url) => updateFormData({ image: url })}
                                             folder="services"
                                             placeholder="https://..."
+                                            usageContext={{ id: editingId || 'new', type: 'service', title: formData.title || 'Untitled Service' }}
                                         />
                                     </div>
                                 </div>
@@ -329,6 +381,12 @@ const ServiceManager: React.FC = () => {
                                 <div className="flex justify-between items-center mb-4">
                                     <h4 className="text-xs font-bold uppercase tracking-tighter text-luxury-gold">Image Gallery</h4>
                                     <div className="flex gap-4">
+                                        <button 
+                                            onClick={() => setShowGalleryPicker(true)}
+                                            className="text-luxury-gold hover:underline font-bold text-xs flex items-center gap-1"
+                                        >
+                                            <Library size={14} /> Browse Library
+                                        </button>
                                         <label className={`text-luxury-gold hover:underline font-bold text-xs flex items-center gap-1 cursor-pointer ${bulkUploading ? 'opacity-50 pointer-events-none' : ''}`}>
                                             <input type="file" multiple accept="image/*" className="hidden" onChange={handleBulkUpload} disabled={bulkUploading} />
                                             {bulkUploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
@@ -361,6 +419,7 @@ const ServiceManager: React.FC = () => {
                                                     value={img}
                                                     onChange={(url) => handleArrayUpdate('gallery', idx, url)}
                                                     folder="services_gallery"
+                                                    usageContext={{ id: editingId || 'new', type: 'service', title: formData.title || 'Untitled Service' }}
                                                 />
                                             </div>
                                         )
@@ -398,9 +457,9 @@ const ServiceManager: React.FC = () => {
                                                     onClick={() => {
                                                         const current = formData.features || [];
                                                         if (isSelected) {
-                                                            setFormData({ ...formData, features: current.filter(f => f !== feat) });
+                                                            updateFormData({ features: current.filter(f => f !== feat) });
                                                         } else {
-                                                            setFormData({ ...formData, features: [...current, feat] });
+                                                            updateFormData({ features: [...current, feat] });
                                                         }
                                                     }}
                                                     className={`px-3 py-1.5 rounded-full text-[10px] font-bold transition-all border ${
@@ -516,6 +575,22 @@ const ServiceManager: React.FC = () => {
                     </div>
                 </div>
             )}
+            
+            <MediaLibraryModal 
+                isOpen={showGalleryPicker}
+                onClose={() => setShowGalleryPicker(false)}
+                multiple={true}
+                onSelectMultiple={(urls) => {
+                    updateFormData({
+                        gallery: [...(formData.gallery || []), ...urls]
+                    });
+                    setShowGalleryPicker(false);
+                    showToast(`${urls.length} images added to gallery`, 'success');
+                }}
+                title="Select Gallery Images"
+                subtitle="Select multiple high-resolution renders for your service gallery."
+                usageContext={{ id: editingId || 'new', type: 'service', title: formData.title || 'Untitled Service' }}
+            />
         </div>
     );
 };
