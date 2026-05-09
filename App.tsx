@@ -107,8 +107,8 @@ const ScrollToTop = () => {
         }
       }, 100);
     } else {
-      // If no hash, scroll to top instantly
-      window.scrollTo(0, 0);
+      // If no hash, scroll to top instantly (bypass smooth-scroll CSS)
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     }
   }, [pathname, hash]);
 
