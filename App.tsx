@@ -53,6 +53,9 @@ import PremiumLoader from './components/luxury/PremiumLoader';
 import { COMPANY_NAME } from './constants';
 import { useCompanyData } from './hooks/useCompanyData';
 import { motion, AnimatePresence } from 'framer-motion';
+import { SmoothScroll } from './components/luxury/SmoothScroll';
+import GlobalScrollEffects from './components/luxury/GlobalScrollEffects';
+import CinematicOverlay from './components/luxury/CinematicOverlay';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { PerformanceProvider } from './context/PerformanceContext';
 import { ToastProvider } from './context/ToastContext';
@@ -167,6 +170,8 @@ const AppContent: React.FC = () => {
 
       <CustomCursor />
       <AIAssistant />
+      <GlobalScrollEffects />
+      {!isAdminRoute && <CinematicOverlay />}
       {!isAdminRoute && <Header />}
 
       <main className="flex-grow overflow-x-hidden">
@@ -241,9 +246,11 @@ const App: React.FC = () => {
         <ToastProvider>
           <Router>
             <ScrollToTop />
-            <ChunkErrorListener>
-              <AppContent />
-            </ChunkErrorListener>
+            <SmoothScroll>
+              <ChunkErrorListener>
+                <AppContent />
+              </ChunkErrorListener>
+            </SmoothScroll>
           </Router>
         </ToastProvider>
       </ThemeProvider>

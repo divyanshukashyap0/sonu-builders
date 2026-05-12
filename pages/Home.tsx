@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-  ArrowRight, Star, ChevronDown, CheckCircle,
-  MapPin, Phone, Mail, Instagram, ArrowLeft, ArrowRight as ArrowRightIcon,
-  Sofa, ChefHat, Bed, AlignVerticalSpaceAround, Tv, Bath, Trees, Hexagon, Grid, Laptop, Building2, Users, Award, ShieldCheck,
-  Coffee, Box, Lightbulb, Droplets, Layout, Utensils, BookOpen, PenTool, Home as HomeIcon
+  ArrowRight, ChevronDown,
+  Sofa, ChefHat, Bed, AlignVerticalSpaceAround, Tv, Bath, Trees, Hexagon, Grid, Laptop,
+  Box, Lightbulb, Droplets, Layout, Utensils, Home as HomeIcon, Building2, Users, Award, ShieldCheck
 } from 'lucide-react';
 import { useCompanyData } from '../hooks/useCompanyData';
 import { useProjects } from '../hooks/useProjects';
@@ -15,8 +14,11 @@ import { useDesignInspirations } from '../hooks/useDesignInspirations';
 import { useSiteSettings } from '../hooks/useSiteSettings';
 import SEO, { organizationSchema } from '../components/SEO';
 import TestimonialCarousel from '../components/luxury/TestimonialCarousel';
+import CinematicHero from '../components/luxury/CinematicHero';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as Icons from 'lucide-react';
+import ProjectCard3D from '../components/luxury/ProjectCard3D';
+import CinematicText from '../components/luxury/CinematicText';
 
 const serviceIcons = [
   { name: 'Living Room\nDesign', icon: Sofa },
@@ -66,7 +68,7 @@ const Home: React.FC = () => {
   React.useEffect(() => {
     const timer = setInterval(() => {
       setHeroIndex((prev) => (prev + 1) % heroImages.length);
-    }, 5000);
+    }, 60000); // Changed from 5000 to 60000 (1 minute)
     return () => clearInterval(timer);
   }, [heroImages.length]);
 
@@ -147,8 +149,34 @@ const Home: React.FC = () => {
     return cat.includes(active);
   });
 
+  // ── Shared animation variants ──────────────────────────────────────────────
+  const fadeUp = {
+    hidden: { opacity: 0, y: 48 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.85, ease: [0.22, 1, 0.36, 1] } }
+  };
+  const stagger = { show: { transition: { staggerChildren: 0.1 } } };
+  const cardHover = { scale: 1.03, y: -6, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } };
+
+  // ── Section label component ─────────────────────────────────────────────────
+  const SectionLabel = ({ children }: { children: string }) => (
+    <p className="text-[10px] font-bold tracking-[0.3em] uppercase mb-3 flex items-center gap-3"
+      style={{ color: '#c5a059' }}>
+      <span className="w-6 h-[1px] inline-block" style={{ background: 'linear-gradient(90deg,#c5a059,transparent)' }} />
+      {children}
+    </p>
+  );
+
+  const SectionTitle = ({ children }: { children: React.ReactNode }) => (
+    <h2
+      className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight text-glow-gold"
+      style={{ fontFamily: "'Cormorant Garamond','Playfair Display',serif", letterSpacing: '-0.02em' }}
+    >
+      {children}
+    </h2>
+  );
+
   return (
-    <div className="bg-[#111] text-white min-h-screen font-sans">
+    <div className="bg-[#080808] text-white min-h-screen font-sans overflow-x-hidden">
       <SEO
         title="Home"
         description="Sonu Enterprises - Where Luxury Meets Your Vision. Expert interior design and construction services."
@@ -156,107 +184,43 @@ const Home: React.FC = () => {
         schema={organizationSchema}
       />
 
-      {/* 1. Hero Section */}
-      <section className="relative min-h-[90vh] md:h-screen flex flex-col md:flex-row items-start md:items-center overflow-hidden">
-        <div className="absolute inset-0 z-0 bg-[#111]">
-          <AnimatePresence>
-            <motion.img
-              key={heroIndex}
-              src={heroImages[heroIndex]}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.5 }}
-              alt="Hero Background"
-              className="absolute inset-0 w-full h-full object-cover z-10"
-            />
-          </AnimatePresence>
-          {/* Opaque dark overlay to prevent ghosting while maintaining contrast */}
-          <div className="absolute inset-0 bg-black/40 z-20" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent z-30 pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent z-30" />
-        </div>
+      {/* 1. Hero Section — Ultra-Cinematic 3D Luxury */}
+      <CinematicHero
+        heroImages={heroImages}
+        heroIndex={heroIndex}
+        phone={phone}
+      />
 
-        <div className="relative z-40 max-w-7xl mx-auto px-6 w-full pt-32 md:pt-20 pb-12 md:pb-0">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="max-w-3xl"
-          >
-            <p className="text-gray-300 text-xs tracking-[0.2em] uppercase font-bold mb-4">Premium Interior Solutions</p>
-            <h1 className="text-4xl md:text-7xl font-serif text-white leading-tight mb-4 min-h-[1.2em]">
-              We Design Spaces <br />
-              <span className="text-[#c5a059]">You'll Love To Live In</span>
-            </h1>
-            <p className="text-gray-300 text-lg mb-8 max-w-xl leading-relaxed">
-              Transforming dream spaces into<br />timeless luxury interiors.
-            </p>
-            <div className="flex flex-col gap-4 w-fit">
-              <Link to="/projects" className="bg-[#c5a059] text-black px-8 py-3 rounded text-sm font-bold flex items-center justify-center hover:bg-[#b08d4a] transition-all hover:scale-105">
-                View Projects <ArrowRight className="w-4 h-4 ml-2" />
-              </Link>
-              <Link to="/contact" className="border border-gray-500 text-white px-8 py-3 rounded text-sm font-bold flex items-center justify-center hover:border-[#c5a059] hover:text-[#c5a059] transition-all">
-                Contact Us
-              </Link>
-            </div>
+      {/* 2. Our Services — Cinematic 3D */}
+      <motion.section
+        data-cinematic-section
+        className="relative py-28 overflow-hidden"
+        style={{ background: 'linear-gradient(180deg,#080808 0%,#0d0d0d 100%)' }}
+      >
+        {/* Ambient orb */}
+        <div className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle,rgba(197,160,89,0.07) 0%,transparent 70%)', filter: 'blur(60px)' }} />
+        <div className="absolute -bottom-20 right-0 w-[400px] h-[400px] rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle,rgba(197,160,89,0.05) 0%,transparent 70%)', filter: 'blur(80px)' }} />
+
+        <motion.div className="max-w-7xl mx-auto px-6 mb-14"
+          initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} variants={stagger}>
+          <motion.div variants={fadeUp}>
+            <SectionLabel>What We Do</SectionLabel>
+            <SectionTitle>Our <span style={{
+                  color: '#c5a059',
+                }}>Services</span></SectionTitle>
+            <p className="text-gray-500 text-sm tracking-wide">Complete interior solutions for your home & office</p>
           </motion.div>
-        </div>
+        </motion.div>
 
-        <div className="absolute bottom-10 left-6 z-10 flex flex-col items-center gap-4 hidden md:flex">
-          <div className="w-[1px] h-12 bg-[#c5a059]" />
-          <span className="text-xs text-gray-400 uppercase tracking-widest" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>Scroll Down</span>
-        </div>
-
-        {/* Stats Bar */}
-        <div className="relative md:absolute md:bottom-10 left-0 right-0 md:left-auto md:right-0 mx-6 md:mx-0 z-50 bg-[#0a0a0a]/90 backdrop-blur-md border border-white/5 rounded-xl md:rounded-l-xl md:rounded-r-none p-6 md:p-8 grid grid-cols-2 gap-4 md:flex md:items-center md:gap-12 mt-6 md:mt-0">
-          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-center md:text-left">
-            <div className="text-[#c5a059]"><Building2 className="w-6 h-6 md:w-8 md:h-8" strokeWidth={1.5} /></div>
-            <div>
-              <h4 className="text-white font-bold text-lg md:text-xl">4500+</h4>
-              <p className="text-gray-400 text-[10px] md:text-xs uppercase tracking-wider">Projects Completed</p>
-            </div>
-          </div>
-          <div className="hidden md:block w-[1px] h-10 bg-white/10" />
-          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-center md:text-left">
-            <div className="text-[#c5a059]"><Users className="w-6 h-6 md:w-8 md:h-8" strokeWidth={1.5} /></div>
-            <div>
-              <h4 className="text-white font-bold text-lg md:text-xl">4000+</h4>
-              <p className="text-gray-400 text-[10px] md:text-xs uppercase tracking-wider">Happy Families</p>
-            </div>
-          </div>
-          <div className="hidden md:block w-[1px] h-10 bg-white/10" />
-          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-center md:text-left">
-            <div className="text-[#c5a059]"><Award className="w-6 h-6 md:w-8 md:h-8" strokeWidth={1.5} /></div>
-            <div>
-              <h4 className="text-white font-bold text-lg md:text-xl">15+</h4>
-              <p className="text-gray-400 text-[10px] md:text-xs uppercase tracking-wider">Years Experience</p>
-            </div>
-          </div>
-          <div className="hidden md:block w-[1px] h-10 bg-white/10" />
-          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-center md:text-left">
-            <div className="text-[#c5a059]"><ShieldCheck className="w-6 h-6 md:w-8 md:h-8" strokeWidth={1.5} /></div>
-            <div>
-              <h4 className="text-white font-bold text-lg md:text-xl">Premium</h4>
-              <p className="text-gray-400 text-[10px] md:text-xs uppercase tracking-wider">Quality Assurance</p>
-            </div>
-          </div>
-        </div>
-
-      </section>
-
-      {/* 2. Our Services */}
-      <section className="py-24 bg-[#111]">
-        <div className="max-w-7xl mx-auto px-6 mb-12 text-center md:text-left">
-          <p className="text-[#c5a059] text-[10px] font-bold tracking-[0.2em] uppercase mb-2">WHAT WE DO</p>
-          <h2 className="text-3xl md:text-4xl font-serif text-white mb-2">Our Services</h2>
-          <p className="text-gray-400 text-sm">Complete interior solutions for your home & office</p>
-        </div>
-
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 gap-2 md:gap-4 px-6 max-w-7xl mx-auto">
+        <motion.div
+          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 md:gap-3 px-6 max-w-7xl mx-auto"
+          initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.1 }} variants={stagger}
+        >
           {servicesLoading ? (
             [...Array(10)].map((_, i) => (
-              <div key={i} className="aspect-square bg-white/5 animate-pulse rounded-sm" />
+              <div key={i} className="aspect-square animate-pulse rounded-sm" style={{ background:'rgba(197,160,89,0.04)' }} />
             ))
           ) : (
             services.map((service, i) => {
@@ -275,250 +239,335 @@ const Home: React.FC = () => {
                 if (title.includes('ceiling')) return Lightbulb;
                 if (title.includes('full home')) return Layout;
                 if (title.includes('flooring')) return Grid;
-
                 return (Icons as any)[s.icon] || HomeIcon;
               };
-
               const IconComponent = getSmartIcon(service);
               return (
-                <Link
-                  key={service.id}
-                  to={`/services/${service.id}`}
-                  className={`relative overflow-hidden border border-white/5 rounded-sm hover:border-[#c5a059]/50 transition-all group cursor-pointer text-center aspect-square md:aspect-auto md:min-h-[160px] ${service.symbolUrl ? '' : 'flex flex-col items-center justify-center p-3 md:p-6 bg-[#161616] hover:bg-[#1a1a1a]'}`}
-                >
-                  {service.symbolUrl ? (
-                    <>
-                      {/* Full-bleed background image */}
-                      <img
-                        src={service.symbolUrl.replace('/upload/', '/upload/f_auto,q_auto,w_400/')}
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                        alt={service.title}
-                      />
-                      {/* Gradient overlay for readability */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent group-hover:from-black/70 transition-all duration-500" />
-                      {/* Title pinned to bottom */}
-                      <span
-                        className="absolute bottom-0 left-0 right-0 p-2 md:p-3 text-[#e8d5a3] text-[10px] md:text-sm leading-tight text-center drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]"
-                        style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: 'italic', fontWeight: 1000, letterSpacing: '0.12em' }}
-                      >
-                        {service.title}
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <IconComponent className="w-6 h-6 md:w-10 md:h-10 text-[#c5a059] mb-2 md:mb-4 group-hover:scale-110 transition-transform" strokeWidth={1} />
-                      <span
-                        className="text-[#c5a059] text-xs md:text-sm leading-tight"
-                        style={{
-                          fontFamily: "'Cormorant Garamond', serif",
-                          fontStyle: 'italic',
-                          fontWeight: 1000,
-                          letterSpacing: '0.1em',
-                          textShadow: 'rgba(197, 160, 89, 0.25) 10px 12px 20px'
-                        }}
-                      >
-                        {service.title}
-                      </span>
-                    </>
-                  )}
-                </Link>
+                <motion.div key={service.id} variants={fadeUp}>
+                  <Link
+                    to={`/services/${service.id}`}
+                    className={`relative overflow-hidden rounded-sm group cursor-pointer text-center block aspect-square md:aspect-auto md:min-h-[160px] ${service.symbolUrl ? '' : 'flex flex-col items-center justify-center p-3 md:p-6'}`}
+                    style={{ border:'1px solid rgba(197,160,89,0.1)', background: service.symbolUrl ? undefined : 'rgba(197,160,89,0.03)', transition:'all 0.4s ease' }}
+                  >
+                    {/* Gold shimmer on hover */}
+                    <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                      style={{ background:'linear-gradient(135deg,rgba(197,160,89,0.08),transparent)', boxShadow:'inset 0 0 30px rgba(197,160,89,0.06)' }} />
+                    {service.symbolUrl ? (
+                      <>
+                        <img src={service.symbolUrl.replace('/upload/','/upload/f_auto,q_auto,w_400/')}
+                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={service.title} />
+                        <div className="absolute inset-0 transition-all duration-500"
+                          style={{ background:'linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.1) 60%,transparent 100%)' }} />
+                        <span className="absolute bottom-0 left-0 right-0 p-2 md:p-3 text-[10px] md:text-sm leading-tight text-center"
+                          style={{ fontFamily:"'Cormorant Garamond',serif", fontStyle:'italic', fontWeight:700, letterSpacing:'0.12em', color:'#e8d5a3' }}>
+                          {service.title}
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <IconComponent className="w-6 h-6 md:w-10 md:h-10 mb-2 md:mb-4 group-hover:scale-110 transition-transform duration-300" strokeWidth={1} style={{ color:'#c5a059' }} />
+                        <span className="text-xs md:text-sm leading-tight"
+                          style={{ fontFamily:"'Cormorant Garamond',serif", fontStyle:'italic', fontWeight:700, letterSpacing:'0.1em', color:'#c5a059' }}>
+                          {service.title}
+                        </span>
+                      </>
+                    )}
+                  </Link>
+                </motion.div>
               );
             })
           )}
-        </div>
-        <div className="text-center mt-8">
-          <Link to="/services" className="inline-flex items-center border border-white/10 text-gray-300 px-6 py-3 rounded-sm text-xs uppercase tracking-widest hover:border-[#c5a059] hover:text-[#c5a059] transition-colors font-bold">
-            Explore All Services <ArrowRight className="w-3 h-3 ml-2" />
-          </Link>
-        </div>
-      </section>
+        </motion.div>
 
-      {/* 3. Featured Projects */}
-      <section className="py-24 bg-[#0a0a0a]">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-end mb-12">
-          <div className="mb-6 md:mb-0">
-            <p className="text-[#c5a059] text-[10px] font-bold tracking-[0.2em] uppercase mb-2">OUR WORKS</p>
-            <h2 className="text-3xl md:text-4xl font-serif text-white mb-2">Featured Projects</h2>
-            <p className="text-gray-400 text-sm">Crafting beautiful spaces that speak for themselves</p>
-          </div>
-          <Link to="/projects" className="border border-white/10 text-gray-300 px-6 py-3 rounded-sm text-xs uppercase tracking-widest hover:border-[#c5a059] hover:text-[#c5a059] transition-colors flex items-center font-bold">
-            View All Projects <ArrowRight className="w-3 h-3 ml-2" />
+        <motion.div className="text-center mt-10" initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay:0.3, duration:0.7 }}>
+          <Link to="/services" className="group inline-flex items-center gap-3 px-8 py-3 text-[11px] uppercase tracking-[0.25em] font-bold transition-all duration-300"
+            style={{ border:'1px solid rgba(197,160,89,0.3)', color:'#c5a059', borderRadius:'2px', backdropFilter:'blur(8px)' }}>
+            Explore All Services <ArrowRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
+        </motion.div>
+      </motion.section>
+
+
+      {/* 3. Featured Projects — Cinematic Masonry */}
+      <motion.section data-cinematic-section className="relative py-28 overflow-hidden" style={{ background:'#060606' }}>
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full pointer-events-none"
+          style={{ background:'radial-gradient(circle,rgba(197,160,89,0.06) 0%,transparent 70%)', filter:'blur(80px)' }} />
+
+        <div className="max-w-7xl mx-auto px-6 mb-14">
+          <motion.div className="flex flex-col md:flex-row justify-between items-end"
+            initial="hidden" whileInView="show" viewport={{ once:true, amount:0.2 }} variants={stagger}>
+            <motion.div variants={fadeUp} className="mb-6 md:mb-0">
+              <SectionLabel>Our Works</SectionLabel>
+              <SectionTitle>Featured <span style={{ background:'linear-gradient(135deg,#c5a059,#e8d5a3)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>Projects</span></SectionTitle>
+              <p className="text-gray-500 text-sm">Crafting beautiful spaces that speak for themselves</p>
+            </motion.div>
+            <motion.div variants={fadeUp}>
+              <Link to="/projects" className="group inline-flex items-center gap-2 px-6 py-3 text-[11px] uppercase tracking-[0.2em] font-bold transition-all duration-300"
+                style={{ border:'1px solid rgba(197,160,89,0.25)', color:'#c5a059', borderRadius:'2px' }}>
+                View All <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </motion.div>
+          </motion.div>
         </div>
-        <div className="flex overflow-x-auto md:flex-wrap md:justify-center gap-2 mb-12 px-6 max-w-4xl mx-auto no-scrollbar scroll-smooth">
+
+        {/* Category filter pills */}
+        <motion.div className="flex overflow-x-auto md:flex-wrap md:justify-center gap-2 mb-12 px-6 max-w-4xl mx-auto no-scrollbar"
+          initial={{ opacity:0, y:16 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ duration:0.6 }}>
           {projectCategories.map((tab, i) => {
             const isActive = activeProjectCategory === tab;
             return (
-              <button
-                key={i}
-                onClick={() => setActiveProjectCategory(tab)}
-                className={`shrink-0 px-6 py-2 text-[10px] md:text-xs uppercase tracking-widest border rounded-sm flex items-center transition-all duration-300 ${isActive ? 'bg-[#c5a059] text-black border-[#c5a059] font-bold' : 'border-white/10 text-gray-400 hover:border-[#c5a059] hover:text-[#c5a059]'}`}
-              >
+              <motion.button key={i} onClick={() => setActiveProjectCategory(tab)}
+                whileHover={{ scale:1.04 }} whileTap={{ scale:0.96 }}
+                className="shrink-0 px-6 py-2 text-[10px] md:text-xs uppercase tracking-widest font-bold transition-all duration-300"
+                style={{
+                  border: isActive ? '1px solid #c5a059' : '1px solid rgba(255,255,255,0.07)',
+                  background: isActive ? 'linear-gradient(135deg,#c5a059,#b08d42)' : 'rgba(197,160,89,0.03)',
+                  color: isActive ? '#000' : 'rgba(197,160,89,0.6)',
+                  borderRadius: '2px',
+                }}>
                 {tab}
-              </button>
+              </motion.button>
             );
           })}
-        </div>
+        </motion.div>
 
-        <div className="columns-2 md:columns-3 lg:columns-4 gap-2 md:gap-4 px-6 max-w-7xl mx-auto space-y-2 md:space-y-4">
-          {filteredProjects.slice(0, 8).map((project, i) => (
-            <Link
-              key={i}
-              to={`/projects/${project.id}`}
-              className="block group relative overflow-hidden rounded-sm border border-white/5 hover:border-[#c5a059]/50 transition-all duration-500 break-inside-avoid shadow-lg"
-            >
-              <img
-                src={project.image}
-                alt={project.title}
-                className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110"
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeProjectCategory}
+            className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-3 md:gap-4 px-6 max-w-7xl mx-auto space-y-3 md:space-y-4"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            transition={{ duration: 0.35 }}
+          >
+            {filteredProjects.slice(0, 8).map((project, i) => (
+              <ProjectCard3D
+                key={project.id}
+                id={project.id}
+                title={project.title}
+                image={project.image}
+                category={project.category}
+                location={project.location}
+                index={i}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <h3 className="text-white font-serif text-sm mb-1">{project.title}</h3>
-                <p className="text-gray-400 text-[10px] mb-2">{project.location}</p>
-                <div className="flex justify-between items-center border-t border-white/10 pt-2">
-                  <span className="text-theme-accent text-[8px] uppercase tracking-wider">{project.category}</span>
-                  <ArrowRight className="w-3 h-3 text-white" />
-                </div>
-              </div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
+      </motion.section>
 
-              {/* Desktop Always Visible Info (Partial) */}
-              <div className="absolute bottom-0 left-0 right-0 p-3 bg-black/40 backdrop-blur-sm md:group-hover:opacity-0 transition-opacity">
-                <h3 className="text-white font-serif text-xs truncate">{project.title}</h3>
-                <p className="text-[#c5a059] text-[8px] uppercase tracking-tighter">{project.category}</p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
+      {/* 4. Process — Cinematic Timeline */}
+      <motion.section data-cinematic-section className="relative py-28 overflow-hidden" style={{ background:'linear-gradient(180deg,#0a0a0a,#0d0d0d)' }}>
+        {/* Decorative vertical line */}
+        <div className="absolute left-1/2 top-0 bottom-0 w-[1px] hidden md:block pointer-events-none"
+          style={{ background:'linear-gradient(to bottom,transparent,rgba(197,160,89,0.08),transparent)' }} />
+        <div className="absolute -right-32 top-1/4 w-[500px] h-[500px] rounded-full pointer-events-none"
+          style={{ background:'radial-gradient(circle,rgba(197,160,89,0.04) 0%,transparent 70%)', filter:'blur(80px)' }} />
 
-      {/* 4. Our Seamless Process */}
-      <section className="py-24 bg-[#111] relative border-y border-white/5">
-        <div className="max-w-7xl mx-auto px-6 text-center mb-20">
-          <p className="text-[#c5a059] text-[10px] font-bold tracking-[0.2em] uppercase mb-2">OUR PROCESS</p>
-          <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">Our Seamless Process</h2>
-          <p className="text-gray-400 text-sm">From concept to creation, we follow a transparent<br />and systematic approach.</p>
-        </div>
+        <motion.div className="max-w-7xl mx-auto px-6 text-center mb-20"
+          initial="hidden" whileInView="show" viewport={{ once:true, amount:0.2 }} variants={stagger}>
+          <motion.div variants={fadeUp}>
+            <SectionLabel>Our Process</SectionLabel>
+            <SectionTitle>Our Seamless <span style={{ background:'linear-gradient(135deg,#c5a059,#e8d5a3)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>Process</span></SectionTitle>
+            <p className="text-gray-500 text-sm">From concept to creation — transparent & systematic.</p>
+          </motion.div>
+        </motion.div>
 
         <div className="max-w-7xl mx-auto px-6 relative">
-          <div className="absolute top-8 left-10 right-10 h-[1px] bg-white/10 hidden md:block" />
-          <div className="absolute top-0 bottom-0 left-[48px] w-[1px] bg-white/10 md:hidden" />
+          {/* Horizontal connector desktop */}
+          <div className="absolute top-10 left-12 right-12 h-[1px] hidden md:block pointer-events-none"
+            style={{ background:'linear-gradient(90deg,transparent,rgba(197,160,89,0.2),transparent)' }} />
+          {/* Vertical connector mobile */}
+          <div className="absolute top-0 bottom-0 left-[44px] w-[1px] md:hidden pointer-events-none"
+            style={{ background:'linear-gradient(to bottom,transparent,rgba(197,160,89,0.2),transparent)' }} />
+
           <div className="grid grid-cols-1 md:grid-cols-6 gap-8 relative z-10">
             {processSteps.map((step, idx) => (
-              <div key={idx} className="relative flex flex-row md:flex-col items-center md:items-center text-left md:text-center">
-                <div className="w-12 h-12 md:w-16 md:h-16 shrink-0 rounded-full border border-[#c5a059] bg-[#111] flex items-center justify-center text-[#c5a059] font-serif text-lg md:text-xl mb-0 md:mb-6 mr-6 md:mr-0 z-10">
+              <motion.div key={idx}
+                className="relative flex flex-row md:flex-col items-center md:items-center text-left md:text-center"
+                initial={{ opacity:0, y:40 }} whileInView={{ opacity:1, y:0 }}
+                viewport={{ once:true, amount:0.3 }}
+                transition={{ delay: idx * 0.12, duration:0.7, ease:[0.22,1,0.36,1] }}>
+                {/* Step circle */}
+                <motion.div
+                  className="w-12 h-12 md:w-16 md:h-16 shrink-0 rounded-full flex items-center justify-center text-lg md:text-xl mb-0 md:mb-6 mr-6 md:mr-0 z-10 relative"
+                  style={{ border:'1px solid rgba(197,160,89,0.5)', background:'rgba(197,160,89,0.06)', color:'#c5a059', fontFamily:"'Cormorant Garamond',serif", fontWeight:700 }}
+                  whileHover={{ scale:1.1, boxShadow:'0 0 20px rgba(197,160,89,0.3)' }}>
+                  <span className="absolute inset-0 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-300"
+                    style={{ background:'radial-gradient(circle,rgba(197,160,89,0.15),transparent)' }} />
                   {step.num}
-                </div>
+                </motion.div>
                 <div>
                   <h4 className="text-white font-bold text-sm mb-1 md:mb-2">{step.title}</h4>
-                  <p className="text-gray-400 text-[11px] md:whitespace-pre-line">{step.desc}</p>
+                  <p className="text-gray-500 text-[11px] md:whitespace-pre-line leading-relaxed">{step.desc}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* 5. Design Gallery */}
-      <section className="py-24 bg-[#0a0a0a]">
-        <div className="max-w-7xl mx-auto px-6 text-center mb-12">
-          <p className="text-[#c5a059] text-[10px] font-bold tracking-[0.2em] uppercase mb-2">DESIGN INSPIRATION</p>
-          <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">Design Gallery</h2>
-          <p className="text-gray-400 text-sm">Explore our wide range of interior designs & inspirations</p>
-        </div>
-        <div className="flex overflow-x-auto md:flex-wrap md:justify-center gap-2 mb-12 px-6 max-w-4xl mx-auto no-scrollbar scroll-smooth">
+      {/* 5. Design Gallery — Cinematic */}
+      <motion.section data-cinematic-section className="relative py-28 overflow-hidden" style={{ background:'#060606' }}>
+        <div className="absolute bottom-0 left-0 w-[600px] h-[400px] rounded-full pointer-events-none"
+          style={{ background:'radial-gradient(circle,rgba(197,160,89,0.05) 0%,transparent 70%)', filter:'blur(80px)' }} />
+
+        <motion.div className="max-w-7xl mx-auto px-6 text-center mb-14"
+          initial="hidden" whileInView="show" viewport={{ once:true, amount:0.2 }} variants={stagger}>
+          <motion.div variants={fadeUp}>
+            <SectionLabel>Design Inspiration</SectionLabel>
+            <SectionTitle>Design <span style={{ background:'linear-gradient(135deg,#c5a059,#e8d5a3)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>Gallery</span></SectionTitle>
+            <p className="text-gray-500 text-sm">Explore our wide range of interior designs & inspirations</p>
+          </motion.div>
+        </motion.div>
+
+        <motion.div className="flex overflow-x-auto md:flex-wrap md:justify-center gap-2 mb-10 px-6 max-w-4xl mx-auto no-scrollbar"
+          initial={{ opacity:0, y:16 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ duration:0.6 }}>
           {['All', 'Living Room', 'Kitchen', 'Bathroom', 'TV Unit', 'Wardrobe', 'Balcony', 'More'].map((tab, i) => {
             const isActive = activeCategory === tab;
             return (
-              <button
-                key={i}
-                onClick={() => setActiveCategory(tab)}
-                className={`shrink-0 px-6 py-2 text-[10px] md:text-xs uppercase tracking-widest border rounded-sm flex items-center transition-all duration-300 ${isActive ? 'bg-[#c5a059] text-black border-[#c5a059] font-bold' : 'border-white/10 text-gray-400 hover:border-[#c5a059] hover:text-[#c5a059]'}`}
-              >
+              <motion.button key={i} onClick={() => setActiveCategory(tab)}
+                whileHover={{ scale:1.04 }} whileTap={{ scale:0.96 }}
+                className="shrink-0 px-5 py-2 text-[10px] md:text-xs uppercase tracking-widest font-bold flex items-center transition-all duration-300"
+                style={{
+                  border: isActive ? '1px solid #c5a059' : '1px solid rgba(255,255,255,0.07)',
+                  background: isActive ? 'linear-gradient(135deg,#c5a059,#b08d42)' : 'rgba(197,160,89,0.03)',
+                  color: isActive ? '#000' : 'rgba(197,160,89,0.6)',
+                  borderRadius: '2px',
+                }}>
                 {tab} {tab === 'More' && <ChevronDown className="w-3 h-3 ml-1" />}
-              </button>
+              </motion.button>
             );
           })}
-        </div>
-        <div className="columns-2 md:columns-3 gap-2 md:gap-4 px-6 max-w-7xl mx-auto space-y-2 md:space-y-4">
-          {inspirationsLoading || servicesLoading || projectsLoading ? (
-            [...Array(6)].map((_, i) => (
-              <div key={i} className="w-full h-32 md:h-64 bg-white/5 animate-pulse rounded-sm break-inside-avoid" />
-            ))
-          ) : (
-            filteredMedia.slice(0, 12).map((item, i) => {
-              const clickUrl = item.type === 'inspiration'
-                ? `/gallery/item/${item.id}`
-                : `/gallery/media?url=${encodeURIComponent(item.image)}&title=${encodeURIComponent(item.title)}`;
+        </motion.div>
 
-              return (
-                <Link
-                  key={i}
-                  to={clickUrl}
-                  className="block group relative overflow-hidden rounded-sm border border-white/5 hover:border-[#c5a059]/50 transition-all duration-500 break-inside-avoid"
-                >
-                  <img
-                    src={item.image}
-                    className="w-full h-auto transition-transform duration-700 group-hover:scale-110"
-                    alt={item.title || "Gallery Item"}
-                  />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <span className="text-white text-[10px] uppercase tracking-[0.2em] font-bold border border-white/20 px-4 py-2 bg-black/50 backdrop-blur-sm">View Details</span>
-                  </div>
-                </Link>
-              );
-            })
-          )}
-        </div>
-        <div className="text-center mt-12">
-          <Link to="/gallery" className="inline-flex items-center bg-[#c5a059] text-black px-8 py-3 rounded-sm text-xs uppercase tracking-widest font-bold hover:bg-[#b08d4a] transition-colors">
-            View More Designs <ArrowRight className="w-3 h-3 ml-2" />
+        <AnimatePresence mode="wait">
+          <motion.div key={activeCategory}
+            className="columns-2 md:columns-3 gap-2 md:gap-3 px-6 max-w-7xl mx-auto space-y-2 md:space-y-3"
+            initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.4 }}>
+            {inspirationsLoading || servicesLoading || projectsLoading ? (
+              [...Array(6)].map((_, i) => (
+                <div key={i} className="w-full h-32 md:h-64 animate-pulse rounded-sm break-inside-avoid"
+                  style={{ background:'rgba(197,160,89,0.04)' }} />
+              ))
+            ) : (
+              filteredMedia.slice(0, 12).map((item, i) => {
+                const clickUrl = item.type === 'inspiration'
+                  ? `/gallery/item/${item.id}`
+                  : `/gallery/media?url=${encodeURIComponent(item.image)}&title=${encodeURIComponent(item.title)}`;
+                return (
+                  <motion.div key={i} className="break-inside-avoid"
+                    initial={{ opacity:0, scale:0.97 }} animate={{ opacity:1, scale:1 }}
+                    transition={{ delay: i * 0.05, duration:0.5 }}>
+                    <Link to={clickUrl} className="block group relative overflow-hidden rounded-sm"
+                      style={{ border:'1px solid rgba(197,160,89,0.08)' }}>
+                      <img src={item.image} className="w-full h-auto transition-transform duration-700 group-hover:scale-110"
+                        alt={item.title || "Gallery Item"} />
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex items-center justify-center"
+                        style={{ background:'rgba(0,0,0,0.5)' }}>
+                        <span className="text-white text-[9px] uppercase tracking-[0.25em] font-bold px-4 py-2"
+                          style={{ border:'1px solid rgba(197,160,89,0.5)', background:'rgba(0,0,0,0.5)', backdropFilter:'blur(8px)' }}>
+                          View Details
+                        </span>
+                      </div>
+                      <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                        style={{ boxShadow:'inset 0 0 0 1px rgba(197,160,89,0.35)' }} />
+                    </Link>
+                  </motion.div>
+                );
+              })
+            )}
+          </motion.div>
+        </AnimatePresence>
+
+        <motion.div className="text-center mt-12"
+          initial={{ opacity:0, y:16 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay:0.3, duration:0.6 }}>
+          <Link to="/gallery" className="group inline-flex items-center gap-3 px-8 py-4 text-[11px] uppercase tracking-[0.25em] font-bold transition-all duration-400"
+            style={{ background:'linear-gradient(135deg,#c5a059,#b08d42)', color:'#000', borderRadius:'2px', boxShadow:'0 0 30px rgba(197,160,89,0.15)' }}>
+            View More Designs <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
           </Link>
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
-      {/* 6. Reflections of Excellence (Testimonials) */}
-      <section className="py-24 bg-[#111] border-y border-white/5">
-        <div className="max-w-7xl mx-auto px-6 text-center mb-16">
-          <p className="text-[#c5a059] text-[10px] font-bold tracking-[0.2em] uppercase mb-2">CLIENTS LOVE US</p>
-          <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">Reflections of Excellence</h2>
-          <p className="text-gray-400 text-sm">Words from our happy clients.</p>
-        </div>
-        <div className="max-w-7xl mx-auto px-6 relative">
+      {/* 6. Testimonials — Cinematic */}
+      <motion.section data-cinematic-section className="relative py-28 overflow-hidden" style={{ background:'linear-gradient(180deg,#0a0a0a,#080808)' }}>
+        <div className="absolute inset-0 pointer-events-none"
+          style={{ background:'radial-gradient(ellipse at 50% 0%,rgba(197,160,89,0.05) 0%,transparent 60%)' }} />
+        {/* Decorative quote mark */}
+        <div className="absolute top-16 left-8 text-[12rem] leading-none font-serif pointer-events-none select-none hidden md:block"
+          style={{ color:'rgba(197,160,89,0.04)', fontFamily:"'Cormorant Garamond',serif" }}>"</div>
+
+        <motion.div className="max-w-7xl mx-auto px-6 text-center mb-16"
+          initial="hidden" whileInView="show" viewport={{ once:true, amount:0.2 }} variants={stagger}>
+          <motion.div variants={fadeUp}>
+            <SectionLabel>Clients Love Us</SectionLabel>
+            <SectionTitle>Reflections of <span style={{ background:'linear-gradient(135deg,#c5a059,#e8d5a3)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>Excellence</span></SectionTitle>
+            <p className="text-gray-500 text-sm">Words from our happy clients.</p>
+          </motion.div>
+        </motion.div>
+
+        <motion.div className="max-w-7xl mx-auto px-6 relative"
+          initial={{ opacity:0, y:30 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ duration:0.8 }}>
           <TestimonialCarousel />
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
-      {/* 8. CTA Section */}
-      <section className="py-24 bg-[#111] relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent" />
-        <div className="max-w-7xl mx-auto px-6 relative z-10 flex flex-col md:flex-row items-center justify-between text-center md:text-left">
-          <div className="mb-8 md:mb-0">
-            <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
-              Ready to Transform Your Space?
-            </h2>
-            <p className="text-gray-400 text-lg">
-              Let's create something beautiful together.
-            </p>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link to="/contact" className="bg-[#c5a059] text-black px-8 py-4 rounded-sm text-sm uppercase tracking-widest font-bold hover:bg-[#b08d4a] transition-colors text-center">
-              Book Consultation
+      {/* 7. CTA — Cinematic Finale */}
+      <motion.section data-cinematic-section className="relative py-32 overflow-hidden" style={{ background:'#040404' }}>
+        {/* Full-bleed luxury background glow */}
+        <div className="absolute inset-0 pointer-events-none"
+          style={{ background:'radial-gradient(ellipse at 50% 100%,rgba(197,160,89,0.12) 0%,transparent 65%)' }} />
+        <div className="absolute inset-0 pointer-events-none"
+          style={{ background:'radial-gradient(ellipse at 20% 50%,rgba(197,160,89,0.05) 0%,transparent 55%)' }} />
+        {/* Top gold line */}
+        <div className="absolute top-0 left-0 right-0 h-[1px]"
+          style={{ background:'linear-gradient(90deg,transparent,rgba(197,160,89,0.3),transparent)' }} />
+
+        <motion.div className="relative z-10 max-w-5xl mx-auto px-6 text-center"
+          initial="hidden" whileInView="show" viewport={{ once:true, amount:0.3 }} variants={stagger}>
+          <motion.div variants={fadeUp}>
+            <SectionLabel>Start Your Journey</SectionLabel>
+          </motion.div>
+          <motion.h2 variants={fadeUp}
+            className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight text-glow-white"
+            style={{ fontFamily:"'Cormorant Garamond','Playfair Display',serif", letterSpacing:'-0.02em' }}>
+            <CinematicText text="Ready to Transform" delay={0.1} />
+            <br />
+            <span style={{ color: '#c5a059', display: 'block' }}>
+              <CinematicText text="Your Space?" delay={0.4} />
+            </span>
+          </motion.h2>
+          <motion.p variants={fadeUp} className="text-gray-500 text-lg mb-12 max-w-xl mx-auto leading-relaxed">
+            Let's create something beautiful together —<br className="hidden md:block" /> architecture that tells your story.
+          </motion.p>
+          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-4 justify-center">
+            {/* Primary CTA — gold with light streak */}
+            <Link to="/contact"
+              className="group relative inline-flex items-center justify-center gap-3 px-10 py-4 text-[11px] uppercase tracking-[0.3em] font-bold overflow-hidden transition-all duration-300"
+              style={{ background:'linear-gradient(135deg,#c5a059,#b08d42)', color:'#000', borderRadius:'2px', boxShadow:'0 0 40px rgba(197,160,89,0.25)' }}>
+              {/* Hover brighten */}
+              <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400"
+                style={{ background:'linear-gradient(135deg,#e8d5a3,#c5a059)' }} />
+              {/* Light streak sweep */}
+              <span className="light-streak" style={{ animationDelay: '0s' }} />
+              <span className="relative z-10 flex items-center gap-3">
+                Book Consultation <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              </span>
             </Link>
-            <a
-              href={`https://wa.me/${phone?.replace(/[^0-9]/g, '')}?text=${whatsappMessage}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="border border-white/20 text-white px-8 py-4 rounded-sm text-sm uppercase tracking-widest font-bold hover:border-[#c5a059] hover:text-[#c5a059] transition-colors text-center flex items-center justify-center"
-            >
-              WhatsApp Us
+            {/* Secondary CTA — shimmer */}
+            <a href={`https://wa.me/${phone?.replace(/[^0-9]/g, '')}?text=${whatsappMessage}`}
+              target="_blank" rel="noopener noreferrer"
+              className="shimmer-hover group inline-flex items-center justify-center gap-3 px-10 py-4 text-[11px] uppercase tracking-[0.3em] font-bold transition-all duration-300"
+              style={{ border:'1px solid rgba(197,160,89,0.35)', color:'#c5a059', borderRadius:'2px', backdropFilter:'blur(12px)', background:'rgba(197,160,89,0.04)' }}>
+              <span className="group-hover:text-white transition-colors duration-300">WhatsApp Us</span>
             </a>
-          </div>
-        </div>
-      </section>
+          </motion.div>
+        </motion.div>
+
+        {/* Bottom gold line */}
+        <div className="absolute bottom-0 left-0 right-0 h-[1px]"
+          style={{ background:'linear-gradient(90deg,transparent,rgba(197,160,89,0.15),transparent)' }} />
+      </motion.section>
 
     </div>
   );
 };
 
 export default Home;
-
