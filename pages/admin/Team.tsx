@@ -26,6 +26,7 @@ const Modal = ({ isOpen, onClose, title, children }: { isOpen: boolean; onClose:
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 className="bg-white dark:bg-luxury-obsidian rounded-xl shadow-2xl w-full max-w-lg border border-luxury-gold/20 overflow-hidden"
+                data-lenis-prevent
             >
                 <div className="flex justify-between items-center p-6 border-b border-gray-100 dark:border-white/10">
                     <h3 className="text-xl font-serif font-bold text-luxury-charcoal dark:text-white">{title}</h3>

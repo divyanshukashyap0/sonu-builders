@@ -84,11 +84,11 @@ const CallLogs: React.FC = () => {
     return (
         <div className="space-y-6">
             {/* Header Area */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-luxury-obsidian p-6 rounded-xl border border-luxury-gold/10 shadow-sm">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-luxury-obsidian p-6 rounded-xl border border-stone-200 dark:border-luxury-gold/10 shadow-sm">
                 <div>
-                    <h1 className="text-2xl font-serif font-bold text-luxury-charcoal dark:text-white flex items-center gap-3">
+                    <h1 className="text-2xl font-serif font-bold text-stone-900 dark:text-white flex items-center gap-3">
                         <Phone className="text-luxury-gold" />
-                        Call Tracking logs
+                        Call Tracking Logs
                     </h1>
                     <p className="text-sm text-gray-500 mt-1">Monitor real-time call button clicks and user origins.</p>
                 </div>
@@ -100,37 +100,37 @@ const CallLogs: React.FC = () => {
                         placeholder="Search IP or location..." 
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10 pr-4 py-2 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg outline-none focus:border-luxury-gold/50 transition-colors w-full md:w-64 text-sm"
+                        className="pl-10 pr-4 py-2 bg-white dark:bg-white/5 border border-stone-200 dark:border-white/10 rounded-lg text-stone-900 dark:text-white placeholder-stone-400 dark:placeholder-stone-500 outline-none focus:border-luxury-gold/50 transition-colors w-full md:w-64 text-sm shadow-sm"
                     />
                 </div>
             </div>
 
             {/* Metrics */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div className="bg-white dark:bg-luxury-obsidian p-6 rounded-xl border border-luxury-gold/10 shadow-sm">
+                <div className="bg-white dark:bg-luxury-obsidian p-6 rounded-xl border border-stone-200 dark:border-luxury-gold/10 shadow-sm">
                     <p className="text-xs font-bold text-luxury-gold uppercase tracking-widest mb-2">Total Clicks</p>
-                    <p className="text-3xl font-bold dark:text-white">{logs.length}</p>
+                    <p className="text-3xl font-bold text-stone-900 dark:text-white">{logs.length}</p>
                 </div>
-                <div className="bg-white dark:bg-luxury-obsidian p-6 rounded-xl border border-luxury-gold/10 shadow-sm">
+                <div className="bg-white dark:bg-luxury-obsidian p-6 rounded-xl border border-stone-200 dark:border-luxury-gold/10 shadow-sm">
                     <p className="text-xs font-bold text-luxury-gold uppercase tracking-widest mb-2">Today</p>
-                    <p className="text-3xl font-bold dark:text-white">
+                    <p className="text-3xl font-bold text-stone-900 dark:text-white">
                         {logs.filter(l => {
                             const date = l.timestamp?.toDate ? l.timestamp.toDate() : new Date(l.timestamp);
                             return date.toDateString() === new Date().toDateString();
                         }).length}
                     </p>
                 </div>
-                <div className="bg-white dark:bg-luxury-obsidian p-6 rounded-xl border border-luxury-gold/10 shadow-sm">
+                <div className="bg-white dark:bg-luxury-obsidian p-6 rounded-xl border border-stone-200 dark:border-luxury-gold/10 shadow-sm">
                     <p className="text-xs font-bold text-luxury-gold uppercase tracking-widest mb-2">Success Rate</p>
-                    <p className="text-3xl font-bold dark:text-white">100%</p>
+                    <p className="text-3xl font-bold text-stone-900 dark:text-white">100%</p>
                 </div>
             </div>
 
             {/* Logs Table */}
-            <div className="bg-white dark:bg-luxury-obsidian rounded-xl border border-luxury-gold/10 shadow-lg overflow-hidden">
+            <div className="bg-white dark:bg-luxury-obsidian rounded-xl border border-stone-200 dark:border-luxury-gold/10 shadow-glass overflow-hidden">
                 <div className="responsive-table-container">
                     <table className="w-full text-left min-w-[700px] md:min-w-full">
-                        <thead className="bg-gray-50 dark:bg-white/5 border-b border-luxury-gold/10">
+                        <thead className="bg-stone-50 dark:bg-white/5 border-b border-stone-200 dark:border-luxury-gold/10">
                             <tr>
                                 <th className="px-6 py-4 text-xs font-bold text-luxury-gold uppercase tracking-widest whitespace-nowrap">User Details</th>
                                 <th className="px-6 py-4 text-xs font-bold text-luxury-gold uppercase tracking-widest whitespace-nowrap">Location & Context</th>
@@ -138,7 +138,7 @@ const CallLogs: React.FC = () => {
                                 <th className="px-6 py-4 text-xs font-bold text-luxury-gold uppercase tracking-widest whitespace-nowrap">Date & Time</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-100 dark:divide-white/5">
+                        <tbody className="divide-y divide-stone-100 dark:divide-white/5">
                             <AnimatePresence mode="popLayout">
                                 {loading ? (
                                     <tr>
@@ -160,15 +160,15 @@ const CallLogs: React.FC = () => {
                                             initial={{ opacity: 0 }}
                                             animate={{ opacity: 1 }}
                                             exit={{ opacity: 0 }}
-                                            className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"
+                                            className="hover:bg-stone-50 dark:hover:bg-white/5 transition-colors"
                                         >
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center gap-3">
                                                     <div className="w-8 h-8 rounded bg-luxury-gold/10 flex items-center justify-center">
-                                                        <Monitor size={14} className="text-luxury-gold" />
+                                                        <Phone size={14} className="text-luxury-gold" />
                                                     </div>
                                                     <div>
-                                                        <p className="text-sm font-bold dark:text-white">{log.ip}</p>
+                                                        <p className="text-sm font-bold text-stone-900 dark:text-white">{log.ip}</p>
                                                         <p className="text-[10px] text-gray-400 font-mono truncate max-w-[150px]" title={log.userAgent}>
                                                             {log.userAgent}
                                                         </p>
@@ -177,7 +177,7 @@ const CallLogs: React.FC = () => {
                                             </td>
                                             <td className="px-6 py-4">
                                                 <div className="flex flex-col gap-1">
-                                                    <div className="flex items-center gap-2 text-sm dark:text-gray-300">
+                                                    <div className="flex items-center gap-2 text-sm text-stone-700 dark:text-gray-300">
                                                         <MapPin size={14} className="text-luxury-gold/60" />
                                                         <span className={log.location?.includes('Unavailable') ? 'text-red-400 font-medium italic' : ''}>
                                                             {log.location || 'Unknown'}
@@ -221,7 +221,7 @@ const CallLogs: React.FC = () => {
 
                 {/* Pagination */}
                 {totalPages > 1 && (
-                    <div className="px-6 py-4 border-t border-luxury-gold/10 flex items-center justify-between">
+                    <div className="px-6 py-4 border-t border-stone-200 dark:border-luxury-gold/10 flex items-center justify-between">
                         <p className="text-xs text-gray-500 uppercase tracking-widest font-bold">
                             Page {page} of {totalPages}
                         </p>
@@ -229,14 +229,14 @@ const CallLogs: React.FC = () => {
                             <button 
                                 onClick={() => setPage(p => Math.max(1, p - 1))}
                                 disabled={page === 1}
-                                className="p-2 border border-luxury-gold/20 rounded hover:bg-luxury-gold/10 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                                className="p-2 border border-stone-300 dark:border-luxury-gold/20 rounded hover:bg-stone-50 dark:hover:bg-luxury-gold/10 disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
                             >
                                 <ChevronLeft size={16} />
                             </button>
                             <button 
                                 onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                                 disabled={page === totalPages}
-                                className="p-2 border border-luxury-gold/20 rounded hover:bg-luxury-gold/10 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                                className="p-2 border border-stone-300 dark:border-luxury-gold/20 rounded hover:bg-stone-50 dark:hover:bg-luxury-gold/10 disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
                             >
                                 <ChevronRight size={16} />
                             </button>

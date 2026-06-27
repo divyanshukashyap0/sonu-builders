@@ -82,11 +82,11 @@ const Leads: React.FC = () => {
             {/* Page Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h2 className="text-2xl font-serif font-bold text-luxury-charcoal dark:text-white">Lead Management</h2>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm">Track and manage potential clients from inquiry to conversion.</p>
+                    <h2 className="text-2xl font-serif font-bold text-stone-900 dark:text-white">Lead Management</h2>
+                    <p className="text-stone-600 dark:text-gray-400 text-sm">Track and manage potential clients from inquiry to conversion.</p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <button className="flex items-center gap-2 bg-luxury-gold text-white px-4 py-2.5 rounded-lg text-sm font-bold shadow-glow-gold hover:bg-white hover:text-luxury-charcoal transition-all">
+                    <button className="flex items-center gap-2 bg-luxury-gold text-stone-950 px-4 py-2.5 rounded-lg text-sm font-bold shadow-glow-gold hover:bg-stone-900 hover:text-white dark:hover:bg-white dark:hover:text-stone-950 transition-all cursor-pointer">
                         <Plus size={18} />
                         <span>Add Lead</span>
                     </button>
@@ -94,18 +94,18 @@ const Leads: React.FC = () => {
             </div>
 
             {/* Filters & Search */}
-            <div className="bg-white dark:bg-luxury-obsidian p-4 rounded-xl border border-luxury-gold/10 flex flex-col md:flex-row gap-4 items-center justify-between shadow-sm">
+            <div className="bg-white dark:bg-stone-950/40 p-4 rounded-xl border border-stone-200 dark:border-white/5 flex flex-col md:flex-row gap-4 items-center justify-between shadow-sm transition-colors">
                 <div className="relative w-full md:w-96">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400 w-4 h-4" />
                     <input
                         type="text"
                         placeholder="Search leads by name, email, or project..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-luxury-gold/50 transition-colors"
+                        className="w-full bg-stone-50 dark:bg-stone-900/40 border border-stone-200 dark:border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-sm outline-none text-stone-900 dark:text-white focus:border-luxury-gold/50 transition-colors"
                     />
                 </div>
-                <button className="flex items-center gap-2 px-4 py-2.5 border border-gray-200 dark:border-white/10 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 text-sm font-medium transition-colors w-full md:w-auto justify-center">
+                <button className="flex items-center gap-2 px-4 py-2.5 border border-stone-200 dark:border-white/10 rounded-lg text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-white/5 text-sm font-medium transition-colors w-full md:w-auto justify-center cursor-pointer">
                     <Filter size={16} />
                     <span>Filters</span>
                 </button>
@@ -113,12 +113,12 @@ const Leads: React.FC = () => {
 
             {/* List View / Card View Responsive Switch */}
             {viewMode === 'list' && (
-                <div className="space-y-4">
+                <div className="space-y-4 animate-fade-in">
                     {/* Desktop Table View */}
-                    <div className="hidden md:block bg-white dark:bg-luxury-obsidian rounded-xl border border-luxury-gold/10 overflow-hidden shadow-sm">
+                    <div className="hidden md:block bg-white dark:bg-stone-950/40 rounded-xl border border-stone-200 dark:border-white/5 overflow-hidden shadow-sm transition-colors">
                         <div className="overflow-x-auto">
                             <table className="w-full">
-                                <thead className="bg-gray-50 dark:bg-white/5 text-left text-xs uppercase text-gray-500 dark:text-gray-400 font-medium tracking-wider">
+                                <thead className="bg-stone-50 dark:bg-stone-900/60 border-b border-stone-200 dark:border-white/5 text-left text-xs uppercase text-stone-600 dark:text-gray-400 font-medium tracking-wider">
                                     <tr>
                                         <th className="px-6 py-4">Name / Contact</th>
                                         <th className="px-6 py-4">Project Details</th>
@@ -129,7 +129,7 @@ const Leads: React.FC = () => {
                                         <th className="px-6 py-4 text-right">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-gray-100 dark:divide-white/5">
+                                <tbody className="divide-y divide-stone-150 dark:divide-white/5 text-stone-850 dark:text-stone-300">
                                     <AnimatePresence>
                                         {filteredLeads.map((lead) => (
                                             <motion.tr
@@ -138,7 +138,7 @@ const Leads: React.FC = () => {
                                                 animate={{ opacity: 1 }}
                                                 exit={{ opacity: 0 }}
                                                 onClick={() => window.location.href = `/admin/leads/${lead.id}`}
-                                                className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors group cursor-pointer"
+                                                className="hover:bg-stone-50 dark:hover:bg-white/5 border-b border-stone-100 dark:border-white/5 transition-colors group cursor-pointer"
                                             >
                                                 <td className="px-6 py-4">
                                                     <div className="flex items-center">
@@ -146,9 +146,9 @@ const Leads: React.FC = () => {
                                                             {lead.name.charAt(0)}
                                                         </div>
                                                         <div>
-                                                            <p className="text-sm font-bold text-luxury-charcoal dark:text-white">{lead.name}</p>
+                                                            <p className="text-sm font-bold text-stone-900 dark:text-white">{lead.name}</p>
                                                             <div className="flex items-center gap-2 mt-0.5">
-                                                                <a href={`mailto:${lead.email}`} onClick={e => e.stopPropagation()} className="text-xs text-gray-500 hover:text-luxury-gold transition-colors flex items-center gap-1">
+                                                                <a href={`mailto:${lead.email}`} onClick={e => e.stopPropagation()} className="text-xs text-stone-500 dark:text-stone-400 hover:text-luxury-gold transition-colors flex items-center gap-1">
                                                                     <Mail size={10} />
                                                                     {lead.email}
                                                                 </a>
@@ -157,8 +157,8 @@ const Leads: React.FC = () => {
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <p className="text-sm font-medium text-luxury-charcoal dark:text-white">{lead.projectType}</p>
-                                                    <p className="text-xs text-gray-500 mt-1">Budget: {lead.budget || 'N/A'}</p>
+                                                    <p className="text-sm font-medium text-stone-900 dark:text-white">{lead.projectType}</p>
+                                                    <p className="text-xs text-stone-600 dark:text-stone-450 mt-1 font-mono">Budget: {lead.budget || 'N/A'}</p>
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     {lead.referredDesign && lead.referredDesign !== 'None' ? (
@@ -178,7 +178,7 @@ const Leads: React.FC = () => {
                                                             )}
                                                         </div>
                                                     ) : (
-                                                        <span className="text-xs text-gray-400 italic">Direct Inquiry</span>
+                                                        <span className="text-xs text-stone-400 italic">Direct Inquiry</span>
                                                     )}
                                                 </td>
                                                 <td className="px-6 py-4">
@@ -187,23 +187,23 @@ const Leads: React.FC = () => {
                                                     </span>
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <span className="text-sm text-gray-600 dark:text-gray-300">{lead.source}</span>
+                                                    <span className="text-sm text-stone-600 dark:text-gray-300">{lead.source}</span>
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <div className="flex items-center gap-1 text-gray-500 text-sm">
+                                                    <div className="flex items-center gap-1 text-stone-500 text-sm">
                                                         <Calendar size={12} />
                                                         {new Date(lead.createdAt).toLocaleDateString()}
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 text-right">
-                                                    <div className="flex items-center justify-end gap-2 text-luxury-gold">
+                                                    <div className="flex items-center justify-end gap-2 text-luxury-gold" onClick={e => e.stopPropagation()}>
                                                         <button
                                                             onClick={(e) => handleDelete(e, lead.id)}
-                                                            className="p-2 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-full transition-colors"
+                                                            className="p-2 hover:bg-red-500/10 text-stone-400 hover:text-red-650 dark:hover:text-red-400 rounded-full transition-colors cursor-pointer"
                                                         >
                                                             <Trash2 size={16} />
                                                         </button>
-                                                        <MoreVertical size={16} />
+                                                        <MoreVertical size={16} className="text-stone-400 dark:text-stone-500" />
                                                     </div>
                                                 </td>
                                             </motion.tr>
@@ -223,7 +223,7 @@ const Leads: React.FC = () => {
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 onClick={() => window.location.href = `/admin/leads/${lead.id}`}
-                                className="bg-white dark:bg-luxury-obsidian p-4 rounded-xl border border-luxury-gold/10 shadow-sm space-y-4 active:scale-95 transition-transform"
+                                className="bg-white dark:bg-stone-950/40 p-4 rounded-xl border border-stone-200 dark:border-white/5 shadow-sm space-y-4 active:scale-95 transition-transform"
                             >
                                 <div className="flex justify-between items-start">
                                     <div className="flex items-center gap-3">
@@ -231,32 +231,32 @@ const Leads: React.FC = () => {
                                             {lead.name.charAt(0)}
                                         </div>
                                         <div>
-                                            <p className="font-bold dark:text-white">{lead.name}</p>
-                                            <p className="text-xs text-gray-500">{lead.email}</p>
+                                            <p className="font-bold text-stone-900 dark:text-white">{lead.name}</p>
+                                            <p className="text-xs text-stone-500 dark:text-stone-400">{lead.email}</p>
                                         </div>
                                     </div>
                                     <span className={`px-2 py-0.5 rounded-full text-[10px] uppercase font-bold tracking-wider ${getStatusColor(lead.status)}`}>
                                         {lead.status}
                                     </span>
                                 </div>
-                                <div className="grid grid-cols-2 gap-4 pt-2 border-t border-gray-100 dark:border-white/5">
+                                <div className="grid grid-cols-2 gap-4 pt-2 border-t border-stone-150 dark:border-white/5">
                                     <div>
-                                        <p className="text-[10px] uppercase text-gray-400 font-bold mb-1">Project</p>
-                                        <p className="text-sm dark:text-gray-200">{lead.projectType}</p>
+                                        <p className="text-[10px] uppercase text-stone-400 font-bold mb-1">Project</p>
+                                        <p className="text-sm text-stone-850 dark:text-gray-200">{lead.projectType}</p>
                                     </div>
                                     <div>
-                                        <p className="text-[10px] uppercase text-gray-400 font-bold mb-1">Source</p>
-                                        <p className="text-sm dark:text-gray-200">{lead.source}</p>
+                                        <p className="text-[10px] uppercase text-stone-400 font-bold mb-1">Source</p>
+                                        <p className="text-sm text-stone-850 dark:text-gray-200">{lead.source}</p>
                                     </div>
                                 </div>
                                 <div className="flex justify-between items-center pt-2">
-                                    <span className="text-xs text-gray-400 flex items-center gap-1">
+                                    <span className="text-xs text-stone-450 flex items-center gap-1">
                                         <Calendar size={12} />
                                         {new Date(lead.createdAt).toLocaleDateString()}
                                     </span>
                                     <button 
                                         onClick={(e) => handleDelete(e, lead.id)}
-                                        className="text-red-400 text-xs font-bold uppercase tracking-widest flex items-center gap-1"
+                                        className="text-red-650 dark:text-red-400 text-xs font-bold uppercase tracking-widest flex items-center gap-1 cursor-pointer hover:underline"
                                     >
                                         <Trash2 size={12} />
                                         Delete
@@ -268,13 +268,11 @@ const Leads: React.FC = () => {
 
                     {filteredLeads.length === 0 && (
                         <div className="text-center py-12">
-                            <p className="text-gray-500">No leads found matching your search.</p>
+                            <p className="text-stone-500">No leads found matching your search.</p>
                         </div>
                     )}
                 </div>
             )}
-
-
         </div>
     );
 };

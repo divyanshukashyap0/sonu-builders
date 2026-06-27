@@ -44,6 +44,16 @@ const InspirationDetail = lazy(() => import('./pages/InspirationDetail'));
 const GalleryMediaDetail = lazy(() => import('./pages/GalleryMediaDetail'));
 const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
 
+// Admin Staff Management Pages
+const AdminStaffDirectory = lazy(() => import('./pages/admin/staff/StaffDirectory'));
+const AdminAttendance = lazy(() => import('./pages/admin/staff/Attendance'));
+const AdminSalary = lazy(() => import('./pages/admin/staff/Salary'));
+const AdminAdvances = lazy(() => import('./pages/admin/staff/Advances'));
+const AdminSiteAllocation = lazy(() => import('./pages/admin/staff/SiteAllocation'));
+const AdminReports = lazy(() => import('./pages/admin/staff/Reports'));
+const AdminExpenses = lazy(() => import('./pages/admin/staff/Expenses'));
+const AdminBulkImport = lazy(() => import('./pages/admin/staff/BulkImport'));
+
 import AdminLayout from './layouts/AdminLayout';
 import ProtectedRoute from './components/ProtectedRoute';
 import CustomCursor from './components/luxury/CustomCursor';
@@ -168,7 +178,7 @@ const AppContent: React.FC = () => {
       <div className="flex flex-col min-h-screen relative">
       <DynamicBackground />
 
-      <CustomCursor />
+      {!isAdminRoute && <CustomCursor />}
       <AIAssistant />
       <GlobalScrollEffects />
       {!isAdminRoute && <CinematicOverlay />}
@@ -222,6 +232,16 @@ const AppContent: React.FC = () => {
                 <Route path="call-logs" element={<AdminCallLogs />} />
                 <Route path="media" element={<AdminMediaLibrary />} />
                 <Route path="inspirations" element={<AdminInspirations />} />
+                
+                {/* Staff Module Routes */}
+                <Route path="staff" element={<AdminStaffDirectory />} />
+                <Route path="staff/attendance" element={<AdminAttendance />} />
+                <Route path="staff/salary" element={<AdminSalary />} />
+                <Route path="staff/advances" element={<AdminAdvances />} />
+                <Route path="staff/site-allocation" element={<AdminSiteAllocation />} />
+                <Route path="staff/reports" element={<AdminReports />} />
+                <Route path="staff/expenses" element={<AdminExpenses />} />
+                <Route path="staff/import" element={<AdminBulkImport />} />
               </Route>
 
               {/* Legacy Routes - Redirect */}

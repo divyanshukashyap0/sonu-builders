@@ -204,6 +204,60 @@ service cloud.firestore {
     }
 
     // ========================================
+    // STAFF MODULE COLLECTIONS
+    // ========================================
+    match /staff/{staffId} {
+      allow read, write: if isAdmin();
+      allow read: if isAuthenticated() && (
+        resource.data.email == request.auth.token.email ||
+        (exists(/databases/$(database)/documents/staff/$(staffId)) && get(/databases/$(database)/documents/staff/$(staffId)).data.email == request.auth.token.email)
+      );
+    }
+    
+    match /attendance/{monthId}/employees/{staffId} {
+      allow read, write: if isAdmin();
+      allow read: if isAuthenticated() && (
+        exists(/databases/$(database)/documents/staff/$(staffId)) && 
+        get(/databases/$(database)/documents/staff/$(staffId)).data.email == request.auth.token.email
+      );
+    }
+    
+    match /attendance/{monthId} {
+      allow read, write: if isAdmin();
+      allow read: if isAuthenticated();
+    }
+    
+    match /salary/{monthId}/staff/{staffId} {
+      allow read, write: if isAdmin();
+      allow read: if isAuthenticated() && (
+        exists(/databases/$(database)/documents/staff/$(staffId)) && 
+        get(/databases/$(database)/documents/staff/$(staffId)).data.email == request.auth.token.email
+      );
+    }
+    
+    match /advances/{advanceId} {
+      allow read, write: if isAdmin();
+      allow read: if isAuthenticated() && (
+        resource.data.employeeId != null &&
+        exists(/databases/$(database)/documents/staff/$(resource.data.employeeId)) &&
+        get(/databases/$(database)/documents/staff/$(resource.data.employeeId)).data.email == request.auth.token.email
+      );
+    }
+    
+    match /siteAllocations/{allocationId} {
+      allow read, write: if isAdmin();
+      allow read: if isAuthenticated();
+    }
+
+    match /expenses/{expenseId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /employeeAliases/{aliasId} {
+      allow read, write: if isAdmin();
+    }
+
+    // ========================================
     // DEFAULT DENY ALL
     // ========================================
     // Deny all other access by default

@@ -74,6 +74,50 @@ const AppearanceSettings: React.FC = () => {
 
 
 
+            {/* Theme Curation Selection */}
+            <div className="bg-white dark:bg-luxury-obsidian p-10 rounded-[2.5rem] border border-luxury-gold/10 shadow-2xl space-y-8">
+                <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-luxury-gold/10 rounded-2xl flex items-center justify-center text-luxury-gold">
+                        <Palette size={24} />
+                    </div>
+                    <div>
+                        <h3 className="font-bold text-xl dark:text-white">Branding Aesthetics & Theme</h3>
+                        <p className="text-xs text-gray-500 font-medium">Select the signature color palette and typography system.</p>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                    {THEME_PREVIEWS.map((preview) => {
+                        const isSelected = localSettings.activeTheme === preview.id;
+                        return (
+                            <button
+                                key={preview.id}
+                                onClick={() => setLocalSettings({ ...localSettings, activeTheme: preview.id })}
+                                className={`flex flex-col text-left p-5 rounded-2xl border transition-all duration-300 relative group cursor-pointer ${
+                                    isSelected 
+                                        ? 'bg-luxury-gold/5 border-luxury-gold shadow-glow-gold' 
+                                        : 'bg-gray-50 dark:bg-white/5 border-white/10 hover:border-luxury-gold/50'
+                                }`}
+                            >
+                                <div className="flex items-center justify-between w-full mb-4">
+                                    <div 
+                                        className="w-6 h-6 rounded-full border border-white/20"
+                                        style={{ backgroundColor: preview.color }}
+                                    />
+                                    {isSelected && (
+                                        <div className="w-5 h-5 bg-luxury-gold rounded-full flex items-center justify-center text-white">
+                                            <span className="text-[10px] font-black">✓</span>
+                                        </div>
+                                    )}
+                                </div>
+                                <h4 className="font-serif font-bold text-sm dark:text-white mb-1">{preview.label}</h4>
+                                <p className="text-[10px] text-gray-500 leading-normal">{preview.desc}</p>
+                            </button>
+                        );
+                    })}
+                </div>
+            </div>
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 {/* Hero Overlay Image */}
                 <div className="bg-white dark:bg-luxury-obsidian p-10 rounded-[2.5rem] border border-luxury-gold/10 shadow-2xl space-y-8">

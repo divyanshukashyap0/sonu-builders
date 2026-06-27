@@ -146,6 +146,7 @@ const AdminEstimates: React.FC = () => {
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.9, opacity: 0 }}
                             className="bg-white dark:bg-luxury-obsidian w-full max-w-3xl rounded-2xl border border-luxury-gold/20 shadow-2xl overflow-hidden"
+                            data-lenis-prevent
                         >
                             <div className="p-6 border-b border-luxury-gold/10 flex justify-between items-center bg-luxury-gold/5">
                                 <h3 className="text-xl font-serif font-bold text-luxury-charcoal dark:text-white flex items-center gap-2">

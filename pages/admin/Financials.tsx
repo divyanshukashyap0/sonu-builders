@@ -48,12 +48,12 @@ const Financials: React.FC = () => {
         <div className="space-y-8">
             <div className="flex justify-between items-center">
                 <div>
-                    <h2 className="text-2xl font-serif font-bold text-luxury-charcoal dark:text-white">Financial Overview</h2>
+                    <h2 className="text-2xl font-serif font-bold text-stone-900 dark:text-white">Financial Overview</h2>
                     <p className="text-gray-500 dark:text-gray-400 text-sm">Track revenue, expenses, and profitability.</p>
                 </div>
                 <button
                     onClick={() => setIsFormOpen(true)}
-                    className="flex items-center gap-2 bg-luxury-gold text-white px-4 py-2.5 rounded-lg text-sm font-bold shadow-glow-gold hover:bg-white hover:text-luxury-charcoal transition-all"
+                    className="flex items-center gap-2 bg-luxury-gold text-stone-950 px-4 py-2.5 rounded-lg text-sm font-bold shadow-glow-gold hover:bg-stone-900 hover:text-white dark:hover:bg-white dark:hover:text-stone-950 transition-all cursor-pointer"
                 >
                     <Plus size={18} />
                     <span>Add Transaction</span>
@@ -89,13 +89,13 @@ const Financials: React.FC = () => {
             </div>
 
             {/* Recent Transactions List */}
-            <div className="bg-white dark:bg-luxury-obsidian rounded-xl border border-luxury-gold/10 overflow-hidden shadow-sm">
-                <div className="p-6 border-b border-luxury-gold/5">
-                    <h3 className="font-bold text-lg text-luxury-charcoal dark:text-white">Recent Transactions</h3>
+            <div className="bg-white dark:bg-luxury-obsidian rounded-xl border border-stone-200 dark:border-luxury-gold/10 overflow-hidden shadow-sm">
+                <div className="p-6 border-b border-stone-200 dark:border-luxury-gold/5">
+                    <h3 className="font-bold text-lg text-stone-900 dark:text-white">Recent Transactions</h3>
                 </div>
                 <div className="overflow-x-auto">
                     <table className="w-full">
-                        <thead className="bg-gray-50 dark:bg-white/5 text-left text-xs uppercase text-gray-500 dark:text-gray-400 font-medium tracking-wider">
+                        <thead className="bg-stone-50 dark:bg-white/5 text-left text-xs uppercase text-stone-500 dark:text-gray-400 font-medium tracking-wider">
                             <tr>
                                 <th className="px-6 py-4">Date</th>
                                 <th className="px-6 py-4">Description</th>
@@ -104,16 +104,16 @@ const Financials: React.FC = () => {
                                 <th className="px-6 py-4 text-right">Action</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-100 dark:divide-white/5">
+                        <tbody className="divide-y divide-stone-100 dark:divide-white/5">
                             {records.map((record) => (
-                                <tr key={record.id} className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
-                                    <td className="px-6 py-4 text-sm text-gray-500">
+                                <tr key={record.id} className="hover:bg-stone-50 dark:hover:bg-white/5 transition-colors">
+                                    <td className="px-6 py-4 text-sm text-stone-500 dark:text-stone-400">
                                         {record.date.toLocaleDateString()}
                                     </td>
-                                    <td className="px-6 py-4 font-medium text-luxury-charcoal dark:text-white">
+                                    <td className="px-6 py-4 font-medium text-stone-900 dark:text-white">
                                         {record.description}
                                     </td>
-                                    <td className="px-6 py-4 text-sm text-gray-500">
+                                    <td className="px-6 py-4 text-sm text-stone-500 dark:text-stone-400">
                                         {record.category}
                                     </td>
                                     <td className={`px-6 py-4 font-bold ${record.type === 'Income' ? 'text-green-600' : 'text-red-500'}`}>
@@ -133,7 +133,7 @@ const Financials: React.FC = () => {
                                                     }
                                                 );
                                             }}
-                                            className="text-gray-400 hover:text-red-500 transition-colors"
+                                            className="text-stone-400 hover:text-red-500 transition-colors cursor-pointer"
                                         >
                                             <Trash2 size={16} />
                                         </button>
@@ -162,23 +162,23 @@ const Financials: React.FC = () => {
                             initial={{ scale: 0.95, y: 20 }}
                             animate={{ scale: 1, y: 0 }}
                             exit={{ scale: 0.95, y: 20 }}
-                            className="bg-white dark:bg-luxury-obsidian w-full max-w-md rounded-2xl p-6 shadow-2xl border border-luxury-gold/20"
+                            className="bg-white dark:bg-luxury-obsidian w-full max-w-md rounded-2xl p-6 shadow-2xl border border-stone-200 dark:border-luxury-gold/20 text-stone-900 dark:text-white"
                             onClick={e => e.stopPropagation()}
                         >
-                            <h3 className="text-xl font-bold text-luxury-charcoal dark:text-white mb-4">Add Transaction</h3>
+                            <h3 className="text-xl font-bold text-stone-900 dark:text-white mb-4">Add Transaction</h3>
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div className="grid grid-cols-2 gap-4">
                                     <button
                                         type="button"
                                         onClick={() => setNewRecord({ ...newRecord, type: 'Income' })}
-                                        className={`p-2 rounded-lg border text-sm font-bold transition-all ${newRecord.type === 'Income' ? 'bg-green-100 border-green-500 text-green-700' : 'border-gray-200 text-gray-500'}`}
+                                        className={`p-2 rounded-lg border text-sm font-bold transition-all cursor-pointer ${newRecord.type === 'Income' ? 'bg-green-100 border-green-500 text-green-750 dark:bg-green-500/10 dark:text-green-400' : 'border-stone-200 dark:border-white/10 text-stone-500'}`}
                                     >
                                         Income
                                     </button>
                                     <button
                                         type="button"
                                         onClick={() => setNewRecord({ ...newRecord, type: 'Expense' })}
-                                        className={`p-2 rounded-lg border text-sm font-bold transition-all ${newRecord.type === 'Expense' ? 'bg-red-100 border-red-500 text-red-700' : 'border-gray-200 text-gray-500'}`}
+                                        className={`p-2 rounded-lg border text-sm font-bold transition-all cursor-pointer ${newRecord.type === 'Expense' ? 'bg-red-100 border-red-500 text-red-750 dark:bg-red-500/10 dark:text-red-400' : 'border-stone-200 dark:border-white/10 text-stone-500'}`}
                                     >
                                         Expense
                                     </button>
@@ -187,28 +187,28 @@ const Financials: React.FC = () => {
                                     type="number"
                                     placeholder="Amount (₹)"
                                     required
-                                    className="w-full px-4 py-2 border rounded-lg dark:bg-white/5 dark:border-white/10"
+                                    className="w-full px-4 py-2 bg-stone-50 dark:bg-white/5 border border-stone-200 dark:border-white/10 text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none focus:border-luxury-gold rounded-lg"
                                     onChange={e => setNewRecord({ ...newRecord, amount: Number(e.target.value) })}
                                 />
                                 <input
                                     type="text"
                                     placeholder="Description"
                                     required
-                                    className="w-full px-4 py-2 border rounded-lg dark:bg-white/5 dark:border-white/10"
+                                    className="w-full px-4 py-2 bg-stone-50 dark:bg-white/5 border border-stone-200 dark:border-white/10 text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none focus:border-luxury-gold rounded-lg"
                                     onChange={e => setNewRecord({ ...newRecord, description: e.target.value })}
                                 />
                                 <select
-                                    className="w-full px-4 py-2 border rounded-lg dark:bg-white/5 dark:border-white/10"
+                                    className="w-full px-4 py-2 bg-white dark:bg-stone-950/40 border border-stone-200 dark:border-white/10 rounded-lg text-stone-900 dark:text-white focus:outline-none focus:border-luxury-gold cursor-pointer"
                                     onChange={e => setNewRecord({ ...newRecord, category: e.target.value })}
                                 >
-                                    <option>Project Payment</option>
-                                    <option>Material Cost</option>
-                                    <option>Labor Cost</option>
-                                    <option>Office Expense</option>
-                                    <option>Marketing</option>
-                                    <option>Other</option>
+                                    <option className="bg-white dark:bg-stone-900 text-stone-900 dark:text-white">Project Payment</option>
+                                    <option className="bg-white dark:bg-stone-900 text-stone-900 dark:text-white">Material Cost</option>
+                                    <option className="bg-white dark:bg-stone-900 text-stone-900 dark:text-white">Labor Cost</option>
+                                    <option className="bg-white dark:bg-stone-900 text-stone-900 dark:text-white">Office Expense</option>
+                                    <option className="bg-white dark:bg-stone-900 text-stone-900 dark:text-white">Marketing</option>
+                                    <option className="bg-white dark:bg-stone-900 text-stone-900 dark:text-white">Other</option>
                                 </select>
-                                <button type="submit" className="w-full bg-luxury-gold text-white py-3 rounded-lg font-bold hover:bg-luxury-gold/90 transition-colors">
+                                <button type="submit" className="w-full bg-luxury-gold text-stone-950 py-3 rounded-lg font-bold hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer shadow-glow-gold">
                                     Save Transaction
                                 </button>
                             </form>

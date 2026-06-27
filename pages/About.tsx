@@ -278,8 +278,7 @@ const About: React.FC = () => {
                 viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                 className="group relative p-10 overflow-hidden shimmer-hover"
                 style={{ border: '1px solid rgba(197,160,89,0.08)', background: 'rgba(197,160,89,0.02)', borderRadius: '2px' }}
-                whileHover={{ borderColor: 'rgba(197,160,89,0.35)', y: -4 }}
-                transition={{ duration: 0.35 }}>
+                whileHover={{ borderColor: 'rgba(197,160,89,0.35)', y: -4 }}>
                 {/* Icon */}
                 <div className="w-12 h-12 flex items-center justify-center mb-8 rounded-sm transition-all duration-400"
                   style={{ background: 'rgba(197,160,89,0.08)', border: '1px solid rgba(197,160,89,0.2)' }}>

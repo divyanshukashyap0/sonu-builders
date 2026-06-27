@@ -38,7 +38,7 @@ const ChatInquiries: React.FC = () => {
         <div className="space-y-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h2 className="text-2xl font-serif font-bold text-luxury-charcoal dark:text-white">Chat Inquiries</h2>
+                    <h2 className="text-2xl font-serif font-bold text-stone-900 dark:text-white">Chat Inquiries</h2>
                     <p className="text-gray-500 dark:text-gray-400 text-sm">Direct communications from the Contact Assistant.</p>
                 </div>
                 
@@ -49,7 +49,7 @@ const ChatInquiries: React.FC = () => {
                         placeholder="Search name, phone or inquiry..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10 pr-4 py-2 border rounded-lg dark:bg-luxury-obsidian dark:border-white/10 dark:text-white outline-none focus:border-luxury-gold w-full md:w-80"
+                        className="pl-10 pr-4 py-2 bg-white dark:bg-luxury-obsidian border border-stone-200 dark:border-white/10 text-stone-900 dark:text-white placeholder-stone-400 dark:placeholder-stone-500 rounded-lg outline-none focus:border-luxury-gold/50 w-full md:w-80 shadow-sm"
                     />
                 </div>
             </div>
@@ -62,7 +62,7 @@ const ChatInquiries: React.FC = () => {
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, x: -20 }}
-                            className="bg-white dark:bg-luxury-obsidian p-6 rounded-xl border border-luxury-gold/10 shadow-sm hover:border-luxury-gold/30 transition-all group overflow-hidden relative"
+                            className="bg-white dark:bg-luxury-obsidian p-6 rounded-xl border border-stone-200 dark:border-luxury-gold/10 shadow-sm hover:border-luxury-gold/30 transition-all group overflow-hidden relative"
                         >
                             {/* Status Indicator */}
                             <div className={`absolute top-0 right-0 h-1 w-full ${
@@ -76,7 +76,7 @@ const ChatInquiries: React.FC = () => {
                                             <User className="text-luxury-gold" size={20} />
                                         </div>
                                         <div>
-                                            <h3 className="font-bold text-lg text-luxury-charcoal dark:text-white">{inq.name}</h3>
+                                            <h3 className="font-bold text-lg text-stone-900 dark:text-white">{inq.name}</h3>
                                             <div className="flex items-center gap-2 text-sm text-gray-500">
                                                 <Clock size={14} />
                                                 {formatDate(inq.createdAt)}
@@ -87,7 +87,7 @@ const ChatInquiries: React.FC = () => {
                                     <div className="flex flex-wrap gap-4">
                                         <div className="flex items-center gap-2 bg-luxury-gold/5 px-3 py-1.5 rounded-lg border border-luxury-gold/10">
                                             <Phone className="text-luxury-gold" size={16} />
-                                            <span className="text-sm font-bold text-luxury-charcoal dark:text-white">{inq.phone}</span>
+                                            <span className="text-sm font-bold text-stone-900 dark:text-white">{inq.phone}</span>
                                         </div>
                                         <div className="flex items-center gap-2 bg-luxury-charcoal/5 dark:bg-white/5 px-3 py-1.5 rounded-lg border border-luxury-gold/10">
                                             <MessageSquare className="text-luxury-gold" size={16} />
@@ -95,7 +95,7 @@ const ChatInquiries: React.FC = () => {
                                         </div>
                                     </div>
 
-                                    <div className="bg-gray-50 dark:bg-white/5 p-4 rounded-lg border border-luxury-gold/5 italic text-luxury-charcoal/80 dark:text-white/80 leading-relaxed">
+                                    <div className="bg-stone-50 dark:bg-white/5 p-4 rounded-lg border border-stone-200 dark:border-luxury-gold/5 italic text-stone-700 dark:text-stone-300 leading-relaxed">
                                         "{inq.problem}"
                                     </div>
                                 </div>
@@ -104,16 +104,16 @@ const ChatInquiries: React.FC = () => {
                                     <select
                                         value={inq.status}
                                         onChange={(e) => updateInquiryStatus(inq.id, e.target.value as any)}
-                                        className="text-xs font-bold uppercase tracking-widest bg-transparent border border-luxury-gold/20 rounded-lg px-3 py-2 outline-none focus:border-luxury-gold dark:text-white"
+                                        className="text-xs font-bold uppercase tracking-widest bg-white dark:bg-stone-950/40 border border-stone-200 dark:border-luxury-gold/20 rounded-lg px-3 py-2 outline-none focus:border-luxury-gold text-stone-900 dark:text-white cursor-pointer"
                                     >
-                                        <option value="New" className="bg-white dark:bg-luxury-obsidian">New</option>
-                                        <option value="Responded" className="bg-white dark:bg-luxury-obsidian">Responded</option>
-                                        <option value="Archived" className="bg-white dark:bg-luxury-obsidian">Archived</option>
+                                        <option value="New" className="bg-white dark:bg-luxury-obsidian text-stone-900 dark:text-white">New</option>
+                                        <option value="Responded" className="bg-white dark:bg-luxury-obsidian text-stone-900 dark:text-white">Responded</option>
+                                        <option value="Archived" className="bg-white dark:bg-luxury-obsidian text-stone-900 dark:text-white">Archived</option>
                                     </select>
                                     
                                     <button
                                         onClick={() => handleDelete(inq.id)}
-                                        className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors border border-red-500/20"
+                                        className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors border border-red-500/20 cursor-pointer"
                                         title="Delete Inquiry"
                                     >
                                         <Trash2 size={20} />
@@ -125,9 +125,9 @@ const ChatInquiries: React.FC = () => {
                 </AnimatePresence>
 
                 {filteredInquiries.length === 0 && (
-                    <div className="text-center py-20 bg-white dark:bg-luxury-obsidian rounded-xl border border-luxury-gold/10">
+                    <div className="text-center py-20 bg-white dark:bg-luxury-obsidian rounded-xl border border-stone-200 dark:border-luxury-gold/10 shadow-sm">
                         <MessageSquare className="mx-auto text-luxury-gold/20 mb-4" size={48} />
-                        <h3 className="text-lg font-serif font-bold text-luxury-charcoal dark:text-white">No inquiries found</h3>
+                        <h3 className="text-lg font-serif font-bold text-stone-900 dark:text-white">No inquiries found</h3>
                         <p className="text-gray-500">When people contact you via chat, they will appear here.</p>
                     </div>
                 )}

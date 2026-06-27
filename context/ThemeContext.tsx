@@ -23,6 +23,7 @@ interface ThemeDefinition {
     border: string;
     shadow: string;
     buttonText: string;
+    bgGradient?: string;
   };
   fonts: {
     heading: string;
@@ -34,16 +35,17 @@ export const THEMES: Record<ThemeType, ThemeDefinition> = {
   'luxury-white': {
     name: 'Luxury White',
     colors: {
-      background: '#F7F4EF',
-      secondary: '#E8DDD0',
-      accent: '#B87333',
-      highlight: '#D4A373',
-      text: '#2E2A26',
-      muted: 'rgba(46, 42, 38, 0.6)',
+      background: '#FAF8F3',
+      secondary: '#FCFAF7',
+      accent: '#B8860B',
+      highlight: '#D4AF37',
+      text: '#111827',
+      muted: '#6B7280',
       card: '#FFFFFF',
-      border: 'rgba(184, 115, 51, 0.2)',
-      shadow: 'rgba(184, 115, 51, 0.1)',
-      buttonText: '#FFFFFF'
+      border: 'rgba(0,0,0,0.08)',
+      shadow: 'rgba(0,0,0,0.06)',
+      buttonText: '#FFFFFF',
+      bgGradient: 'linear-gradient(180deg, #FAF8F3 0%, #F5F1E8 45%, #F2EEE7 100%)'
     },
     fonts: {
       heading: "'Playfair Display', serif",
@@ -144,11 +146,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       if (docSnap.exists()) {
         const data = docSnap.data();
         const activeTheme = data.activeTheme as ThemeType;
-        // Only allow dark themes or force dark-luxury if theme changing is being disabled
-        if (activeTheme === 'dark-luxury' || activeTheme === 'contemporary') {
+        if (activeTheme && THEMES[activeTheme]) {
           setTheme(activeTheme);
         } else {
-          // Force dark-luxury if the saved theme is a light one
           setTheme('dark-luxury');
         }
       }
@@ -163,8 +163,17 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     // Apply colors as CSS variables
     Object.entries(def.colors).forEach(([key, value]) => {
-      root.style.setProperty(`--theme-${key}`, value);
+      if (key !== 'bgGradient') {
+        root.style.setProperty(`--theme-${key}`, value);
+      }
     });
+
+    // Apply custom background gradient if present
+    if (def.colors.bgGradient) {
+      root.style.setProperty('--theme-bg-gradient', def.colors.bgGradient);
+    } else {
+      root.style.removeProperty('--theme-bg-gradient');
+    }
 
     // Apply fonts
     root.style.setProperty('--theme-font-heading', def.fonts.heading);

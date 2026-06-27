@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
 
 export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -14,7 +14,6 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             if (currentUser) {
                 setUser(currentUser);
-                // Check if user is an admin in Firestore
                 if (currentUser.email) {
                     try {
                         console.log('🔍 Checking admin status for:', currentUser.email);
@@ -22,33 +21,38 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
                         const adminDoc = await getDoc(adminDocRef);
 
                         console.log('📄 Admin doc exists?', adminDoc.exists());
-                        if (adminDoc.exists()) {
-                            const data = adminDoc.data();
-                            console.log('👤 Admin data:', data);
-                            console.log('🔑 Role:', data.role);
+                        if (adminDoc.exists() && adminDoc.data()?.role === 'admin') {
+                            console.log('✅ Access GRANTED - User is admin');
+                            setIsAuthorized(true);
+                            setIsPending(false);
+                        } else {
+                            // Check if they are a registered active staff member
+                            console.log('🔍 Checking staff directory for:', currentUser.email);
+                            const staffRef = collection(db, 'staff');
+                            const q = query(staffRef, where('email', '==', currentUser.email), where('status', '==', 'active'));
+                            const staffSnap = await getDocs(q);
 
-                            if (data.role === 'admin') {
-                                console.log('✅ Access GRANTED - User is admin');
+                            if (!staffSnap.empty) {
+                                console.log('✅ Access GRANTED - User is active staff');
                                 setIsAuthorized(true);
                                 setIsPending(false);
+                            } else if (adminDoc.exists()) {
+                                console.log('⏳ Access PENDING - Role is:', adminDoc.data()?.role);
+                                setIsPending(true);
+                                setIsAuthorized(false);
                             } else {
-                                console.log('⏳ Access PENDING - Role is:', data.role);
+                                console.log('➕ Creating new pending admin entry');
+                                await setDoc(adminDocRef, {
+                                    email: currentUser.email,
+                                    role: 'pending',
+                                    createdAt: new Date().toISOString()
+                                });
                                 setIsPending(true);
                                 setIsAuthorized(false);
                             }
-                        } else {
-                            console.log('➕ Creating new pending admin entry');
-                            // Auto-register as pending
-                            await setDoc(adminDocRef, {
-                                email: currentUser.email,
-                                role: 'pending',
-                                createdAt: new Date().toISOString()
-                            });
-                            setIsPending(true);
-                            setIsAuthorized(false);
                         }
                     } catch (error) {
-                        console.error("❌ Error checking admin status:", error);
+                        console.error("❌ Error checking access status:", error);
                         setIsAuthorized(false);
                         setIsPending(false);
                     }
