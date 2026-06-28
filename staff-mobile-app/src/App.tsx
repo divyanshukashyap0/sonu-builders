@@ -3,8 +3,7 @@ import {
   onAuthStateChanged, 
   signInWithEmailAndPassword, 
   signOut, 
-  signInWithPopup,
-  signInWithRedirect, 
+  signInWithPopup, 
   GoogleAuthProvider
 } from 'firebase/auth';
 import type { User as FirebaseUser } from 'firebase/auth';
@@ -171,13 +170,9 @@ export default function App() {
           return;
         }
         
-        // Fallback to redirect if blocked
         if (err.code === 'auth/popup-blocked' || err.message?.includes('popup')) {
-          signInWithRedirect(auth, provider).catch((redirErr: any) => {
-            console.error("Redirect Fallback Error:", redirErr);
-            setAuthError(`Authentication failed: ${redirErr.message || redirErr.code}`);
-            setAuthLoading(false);
-          });
+          setAuthError('Sign-in popup blocked. Please allow popups for this site.');
+          setAuthLoading(false);
         } else {
           setAuthError(`Google authentication failed: ${err.message || err.code}`);
           setAuthLoading(false);
