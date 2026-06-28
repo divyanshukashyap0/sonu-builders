@@ -3,6 +3,7 @@ import {
   onAuthStateChanged, 
   signInWithEmailAndPassword, 
   signOut, 
+  signInWithPopup,
   signInWithRedirect, 
   GoogleAuthProvider
 } from 'firebase/auth';
@@ -96,23 +97,31 @@ export default function App() {
 
   const verifyAdminAndLoad = async (firebaseUser: FirebaseUser) => {
     try {
+      console.log("Starting admin check for:", firebaseUser.email);
       setAuthError('');
       const adminDocRef = doc(db, 'admins', firebaseUser.email!);
       const adminDoc = await getDoc(adminDocRef);
+      
+      console.log("Admin document exists:", adminDoc.exists());
+      if (adminDoc.exists()) {
+        console.log("Admin document data:", adminDoc.data());
+      }
 
       if (adminDoc.exists() && adminDoc.data()?.role === 'admin') {
+        console.log("Access GRANTED for admin:", firebaseUser.email);
         setAdminProfile({
           email: firebaseUser.email,
           displayName: firebaseUser.displayName || adminDoc.data()?.fullName || 'Administrator'
         });
       } else {
+        console.warn("Access DENIED. Role is not admin or document missing.");
         setAuthError('Access Denied. Administrator privileges required.');
         await signOut(auth);
         setUser(null);
         setAdminProfile(null);
       }
     } catch (err) {
-      console.error(err);
+      console.error("Error verifying admin credentials:", err);
       setAuthError('Error validating admin credentials.');
       await signOut(auth);
     }
@@ -151,12 +160,23 @@ export default function App() {
     setAuthError('');
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithRedirect(auth, provider);
+      // Attempt popup sign-in
+      await signInWithPopup(auth, provider);
     } catch (err: any) {
-      console.error("Detailed Google Auth Error:", err);
-      setAuthError(`Google authentication failed: ${err.message || err.code || err}`);
-    } finally {
-      setAuthLoading(false);
+      console.warn("Popup authentication failed, trying redirect fallback...", err);
+      // Fallback to redirect if popup was blocked
+      if (err.code === 'auth/popup-blocked' || err.message?.includes('popup') || err.code === 'auth/cancelled-popup-request') {
+        try {
+          await signInWithRedirect(auth, provider);
+        } catch (redirErr: any) {
+          console.error("Redirect Fallback Error:", redirErr);
+          setAuthError(`Authentication failed: ${redirErr.message || redirErr.code}`);
+          setAuthLoading(false);
+        }
+      } else {
+        setAuthError(`Google authentication failed: ${err.message || err.code}`);
+        setAuthLoading(false);
+      }
     }
   };
 
