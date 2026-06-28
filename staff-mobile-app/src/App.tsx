@@ -3,7 +3,7 @@ import {
   onAuthStateChanged, 
   signInWithEmailAndPassword, 
   signOut, 
-  signInWithPopup, 
+  signInWithRedirect, 
   GoogleAuthProvider
 } from 'firebase/auth';
 import type { User as FirebaseUser } from 'firebase/auth';
@@ -151,7 +151,7 @@ export default function App() {
     setAuthError('');
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
+      await signInWithRedirect(auth, provider);
     } catch (err: any) {
       console.error("Detailed Google Auth Error:", err);
       setAuthError(`Google authentication failed: ${err.message || err.code || err}`);
