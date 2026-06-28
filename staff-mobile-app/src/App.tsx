@@ -155,29 +155,37 @@ export default function App() {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    setAuthLoading(true);
-    setAuthError('');
+  const handleGoogleLogin = () => {
     const provider = new GoogleAuthProvider();
-    try {
-      // Attempt popup sign-in
-      await signInWithPopup(auth, provider);
-    } catch (err: any) {
-      console.warn("Popup authentication failed, trying redirect fallback...", err);
-      // Fallback to redirect if popup was blocked
-      if (err.code === 'auth/popup-blocked' || err.message?.includes('popup') || err.code === 'auth/cancelled-popup-request') {
-        try {
-          await signInWithRedirect(auth, provider);
-        } catch (redirErr: any) {
-          console.error("Redirect Fallback Error:", redirErr);
-          setAuthError(`Authentication failed: ${redirErr.message || redirErr.code}`);
+    
+    // Call signInWithPopup synchronously as the first action
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        console.log("Logged in with popup successfully:", result.user);
+      })
+      .catch((err: any) => {
+        console.warn("Popup login failed, checking fallback:", err);
+        if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
+          setAuthError('Sign-in cancelled.');
+          setAuthLoading(false);
+          return;
+        }
+        
+        // Fallback to redirect if blocked
+        if (err.code === 'auth/popup-blocked' || err.message?.includes('popup')) {
+          signInWithRedirect(auth, provider).catch((redirErr: any) => {
+            console.error("Redirect Fallback Error:", redirErr);
+            setAuthError(`Authentication failed: ${redirErr.message || redirErr.code}`);
+            setAuthLoading(false);
+          });
+        } else {
+          setAuthError(`Google authentication failed: ${err.message || err.code}`);
           setAuthLoading(false);
         }
-      } else {
-        setAuthError(`Google authentication failed: ${err.message || err.code}`);
-        setAuthLoading(false);
-      }
-    }
+      });
+
+    setAuthLoading(true);
+    setAuthError('');
   };
 
   if (loading) {
