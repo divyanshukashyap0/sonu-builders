@@ -146,9 +146,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => unsubscribe();
   }, []);
 
-  const signInWithGoogle = async () => {
+  const signInWithGoogle = () => {
     const provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider);
+    return signInWithPopup(auth, provider);
   };
 
   const logOut = async () => {

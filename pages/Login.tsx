@@ -55,17 +55,26 @@ const Login: React.FC = () => {
         }
     };
 
-    const handleGoogleAuth = async () => {
-        setLoading(true);
+    const handleGoogleAuth = () => {
         setError('');
-        try {
-            await signInWithGoogle();
-        } catch (err: any) {
-            console.error(err);
-            setError('Google authentication failed.');
-        } finally {
-            setLoading(false);
-        }
+        
+        signInWithGoogle()
+            .then(() => {
+                // Redirect navigated inside useEffect hook
+            })
+            .catch((err: any) => {
+                console.error(err);
+                if (err.code === 'auth/popup-blocked' || err.message?.includes('popup')) {
+                    setError('Sign-in popup blocked. Please allow popups for this site.');
+                } else if (err.code === 'auth/popup-closed-by-user') {
+                    setError('Sign-in cancelled.');
+                } else {
+                    setError('Google authentication failed.');
+                }
+                setLoading(false);
+            });
+
+        setLoading(true);
     };
 
     return (
