@@ -14,32 +14,70 @@ import {
 import { db } from '../firebase';
 import type { StaffMember } from '../types';
 
+// Global cache variables to persist across navigation remounts
+let staffCache: StaffMember[] | null = null;
+const staffListeners: Set<(data: StaffMember[]) => void> = new Set();
+let unsubscribeStaff: (() => void) | null = null;
+let isLoadingStaff = false;
+let staffError: string | null = null;
+
+export const clearStaffCache = () => {
+    if (unsubscribeStaff) {
+        unsubscribeStaff();
+        unsubscribeStaff = null;
+    }
+    staffCache = null;
+    staffListeners.clear();
+    isLoadingStaff = false;
+    staffError = null;
+};
+
 export const useStaff = () => {
-    const [staff, setStaff] = useState<StaffMember[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const [staff, setStaff] = useState<StaffMember[]>(staffCache || []);
+    const [loading, setLoading] = useState(staffCache === null);
+    const [error, setError] = useState<string | null>(staffError);
 
     useEffect(() => {
-        setLoading(true);
-        const q = query(collection(db, 'staff'), orderBy('employeeId', 'asc'));
+        const listener = (data: StaffMember[]) => {
+            setStaff(data);
+            setLoading(false);
+            setError(null);
+        };
+        staffListeners.add(listener);
 
-        const unsubscribe = onSnapshot(q,
-            (snapshot) => {
-                const staffData = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                })) as StaffMember[];
-                setStaff(staffData);
-                setLoading(false);
-            },
-            (err) => {
-                console.error("Error fetching staff:", err);
-                setError("Failed to fetch staff directory.");
-                setLoading(false);
-            }
-        );
+        if (staffCache) {
+            setStaff(staffCache);
+            setLoading(false);
+        }
 
-        return () => unsubscribe();
+        if (!unsubscribeStaff && !isLoadingStaff) {
+            isLoadingStaff = true;
+            const q = query(collection(db, 'staff'), orderBy('employeeId', 'asc'));
+
+            unsubscribeStaff = onSnapshot(q,
+                (snapshot) => {
+                    const staffData = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    })) as StaffMember[];
+                    staffCache = staffData;
+                    isLoadingStaff = false;
+                    staffError = null;
+                    staffListeners.forEach(l => l(staffData));
+                },
+                (err) => {
+                    console.error("Error fetching staff:", err);
+                    staffError = "Failed to fetch staff directory.";
+                    isLoadingStaff = false;
+                    setError("Failed to fetch staff directory.");
+                    setLoading(false);
+                }
+            );
+        }
+
+        return () => {
+            staffListeners.delete(listener);
+        };
     }, []);
 
     const generateNextEmployeeId = async (): Promise<string> => {

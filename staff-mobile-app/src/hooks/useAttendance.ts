@@ -41,10 +41,31 @@ export const isDayPast12HourLimit = (monthId: string, day: number): boolean => {
     return new Date().getTime() > lockTime.getTime();
 };
 
+interface AttendanceCacheEntry {
+  attendanceMap: Record<string, AttendanceRecord>;
+  isLocked: boolean;
+}
+
+const attendanceCache: Record<string, AttendanceCacheEntry> = {};
+const attendanceListeners: Record<string, Set<(data: AttendanceCacheEntry) => void>> = {};
+const unsubscribeAttendanceMap: Record<string, () => void> = {};
+const unsubscribeLockMap: Record<string, () => void> = {};
+
+export const clearAttendanceCache = () => {
+    Object.values(unsubscribeAttendanceMap).forEach(unsub => unsub());
+    Object.values(unsubscribeLockMap).forEach(unsub => unsub());
+    
+    for (const key in unsubscribeAttendanceMap) delete unsubscribeAttendanceMap[key];
+    for (const key in unsubscribeLockMap) delete unsubscribeLockMap[key];
+    for (const key in attendanceCache) delete attendanceCache[key];
+    for (const key in attendanceListeners) delete attendanceListeners[key];
+};
+
 export const useAttendance = (monthId: string) => {
-    const [attendanceMap, setAttendanceMap] = useState<Record<string, AttendanceRecord>>({});
-    const [isLocked, setIsLocked] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const cached = attendanceCache[monthId];
+    const [attendanceMap, setAttendanceMap] = useState<Record<string, AttendanceRecord>>(cached?.attendanceMap || {});
+    const [isLocked, setIsLocked] = useState(cached?.isLocked || false);
+    const [loading, setLoading] = useState(!cached);
     const [error, setError] = useState<string | null>(null);
 
     const attendanceMapRef = useRef(attendanceMap);
@@ -60,44 +81,65 @@ export const useAttendance = (monthId: string) => {
 
     useEffect(() => {
         if (!monthId) return;
-        setLoading(true);
 
-        const lockRef = doc(db, 'attendance', monthId);
-        const unsubscribeLock = onSnapshot(lockRef, 
-            (docSnap) => {
-                if (docSnap.exists()) {
-                    setIsLocked(docSnap.data().locked || false);
-                } else {
-                    setIsLocked(false);
+        const listener = (data: AttendanceCacheEntry) => {
+            setAttendanceMap(data.attendanceMap);
+            setIsLocked(data.isLocked);
+            setLoading(false);
+        };
+
+        if (!attendanceListeners[monthId]) {
+            attendanceListeners[monthId] = new Set();
+        }
+        attendanceListeners[monthId].add(listener);
+
+        if (attendanceCache[monthId]) {
+            setAttendanceMap(attendanceCache[monthId].attendanceMap);
+            setIsLocked(attendanceCache[monthId].isLocked);
+            setLoading(false);
+        }
+
+        // Initialize Firestore listener for this monthId if not already active
+        if (!unsubscribeAttendanceMap[monthId]) {
+            attendanceCache[monthId] = attendanceCache[monthId] || { attendanceMap: {}, isLocked: false };
+
+            const lockRef = doc(db, 'attendance', monthId);
+            unsubscribeLockMap[monthId] = onSnapshot(lockRef, 
+                (docSnap) => {
+                    const locked = docSnap.exists() && docSnap.data().locked === true;
+                    if (attendanceCache[monthId]) {
+                        attendanceCache[monthId].isLocked = locked;
+                        attendanceListeners[monthId]?.forEach(l => l(attendanceCache[monthId]));
+                    }
+                },
+                (err) => console.error("Error fetching lock status:", err)
+            );
+
+            const attendanceColRef = collection(db, 'attendance', monthId, 'employees');
+            unsubscribeAttendanceMap[monthId] = onSnapshot(attendanceColRef,
+                (snapshot) => {
+                    const map: Record<string, AttendanceRecord> = {};
+                    snapshot.docs.forEach((doc) => {
+                        const data = doc.data() as Omit<AttendanceRecord, 'id'>;
+                        map[doc.id] = {
+                            id: doc.id,
+                            ...data
+                        };
+                    });
+                    if (attendanceCache[monthId]) {
+                        attendanceCache[monthId].attendanceMap = map;
+                        attendanceListeners[monthId]?.forEach(l => l(attendanceCache[monthId]));
+                    }
+                },
+                (err) => {
+                    console.error("Error fetching attendance:", err);
+                    setError("Failed to fetch attendance records.");
                 }
-            },
-            (err) => console.error("Error fetching lock status:", err)
-        );
-
-        const attendanceColRef = collection(db, 'attendance', monthId, 'employees');
-        const unsubscribeAttendance = onSnapshot(attendanceColRef,
-            (snapshot) => {
-                const map: Record<string, AttendanceRecord> = {};
-                snapshot.docs.forEach((doc) => {
-                    const data = doc.data() as Omit<AttendanceRecord, 'id'>;
-                    map[doc.id] = {
-                        id: doc.id,
-                        ...data
-                    };
-                });
-                setAttendanceMap(map);
-                setLoading(false);
-            },
-            (err) => {
-                console.error("Error fetching attendance:", err);
-                setError("Failed to fetch attendance records.");
-                setLoading(false);
-            }
-        );
+            );
+        }
 
         return () => {
-            unsubscribeLock();
-            unsubscribeAttendance();
+            attendanceListeners[monthId]?.delete(listener);
         };
     }, [monthId]);
 

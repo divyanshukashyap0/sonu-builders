@@ -14,41 +14,76 @@ import {
 import { db } from '../firebase';
 import type { Expense } from '../types';
 
+// Global cache variables to persist across navigation remounts
+let expensesCache: Expense[] | null = null;
+const expensesListeners: Set<(data: Expense[]) => void> = new Set();
+let unsubscribeExpenses: (() => void) | null = null;
+let isLoadingExpenses = false;
+let expensesError: string | null = null;
+
+export const clearExpensesCache = () => {
+    if (unsubscribeExpenses) {
+        unsubscribeExpenses();
+        unsubscribeExpenses = null;
+    }
+    expensesCache = null;
+    expensesListeners.clear();
+    isLoadingExpenses = false;
+    expensesError = null;
+};
+
 export const useExpenses = (siteName?: string) => {
-    const [expenses, setExpenses] = useState<Expense[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const [allExpenses, setAllExpenses] = useState<Expense[]>(expensesCache || []);
+    const [loading, setLoading] = useState(expensesCache === null);
+    const [error, setError] = useState<string | null>(expensesError);
 
     useEffect(() => {
-        setLoading(true);
-        let q = query(collection(db, 'expenses'), orderBy('date', 'desc'));
+        const listener = (data: Expense[]) => {
+            setAllExpenses(data);
+            setLoading(false);
+            setError(null);
+        };
+        expensesListeners.add(listener);
 
-        if (siteName) {
-            q = query(
-                collection(db, 'expenses'),
-                where('siteName', '==', siteName),
-                orderBy('date', 'desc')
+        if (expensesCache) {
+            setAllExpenses(expensesCache);
+            setLoading(false);
+        }
+
+        if (!unsubscribeExpenses && !isLoadingExpenses) {
+            isLoadingExpenses = true;
+            const q = query(collection(db, 'expenses'), orderBy('date', 'desc'));
+
+            unsubscribeExpenses = onSnapshot(q,
+                (snapshot) => {
+                    const data = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    })) as Expense[];
+                    expensesCache = data;
+                    isLoadingExpenses = false;
+                    expensesError = null;
+                    expensesListeners.forEach(l => l(data));
+                },
+                (err) => {
+                    console.error("Error fetching expenses:", err);
+                    expensesError = "Failed to fetch expense records.";
+                    isLoadingExpenses = false;
+                    setError("Failed to fetch expense records.");
+                    setLoading(false);
+                }
             );
         }
 
-        const unsubscribe = onSnapshot(q,
-            (snapshot) => {
-                const data = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                })) as Expense[];
-                setExpenses(data);
-                setLoading(false);
-            },
-            (err) => {
-                console.error("Error fetching expenses:", err);
-                setError("Failed to fetch expense records.");
-                setLoading(false);
-            }
-        );
+        return () => {
+            expensesListeners.delete(listener);
+        };
+    }, []);
 
-        return () => unsubscribe();
-    }, [siteName]);
+    // Filter locally in memory instead of executing separate Firestore queries
+    const expenses = siteName 
+        ? allExpenses.filter(e => e.siteName === siteName)
+        : allExpenses;
 
     const addExpense = async (data: Omit<Expense, 'id' | 'balance' | 'createdAt' | 'updatedAt'>) => {
         try {

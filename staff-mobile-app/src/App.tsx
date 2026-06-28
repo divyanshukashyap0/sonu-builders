@@ -43,6 +43,11 @@ import ExpenseLedger from './components/ExpenseLedger';
 import SalaryBoard from './components/SalaryBoard';
 import ReportsEngine from './components/ReportsEngine';
 import BulkImporter from './components/BulkImporter';
+import { clearStaffCache } from './hooks/useStaff';
+import { clearSiteAllocationsCache } from './hooks/useSiteAllocations';
+import { clearAdvancesCache } from './hooks/useAdvances';
+import { clearExpensesCache } from './hooks/useExpenses';
+import { clearAttendanceCache } from './hooks/useAttendance';
 
 const GOLD = '#c5a059';
 
@@ -135,6 +140,11 @@ export default function App() {
       } else {
         setUser(null);
         setAdminProfile(null);
+        clearStaffCache();
+        clearSiteAllocationsCache();
+        clearAdvancesCache();
+        clearExpensesCache();
+        clearAttendanceCache();
       }
       setLoading(false);
     });
