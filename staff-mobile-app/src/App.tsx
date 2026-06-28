@@ -209,8 +209,8 @@ export default function App() {
 
         <div className="w-full max-w-md mx-auto relative z-10">
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-[#c5a059]/20 border border-[#c5a059]/30 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-glow-gold">
-              <ShieldCheck className="w-8 h-8 text-[#c5a059]" />
+            <div className="w-16 h-16 bg-[#c5a059]/10 border border-[#c5a059]/20 rounded-2xl flex items-center justify-center mx-auto mb-4 overflow-hidden shadow-glow-gold p-2">
+              <img src="/favicon.png" alt="Sonu Enterprises" className="w-full h-full object-contain" />
             </div>
             <h1 className="text-2xl font-bold text-white tracking-wide">SE Staff Admin</h1>
             <p className="text-xs uppercase tracking-widest text-neutral-400 mt-1">Mobile Management Portal</p>
@@ -334,8 +334,8 @@ export default function App() {
       {/* Header bar */}
       <header className="bg-neutral-900 border-b border-white/5 py-4 px-6 sticky top-0 z-50 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-[#c5a059]/10 border border-[#c5a059]/20 flex items-center justify-center shadow-glow-gold">
-            <ShieldCheck className="w-4 h-4 text-[#c5a059]" />
+          <div className="w-8 h-8 rounded-lg bg-[#c5a059]/10 border border-[#c5a059]/20 flex items-center justify-center overflow-hidden shadow-glow-gold p-1">
+            <img src="/favicon.png" alt="Sonu Enterprises" className="w-full h-full object-contain" />
           </div>
           <div>
             <h1 className="text-sm font-bold m-0 leading-none">Staff Control</h1>
