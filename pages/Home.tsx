@@ -19,6 +19,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import * as Icons from 'lucide-react';
 import ProjectCard3D from '../components/luxury/ProjectCard3D';
 import CinematicText from '../components/luxury/CinematicText';
+import { getOptimizedImageUrl } from '../utils/performance';
 
 const serviceIcons = [
   { name: 'Living Room\nDesign', icon: Sofa },
@@ -458,7 +459,7 @@ const Home: React.FC = () => {
                     transition={{ delay: i * 0.05, duration:0.5 }}>
                     <Link to={clickUrl} className="block group relative overflow-hidden rounded-sm"
                       style={{ border:'1px solid rgba(197,160,89,0.08)' }}>
-                      <img src={item.image} className="w-full h-auto transition-transform duration-700 group-hover:scale-110"
+                      <img src={getOptimizedImageUrl(item.image, 600)} className="w-full h-auto transition-transform duration-700 group-hover:scale-110"
                         alt={item.title || "Gallery Item"} />
                       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex items-center justify-center"
                         style={{ background:'rgba(0,0,0,0.5)' }}>

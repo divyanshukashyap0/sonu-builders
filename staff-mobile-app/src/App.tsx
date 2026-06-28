@@ -28,7 +28,9 @@ import {
   Layers,
   FileText,
   TrendingUp,
-  Upload
+  Upload,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 // Import our modular components
@@ -58,6 +60,39 @@ export default function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
+
+  // Offline status tracking
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  // Theme management (defaulting to 'light')
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    return (localStorage.getItem('theme') as 'light' | 'dark') || 'light';
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === 'dark') {
+      root.classList.add('dark');
+      root.classList.remove('light');
+    } else {
+      root.classList.add('light');
+      root.classList.remove('dark');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
   const verifyAdminAndLoad = async (firebaseUser: FirebaseUser) => {
     try {
@@ -117,8 +152,9 @@ export default function App() {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
-    } catch (err) {
-      setAuthError('Google authentication failed.');
+    } catch (err: any) {
+      console.error("Detailed Google Auth Error:", err);
+      setAuthError(`Google authentication failed: ${err.message || err.code || err}`);
     } finally {
       setAuthLoading(false);
     }
@@ -137,6 +173,15 @@ export default function App() {
   if (!user || !adminProfile) {
     return (
       <div className="min-h-screen flex flex-col justify-center bg-neutral-950 px-6 py-12 relative overflow-hidden font-sans select-none">
+        <div className="absolute top-4 right-4 z-50">
+          <button
+            onClick={() => setTheme(prev => prev === 'light' ? 'dark' : 'light')}
+            className="p-2 bg-neutral-900 border border-white/5 text-[#c5a059] hover:bg-neutral-800 rounded-xl transition-all cursor-pointer"
+            title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+          >
+            {theme === 'light' ? <Moon className="w-4.5 h-4.5" /> : <Sun className="w-4.5 h-4.5" />}
+          </button>
+        </div>
         <div className="absolute top-[-20%] left-[-10%] w-[350px] h-[350px] bg-[#c5a059]/10 blur-[100px] rounded-full pointer-events-none" />
 
         <div className="w-full max-w-md mx-auto relative z-10">
@@ -236,19 +281,33 @@ export default function App() {
   // Render sub-modules if active
   if (activeSubModule) {
     return (
-      <div className="min-h-screen bg-neutral-950 text-white font-sans p-5 overflow-y-auto">
-        {activeSubModule === 'directory' && <StaffDirectory onBack={handleSubModuleBack} />}
-        {activeSubModule === 'allocations' && <SiteAllocationManager onBack={handleSubModuleBack} adminName={adminProfile.displayName} />}
-        {activeSubModule === 'expenses' && <ExpenseLedger onBack={handleSubModuleBack} adminEmail={adminProfile.email} />}
-        {activeSubModule === 'salary' && <SalaryBoard onBack={handleSubModuleBack} adminName={adminProfile.displayName} />}
-        {activeSubModule === 'reports' && <ReportsEngine onBack={handleSubModuleBack} />}
-        {activeSubModule === 'import' && <BulkImporter onBack={handleSubModuleBack} />}
+      <div className="min-h-screen bg-neutral-950 text-white font-sans flex flex-col select-none">
+        {!isOnline && (
+          <div className="bg-gradient-to-r from-amber-600 to-amber-700 text-black text-[10px] uppercase font-black py-2.5 px-4 text-center tracking-wider flex items-center justify-center gap-1.5 z-[100] border-b border-black/10">
+            <AlertCircle className="w-3.5 h-3.5" />
+            <span>Offline Mode — Running on local database cache. Edits sync automatically.</span>
+          </div>
+        )}
+        <div className="flex-grow p-5 overflow-y-auto">
+          {activeSubModule === 'directory' && <StaffDirectory onBack={handleSubModuleBack} />}
+          {activeSubModule === 'allocations' && <SiteAllocationManager onBack={handleSubModuleBack} adminName={adminProfile.displayName} />}
+          {activeSubModule === 'expenses' && <ExpenseLedger onBack={handleSubModuleBack} adminEmail={adminProfile.email} />}
+          {activeSubModule === 'salary' && <SalaryBoard onBack={handleSubModuleBack} adminName={adminProfile.displayName} />}
+          {activeSubModule === 'reports' && <ReportsEngine onBack={handleSubModuleBack} />}
+          {activeSubModule === 'import' && <BulkImporter onBack={handleSubModuleBack} />}
+        </div>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white font-sans flex flex-col pb-20 select-none">
+      {!isOnline && (
+        <div className="bg-gradient-to-r from-amber-600 to-amber-700 text-black text-[10px] uppercase font-black py-2.5 px-4 text-center tracking-wider flex items-center justify-center gap-1.5 z-[100] border-b border-black/10">
+          <AlertCircle className="w-3.5 h-3.5" />
+          <span>Offline Mode — Running on local database cache. Edits sync automatically.</span>
+        </div>
+      )}
       {/* Header bar */}
       <header className="bg-neutral-900 border-b border-white/5 py-4 px-6 sticky top-0 z-50 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -260,12 +319,21 @@ export default function App() {
             <span className="text-[9px] text-[#c5a059] uppercase tracking-wider font-semibold">Admin Panel</span>
           </div>
         </div>
-        <button 
-          onClick={() => signOut(auth)}
-          className="p-2 bg-white/5 hover:bg-red-500/10 hover:text-red-400 rounded-lg transition-colors cursor-pointer border border-white/5"
-        >
-          <LogOut className="w-4 h-4" />
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setTheme(prev => prev === 'light' ? 'dark' : 'light')}
+            className="p-2 bg-white/5 hover:bg-white/10 text-[#c5a059] rounded-lg transition-colors cursor-pointer border border-white/5"
+            title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+          >
+            {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+          </button>
+          <button 
+            onClick={() => signOut(auth)}
+            className="p-2 bg-white/5 hover:bg-red-500/10 hover:text-red-400 rounded-lg transition-colors cursor-pointer border border-white/5"
+          >
+            <LogOut className="w-4 h-4" />
+          </button>
+        </div>
       </header>
 
       {/* Main Tab Panels */}

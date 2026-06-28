@@ -2,10 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import logo from '../logo.png';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Phone, ArrowUpRight } from 'lucide-react';
+import { Menu, X, Phone, ArrowUpRight, User } from 'lucide-react';
 import { NAV_LINKS } from '../constants';
 import { useCompanyData } from '../hooks/useCompanyData';
 import { logCallAction } from '../lib/tracking';
+import { useAuth } from '../context/AuthContext';
 
 /**
  * Ultra-premium Header — ZERO Framer Motion.
@@ -20,14 +21,19 @@ const Header: React.FC = () => {
   const rafRef = useRef<number>(0);
   const location = useLocation();
   const { name, phone } = useCompanyData();
+  const { user } = useAuth();
 
   useEffect(() => {
     const onScroll = () => {
       cancelAnimationFrame(rafRef.current);
       rafRef.current = requestAnimationFrame(() => {
         const y = window.scrollY;
-        setScrolled(y > 60);
-        setHidden(y > lastScrollY.current && y > 120);
+        const nextScrolled = y > 60;
+        const nextHidden = y > lastScrollY.current && y > 120;
+        
+        setScrolled(prev => prev !== nextScrolled ? nextScrolled : prev);
+        setHidden(prev => prev !== nextHidden ? nextHidden : prev);
+        
         lastScrollY.current = y;
       });
     };
@@ -123,6 +129,22 @@ const Header: React.FC = () => {
                 </Link>
               );
             })}
+
+            <Link
+              to={user ? "/account" : "/login"}
+              className="relative px-4 py-2 group nav-link-item flex items-center gap-1.5"
+            >
+              <User className="w-3 h-3 text-luxury-gold" />
+              <span
+                className="text-[10px] font-bold uppercase tracking-[0.2em]"
+                style={{
+                  color: location.pathname === (user ? "/account" : "/login") ? '#c5a059' : 'rgba(255,255,255,0.72)',
+                  transition: 'color 0.3s ease',
+                }}
+              >
+                {user ? 'Account' : 'Portal Login'}
+              </span>
+            </Link>
 
             {/* Phone CTA */}
             <a
@@ -238,6 +260,29 @@ const Header: React.FC = () => {
                   </Link>
                 );
               })}
+
+              <Link
+                to={user ? "/account" : "/login"}
+                onClick={() => setIsOpen(false)}
+                className="flex items-center justify-between py-5"
+                style={{
+                  borderBottom: '1px solid rgba(255,255,255,0.04)',
+                  opacity: isOpen ? 1 : 0,
+                  transform: isOpen ? 'translateX(0)' : 'translateX(-20px)',
+                  transition: `opacity 0.4s ease ${0.06 + NAV_LINKS.length * 0.07}s, transform 0.4s ease ${0.06 + NAV_LINKS.length * 0.07}s`,
+                }}
+              >
+                <span
+                  className="text-3xl font-bold leading-none"
+                  style={{
+                    fontFamily: "'Cormorant Garamond',serif",
+                    color: location.pathname === (user ? "/account" : "/login") ? '#c5a059' : 'rgba(255,255,255,0.82)',
+                  }}
+                >
+                  {user ? 'Account' : 'Portal Login'}
+                </span>
+                <ArrowUpRight className="w-5 h-5" style={{ color: 'rgba(197,160,89,0.5)' }} />
+              </Link>
             </nav>
 
             {/* Bottom phone */}

@@ -3,12 +3,12 @@ import { motion, useSpring, useMotionValue } from 'framer-motion';
 import { usePerformance } from '../../context/PerformanceContext';
 
 const CustomCursor: React.FC = () => {
-    const { isLowPowerMode } = usePerformance();
+    const { deviceTier, isLowPowerMode } = usePerformance();
     const [isHovered, setIsHovered] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
     const [cursorText, setCursorText] = useState('');
 
-    // Initialize these regardless of isLowPowerMode to avoid "Rendered fewer hooks" error
+    // Initialize these regardless of performance tier to avoid "Rendered fewer hooks" error
     const cursorX = useMotionValue(-100);
     const cursorY = useMotionValue(-100);
 
@@ -16,9 +16,11 @@ const CustomCursor: React.FC = () => {
     const springX = useSpring(cursorX, springConfig);
     const springY = useSpring(cursorY, springConfig);
 
+    const isCursorEnabled = deviceTier === 'high' && !isLowPowerMode;
+
     useEffect(() => {
-        // If low power mode is active, do not attach listeners and do nothing
-        if (isLowPowerMode) return;
+        // If not high tier or low power mode is active, do not attach listeners and do nothing
+        if (!isCursorEnabled) return;
 
         // Check if device is touch-only (coarse pointer)
         const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
@@ -62,10 +64,10 @@ const CustomCursor: React.FC = () => {
             window.removeEventListener('mousemove', moveCursor);
             window.removeEventListener('mouseover', handleMouseOver);
         };
-    }, [cursorX, cursorY, isLowPowerMode]);
+    }, [cursorX, cursorY, isCursorEnabled]);
 
-    // Don't render anything if low power mode or touch device (implied by isVisible)
-    if (isLowPowerMode || !isVisible) return null;
+    // Don't render anything if cursor is not enabled or not visible
+    if (!isCursorEnabled || !isVisible) return null;
 
     return (
         <>

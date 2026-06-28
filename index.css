@@ -670,6 +670,16 @@ section {
   backface-visibility: hidden;
 }
 
+[data-cinematic-section] {
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity;
+}
+
+[data-cinematic-section].is-revealed {
+  opacity: 1;
+}
+
 /* ── Premium parallax image scaling ────────────── */
 .parallax-img-wrap {
   overflow: hidden;

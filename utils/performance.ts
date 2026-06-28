@@ -73,13 +73,27 @@ export const getOptimizedImageUrl = (url: string, width?: number): string => {
 
     // For Unsplash images, add optimization parameters
     if (url.includes('unsplash.com')) {
-        const params = new URLSearchParams();
-        if (width) params.set('w', width.toString());
-        params.set('q', '80');
-        params.set('fm', 'webp');
-        params.set('auto', 'format');
+        try {
+            const urlObj = new URL(url);
+            const params = urlObj.searchParams;
+            if (width) params.set('w', width.toString());
+            params.set('q', '80');
+            params.set('fm', 'webp');
+            params.set('auto', 'format');
+            return `${urlObj.origin}${urlObj.pathname}?${params.toString()}`;
+        } catch (e) {
+            return url;
+        }
+    }
 
-        return `${url}?${params.toString()}`;
+    // For Cloudinary images, inject transformations
+    if (url.includes('res.cloudinary.com') && url.includes('/upload/')) {
+        const hasTransformation = /\/upload\/[^/]+\/v\d+/.test(url) || /\/upload\/w_\d+/.test(url);
+        if (!hasTransformation) {
+            const w = width || 800;
+            const q = w <= 200 ? 'low' : 'eco';
+            return url.replace('/upload/', `/upload/w_${w},f_auto,q_auto:${q}/`);
+        }
     }
 
     return url;

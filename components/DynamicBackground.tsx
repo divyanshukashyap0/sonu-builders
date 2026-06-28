@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
+import { getOptimizedImageUrl } from '../utils/performance';
 
 export const DynamicBackground: React.FC = () => {
     const [settings, setSettings] = useState({
@@ -42,7 +43,7 @@ export const DynamicBackground: React.FC = () => {
                     <div 
                         className="absolute inset-0 transition-opacity duration-1000"
                         style={{ 
-                            backgroundImage: `url(${settings.backgroundImage})`,
+                            backgroundImage: `url(${getOptimizedImageUrl(settings.backgroundImage, 1920)})`,
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
                             backgroundAttachment: 'fixed',

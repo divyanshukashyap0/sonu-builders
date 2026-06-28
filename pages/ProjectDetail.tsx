@@ -11,6 +11,7 @@ import {
 import { useProject, useProjects } from '../hooks/useProjects';
 import MediaRenderer from '../components/ui/MediaRenderer';
 import BeforeAfterSlider from '../components/ui/BeforeAfterSlider';
+import { getOptimizedImageUrl } from '../utils/performance';
 import SEO from '../components/SEO';
 import Breadcrumbs from '../components/Breadcrumbs';
 import Section from '../components/Section';
@@ -72,7 +73,7 @@ const ProjectDetail: React.FC = () => {
       {/* Hero Banner Section */}
       <div className="relative h-[60vh] md:h-[80vh] w-full overflow-hidden">
         <img 
-            src={project.heroImage || project.image} 
+            src={getOptimizedImageUrl(project.heroImage || project.image, 1920)} 
             alt={project.title} 
             className="w-full h-full object-cover"
         />
@@ -120,6 +121,7 @@ const ProjectDetail: React.FC = () => {
                     src={gallery[activeImageIndex]} 
                     alt={project.title}
                     className="w-full h-full object-cover"
+                    width={1200}
                     />
                 </motion.div>
                 </AnimatePresence>
@@ -145,7 +147,7 @@ const ProjectDetail: React.FC = () => {
                     activeImageIndex === idx ? 'border-luxury-gold scale-105 shadow-glow-gold' : 'border-transparent opacity-40 hover:opacity-100'
                     }`}
                 >
-                    <img src={url} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
+                    <img src={getOptimizedImageUrl(url, 300)} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
                 </button>
                 ))}
             </div>
@@ -298,7 +300,7 @@ const ProjectDetail: React.FC = () => {
         <div className="max-w-4xl mx-auto bg-black/40 backdrop-blur-3xl border border-white/10 p-4 rounded-[2rem] shadow-3xl flex items-center justify-between px-10">
           <div className="flex items-center gap-6">
             <div className="w-12 h-12 rounded-2xl overflow-hidden border border-luxury-gold/30">
-                <img src={project.image} className="w-full h-full object-cover" />
+                <img src={getOptimizedImageUrl(project.image, 1920)} className="w-full h-full object-cover" />
             </div>
             <div>
               <p className="text-xs font-bold text-luxury-gold uppercase tracking-widest">Currently Viewing</p>

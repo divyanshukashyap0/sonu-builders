@@ -10,11 +10,11 @@ const PremiumLoader: React.FC<PremiumLoaderProps> = ({ onComplete }) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      // Allow the animation to finish (approx 5-6 seconds)
+      // Allow the animation to finish (approx 1.8 seconds)
       setTimeout(() => {
         setShow(false);
         if (onComplete) onComplete();
-      }, 5000);
+      }, 1800);
     }, 100);
     return () => clearTimeout(timer);
   }, [onComplete]);

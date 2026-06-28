@@ -10,6 +10,8 @@ import { logCallAction } from '../lib/tracking';
 
 const GOLD = '#c5a059';
 
+const MotionLink = motion(Link);
+
 const Footer: React.FC = () => {
   const { name, contactInfo, socialLinks, footerDescription } = useCompanyData();
   const { services } = useServices();
@@ -135,13 +137,13 @@ const Footer: React.FC = () => {
 
             {/* CTA */}
             <motion.div className="mt-8">
-              <Link to="/contact"
+              <MotionLink to="/contact"
                 className="group inline-flex items-center gap-2 px-5 py-3 text-[9px] uppercase tracking-[0.25em] font-bold shimmer-hover transition-all duration-300"
                 style={{ border: '1px solid rgba(197,160,89,0.25)', color: GOLD, borderRadius: '2px' }}
                 whileHover={{ borderColor: 'rgba(197,160,89,0.6)' }}>
                 Book Consultation
                 <ArrowUpRight className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </Link>
+              </MotionLink>
             </motion.div>
           </div>
         </div>

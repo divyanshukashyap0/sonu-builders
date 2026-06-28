@@ -8,9 +8,14 @@ export const MobileStickyCTA: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
+        let lastVisible = false;
         const handleScroll = () => {
             // Show after scrolling 300px
-            setIsVisible(window.scrollY > 300);
+            const nextVisible = window.scrollY > 300;
+            if (nextVisible !== lastVisible) {
+                setIsVisible(nextVisible);
+                lastVisible = nextVisible;
+            }
         };
 
         window.addEventListener('scroll', handleScroll, { passive: true });

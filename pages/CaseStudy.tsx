@@ -6,6 +6,7 @@ import Section from '../components/Section';
 import Button from '../components/Button';
 import SEO from '../components/SEO';
 import MediaRenderer from '../components/ui/MediaRenderer';
+import { getOptimizedImageUrl } from '../utils/performance';
 
 // Mock Data for a single case study (In real app, fetch based on ID)
 const caseStudyData = {
@@ -63,6 +64,7 @@ const CaseStudy: React.FC = () => {
                     alt={data.title}
                     className="absolute inset-0 w-full h-full object-cover"
                     loading="eager"
+                    width={1200}
                 />
                 <div className="absolute inset-0 bg-black/50" />
                 <div className="absolute inset-0 flex items-center justify-center text-center p-4">
@@ -135,7 +137,7 @@ const CaseStudy: React.FC = () => {
                             className="bg-white p-2 shadow-lg"
                         >
                             <MediaRenderer 
-                                src={img} 
+                                src={getOptimizedImageUrl(img, 800)} 
                                 alt={`Gallery ${idx + 1}`} 
                                 className="w-full h-64 object-cover" 
                                 showPlayIcon
@@ -168,7 +170,7 @@ const CaseStudy: React.FC = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             {data.materials.map((mat, idx) => (
                                 <div key={idx} className="flex items-center bg-white/5 p-4 rounded-lg border border-white/10">
-                                    <img src={mat.image} alt={mat.name} className="w-12 h-12 rounded-full object-cover mr-4" />
+                                    <img src={getOptimizedImageUrl(mat.image, 100)} alt={mat.name} className="w-12 h-12 rounded-full object-cover mr-4" />
                                     <span className="font-medium">{mat.name}</span>
                                 </div>
                             ))}

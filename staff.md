@@ -12,7 +12,7 @@ This system replaces our old Excel sheets with a secure, real-time website. It h
 3. [Marking Attendance & Shift Calculations](#3-marking-attendance--shift-calculations)
 4. [Wages, Salary, and Payslips](#4-wages-salary-and-payslips)
 5. [Employee Advances Ledger](#5-employee-advances-ledger)
-6. [Site Expenses (Suraj Ledger)](#6-site-expenses-suraj-ledger)
+6. [Site Expenses (sonu Ledger)](#6-site-expenses-sonu-ledger)
 7. [Site Allocations (Who Works Where)](#7-site-allocations-who-works-where)
 8. [Downloading Monthly Reports](#8-downloading-monthly-reports)
 9. [Bulk Data Upload from Excel](#9-bulk-data-upload-from-excel)
@@ -93,7 +93,7 @@ Workers can request financial advances (loans) during the month.
 
 ---
 
-## 6. Site Expenses (Suraj Ledger)
+## 6. Site Expenses (sonu Ledger)
 
 This ledger tracks all cash inflows and operational expenses for each construction and interior design site.
 
@@ -167,7 +167,7 @@ Create columns with these exact headers:
 *   `amountPaid` (Rupees spent, or `0`)
 *   `expenseType` (e.g. Materials, Fuel, Municipal)
 *   `description` (Details of the transaction)
-*   `createdBy` (Person who made the entry, e.g. Suraj)
+*   `createdBy` (Person who made the entry, e.g. sonu)
 
 ---
 

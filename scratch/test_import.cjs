@@ -34,11 +34,11 @@ function parseExcelDate(val) {
 try {
     const workbook = XLSX.readFile(filePath);
     const sheetNames = workbook.SheetNames;
-    
+
     const staffSheetKey = sheetNames.find(n => n.toUpperCase().includes('STAFF'));
     const attendanceSheetKey = sheetNames.find(n => n.toUpperCase().includes('ATTENDANCE'));
     const advanceSheetKey = sheetNames.find(n => n.toUpperCase().includes('ADVANCE'));
-    const expenseSheetKey = sheetNames.find(n => n.toUpperCase().includes('EXPENSE') || n.toUpperCase().includes('SURAJ'));
+    const expenseSheetKey = sheetNames.find(n => n.toUpperCase().includes('EXPENSE') || n.toUpperCase().includes('sonu'));
 
     console.log('Sheets found:', { staffSheetKey, attendanceSheetKey, advanceSheetKey, expenseSheetKey });
 
@@ -48,7 +48,7 @@ try {
     if (attendanceSheetKey) {
         const sheet = workbook.Sheets[attendanceSheetKey];
         const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-        
+
         if (rows[0] && rows[0][0]) {
             const val = rows[0][0];
             if (typeof val === 'number') {
@@ -66,12 +66,12 @@ try {
             dataRows.forEach((row, idx) => {
                 const name = String(row[1] || '').trim();
                 if (!name || name === 'NAME') return;
-                
+
                 const salary = Number(row[2]) || 0;
                 const wageType = String(row[3] || '8 HRS').trim().toUpperCase();
                 const rate8hrs = Number(row[4]) || 0;
                 const rate12hrs = Number(row[5]) || 0;
-                
+
                 const days = {};
                 for (let day = 1; day <= 31; day++) {
                     const colIndex = 5 + day;
@@ -120,7 +120,7 @@ try {
         const sheet = workbook.Sheets[staffSheetKey];
         const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
         const headerRow = rows[0];
-        
+
         if (headerRow) {
             const nameIdx = headerRow.findIndex(h => String(h).toUpperCase().includes('NAME'));
             const srIdx = headerRow.findIndex(h => String(h).toUpperCase().includes('SR'));
@@ -137,7 +137,7 @@ try {
                 const empId = `SE${String(serial).padStart(3, '0')}`;
                 const phone = String(row[mobIdx] || '').trim();
                 const altPhone = String(row[altIdx] || '').trim();
-                
+
                 let docStatus = 'pending';
                 const rawDoc = row[docIdx];
                 if (rawDoc === true || String(rawDoc).toUpperCase() === 'TRUE' || String(rawDoc).toUpperCase() === 'VERIFIED') {

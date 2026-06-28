@@ -7,6 +7,7 @@ import { usePageHeaders } from '../hooks/usePageHeaders';
 import SEO from '../components/SEO';
 import * as Icons from 'lucide-react';
 import CinematicText from '../components/luxury/CinematicText';
+import { getOptimizedImageUrl } from '../utils/performance';
 
 const GOLD = '#c5a059';
 const GOLD_LIGHT = '#e8d5a3';
@@ -48,7 +49,7 @@ const Services: React.FC = () => {
       {/* ── HERO ──────────────────────────────────────────────────────────────── */}
       <section className="relative h-[70vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src={bgImage} className="w-full h-full object-cover"
+          <img src={getOptimizedImageUrl(bgImage, 1920)} className="w-full h-full object-cover"
             style={{ filter: 'contrast(1.04) saturate(0.8) brightness(0.35)' }} alt="Services Hero" />
         </div>
         <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg,rgba(4,4,4,0.9) 0%,rgba(4,4,4,0.4) 60%,transparent 100%)' }} />

@@ -7,7 +7,9 @@
     "dev": "node node_modules/vite/bin/vite.js",
     "server": "node server/index.js",
     "dev:full": "npm run server & npm run dev",
+    "dev:staff": "npm run dev --prefix staff-mobile-app",
     "build": "node node_modules/vite/bin/vite.js build",
+    "build:staff": "npm run build --prefix staff-mobile-app",
     "preview": "node node_modules/vite/bin/vite.js preview"
   },
   "dependencies": {

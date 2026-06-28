@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { ArrowRight, MapPin } from 'lucide-react';
 import usePerformanceTier from '../../hooks/usePerformanceTier';
+import { getOptimizedImageUrl } from '../../utils/performance';
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 export interface ProjectCardProps {
@@ -80,7 +81,7 @@ const ProjectCard3D: React.FC<ProjectCardProps> = ({
           className="block relative overflow-hidden rounded-sm"
           style={{ border: '1px solid rgba(197,160,89,0.1)' }}
         >
-          <img src={image} alt={title} className="w-full h-auto object-cover block"
+          <img src={getOptimizedImageUrl(image, 600)} alt={title} className="w-full h-auto object-cover block"
             style={{ filter: 'brightness(0.85)' }} loading="lazy" />
           <div className="absolute inset-0 pointer-events-none"
             style={{ background: 'linear-gradient(to top,rgba(0,0,0,0.75) 0%,transparent 60%)' }} />
@@ -148,7 +149,7 @@ const ProjectCard3D: React.FC<ProjectCardProps> = ({
             {/* Image */}
             <div className="relative overflow-hidden">
               <motion.img
-                src={image} alt={title}
+                src={getOptimizedImageUrl(image, 600)} alt={title}
                 className="w-full h-auto object-cover block"
                 animate={{ scale: isHovered ? 1.07 : 1 }}
                 transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}

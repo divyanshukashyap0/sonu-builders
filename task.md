@@ -1,0 +1,9 @@
+- [x] 1. Admin-Only Mobile App Refactoring
+  - [x] Update `App.tsx` login logic to restrict access to `admins` collection (`role === 'admin'`)
+  - [x] Build Directory Screen (List all staff members, search, filter, and detail modals)
+  - [x] Build Daily Attendance Sheet (Log today's shifts for any staff member in one tap)
+  - [x] Build Advances Approver (List pending advance requests and allow one-click approval/rejection)
+  - [x] Build Site Allocator (Manage site allocations on-the-go)
+- [x] 2. Verification & Build
+  - [x] Run build check (`npm run build:staff`)
+  - [x] Verify integrations against database records

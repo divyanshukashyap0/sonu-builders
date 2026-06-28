@@ -5,8 +5,8 @@ import { useSalary } from '../../../hooks/useSalary';
 import { useAdvances } from '../../../hooks/useAdvances';
 import { useSiteAllocations } from '../../../hooks/useSiteAllocations';
 import { useExpenses } from '../../../hooks/useExpenses';
-import { 
-    ClipboardList, FileText, Table, Download, Calendar, 
+import {
+    ClipboardList, FileText, Table, Download, Calendar,
     MapPin, Users, TrendingUp, AlertTriangle, Loader2, ArrowLeft, ArrowRight,
     Layers, TrendingDown, Activity
 } from 'lucide-react';
@@ -150,7 +150,7 @@ export default function Reports() {
                     "Amount Paid (INR)": ex.amountPaid,
                     "Balance (INR)": ex.balance,
                     "Description": ex.description || '',
-                    "Created By": ex.createdBy || 'Suraj'
+                    "Created By": ex.createdBy || 'sonu'
                 }));
             } else if (reportType === 'site') {
                 sheetName = "Site Expenses Summary";
@@ -205,7 +205,7 @@ export default function Reports() {
             ];
             const ws = XLSX.utils.aoa_to_sheet(header_aoa);
             XLSX.utils.sheet_add_json(ws, ws_data, { origin: "A4" });
-            
+
             XLSX.utils.book_append_sheet(wb, ws, sheetName);
             XLSX.writeFile(wb, `Sonu_Builders_${sheetName.replace(/\s+/g, '_')}_${monthId}.xlsx`);
         } catch (err) {
@@ -239,7 +239,7 @@ export default function Reports() {
             } catch (e) {
                 console.error("Error loading logo for PDF:", e);
             }
-            
+
             doc.setTextColor(212, 175, 55);
             doc.setFont('times', 'bold');
             doc.setFontSize(20);
@@ -257,7 +257,7 @@ export default function Reports() {
             doc.setFont('helvetica', 'bold');
             const titleText = `${reportType.toUpperCase()} INTELLIGENCE REPORT`;
             doc.text(titleText, 140, 18);
-            
+
             doc.setTextColor(255, 255, 255);
             doc.text(`Month: ${getMonthName(currentMonth)} ${currentYear}`, 140, 24);
 
@@ -343,7 +343,7 @@ export default function Reports() {
                     `Rs. ${ex.amountReceived.toFixed(2)}`,
                     `Rs. ${ex.amountPaid.toFixed(2)}`,
                     `Rs. ${ex.balance.toFixed(2)}`,
-                    ex.createdBy || 'Suraj'
+                    ex.createdBy || 'sonu'
                 ]);
             } else if (reportType === 'site') {
                 tableHead = [["Site Location", "Total Received", "Total Paid", "Net Balance", "Active Crew"]];
@@ -415,7 +415,7 @@ export default function Reports() {
                     <h1 className="text-3xl font-serif text-stone-900 dark:text-white tracking-wide">Reports Engine</h1>
                     <p className="text-xs uppercase tracking-widest text-luxury-gold opacity-80 mt-1">Analytics & Audit Exporters</p>
                 </div>
-                
+
                 {/* Month Controller */}
                 <div className="flex items-center gap-3 bg-white dark:bg-stone-900 border border-stone-200 dark:border-white/5 rounded-xl px-3 py-1.5 shadow-glass">
                     <button onClick={handlePrevMonth} className="p-1.5 hover:bg-stone-100 dark:hover:bg-white/5 rounded-lg text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-white transition-colors cursor-pointer">
@@ -448,11 +448,10 @@ export default function Reports() {
                         <div
                             key={item.type}
                             onClick={() => setReportType(item.type)}
-                            className={`p-5 rounded-2xl border text-left transition-all duration-300 cursor-pointer flex flex-col justify-between ${
-                                isActive
+                            className={`p-5 rounded-2xl border text-left transition-all duration-300 cursor-pointer flex flex-col justify-between ${isActive
                                     ? 'bg-luxury-gold/5 border-luxury-gold shadow-glow-gold'
                                     : 'bg-white dark:bg-stone-950/40 border-stone-200 dark:border-white/5 hover:border-stone-300 dark:hover:border-white/20'
-                            }`}
+                                }`}
                         >
                             <div>
                                 <Icon className={`w-8 h-8 ${isActive ? 'text-luxury-gold' : 'text-stone-450 dark:text-stone-500'}`} />

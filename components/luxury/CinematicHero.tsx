@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ArrowRight, ChevronDown, Building2, Users, Award, ShieldCheck } from 'lucide-react';
+import usePerformanceTier from '../../hooks/usePerformanceTier';
+import { getOptimizedImageUrl } from '../../utils/performance';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface Particle {
@@ -36,7 +38,7 @@ function generateParticles(count: number): Particle[] {
   }));
 }
 
-const PARTICLES = generateParticles(55);
+const PARTICLES = generateParticles(20);
 
 // ─── Stats Data ────────────────────────────────────────────────────────────────
 const STATS = [
@@ -48,6 +50,7 @@ const STATS = [
 
 // ─── Main Component ────────────────────────────────────────────────────────────
 const CinematicHero: React.FC<HeroProps> = ({ heroImages, heroIndex, phone }) => {
+  const { particlesOk, parallaxOk } = usePerformanceTier();
   const containerRef = useRef<HTMLElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -80,11 +83,12 @@ const CinematicHero: React.FC<HeroProps> = ({ heroImages, heroIndex, phone }) =>
   }, [rawX, rawY]);
 
   useEffect(() => {
+    if (!parallaxOk) return;
     const el = containerRef.current;
     if (!el) return;
-    el.addEventListener('mousemove', handleMouseMove);
+    el.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => el.removeEventListener('mousemove', handleMouseMove);
-  }, [handleMouseMove]);
+  }, [handleMouseMove, parallaxOk]);
 
   // ── GSAP entrance timeline ──────────────────────────────────────────────────
   useEffect(() => {
@@ -226,7 +230,7 @@ const CinematicHero: React.FC<HeroProps> = ({ heroImages, heroIndex, phone }) =>
           <AnimatePresence mode="sync">
             <motion.img
               key={heroIndex}
-              src={heroImages[heroIndex]}
+              src={getOptimizedImageUrl(heroImages[heroIndex], 1920)}
               initial={{ opacity: 0, scale: 1.05 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
@@ -292,41 +296,43 @@ const CinematicHero: React.FC<HeroProps> = ({ heroImages, heroIndex, phone }) =>
       </motion.div>
 
       {/* ── Layer 3: Animated Luxury Particles ─────────────────────────────────── */}
-      <motion.div
-        className="absolute inset-0 z-10 pointer-events-none overflow-hidden"
-        style={{ x: particleX, y: particleY }}
-      >
-        {PARTICLES.map((p) => (
-          <motion.div
-            key={p.id}
-            className="absolute rounded-full"
-            style={{
-              left: `${p.x}%`,
-              top: `${p.y}%`,
-              width: `${p.size}px`,
-              height: `${p.size}px`,
-              background: p.id % 3 === 0
-                ? `rgba(197,160,89,${p.opacity})`
-                : p.id % 3 === 1
-                  ? `rgba(230,215,170,${p.opacity * 0.6})`
-                  : `rgba(255,255,255,${p.opacity * 0.3})`,
-              boxShadow: p.id % 3 === 0 ? `0 0 ${p.size * 3}px rgba(197,160,89,0.5)` : 'none',
-            }}
-            animate={{
-              y: [0, -110 - p.speed * 3, -220 - p.speed * 6],
-              x: [0, p.drift, p.drift * 1.5],
-              opacity: [0, p.opacity, 0],
-              scale: [0.5, 1, 0.3],
-            }}
-            transition={{
-              duration: p.speed,
-              delay: p.delay,
-              repeat: Infinity,
-              ease: 'linear',
-            }}
-          />
-        ))}
-      </motion.div>
+      {particlesOk && (
+        <motion.div
+          className="absolute inset-0 z-10 pointer-events-none overflow-hidden"
+          style={{ x: particleX, y: particleY }}
+        >
+          {PARTICLES.map((p) => (
+            <motion.div
+              key={p.id}
+              className="absolute rounded-full"
+              style={{
+                left: `${p.x}%`,
+                top: `${p.y}%`,
+                width: `${p.size}px`,
+                height: `${p.size}px`,
+                background: p.id % 3 === 0
+                  ? `rgba(197,160,89,${p.opacity})`
+                  : p.id % 3 === 1
+                    ? `rgba(230,215,170,${p.opacity * 0.6})`
+                    : `rgba(255,255,255,${p.opacity * 0.3})`,
+                boxShadow: p.id % 3 === 0 ? `0 0 ${p.size * 3}px rgba(197,160,89,0.5)` : 'none',
+              }}
+              animate={{
+                y: [0, -110 - p.speed * 3, -220 - p.speed * 6],
+                x: [0, p.drift, p.drift * 1.5],
+                opacity: [0, p.opacity, 0],
+                scale: [0.5, 1, 0.3],
+              }}
+              transition={{
+                duration: p.speed,
+                delay: p.delay,
+                repeat: Infinity,
+                ease: 'linear',
+              }}
+            />
+          ))}
+        </motion.div>
+      )}
 
       {/* ── Layer 4: Hero Content ──────────────────────────────────────────────── */}
       <motion.div

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useExpenses } from '../../../hooks/useExpenses';
 import { Expense } from '../../../types';
-import { 
+import {
     IndianRupee, Plus, Search, Edit2, Trash2, Loader2, Save, X,
     Calendar, MapPin, TrendingUp, TrendingDown, ClipboardList, Info
 } from 'lucide-react';
@@ -31,7 +31,7 @@ export default function Expenses() {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedSite, setSelectedSite] = useState<string>('All');
     const [selectedType, setSelectedType] = useState<string>('All');
-    
+
     // Modal states
     const [isOpen, setIsOpen] = useState(false);
     const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
@@ -109,7 +109,7 @@ export default function Expenses() {
     };
 
     const filteredExpenses = expenses.filter(exp => {
-        const matchesSearch = exp.description?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        const matchesSearch = exp.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             exp.expenseType?.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesSite = selectedSite === 'All' || exp.siteName === selectedSite;
         const matchesType = selectedType === 'All' || exp.expenseType === selectedType;
@@ -128,7 +128,7 @@ export default function Expenses() {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                     <h1 className="text-3xl font-serif text-stone-900 dark:text-white tracking-wide">Expense Ledger</h1>
-                    <p className="text-xs uppercase tracking-widest text-luxury-gold opacity-80 mt-1">Suraj Expenses & Cash Flow Calculation</p>
+                    <p className="text-xs uppercase tracking-widest text-luxury-gold opacity-80 mt-1">sonu Expenses & Cash Flow Calculation</p>
                 </div>
                 <button
                     onClick={openAddModal}
@@ -325,7 +325,7 @@ export default function Expenses() {
                                 <X size={20} />
                             </button>
                         </div>
-                        
+
                         <form onSubmit={handleSubmit} className="p-6 space-y-4 max-h-[75vh] overflow-y-auto premium-scroll">
                             <div className="grid grid-cols-1 gap-4">
                                 <div>
@@ -386,9 +386,8 @@ export default function Expenses() {
                                 </div>
                                 <div className="bg-stone-50 dark:bg-stone-950 p-3 rounded-xl border border-stone-200 dark:border-white/5 text-[11px] text-stone-500 dark:text-stone-400 flex items-center justify-between">
                                     <span>Calculated Balance / Profit:</span>
-                                    <span className={`font-mono font-black text-xs ${
-                                        (Number(amountReceived) || 0) - (Number(amountPaid) || 0) >= 0 ? 'text-luxury-gold' : 'text-red-650 dark:text-red-400'
-                                    }`}>
+                                    <span className={`font-mono font-black text-xs ${(Number(amountReceived) || 0) - (Number(amountPaid) || 0) >= 0 ? 'text-luxury-gold' : 'text-red-650 dark:text-red-400'
+                                        }`}>
                                         ₹{((Number(amountReceived) || 0) - (Number(amountPaid) || 0)).toLocaleString('en-IN')}
                                     </span>
                                 </div>

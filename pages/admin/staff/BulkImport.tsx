@@ -267,7 +267,7 @@ export default function BulkImport() {
                 const staffSheetKey = sheetNames.find(n => n.toUpperCase().includes('STAFF'));
                 const attendanceSheetKey = sheetNames.find(n => n.toUpperCase().includes('ATTENDANCE'));
                 const advanceSheetKey = sheetNames.find(n => n.toUpperCase().includes('ADVANCE'));
-                const expenseSheetKey = sheetNames.find(n => n.toUpperCase().includes('EXPENSE') || n.toUpperCase().includes('SURAJ'));
+                const expenseSheetKey = sheetNames.find(n => n.toUpperCase().includes('EXPENSE') || n.toUpperCase().includes('sonu'));
 
                 let detectedMonth = '2026-06';
 
@@ -926,7 +926,7 @@ export default function BulkImport() {
                             balance: row.balance,
                             expenseType: row.amountPaid > 0 ? 'Site Expense' : 'Client Payment',
                             description: row.description,
-                            createdBy: 'Suraj (Excel Import)',
+                            createdBy: 'sonu (Excel Import)',
                             createdAt: serverTimestamp(),
                             updatedAt: serverTimestamp()
                         });
@@ -1100,7 +1100,7 @@ export default function BulkImport() {
                 <Upload size={40} className="text-luxury-gold mb-4 group-hover:scale-110 transition-transform" />
                 <h3 className="text-base font-bold text-stone-900 dark:text-white mb-2 font-serif">Upload Workbook</h3>
                 <p className="text-xs text-stone-500 max-w-sm mb-6">
-                    Select a multi-sheet spreadsheet containing: **STAFF DETAILS**, **ATTENDANCE**, **ADVANCE**, and **suraj expenses calculation from**.
+                    Select a multi-sheet spreadsheet containing: **STAFF DETAILS**, **ATTENDANCE**, **ADVANCE**, and **sonu expenses calculation from**.
                 </p>
                 <label className="bg-black dark:bg-stone-900 border border-stone-200 dark:border-stone-850 text-stone-750 dark:text-stone-300 hover:border-luxury-gold/50 px-6 py-3 rounded-xl text-xs font-bold transition-all cursor-pointer inline-flex items-center gap-2 hover:bg-stone-50 dark:hover:bg-stone-850">
                     <FileSpreadsheet size={15} className="text-luxury-gold" />

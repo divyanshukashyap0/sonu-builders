@@ -36,6 +36,14 @@ service cloud.firestore {
     }
     
     // ========================================
+    // USERS COLLECTION
+    // ========================================
+    match /users/{email} {
+      allow read, write: if isAuthenticated() && request.auth.token.email == email;
+      allow read: if isAdmin();
+    }
+    
+    // ========================================
     // PROJECTS COLLECTION
     // ========================================
     match /projects/{projectId} {

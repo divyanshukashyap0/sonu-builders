@@ -3,6 +3,7 @@ import YouTubeBackground from './YouTubeBackground';
 import { Play } from 'lucide-react';
 import { useCompanyData } from '../../hooks/useCompanyData';
 import logo from '../../logo.png';
+import { getOptimizedImageUrl } from '../../utils/performance';
 
 interface MediaRendererProps {
   src: string;
@@ -11,6 +12,7 @@ interface MediaRendererProps {
   loading?: 'lazy' | 'eager';
   showPlayIcon?: boolean;
   objectFit?: 'cover' | 'contain';
+  width?: number;
 }
 
 const MediaRenderer: React.FC<MediaRendererProps> = ({
@@ -19,7 +21,8 @@ const MediaRenderer: React.FC<MediaRendererProps> = ({
   className = "",
   loading = 'lazy',
   showPlayIcon = false,
-  objectFit = 'cover'
+  objectFit = 'cover',
+  width
 }) => {
   const isYoutube = src.includes('youtube.com') || src.includes('youtu.be');
 
@@ -60,7 +63,8 @@ const MediaRenderer: React.FC<MediaRendererProps> = ({
     return url;
   };
 
-  const finalSrc = isYoutube ? src : getWatermarkedUrl(src);
+  const optimizedSrc = isYoutube ? src : getOptimizedImageUrl(src, width || 800);
+  const finalSrc = isYoutube ? src : getWatermarkedUrl(optimizedSrc);
 
   if (isYoutube) {
     return (

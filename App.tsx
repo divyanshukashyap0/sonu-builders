@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import BottomNav from './components/BottomNav';
 import FloatingActions from './components/FloatingActions';
 import { DynamicBackground } from './components/DynamicBackground';
+import { AuthProvider } from './context/AuthContext';
 
 
 // Lazy Load Pages
@@ -22,6 +23,8 @@ const CaseStudy = lazy(() => import('./pages/CaseStudy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Sitemap = lazy(() => import('./pages/Sitemap'));
+const Login = lazy(() => import('./pages/Login'));
+const Account = lazy(() => import('./pages/Account'));
 // Admin Pages
 const AdminLogin = lazy(() => import('./pages/admin/Login'));
 const AdminBootstrap = lazy(() => import('./pages/admin/AdminBootstrap'));
@@ -204,6 +207,8 @@ const AppContent: React.FC = () => {
               <Route path="/terms" element={<Terms />} />
               <Route path="/privacy-policy" element={<Privacy />} />
               <Route path="/sitemap" element={<Sitemap />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/account" element={<Account />} />
 
               {/* Admin Routes */}
               <Route path="/admin/login" element={<AdminLogin />} />
@@ -264,14 +269,16 @@ const App: React.FC = () => {
     <PerformanceProvider>
       <ThemeProvider>
         <ToastProvider>
-          <Router>
-            <ScrollToTop />
-            <SmoothScroll>
-              <ChunkErrorListener>
-                <AppContent />
-              </ChunkErrorListener>
-            </SmoothScroll>
-          </Router>
+          <AuthProvider>
+            <Router>
+              <ScrollToTop />
+              <SmoothScroll>
+                <ChunkErrorListener>
+                  <AppContent />
+                </ChunkErrorListener>
+              </SmoothScroll>
+            </Router>
+          </AuthProvider>
         </ToastProvider>
       </ThemeProvider>
     </PerformanceProvider>

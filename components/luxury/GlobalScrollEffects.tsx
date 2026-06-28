@@ -1,8 +1,4 @@
 import React, { useEffect } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 /**
  * GlobalScrollEffects — minimal JS, maximum CSS.
@@ -22,18 +18,24 @@ const GlobalScrollEffects: React.FC = () => {
 
     let rafId = 0;
     let lastWidth = 0;
+    let ticking = false;
 
     const update = () => {
-      rafId = requestAnimationFrame(() => {
-        const total = document.documentElement.scrollHeight - window.innerHeight;
-        if (total <= 0) return;
-        const pct = Math.min((window.scrollY / total) * 100, 100);
-        // Only update DOM when value actually changed (avoids unnecessary repaints)
-        if (Math.abs(pct - lastWidth) > 0.2) {
-          bar.style.width = `${pct}%`;
-          lastWidth = pct;
-        }
-      });
+      if (!ticking) {
+        rafId = requestAnimationFrame(() => {
+          const total = document.documentElement.scrollHeight - window.innerHeight;
+          if (total > 0) {
+            const pct = Math.min((window.scrollY / total) * 100, 100);
+            // Only update DOM when value actually changed (avoids unnecessary repaints)
+            if (Math.abs(pct - lastWidth) > 0.2) {
+              bar.style.width = `${pct}%`;
+              lastWidth = pct;
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     window.addEventListener('scroll', update, { passive: true });
@@ -44,10 +46,10 @@ const GlobalScrollEffects: React.FC = () => {
     };
   }, []);
 
-  // ── 2. CSS data-reveal IntersectionObserver ──────────────────────────────────
+  // ── 2. CSS data-reveal & Section entrances IntersectionObserver ───────────────
   // Pure CSS transitions — zero Framer Motion, zero GSAP
   useEffect(() => {
-    const els = document.querySelectorAll('[data-reveal]');
+    const els = document.querySelectorAll('[data-reveal], [data-cinematic-section]');
     if (!els.length) return;
 
     const io = new IntersectionObserver(
@@ -60,40 +62,11 @@ const GlobalScrollEffects: React.FC = () => {
           }
         });
       },
-      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.05, rootMargin: '0px 0px -40px 0px' }
     );
 
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
-  }, []);
-
-  // ── 3. Section entrances — ONLY on desktop pointer:fine ─────────────────────
-  // Only opacity (composited) — no scale, no filter = no layout/paint triggers
-  useEffect(() => {
-    const isDesktop = window.matchMedia('(pointer: fine)').matches;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!isDesktop || reduced) return;
-
-    const ctx = gsap.context(() => {
-      document.querySelectorAll('[data-cinematic-section]').forEach((section) => {
-        gsap.fromTo(section,
-          { opacity: 0 },
-          {
-            opacity: 1,
-            duration: 0.8,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 92%',
-              toggleActions: 'play none none none',
-              once: true,
-            },
-          }
-        );
-      });
-    });
-
-    return () => ctx.revert();
   }, []);
 
   return null;

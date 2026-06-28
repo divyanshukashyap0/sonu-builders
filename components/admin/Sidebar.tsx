@@ -112,7 +112,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapse }) => {
         { icon: Calendar, label: 'Attendance', path: '/admin/staff/attendance', desc: 'Shift Matrix' },
         { icon: IndianRupee, label: 'Salary Slips', path: '/admin/staff/salary', desc: 'Payroll Matrix' },
         { icon: CreditCard, label: 'Advances', path: '/admin/staff/advances', desc: 'Economic Ledger' },
-        { icon: Layers, label: 'Expenses', path: '/admin/staff/expenses', desc: 'Suraj Ledger' },
+        { icon: Layers, label: 'Expenses', path: '/admin/staff/expenses', desc: 'sonu Ledger' },
         { icon: MapPin, label: 'Site Allocations', path: '/admin/staff/site-allocation', desc: 'Labor Distribution' },
         { icon: ClipboardList, label: 'Reports Hub', path: '/admin/staff/reports', desc: 'Intelligence Summary' },
         { icon: Zap, label: 'Bulk Import', path: '/admin/staff/import', desc: 'Excel Seeder' },
@@ -283,7 +283,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCollapse }) => {
                                                              ${isActive
                                                                 ? 'text-theme-accent bg-[var(--theme-accent)]/10 font-bold'
                                                                 : '!text-stone-700 hover:!text-stone-900 hover:bg-stone-500/8 dark:!text-stone-400 dark:hover:!text-white dark:hover:bg-white/5'
-                                                             }
+                                                            }
                                                         `}
                                                         onClick={() => setMobileOpen(false)}
                                                     >

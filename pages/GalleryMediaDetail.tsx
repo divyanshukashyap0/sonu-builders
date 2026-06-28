@@ -19,6 +19,7 @@ import { useDesignInspirations } from '../hooks/useDesignInspirations';
 import { useServices } from '../hooks/useServices';
 import { useProjects } from '../hooks/useProjects';
 import { downloadWithWatermark } from '../utils/imageUtils';
+import { getOptimizedImageUrl } from '../utils/performance';
 
 const GalleryMediaDetail: React.FC = () => {
     const [searchParams] = useSearchParams();
@@ -144,7 +145,7 @@ const GalleryMediaDetail: React.FC = () => {
                         dragConstraints={{ left: 0, right: 0 }}
                         onDragEnd={handleDragEnd}
                         transition={{ duration: 0.6, ease: "circOut" }}
-                        src={url} 
+                        src={getOptimizedImageUrl(url, 1200)} 
                         alt={title} 
                         className="absolute inset-0 w-full h-full object-contain cursor-grab active:cursor-grabbing bg-black/50"
                     />

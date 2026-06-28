@@ -21,6 +21,7 @@ import SEO from '../components/SEO';
 import DesignInspirations from '../components/luxury/DesignInspirations';
 
 import { downloadWithWatermark } from '../utils/imageUtils';
+import { getOptimizedImageUrl } from '../utils/performance';
 
 const InspirationDetail: React.FC = () => {
     const { itemId } = useParams<{ itemId: string }>();
@@ -107,7 +108,7 @@ const InspirationDetail: React.FC = () => {
                         dragConstraints={{ left: 0, right: 0 }}
                         onDragEnd={handleDragEnd}
                         transition={{ duration: 0.6, ease: "circOut" }}
-                        src={inspiration.image} 
+                        src={getOptimizedImageUrl(inspiration.image, 1920)} 
                         alt={inspiration.title} 
                         className="absolute inset-0 w-full h-full object-cover cursor-grab active:cursor-grabbing"
                     />
@@ -288,7 +289,7 @@ const InspirationDetail: React.FC = () => {
                                     className="aspect-[16/10] rounded-[2.5rem] overflow-hidden shadow-3xl border border-white/10 group bg-neutral-900"
                                 >
                                     <img 
-                                        src={img} 
+                                        src={getOptimizedImageUrl(img, 1000)} 
                                         alt={`${inspiration.title} detail ${idx + 1}`} 
                                         className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
                                     />
