@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'r
 import Header from './components/Header';
 import Footer from './components/Footer';
 import BottomNav from './components/BottomNav';
-import FloatingActions from './components/FloatingActions';
 import { DynamicBackground } from './components/DynamicBackground';
 import { AuthProvider } from './context/AuthContext';
 
@@ -12,12 +11,12 @@ import { AuthProvider } from './context/AuthContext';
 import Home from './pages/Home';
 import About from './pages/About';
 import Services from './pages/Services';
-import Projects from './pages/Projects';
 import Contact from './pages/Contact';
 import Gallery from './pages/DesignInspirationsPage';
 
 // Lazy Load Pages (Lower priority/Utility)
 const ServiceDetail = lazy(() => import('./pages/ServiceDetail'));
+const Estimate = lazy(() => import('./pages/Estimate'));
 const AITools = lazy(() => import('./pages/AITools'));
 const CaseStudy = lazy(() => import('./pages/CaseStudy'));
 const Terms = lazy(() => import('./pages/Terms'));
@@ -25,6 +24,11 @@ const Privacy = lazy(() => import('./pages/Privacy'));
 const Sitemap = lazy(() => import('./pages/Sitemap'));
 const Login = lazy(() => import('./pages/Login'));
 const Account = lazy(() => import('./pages/Account'));
+const LocationLanding = lazy(() => import('./pages/LocationLanding'));
+const MumbaiLanding = lazy(() => import('./pages/MumbaiLanding'));
+const Blog = lazy(() => import('./pages/Blog'));
+const BlogPost = lazy(() => import('./pages/BlogPost'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 // Admin Pages
 const AdminLogin = lazy(() => import('./pages/admin/Login'));
 const AdminBootstrap = lazy(() => import('./pages/admin/AdminBootstrap'));
@@ -45,7 +49,6 @@ const AppearanceSettings = lazy(() => import('./pages/admin/AppearanceSettings')
 const AdminInspirations = lazy(() => import('./pages/admin/InspirationManager'));
 const InspirationDetail = lazy(() => import('./pages/InspirationDetail'));
 const GalleryMediaDetail = lazy(() => import('./pages/GalleryMediaDetail'));
-const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
 
 // Admin Staff Management Pages
 const AdminStaffDirectory = lazy(() => import('./pages/admin/staff/StaffDirectory'));
@@ -60,13 +63,13 @@ const AdminBulkImport = lazy(() => import('./pages/admin/staff/BulkImport'));
 import AdminLayout from './layouts/AdminLayout';
 import ProtectedRoute from './components/ProtectedRoute';
 import CustomCursor from './components/luxury/CustomCursor';
-import AIAssistant from './components/luxury/AIAssistant';
 import PremiumLoader from './components/luxury/PremiumLoader';
+import MobileStickyCTA from './components/luxury/MobileStickyCTA';
 
 import { COMPANY_NAME } from './constants';
 import { useCompanyData } from './hooks/useCompanyData';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SmoothScroll } from './components/luxury/SmoothScroll';
+import { SmoothScroll, useLenis } from './components/luxury/SmoothScroll';
 import GlobalScrollEffects from './components/luxury/GlobalScrollEffects';
 import CinematicOverlay from './components/luxury/CinematicOverlay';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
@@ -102,9 +105,10 @@ const ChunkErrorListener = ({ children }: { children: React.SuspenseProps['child
   return <>{children}</>;
 };
 
-// Scroll to top on route change
+// Scroll to top on route change or handle hash anchor navigation smoothly
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
+  const lenis = useLenis();
 
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
@@ -115,18 +119,26 @@ const ScrollToTop = () => {
   useEffect(() => {
     // Check if there is a hash (anchor) in the URL
     if (hash) {
-      // Use a small timeout to ensure content is rendered before scrolling
-      setTimeout(() => {
-        const element = document.getElementById(hash.replace('#', ''));
+      const targetId = hash.replace('#', '');
+      const timer = setTimeout(() => {
+        const element = document.getElementById(targetId);
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (lenis) {
+            lenis.scrollTo(element, { offset: -80, duration: 1.2 });
+          } else {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
         }
-      }, 100);
+      }, 150);
+      return () => clearTimeout(timer);
     } else {
-      // If no hash, scroll to top instantly (bypass smooth-scroll CSS)
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      if (lenis) {
+        lenis.scrollTo(0, { immediate: true });
+      } else {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+      }
     }
-  }, [pathname, hash]);
+  }, [pathname, hash, lenis]);
 
   return null;
 };
@@ -171,6 +183,13 @@ const AppContent: React.FC = () => {
     return () => unsub();
   }, []);
 
+  // Track the last opened service page so the image viewer back button always returns to it
+  useEffect(() => {
+    if (location.pathname.startsWith('/services')) {
+      sessionStorage.setItem('last_opened_service_page', location.pathname + location.search);
+    }
+  }, [location.pathname, location.search]);
+
   return (
     <>
       <AnimatePresence>
@@ -182,7 +201,6 @@ const AppContent: React.FC = () => {
       <DynamicBackground />
 
       {!isAdminRoute && <CustomCursor />}
-      <AIAssistant />
       <GlobalScrollEffects />
       {!isAdminRoute && <CinematicOverlay />}
       {!isAdminRoute && <Header />}
@@ -195,15 +213,21 @@ const AppContent: React.FC = () => {
               <Route path="/about" element={<About />} />
               <Route path="/services" element={<Services />} />
               <Route path="/services/:id" element={<ServiceDetail />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/projects/:id" element={<ProjectDetail />} />
+              <Route path="/projects" element={<Navigate to="/services" replace />} />
+              <Route path="/projects/:id" element={<Navigate to="/services" replace />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/gallery/:category" element={<Gallery />} />
               <Route path="/gallery/item/:itemId" element={<InspirationDetail />} />
               <Route path="/gallery/media" element={<GalleryMediaDetail />} />
               <Route path="/case-study/:id" element={<CaseStudy />} />
+              <Route path="/estimate" element={<Estimate />} />
               <Route path="/ai-tools" element={<AITools />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/interior-designer-mumbai" element={<MumbaiLanding />} />
+              <Route path="/locations/:locationName" element={<LocationLanding />} />
+              <Route path="/interior-designers-:locationName" element={<LocationLanding />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="/privacy-policy" element={<Privacy />} />
               <Route path="/sitemap" element={<Sitemap />} />
@@ -252,13 +276,15 @@ const AppContent: React.FC = () => {
               {/* Legacy Routes - Redirect */}
               <Route path="/admin-portal" element={<Navigate to="/admin/login" replace />} />
               <Route path="/admin-dashboard" element={<Navigate to="/admin/dashboard" replace />} />
+
+              {/* 404 Fallback */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
         </div>
       </main>
-      {!isAdminRoute && <FloatingActions />}
       {!isAdminRoute && <Footer />}
-      {!isAdminRoute && <BottomNav />}
+      {!isAdminRoute && !location.pathname.startsWith('/gallery/item') && !location.pathname.startsWith('/gallery/media') && <MobileStickyCTA />}
     </div>
     </>
   );

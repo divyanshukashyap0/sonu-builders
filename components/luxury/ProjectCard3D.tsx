@@ -4,6 +4,7 @@ import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { ArrowRight, MapPin } from 'lucide-react';
 import usePerformanceTier from '../../hooks/usePerformanceTier';
 import { getOptimizedImageUrl } from '../../utils/performance';
+import LazyImage from '../ui/LazyImage';
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 export interface ProjectCardProps {
@@ -78,24 +79,28 @@ const ProjectCard3D: React.FC<ProjectCardProps> = ({
       <motion.div className="break-inside-avoid" variants={entrance} initial="hidden" animate="show">
         <Link
           to={`/projects/${id}`}
-          className="block relative overflow-hidden rounded-sm"
-          style={{ border: '1px solid rgba(197,160,89,0.1)' }}
+          className="block relative overflow-hidden rounded-sm shadow-xs"
+          style={{ border: '1px solid rgba(197,160,89,0.18)' }}
         >
-          <img src={getOptimizedImageUrl(image, 600)} alt={title} className="w-full h-auto object-cover block"
-            style={{ filter: 'brightness(0.85)' }} loading="lazy" />
+          <LazyImage
+            src={getOptimizedImageUrl(image, 600)}
+            alt={title}
+            className="w-full h-auto object-cover block"
+            rootMargin="280px 0px"
+          />
           <div className="absolute inset-0 pointer-events-none"
-            style={{ background: 'linear-gradient(to top,rgba(0,0,0,0.75) 0%,transparent 60%)' }} />
+            style={{ background: 'linear-gradient(to top,rgba(0,0,0,0.45) 0%,transparent 60%)' }} />
           {category && (
             <div className="absolute top-3 left-3 px-2.5 py-1 text-[8px] uppercase tracking-[0.2em] font-bold"
-              style={{ background: 'rgba(6,6,6,0.7)', border: '1px solid rgba(197,160,89,0.3)', color: '#c5a059', borderRadius: '2px' }}>
+              style={{ background: 'rgba(255,255,255,0.92)', border: '1px solid rgba(197,160,89,0.4)', color: '#8C6D23', borderRadius: '2px' }}>
               {category}
             </div>
           )}
-          <div className="px-4 py-3" style={{ background: 'rgba(6,6,6,0.9)' }}>
-            <p className="text-white text-sm font-bold truncate"
+          <div className="px-4 py-3" style={{ background: '#FFFFFF' }}>
+            <p className="text-[#171717] text-sm font-bold truncate"
               style={{ fontFamily: "'Cormorant Garamond',serif" }}>{title}</p>
             {location && (
-              <p className="text-[10px] mt-0.5 flex items-center gap-1" style={{ color: 'rgba(197,160,89,0.6)' }}>
+              <p className="text-[10px] mt-0.5 flex items-center gap-1" style={{ color: '#8C6D23' }}>
                 <MapPin className="w-2.5 h-2.5" />{location}
               </p>
             )}
@@ -116,20 +121,6 @@ const ProjectCard3D: React.FC<ProjectCardProps> = ({
         onMouseLeave={handleMouseLeave}
         onMouseEnter={handleMouseEnter}
       >
-        {/* Gold ambient glow — only on high */}
-        {!isLow && (
-          <motion.div
-            className="absolute inset-0 rounded-sm pointer-events-none"
-            style={{
-              opacity: glowOpacity,
-              background: 'radial-gradient(ellipse at center,rgba(197,160,89,0.5) 0%,transparent 70%)',
-              filter: 'blur(18px)',
-              transform: 'scale(1.05)',
-              zIndex: 0,
-            }}
-          />
-        )}
-
         {/* 3D card */}
         <motion.div
           style={{ rotateX: tiltOk ? rotateX : 0, rotateY: tiltOk ? rotateY : 0, transformStyle: 'preserve-3d', willChange: 'transform' }}
@@ -139,44 +130,27 @@ const ProjectCard3D: React.FC<ProjectCardProps> = ({
             to={`/projects/${id}`}
             className="block relative overflow-hidden rounded-sm"
             style={{
-              border: '1px solid rgba(197,160,89,0.12)',
+              border: '1px solid rgba(197,160,89,0.2)',
               boxShadow: isHovered
-                ? '0 24px 60px rgba(0,0,0,0.65), 0 0 0 1px rgba(197,160,89,0.28)'
-                : '0 6px 30px rgba(0,0,0,0.45)',
+                ? '0 16px 36px rgba(0,0,0,0.1), 0 0 0 1px rgba(197,160,89,0.3)'
+                : '0 4px 16px rgba(0,0,0,0.05)',
               transition: 'box-shadow 0.45s cubic-bezier(0.22,1,0.36,1)',
             }}
           >
             {/* Image */}
             <div className="relative overflow-hidden">
-              <motion.img
-                src={getOptimizedImageUrl(image, 600)} alt={title}
-                className="w-full h-auto object-cover block"
-                animate={{ scale: isHovered ? 1.07 : 1 }}
-                transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-                style={{ filter: isHovered ? 'brightness(0.72) contrast(1.04)' : 'brightness(0.85)' }}
-                loading="lazy"
-              />
-
-              {/* Depth gradient */}
-              <div className="absolute inset-0 pointer-events-none"
-                style={{ background: 'linear-gradient(to top,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.15) 45%,transparent 100%)' }} />
-
-              {/* Hover overlay */}
-              <motion.div
-                className="absolute inset-0 pointer-events-none"
-                style={{ background: 'linear-gradient(135deg,rgba(197,160,89,0.05) 0%,transparent 60%)', opacity: isHovered ? 1 : 0, transition: 'opacity 0.4s ease' }}
-              />
-
-              {/* Gold top shimmer on hover */}
-              <div
-                className="absolute inset-x-0 top-0 h-[1px] pointer-events-none"
-                style={{ background: 'linear-gradient(90deg,transparent,rgba(197,160,89,0.55),transparent)', opacity: isHovered ? 1 : 0, transition: 'opacity 0.4s ease' }}
+              <LazyImage
+                src={getOptimizedImageUrl(image, 600)}
+                alt={title}
+                rootMargin="280px 0px"
+                className="w-full h-auto object-cover block transition-transform duration-700 ease-out"
+                style={{ transform: isHovered ? 'scale(1.05)' : 'scale(1)' }}
               />
 
               {/* Category pill */}
               {category && (
                 <div className="absolute top-3 left-3 px-2.5 py-1 text-[8px] uppercase tracking-[0.2em] font-bold pointer-events-none"
-                  style={{ background: 'rgba(6,6,6,0.65)', border: '1px solid rgba(197,160,89,0.35)', backdropFilter: blurOk ? 'blur(8px)' : 'none', color: '#c5a059', borderRadius: '2px' }}>
+                  style={{ background: 'rgba(255,255,255,0.92)', border: '1px solid rgba(197,160,89,0.4)', backdropFilter: blurOk ? 'blur(8px)' : 'none', color: '#8C6D23', borderRadius: '2px' }}>
                   {category}
                 </div>
               )}
@@ -184,10 +158,10 @@ const ProjectCard3D: React.FC<ProjectCardProps> = ({
 
             {/* Info panel */}
             <div className="relative">
-              <div className="px-4 py-3" style={{ background: 'rgba(6,6,6,0.9)', borderTop: '1px solid rgba(197,160,89,0.08)' }}>
-                <p className="text-white text-sm font-bold truncate" style={{ fontFamily: "'Cormorant Garamond',serif" }}>{title}</p>
+              <div className="px-4 py-3" style={{ background: '#FFFFFF', borderTop: '1px solid rgba(197,160,89,0.15)' }}>
+                <p className="text-[#171717] text-sm font-bold truncate" style={{ fontFamily: "'Cormorant Garamond',serif" }}>{title}</p>
                 {location && (
-                  <p className="text-[10px] mt-0.5 flex items-center gap-1" style={{ color: 'rgba(197,160,89,0.6)' }}>
+                  <p className="text-[10px] mt-0.5 flex items-center gap-1" style={{ color: '#8C6D23' }}>
                     <MapPin className="w-2.5 h-2.5" />{location}
                   </p>
                 )}
@@ -198,10 +172,10 @@ const ProjectCard3D: React.FC<ProjectCardProps> = ({
                 className="overflow-hidden"
                 animate={{ height: isHovered ? 'auto' : 0 }}
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                style={{ background: 'rgba(8,8,8,0.95)', backdropFilter: blurOk ? 'blur(12px)' : 'none', borderTop: '1px solid rgba(197,160,89,0.08)' }}
+                style={{ background: '#FAF8F5', borderTop: '1px solid rgba(197,160,89,0.15)' }}
               >
                 <div className="px-4 py-3 flex items-center justify-between">
-                  <span className="text-[9px] uppercase tracking-[0.25em] font-bold" style={{ color: 'rgba(197,160,89,0.7)' }}>View Project</span>
+                  <span className="text-[9px] uppercase tracking-[0.25em] font-bold" style={{ color: '#8C6D23' }}>View Project</span>
                   <motion.div animate={{ x: isHovered ? 0 : -6, opacity: isHovered ? 1 : 0 }} transition={{ duration: 0.3, delay: 0.08 }}>
                     <ArrowRight className="w-3.5 h-3.5" style={{ color: '#c5a059' }} />
                   </motion.div>

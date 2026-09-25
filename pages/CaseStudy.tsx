@@ -148,18 +148,18 @@ const CaseStudy: React.FC = () => {
             </Section>
 
             {/* Timeline & Materials */}
-            <Section className="bg-luxury-charcoal text-white">
+            <Section className="bg-stone-50 text-[#171717] border-y border-stone-200/80">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
                     <div>
                         <h3 className="text-2xl font-serif font-bold text-luxury-gold mb-8">Project Timeline</h3>
                         <div className="space-y-6">
                             {data.timeline.map((item, idx) => (
                                 <div key={idx} className="flex items-center">
-                                    <div className="w-24 text-sm text-white/50 font-mono">{item.duration}</div>
+                                    <div className="w-24 text-sm text-stone-500 font-mono">{item.duration}</div>
                                     <div className="w-1 h-12 bg-luxury-gold/30 mx-4 relative">
                                         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-luxury-gold rounded-full" />
                                     </div>
-                                    <div className="font-bold text-lg">{item.phase}</div>
+                                    <div className="font-bold text-lg text-[#171717]">{item.phase}</div>
                                 </div>
                             ))}
                         </div>
@@ -169,9 +169,9 @@ const CaseStudy: React.FC = () => {
                         <h3 className="text-2xl font-serif font-bold text-luxury-gold mb-8">Premium Materials Used</h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             {data.materials.map((mat, idx) => (
-                                <div key={idx} className="flex items-center bg-white/5 p-4 rounded-lg border border-white/10">
+                                <div key={idx} className="flex items-center bg-white p-4 rounded-xl border border-stone-200/80 shadow-sm">
                                     <img src={getOptimizedImageUrl(mat.image, 100)} alt={mat.name} className="w-12 h-12 rounded-full object-cover mr-4" />
-                                    <span className="font-medium">{mat.name}</span>
+                                    <span className="font-medium text-[#171717]">{mat.name}</span>
                                 </div>
                             ))}
                         </div>

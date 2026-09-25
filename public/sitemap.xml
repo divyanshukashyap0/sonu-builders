@@ -1,148 +1,264 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Core Static Pages -->
+  <!-- Core Static & Pillar Pages -->
   <url>
     <loc>https://sonu-builders.in/</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://sonu-builders.in/interior-designer-mumbai</loc>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://sonu-builders.in/about</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sonu-builders.in/services</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://sonu-builders.in/projects</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
+
   <url>
     <loc>https://sonu-builders.in/gallery</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://sonu-builders.in/estimate</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://sonu-builders.in/contact</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://sonu-builders.in/ai-tools</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sonu-builders.in/contact</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://sonu-builders.in/blog</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://sonu-builders.in/sitemap</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
-
-  <!-- Legal Pages -->
   <url>
     <loc>https://sonu-builders.in/terms</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://sonu-builders.in/privacy-policy</loc>
-    <lastmod>2026-04-15</lastmod>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
 
-  <!-- Dynamic Service Pages -->
+  <!-- 18 Specialized Service Pages -->
   <url>
-    <loc>https://sonu-builders.in/services/1</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://sonu-builders.in/services/residential-interior-design</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://sonu-builders.in/services/commercial-interior-design</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://sonu-builders.in/services/modular-kitchen-design</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://sonu-builders.in/services/living-room-interior-design</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://sonu-builders.in/services/2</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://sonu-builders.in/services/bedroom-interior-design</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://sonu-builders.in/services/3</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://sonu-builders.in/services/wardrobe-design</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://sonu-builders.in/services/4</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://sonu-builders.in/services/bathroom-interior-design</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://sonu-builders.in/services/5</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://sonu-builders.in/services/false-ceiling-design</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://sonu-builders.in/services/6</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://sonu-builders.in/services/tv-unit-design</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sonu-builders.in/services/balcony-design</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sonu-builders.in/services/pooja-room-design</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sonu-builders.in/services/dining-room-design</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sonu-builders.in/services/home-office-design</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sonu-builders.in/services/staircase-design</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sonu-builders.in/services/crockery-unit-design</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sonu-builders.in/services/home-bar-design</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sonu-builders.in/services/flooring-design</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sonu-builders.in/services/wallpaper-design</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
-  <!-- Dynamic Project / Case Study Pages -->
+  <!-- Genuine Mumbai Operational Locations -->
   <url>
-    <loc>https://sonu-builders.in/case-study/1</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://sonu-builders.in/locations/kalyan-dombivli</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://sonu-builders.in/case-study/2</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://sonu-builders.in/locations/palava-city</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://sonu-builders.in/case-study/3</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://sonu-builders.in/locations/thane</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://sonu-builders.in/case-study/4</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://sonu-builders.in/locations/navi-mumbai</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://sonu-builders.in/case-study/5</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://sonu-builders.in/locations/bandra</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://sonu-builders.in/case-study/6</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://sonu-builders.in/locations/andheri</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
+  <url>
+    <loc>https://sonu-builders.in/locations/powai</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- 6 In-Depth Mumbai Blog Guides -->
+  <url>
+    <loc>https://sonu-builders.in/blog/how-to-choose-interior-designer-mumbai</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://sonu-builders.in/blog/modern-flat-interior-design-ideas-mumbai</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://sonu-builders.in/blog/modular-kitchen-design-ideas-mumbai-apartments</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://sonu-builders.in/blog/space-saving-interior-ideas-mumbai-1bhk-2bhk</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://sonu-builders.in/blog/2bhk-interior-design-guide-mumbai-homeowners</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://sonu-builders.in/blog/interior-design-checklist-new-mumbai-flat</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
 </urlset>

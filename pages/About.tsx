@@ -12,7 +12,7 @@ import CinematicText from '../components/luxury/CinematicText';
 // ── Shared design tokens ────────────────────────────────────────────────────────
 const GOLD = '#c5a059';
 const GOLD_LIGHT = '#e8d5a3';
-const BG = '#060606';
+const BG = '#FAF8F5';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -49,7 +49,7 @@ const About: React.FC = () => {
   const stats = [
     { value: '4500+', label: 'Projects', icon: Building2 },
     { value: '4000+', label: 'Happy Families', icon: Heart },
-    { value: '15+', label: 'Years', icon: Award },
+    { value: '17+', label: 'Years', icon: Award },
     { value: '100%', label: 'Dedication', icon: Eye },
   ];
 
@@ -62,7 +62,7 @@ const About: React.FC = () => {
   ];
 
   return (
-    <div className="text-white min-h-screen overflow-x-hidden" style={{ background: BG }}>
+    <div className="text-stone-900 min-h-screen overflow-x-hidden" style={{ background: BG }}>
       <SEO
         title="About Us | Sonu Enterprises"
         description="15 years of luxury interiors & architectural excellence in Maharashtra."
@@ -76,17 +76,17 @@ const About: React.FC = () => {
           <img
             src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2400&auto=format&fit=crop"
             className="w-full h-full object-cover"
-            style={{ filter: 'contrast(1.05) saturate(0.85) brightness(0.45)' }}
+            style={{ filter: 'contrast(1.02) saturate(0.9) brightness(0.9)' }}
             alt="About Hero"
           />
         </motion.div>
         {/* Gradient overlays */}
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg,rgba(4,4,4,0.85) 0%,rgba(4,4,4,0.4) 60%,transparent 100%)' }} />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(6,6,6,0.9) 0%,transparent 50%)' }} />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg,rgba(250,248,245,0.92) 0%,rgba(250,248,245,0.65) 60%,transparent 100%)' }} />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(250,248,245,0.95) 0%,transparent 50%)' }} />
 
         {/* Gold side light */}
         <div className="absolute right-0 top-1/4 w-[400px] h-[400px] pointer-events-none"
-          style={{ background: `radial-gradient(circle,rgba(197,160,89,0.1) 0%,transparent 70%)`, filter: 'blur(60px)' }} />
+          style={{ background: `radial-gradient(circle,rgba(197,160,89,0.12) 0%,transparent 70%)` }} />
 
         <motion.div
           className="relative z-10 max-w-7xl mx-auto px-6 w-full pt-24"
@@ -98,22 +98,22 @@ const About: React.FC = () => {
           </motion.div>
           <motion.h1
             variants={fadeUp}
-            className="text-6xl md:text-8xl lg:text-[9rem] font-bold leading-none mb-8"
+            className="text-6xl md:text-8xl lg:text-[9rem] font-bold leading-none mb-8 text-[#171717]"
             style={{ fontFamily: "'Cormorant Garamond',serif", letterSpacing: '-0.03em' }}
           >
             Designing
             <br />
-            <span style={{ background: `linear-gradient(135deg,${GOLD},${GOLD_LIGHT})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+            <span style={{ background: `linear-gradient(135deg,${GOLD},#9A7836)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
               Lifestyles.
             </span>
           </motion.h1>
-          <motion.p variants={fadeUp} className="text-gray-400 text-lg max-w-xl leading-relaxed mb-10">
+          <motion.p variants={fadeUp} className="text-stone-600 text-lg max-w-xl leading-relaxed mb-10">
             We blend creativity, functionality, and craftsmanship to create interiors that are timeless and uniquely yours.
           </motion.p>
           <motion.div variants={fadeUp}>
-            <Link to="/projects" className="group inline-flex items-center gap-3 px-8 py-4 text-[11px] uppercase tracking-[0.25em] font-bold shimmer-hover"
-              style={{ border: `1px solid rgba(197,160,89,0.4)`, color: GOLD, borderRadius: '2px' }}>
-              Our Projects <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+            <Link to="/services" className="group inline-flex items-center gap-3 px-8 py-4 text-[11px] uppercase tracking-[0.25em] font-bold bg-white/90 shadow-sm hover:shadow-md transition-all"
+              style={{ border: `1px solid rgba(197,160,89,0.5)`, color: '#171717', borderRadius: '2px' }}>
+              Our Services <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform text-luxury-gold" />
             </Link>
           </motion.div>
         </motion.div>
@@ -125,7 +125,7 @@ const About: React.FC = () => {
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
         >
-          <span className="text-[8px] uppercase tracking-[0.3em]" style={{ color: 'rgba(197,160,89,0.6)' }}>Scroll</span>
+          <span className="text-[8px] uppercase tracking-[0.3em] font-bold" style={{ color: 'rgba(197,160,89,0.9)' }}>Scroll</span>
           <div className="w-[1px] h-10" style={{ background: `linear-gradient(to bottom,${GOLD},transparent)` }} />
         </motion.div>
       </section>
@@ -133,25 +133,25 @@ const About: React.FC = () => {
       {/* ── 2. BRAND PHILOSOPHY ────────────────────────────────────────────────── */}
       <section className="relative py-32 overflow-hidden" data-cinematic-section>
         <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full pointer-events-none"
-          style={{ background: `radial-gradient(circle,rgba(197,160,89,0.05) 0%,transparent 70%)`, filter: 'blur(80px)' }} />
+          style={{ background: `radial-gradient(circle,rgba(197,160,89,0.08) 0%,transparent 70%)` }} />
 
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.3 }} variants={stagger}>
               <motion.div variants={fadeUp}><Label>Who We Are</Label></motion.div>
               <motion.h2 variants={fadeUp}
-                className="text-5xl md:text-6xl font-bold text-white mb-10 leading-tight text-glow-gold"
+                className="text-5xl md:text-6xl font-bold text-[#171717] mb-10 leading-tight"
                 style={{ fontFamily: "'Cormorant Garamond',serif", letterSpacing: '-0.02em' }}>
                 Passion.<br />Precision.<br />
-                <span style={{ background: `linear-gradient(135deg,${GOLD},${GOLD_LIGHT})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Perfection.</span>
+                <span style={{ background: `linear-gradient(135deg,${GOLD},#9A7836)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Perfection.</span>
               </motion.h2>
-              <motion.div variants={fadeUp} className="space-y-5 text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>
-                <p><strong className="text-white">SONU ENTERPRISES</strong> is a leading interior construction and design company based in Kalyan, Maharashtra. With over 15 years of experience, we have transformed 4500+ spaces across residential and commercial projects.</p>
+              <motion.div variants={fadeUp} className="space-y-5 text-sm leading-relaxed text-stone-600">
+                <p><strong className="text-stone-900">SONU ENTERPRISES</strong> is a leading interior construction and design company based in Kalyan, Maharashtra. With over 15 years of experience, we have transformed 4500+ spaces across residential and commercial projects.</p>
                 <p>Our mission is simple — to deliver luxury interiors that reflect your personality and enhance the way you live. Every project we undertake is handled with meticulous attention to detail and a commitment to excellence.</p>
               </motion.div>
-              <motion.div variants={fadeUp} className="mt-12 pt-8" style={{ borderTop: '1px solid rgba(197,160,89,0.12)' }}>
+              <motion.div variants={fadeUp} className="mt-12 pt-8 border-t border-stone-200">
                 <p className="italic text-2xl" style={{ fontFamily: "'Cormorant Garamond',serif", color: GOLD }}>Sonu Enterprises</p>
-                <p className="text-[9px] uppercase tracking-[0.3em] mt-1" style={{ color: 'rgba(197,160,89,0.5)' }}>Founder</p>
+                <p className="text-[9px] uppercase tracking-[0.3em] mt-1 text-stone-500">Luxury Interior Architecture &amp; Construction</p>
               </motion.div>
             </motion.div>
 
@@ -160,19 +160,49 @@ const About: React.FC = () => {
               initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} variants={stagger}>
               {stats.map((stat, i) => (
                 <motion.div key={i} variants={fadeUp}
-                  className="relative p-8 group overflow-hidden"
-                  style={{ border: '1px solid rgba(197,160,89,0.1)', background: 'rgba(197,160,89,0.02)', borderRadius: '2px' }}
-                  whileHover={{ borderColor: 'rgba(197,160,89,0.4)', scale: 1.02 }}
+                  className="relative p-8 group overflow-hidden bg-white shadow-sm"
+                  style={{ border: '1px solid rgba(197,160,89,0.2)', borderRadius: '4px' }}
+                  whileHover={{ borderColor: 'rgba(197,160,89,0.6)', scale: 1.02 }}
                   transition={{ duration: 0.35 }}>
-                  <stat.icon className="w-5 h-5 mb-5" style={{ color: 'rgba(197,160,89,0.5)' }} />
-                  <p className="stat-number-cinematic mb-1">{stat.value}</p>
-                  <p className="text-[9px] uppercase tracking-[0.25em] font-bold" style={{ color: 'rgba(197,160,89,0.5)' }}>{stat.label}</p>
+                  <stat.icon className="w-5 h-5 mb-5 text-luxury-gold" />
+                  <p className="stat-number-cinematic text-[#171717] mb-1">{stat.value}</p>
+                  <p className="text-[9px] uppercase tracking-[0.25em] font-bold text-stone-500">{stat.label}</p>
                   {/* Hover gold corner */}
                   <div className="absolute bottom-0 right-0 w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity duration-400"
-                    style={{ background: `linear-gradient(135deg,transparent 50%,rgba(197,160,89,0.2) 100%)` }} />
+                    style={{ background: `linear-gradient(135deg,transparent 50%,rgba(197,160,89,0.15) 100%)` }} />
                 </motion.div>
               ))}
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Journey Timeline Section */}
+      <section className="py-24 bg-[#F4F0E8] relative border-t border-luxury-gold/15">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <Label>Our Journey</Label>
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-[#171717] mb-4">
+              Decades of <span className="text-[#c5a059] italic">Architectural Milestones</span>
+            </h2>
+            <p className="text-stone-600 text-sm max-w-xl mx-auto">Trace the evolution of Sonu Enterprises from our inception to becoming a luxury segment leader.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+            <div className="absolute top-[28px] left-0 right-0 h-[1px] bg-[#c5a059]/30 hidden md:block" />
+            {[
+              { year: '2011', title: 'Inception', desc: 'Founded as a local interior construction squad in Kalyan.' },
+              { year: '2016', title: 'Expansion Phase', desc: 'Began handling full turnkey architectural contracts across Thane.' },
+              { year: '2021', title: '4000+ Completed Projects', desc: 'Recognized as one of the fastest-growing premium design firms in Maharashtra.' },
+              { year: '2025', title: 'ISO Certification & AI Hub', desc: 'Achieved ISO 9001:2015 certification and launched online AI design tools.' }
+            ].map((milestone, i) => (
+              <div key={i} className="relative z-10 flex flex-col items-center md:items-start text-center md:text-left bg-white border border-stone-200 p-6 rounded-lg shadow-sm">
+                <div className="w-14 h-14 rounded-full bg-gradient-to-r from-[#c5a059] to-[#b08d42] flex items-center justify-center text-white font-bold font-serif text-lg mb-4 shadow-md">
+                  {milestone.year}
+                </div>
+                <h4 className="text-stone-900 font-bold text-base mb-2">{milestone.title}</h4>
+                <p className="text-stone-600 text-xs leading-relaxed">{milestone.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -192,8 +222,8 @@ const About: React.FC = () => {
           <motion.blockquote
             initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="text-3xl md:text-5xl font-bold leading-tight text-glow-white"
-            style={{ fontFamily: "'Cormorant Garamond',serif", color: 'rgba(255,255,255,0.9)' }}>
+            className="text-3xl md:text-5xl font-bold leading-tight"
+            style={{ fontFamily: "'Cormorant Garamond',serif", color: '#171717' }}>
             <CinematicText
               text="We don't just design interiors — we craft experiences that last a lifetime."
               delay={0.1}
@@ -203,35 +233,34 @@ const About: React.FC = () => {
           <motion.p
             initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
             viewport={{ once: true }} transition={{ delay: 0.8, duration: 0.6 }}
-            className="text-[10px] uppercase tracking-[0.3em] font-bold mt-8"
-            style={{ color: 'rgba(197,160,89,0.5)' }}>
+            className="text-[10px] uppercase tracking-[0.3em] font-bold mt-8 text-luxury-gold">
             — Sonu Enterprises Design Philosophy
           </motion.p>
         </div>
       </section>
 
       {/* ── 4. OUR STORY — editorial layout ───────────────────────────────────── */}
-      <section className="relative py-32 overflow-hidden" data-cinematic-section style={{ background: '#080808' }}>
+      <section className="relative py-32 overflow-hidden" data-cinematic-section style={{ background: '#F4F0E8' }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             {/* Image */}
             <motion.div className="relative"
               initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}>
-              <div className="parallax-img-wrap aspect-[4/5] rounded-sm overflow-hidden"
-                style={{ border: '1px solid rgba(197,160,89,0.1)' }}>
+              <div className="parallax-img-wrap aspect-[4/5] rounded-sm overflow-hidden shadow-lg"
+                style={{ border: '1px solid rgba(197,160,89,0.3)' }}>
                 <img
                   src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=1200"
                   className="w-full h-full object-cover"
-                  style={{ filter: 'contrast(1.04) saturate(0.9)' }}
+                  style={{ filter: 'contrast(1.02) saturate(0.95)' }}
                   alt="Our Story"
                 />
               </div>
               {/* Floating badge */}
               <div className="absolute -bottom-6 -right-6 p-8 hidden md:block"
-                style={{ background: 'linear-gradient(135deg,#c5a059,#b08d42)', borderRadius: '2px', boxShadow: '0 20px 60px rgba(197,160,89,0.3)' }}>
-                <div className="text-4xl font-bold text-black leading-none" style={{ fontFamily: "'Cormorant Garamond',serif" }}>15+</div>
-                <div className="text-[9px] uppercase tracking-[0.2em] font-bold text-black/70 mt-1">Years of<br />Excellence</div>
+                style={{ background: 'linear-gradient(135deg,#c5a059,#b08d42)', borderRadius: '2px', boxShadow: '0 20px 60px rgba(197,160,89,0.25)' }}>
+                <div className="text-4xl font-bold text-white leading-none" style={{ fontFamily: "'Cormorant Garamond',serif" }}>15+</div>
+                <div className="text-[9px] uppercase tracking-[0.2em] font-bold text-white/90 mt-1">Years of<br />Excellence</div>
               </div>
             </motion.div>
 
@@ -239,14 +268,14 @@ const About: React.FC = () => {
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.3 }} variants={stagger}>
               <motion.div variants={fadeUp}><Label>Our Story</Label></motion.div>
               <motion.h2 variants={fadeUp}
-                className="text-5xl md:text-6xl font-bold text-white mb-8 leading-tight text-glow-gold"
+                className="text-5xl md:text-6xl font-bold text-[#171717] mb-8 leading-tight"
                 style={{ fontFamily: "'Cormorant Garamond',serif", letterSpacing: '-0.02em' }}>
                 From a Vision to<br />
-                <span style={{ background: `linear-gradient(135deg,${GOLD},${GOLD_LIGHT})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                <span style={{ background: `linear-gradient(135deg,${GOLD},#9A7836)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                   Timeless Designs
                 </span>
               </motion.h2>
-              <motion.div variants={fadeUp} className="space-y-5 text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>
+              <motion.div variants={fadeUp} className="space-y-5 text-sm leading-relaxed text-stone-600">
                 <p>What started as a small passion for design has now grown into a trusted brand known for quality, transparency, and exceptional execution. Every project we undertake is a promise of our dedication towards perfection.</p>
                 <p>We don't just design interiors, we craft experiences. Our team of expert designers and craftsmen work in harmony to bring your vision to life, ensuring that every corner of your home resonates with luxury and comfort.</p>
               </motion.div>
@@ -256,18 +285,18 @@ const About: React.FC = () => {
       </section>
 
       {/* ── 5. OUR VALUES ─────────────────────────────────────────────────────── */}
-      <section className="relative py-32 overflow-hidden" data-cinematic-section>
+      <section className="relative py-32 overflow-hidden" data-cinematic-section style={{ background: '#FAF8F5' }}>
         <div className="absolute inset-0 pointer-events-none"
-          style={{ background: `radial-gradient(ellipse at 30% 50%,rgba(197,160,89,0.04) 0%,transparent 60%)` }} />
+          style={{ background: `radial-gradient(ellipse at 30% 50%,rgba(197,160,89,0.06) 0%,transparent 60%)` }} />
 
         <div className="max-w-7xl mx-auto px-6">
           <motion.div className="text-center mb-20"
             initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger}>
             <motion.div variants={fadeUp}><Label>Our Values</Label></motion.div>
             <motion.h2 variants={fadeUp}
-              className="text-5xl md:text-6xl font-bold text-white text-glow-gold"
+              className="text-5xl md:text-6xl font-bold text-[#171717]"
               style={{ fontFamily: "'Cormorant Garamond',serif", letterSpacing: '-0.02em' }}>
-              What We <span style={{ background: `linear-gradient(135deg,${GOLD},${GOLD_LIGHT})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Stand For</span>
+              What We <span style={{ background: `linear-gradient(135deg,${GOLD},#9A7836)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Stand For</span>
             </motion.h2>
           </motion.div>
 
@@ -276,20 +305,20 @@ const About: React.FC = () => {
               <motion.div key={i}
                 initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                className="group relative p-10 overflow-hidden shimmer-hover"
-                style={{ border: '1px solid rgba(197,160,89,0.08)', background: 'rgba(197,160,89,0.02)', borderRadius: '2px' }}
-                whileHover={{ borderColor: 'rgba(197,160,89,0.35)', y: -4 }}>
+                className="group relative p-10 overflow-hidden bg-white shadow-sm"
+                style={{ border: '1px solid rgba(197,160,89,0.2)', borderRadius: '4px' }}
+                whileHover={{ borderColor: 'rgba(197,160,89,0.5)', y: -4 }}>
                 {/* Icon */}
                 <div className="w-12 h-12 flex items-center justify-center mb-8 rounded-sm transition-all duration-400"
-                  style={{ background: 'rgba(197,160,89,0.08)', border: '1px solid rgba(197,160,89,0.2)' }}>
-                  <v.icon className="w-5 h-5 transition-colors duration-400" style={{ color: GOLD }} />
+                  style={{ background: 'rgba(197,160,89,0.12)', border: '1px solid rgba(197,160,89,0.3)' }}>
+                  <v.icon className="w-5 h-5 transition-colors duration-400 text-luxury-gold" />
                 </div>
-                <h3 className="text-lg font-bold text-white mb-3"
+                <h3 className="text-lg font-bold text-[#171717] mb-3"
                   style={{ fontFamily: "'Cormorant Garamond',serif", letterSpacing: '0.02em' }}>{v.title}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{v.desc}</p>
+                <p className="text-sm leading-relaxed text-stone-600">{v.desc}</p>
                 {/* Corner accent */}
                 <div className="absolute top-0 right-0 w-16 h-16 opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none"
-                  style={{ background: 'linear-gradient(135deg,transparent 50%,rgba(197,160,89,0.12) 100%)' }} />
+                  style={{ background: 'linear-gradient(135deg,transparent 50%,rgba(197,160,89,0.15) 100%)' }} />
               </motion.div>
             ))}
           </div>
@@ -297,25 +326,25 @@ const About: React.FC = () => {
       </section>
 
       {/* ── 6. DESIGN PROCESS ────────────────────────────────────────────────── */}
-      <section className="relative py-32 overflow-hidden" data-cinematic-section style={{ background: '#080808' }}>
+      <section className="relative py-32 overflow-hidden" data-cinematic-section style={{ background: '#F4F0E8' }}>
         <div className="absolute top-0 left-0 right-0 h-[1px]"
-          style={{ background: 'linear-gradient(90deg,transparent,rgba(197,160,89,0.15),transparent)' }} />
+          style={{ background: 'linear-gradient(90deg,transparent,rgba(197,160,89,0.25),transparent)' }} />
 
         <div className="max-w-7xl mx-auto px-6">
           <motion.div className="text-center mb-20"
             initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger}>
             <motion.div variants={fadeUp}><Label>Our Process</Label></motion.div>
             <motion.h2 variants={fadeUp}
-              className="text-5xl md:text-6xl font-bold text-white text-glow-gold"
+              className="text-5xl md:text-6xl font-bold text-[#171717]"
               style={{ fontFamily: "'Cormorant Garamond',serif" }}>
-              From Concept to <span style={{ background: `linear-gradient(135deg,${GOLD},${GOLD_LIGHT})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Creation</span>
+              From Concept to <span style={{ background: `linear-gradient(135deg,${GOLD},#9A7836)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Creation</span>
             </motion.h2>
           </motion.div>
 
           <div className="relative">
             {/* Vertical line */}
             <div className="absolute left-[28px] md:left-1/2 top-0 bottom-0 w-[1px] hidden sm:block"
-              style={{ background: 'linear-gradient(to bottom,transparent,rgba(197,160,89,0.15),transparent)' }} />
+              style={{ background: 'linear-gradient(to bottom,transparent,rgba(197,160,89,0.3),transparent)' }} />
 
             <div className="space-y-12">
               {process.map((step, i) => (
@@ -325,16 +354,16 @@ const About: React.FC = () => {
                   transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                   className={`relative flex flex-col md:flex-row items-start md:items-center gap-8 ${i % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
                   {/* Number bubble */}
-                  <div className="relative z-10 w-14 h-14 flex-shrink-0 flex items-center justify-center rounded-full"
-                    style={{ border: '1px solid rgba(197,160,89,0.4)', background: 'rgba(197,160,89,0.06)', color: GOLD, fontFamily: "'Cormorant Garamond',serif", fontSize: '20px', fontWeight: 700 }}>
+                  <div className="relative z-10 w-14 h-14 flex-shrink-0 flex items-center justify-center rounded-full bg-white shadow-sm"
+                    style={{ border: '2px solid rgba(197,160,89,0.5)', color: GOLD, fontFamily: "'Cormorant Garamond',serif", fontSize: '20px', fontWeight: 700 }}>
                     {step.num}
                   </div>
                   {/* Content */}
-                  <div className={`flex-1 p-8 ${i % 2 !== 0 ? 'md:text-right' : ''}`}
-                    style={{ border: '1px solid rgba(197,160,89,0.07)', background: 'rgba(197,160,89,0.02)', borderRadius: '2px' }}>
-                    <h3 className="text-2xl font-bold text-white mb-3"
+                  <div className={`flex-1 p-8 bg-white shadow-sm ${i % 2 !== 0 ? 'md:text-right' : ''}`}
+                    style={{ border: '1px solid rgba(197,160,89,0.18)', borderRadius: '4px' }}>
+                    <h3 className="text-2xl font-bold text-[#171717] mb-3"
                       style={{ fontFamily: "'Cormorant Garamond',serif" }}>{step.title}</h3>
-                    <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>{step.desc}</p>
+                    <p className="text-sm leading-relaxed text-stone-600">{step.desc}</p>
                   </div>
                 </motion.div>
               ))}
@@ -343,10 +372,38 @@ const About: React.FC = () => {
         </div>
       </section>
 
+      {/* Brand Partners Section */}
+      <section className="py-24 bg-[#FAF8F5] relative border-t border-luxury-gold/15">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <Label>Material Standards</Label>
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-[#171717] mb-4">
+              Premium <span className="text-[#c5a059] italic">Brand Partners</span>
+            </h2>
+            <p className="text-stone-600 text-sm max-w-xl mx-auto">We strictly build using industry-standard premium material labels that promise longevity.</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-6 items-center justify-items-center">
+            {[
+              { name: 'Hettich', category: 'German Fittings' },
+              { name: 'Blum', category: 'Premium Motion' },
+              { name: 'Saint-Gobain', category: 'Glass & Mirrors' },
+              { name: 'Greenply', category: 'BWP Plywood' },
+              { name: 'Asian Paints', category: 'Luxury Finishes' },
+              { name: 'Jaquar', category: 'Sanitary Ware' }
+            ].map((brand, i) => (
+              <div key={i} className="flex flex-col items-center justify-center p-6 border border-stone-200 bg-white w-full rounded-lg shadow-sm hover:border-[#c5a059]/50 hover:shadow-md transition-all duration-300">
+                <span className="text-stone-900 font-serif font-bold tracking-widest text-lg mb-1">{brand.name}</span>
+                <span className="text-[9px] uppercase tracking-wider text-[#c5a059] font-semibold">{brand.category}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── 7. CTA ────────────────────────────────────────────────────────────── */}
-      <section className="relative py-32 overflow-hidden" data-cinematic-section>
+      <section className="relative py-32 overflow-hidden" data-cinematic-section style={{ background: '#F4F0E8' }}>
         <div className="absolute inset-0 pointer-events-none"
-          style={{ background: `radial-gradient(ellipse at 50% 100%,rgba(197,160,89,0.1) 0%,transparent 65%)` }} />
+          style={{ background: `radial-gradient(ellipse at 50% 100%,rgba(197,160,89,0.15) 0%,transparent 65%)` }} />
         <div className="absolute top-0 left-0 right-0 h-[1px]"
           style={{ background: 'linear-gradient(90deg,transparent,rgba(197,160,89,0.3),transparent)' }} />
 
@@ -354,28 +411,28 @@ const About: React.FC = () => {
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.3 }} variants={stagger}>
             <motion.div variants={fadeUp}><Label>Let's Create Together</Label></motion.div>
             <motion.h2 variants={fadeUp}
-              className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight text-glow-white"
+              className="text-5xl md:text-7xl font-bold text-[#171717] mb-6 leading-tight"
               style={{ fontFamily: "'Cormorant Garamond',serif", letterSpacing: '-0.02em' }}>
               Let's Create Something<br />
-              <span style={{ background: `linear-gradient(135deg,${GOLD} 0%,${GOLD_LIGHT} 50%,${GOLD} 100%)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+              <span style={{ background: `linear-gradient(135deg,${GOLD} 0%,#9A7836 100%)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                 Beautiful Together.
               </span>
             </motion.h2>
-            <motion.p variants={fadeUp} className="text-base mb-12 max-w-lg mx-auto" style={{ color: 'rgba(255,255,255,0.45)' }}>
+            <motion.p variants={fadeUp} className="text-base mb-12 max-w-lg mx-auto text-stone-600">
               Your dream space is one conversation away.
             </motion.p>
             <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/contact"
                 className="group relative inline-flex items-center justify-center gap-3 px-10 py-4 text-[11px] uppercase tracking-[0.3em] font-bold overflow-hidden"
-                style={{ background: `linear-gradient(135deg,${GOLD},#b08d42)`, color: '#000', borderRadius: '2px', boxShadow: `0 0 40px rgba(197,160,89,0.2)` }}>
+                style={{ background: `linear-gradient(135deg,${GOLD},#b08d42)`, color: '#fff', borderRadius: '4px', boxShadow: `0 8px 24px rgba(197,160,89,0.35)` }}>
                 <span className="light-streak" />
                 <span className="relative z-10 flex items-center gap-2">Book Consultation <ArrowRight className="w-3.5 h-3.5" /></span>
               </Link>
               <a href={`https://wa.me/${phone?.replace(/[^0-9]/g, '')}?text=${whatsappMessage}`}
                 target="_blank" rel="noopener noreferrer"
-                className="shimmer-hover inline-flex items-center justify-center gap-2 px-10 py-4 text-[11px] uppercase tracking-[0.3em] font-bold transition-all duration-300"
-                style={{ border: '1px solid rgba(197,160,89,0.3)', color: GOLD, borderRadius: '2px', backdropFilter: 'blur(12px)' }}>
-                <MessageCircle className="w-3.5 h-3.5" /> WhatsApp Us
+                className="inline-flex items-center justify-center gap-2 px-10 py-4 text-[11px] uppercase tracking-[0.3em] font-bold transition-all duration-300 bg-white/90 text-stone-900 border border-luxury-gold/40 shadow-sm hover:shadow-md"
+                style={{ borderRadius: '4px' }}>
+                <MessageCircle className="w-3.5 h-3.5 text-luxury-gold" /> WhatsApp Us
               </a>
             </motion.div>
           </motion.div>

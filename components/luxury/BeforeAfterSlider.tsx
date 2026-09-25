@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { getOptimizedImageUrl } from '../../utils/performance';
 
 interface BeforeAfterSliderProps {
     beforeImage: string;
@@ -49,7 +50,7 @@ export const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
         >
             {/* Before Image */}
             <img
-                src={beforeImage}
+                src={getOptimizedImageUrl(beforeImage, 1000)}
                 alt={beforeLabel}
                 className="absolute inset-0 w-full h-full object-cover"
                 draggable={false}
@@ -61,7 +62,7 @@ export const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
                 style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
             >
                 <img
-                    src={afterImage}
+                    src={getOptimizedImageUrl(afterImage, 1000)}
                     alt={afterLabel}
                     className="absolute inset-0 w-full h-full object-cover"
                     draggable={false}

@@ -78,16 +78,15 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-neutral-950 relative overflow-hidden pt-20">
+        <div className="min-h-screen flex items-center justify-center bg-[#FAF8F5] relative overflow-hidden pt-20">
             <SEO 
                 title={isSignUp ? "Sign Up | Sonu Enterprises" : "Sign In | Sonu Enterprises"}
                 description="Access your premium Sonu Enterprises profile to view estimates, design projects, and account details."
             />
             {/* Background Ambience */}
             <div className="absolute inset-0 z-0">
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000')] bg-cover bg-center opacity-25 transform scale-105 blur-sm" />
-                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/80 to-transparent" />
-                <div className="absolute inset-0 bg-black/40" />
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000')] bg-cover bg-center opacity-10 transform scale-105 blur-sm" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#FAF8F5] via-[#FAF8F5]/90 to-transparent" />
             </div>
 
             {/* Glowing Orbs */}
@@ -101,7 +100,7 @@ const Login: React.FC = () => {
                 className="relative z-10 w-full max-w-[480px] p-8 md:p-12 mx-4"
             >
                 {/* Glass Card */}
-                <div className="absolute inset-0 bg-neutral-900/60 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl" />
+                <div className="absolute inset-0 bg-white rounded-3xl border border-stone-200/80 shadow-luxury" />
 
                 <div className="relative z-20">
                     <div className="text-center mb-10">
@@ -113,10 +112,10 @@ const Login: React.FC = () => {
                         >
                             <User className="w-8 h-8 text-luxury-gold" />
                         </motion.div>
-                        <h2 className="text-3xl font-serif font-bold text-white mb-3 tracking-wide">
+                        <h2 className="text-3xl font-serif font-bold text-[#171717] mb-3 tracking-wide">
                             {isSignUp ? 'Create Profile' : 'Portal Login'}
                         </h2>
-                        <p className="text-neutral-400 text-xs uppercase tracking-widest font-medium">
+                        <p className="text-stone-500 text-xs uppercase tracking-widest font-semibold">
                             Sonu Enterprises & Builders
                         </p>
                     </div>
@@ -125,7 +124,7 @@ const Login: React.FC = () => {
                         <motion.div
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
-                            className="bg-red-500/10 border border-red-500/20 text-red-200 px-4 py-3 rounded-lg mb-6 text-sm flex items-center backdrop-blur-sm"
+                            className="bg-red-500/10 border border-red-500/20 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm flex items-center backdrop-blur-sm"
                         >
                             <div className="w-1 h-8 bg-red-500 rounded-full mr-3" />
                             {error}
@@ -137,13 +136,13 @@ const Login: React.FC = () => {
                             <div className="space-y-2">
                                 <label className="text-luxury-gold text-[10px] uppercase tracking-widest font-bold ml-1">Your Name</label>
                                 <div className="relative group">
-                                    <User className="absolute left-4 top-4 w-5 h-5 text-neutral-500 group-focus-within:text-luxury-gold transition-colors" />
+                                    <User className="absolute left-4 top-4 w-5 h-5 text-stone-400 group-focus-within:text-luxury-gold transition-colors" />
                                     <input
                                         type="text"
                                         required
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
-                                        className="w-full bg-black/20 border border-white/10 rounded-xl py-4 pl-12 pr-4 text-white placeholder-neutral-600 focus:outline-none focus:border-luxury-gold/50 focus:bg-black/40 transition-all font-sans text-sm"
+                                        className="w-full bg-stone-50 border border-stone-200 rounded-xl py-4 pl-12 pr-4 text-[#171717] placeholder-stone-400 focus:outline-none focus:border-luxury-gold focus:bg-white transition-all font-sans text-sm"
                                         placeholder="John Doe"
                                     />
                                 </div>
@@ -153,13 +152,13 @@ const Login: React.FC = () => {
                         <div className="space-y-2">
                             <label className="text-luxury-gold text-[10px] uppercase tracking-widest font-bold ml-1">Email Address</label>
                             <div className="relative group">
-                                <Mail className="absolute left-4 top-4 w-5 h-5 text-neutral-500 group-focus-within:text-luxury-gold transition-colors" />
+                                <Mail className="absolute left-4 top-4 w-5 h-5 text-stone-400 group-focus-within:text-luxury-gold transition-colors" />
                                 <input
                                     type="email"
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full bg-black/20 border border-white/10 rounded-xl py-4 pl-12 pr-4 text-white placeholder-neutral-600 focus:outline-none focus:border-luxury-gold/50 focus:bg-black/40 transition-all font-sans text-sm"
+                                    className="w-full bg-stone-50 border border-stone-200 rounded-xl py-4 pl-12 pr-4 text-[#171717] placeholder-stone-400 focus:outline-none focus:border-luxury-gold focus:bg-white transition-all font-sans text-sm"
                                     placeholder="client@gmail.com"
                                 />
                             </div>
@@ -168,13 +167,13 @@ const Login: React.FC = () => {
                         <div className="space-y-2">
                             <label className="text-luxury-gold text-[10px] uppercase tracking-widest font-bold ml-1">Password</label>
                             <div className="relative group">
-                                <Lock className="absolute left-4 top-4 w-5 h-5 text-neutral-500 group-focus-within:text-luxury-gold transition-colors" />
+                                <Lock className="absolute left-4 top-4 w-5 h-5 text-stone-400 group-focus-within:text-luxury-gold transition-colors" />
                                 <input
                                     type="password"
                                     required
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full bg-black/20 border border-white/10 rounded-xl py-4 pl-12 pr-4 text-white placeholder-neutral-600 focus:outline-none focus:border-luxury-gold/50 focus:bg-black/40 transition-all font-sans text-sm"
+                                    className="w-full bg-stone-50 border border-stone-200 rounded-xl py-4 pl-12 pr-4 text-[#171717] placeholder-stone-400 focus:outline-none focus:border-luxury-gold focus:bg-white transition-all font-sans text-sm"
                                     placeholder="••••••••••••"
                                 />
                             </div>
@@ -195,15 +194,15 @@ const Login: React.FC = () => {
 
                     <div className="mt-8">
                         <div className="relative flex py-2 items-center">
-                            <div className="flex-grow border-t border-white/10"></div>
-                            <span className="flex-shrink-0 mx-4 text-neutral-500 text-xs uppercase tracking-widest">Or Access With</span>
-                            <div className="flex-grow border-t border-white/10"></div>
+                            <div className="flex-grow border-t border-stone-200"></div>
+                            <span className="flex-shrink-0 mx-4 text-stone-500 text-xs uppercase tracking-widest font-semibold">Or Access With</span>
+                            <div className="flex-grow border-t border-stone-200"></div>
                         </div>
 
                         <button
                             onClick={handleGoogleAuth}
                             disabled={loading}
-                            className="w-full mt-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 text-sm font-medium cursor-pointer"
+                            className="w-full mt-4 bg-stone-50 hover:bg-stone-100 border border-stone-200 text-[#171717] py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 text-sm font-medium cursor-pointer shadow-sm"
                         >
                             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
                             Google Account
@@ -211,7 +210,7 @@ const Login: React.FC = () => {
                     </div>
 
                     <div className="mt-6 text-center text-xs">
-                        <span className="text-neutral-400">
+                        <span className="text-stone-500">
                             {isSignUp ? 'Already have an account? ' : "Don't have a profile? "}
                         </span>
                         <button
@@ -222,10 +221,10 @@ const Login: React.FC = () => {
                         </button>
                     </div>
 
-                    <div className="mt-8 text-center border-t border-white/5 pt-4">
+                    <div className="mt-8 text-center border-t border-stone-200 pt-4">
                         <a
                             href="/"
-                            className="inline-flex items-center text-neutral-500 hover:text-luxury-gold text-xs uppercase tracking-widest transition-colors duration-300 group"
+                            className="inline-flex items-center text-stone-500 hover:text-luxury-gold text-xs uppercase tracking-widest transition-colors duration-300 group"
                         >
                             <ChevronLeft className="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform" />
                             Return to Homepage

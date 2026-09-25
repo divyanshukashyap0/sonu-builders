@@ -167,40 +167,40 @@ const AIAssistant: React.FC = () => {
                         initial={{ opacity: 0, y: 20, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 20, scale: 0.95 }}
-                        className="mb-4 w-[calc(100vw-2rem)] sm:w-[380px] md:w-[350px] max-h-[600px] bg-neutral-900 border border-luxury-gold/20 rounded-2xl shadow-2xl overflow-hidden pointer-events-auto flex flex-col"
+                        className="mb-4 w-[calc(100vw-2rem)] sm:w-[380px] md:w-[350px] max-h-[600px] bg-white/95 backdrop-blur-2xl border border-stone-200/80 rounded-3xl shadow-2xl overflow-hidden pointer-events-auto flex flex-col"
                     >
                         {/* Header */}
-                        <div className="bg-luxury-charcoal p-4 flex justify-between items-center border-b border-luxury-gold/20">
+                        <div className="bg-[#FAF8F5] p-4 flex justify-between items-center border-b border-stone-200/80">
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-luxury-gold/20 flex items-center justify-center border border-luxury-gold/50">
+                                <div className="w-10 h-10 rounded-full bg-luxury-gold/15 flex items-center justify-center border border-luxury-gold/40">
                                     <MessageSquare className="w-5 h-5 text-luxury-gold" />
                                 </div>
                                 <div>
-                                    <h3 className="font-serif font-bold text-white text-lg lowercase">contact</h3>
-                                    <p className="text-[10px] text-luxury-gold/80 uppercase tracking-widest">Online Assistant</p>
+                                    <h3 className="font-serif font-bold text-[#171717] text-lg">Sonu Assistant</h3>
+                                    <p className="text-[10px] text-luxury-gold font-bold uppercase tracking-widest">Online Concierge</p>
                                 </div>
                             </div>
                             <button
                                 onClick={() => setIsOpen(false)}
-                                className="text-gray-400 hover:text-white transition-colors"
+                                className="text-stone-400 hover:text-stone-700 transition-colors p-1"
                             >
                                 <X size={20} />
                             </button>
                         </div>
 
                         {/* Chat Area */}
-                        <div className="flex-1 overflow-y-auto p-4 space-y-4 max-h-[400px] bg-neutral-900/95 scrollbar-hide">
+                        <div className="flex-1 overflow-y-auto p-4 space-y-4 max-h-[400px] bg-white scrollbar-hide">
                             {messages.map((msg, idx) => (
                                 <div
                                     key={idx}
                                     className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}
                                 >
-                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${msg.role === 'user' ? 'bg-white/10' : 'bg-luxury-gold/10'}`}>
-                                        {msg.role === 'user' ? <User size={14} className="text-gray-300" /> : <Bot size={14} className="text-luxury-gold" />}
+                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${msg.role === 'user' ? 'bg-luxury-gold/20' : 'bg-stone-100'}`}>
+                                        {msg.role === 'user' ? <User size={14} className="text-luxury-gold" /> : <Bot size={14} className="text-luxury-gold" />}
                                     </div>
                                     <div className={`p-4 rounded-2xl text-sm max-w-[85%] leading-relaxed ${msg.role === 'user'
-                                        ? 'bg-luxury-gold text-white rounded-br-none shadow-glow-gold'
-                                        : 'bg-neutral-800 text-gray-200 border border-white/10 rounded-bl-none shadow-sm'
+                                        ? 'bg-luxury-gold text-white rounded-br-none shadow-md'
+                                        : 'bg-[#FAF8F5] text-stone-800 border border-stone-200/80 rounded-bl-none shadow-xs'
                                         }`}>
                                         {msg.text}
                                     </div>
@@ -211,7 +211,7 @@ const AIAssistant: React.FC = () => {
                                     <div className="w-8 h-8 rounded-full bg-luxury-gold/10 flex items-center justify-center flex-shrink-0">
                                         <Bot size={14} className="text-luxury-gold" />
                                     </div>
-                                    <div className="bg-neutral-800 border border-white/10 p-3 rounded-2xl rounded-bl-none shadow-sm flex items-center gap-2">
+                                    <div className="bg-[#FAF8F5] border border-stone-200/80 p-3 rounded-2xl rounded-bl-none shadow-xs flex items-center gap-2">
                                         <Loader2 className="w-4 h-4 text-luxury-gold animate-spin" />
                                         <span className="text-[10px] text-luxury-gold uppercase tracking-widest font-bold">Typing...</span>
                                     </div>
@@ -222,7 +222,7 @@ const AIAssistant: React.FC = () => {
 
                         {/* Input Area */}
                         {step !== 'FINALIZING' && (
-                            <form onSubmit={handleSendMessage} className="p-4 bg-neutral-900 border-t border-white/5 flex items-center gap-2">
+                            <form onSubmit={handleSendMessage} className="p-4 bg-[#FAF8F5] border-t border-stone-200/80 flex items-center gap-2">
                                 <input
                                     type={step === 'ASK_PHONE' ? 'tel' : 'text'}
                                     value={inputText}
@@ -232,13 +232,13 @@ const AIAssistant: React.FC = () => {
                                         step === 'ASK_PHONE' ? "Enter phone number..." :
                                         "How can we help?"
                                     }
-                                    className="flex-1 bg-white/5 border border-white/10 focus:border-luxury-gold/50 rounded-xl px-4 py-3 text-sm text-gray-200 placeholder-gray-500 outline-none transition-all"
+                                    className="flex-1 bg-white border border-stone-200 focus:border-luxury-gold rounded-xl px-4 py-3 text-sm text-stone-900 placeholder-stone-400 outline-none transition-all"
                                     autoFocus
                                 />
                                 <button
                                     type="submit"
                                     disabled={!inputText.trim() || isProcessing}
-                                    className="p-3 bg-luxury-gold text-white rounded-xl hover:bg-luxury-gold/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-glow-gold"
+                                    className="p-3 bg-luxury-gold text-white rounded-xl hover:bg-luxury-gold/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md cursor-pointer"
                                 >
                                     <Send size={18} />
                                 </button>

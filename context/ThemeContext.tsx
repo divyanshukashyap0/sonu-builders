@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 
@@ -35,55 +34,57 @@ export const THEMES: Record<ThemeType, ThemeDefinition> = {
   'luxury-white': {
     name: 'Luxury White',
     colors: {
-      background: '#FAF8F3',
-      secondary: '#FCFAF7',
-      accent: '#B8860B',
-      highlight: '#D4AF37',
-      text: '#111827',
+      background: '#FAF8F5',
+      secondary: '#F4F0E8',
+      accent: '#C5A059',
+      highlight: '#B8860B',
+      text: '#171717',
       muted: '#6B7280',
       card: '#FFFFFF',
-      border: 'rgba(0,0,0,0.08)',
-      shadow: 'rgba(0,0,0,0.06)',
-      buttonText: '#FFFFFF',
-      bgGradient: 'linear-gradient(180deg, #FAF8F3 0%, #F5F1E8 45%, #F2EEE7 100%)'
+      border: 'rgba(197, 160, 89, 0.22)',
+      shadow: 'rgba(0, 0, 0, 0.06)',
+      buttonText: '#000000',
+      bgGradient: 'linear-gradient(180deg, #FAF8F5 0%, #F5F1E8 100%)'
     },
     fonts: {
-      heading: "'Playfair Display', serif",
+      heading: "'Cormorant Garamond', 'Playfair Display', serif",
       body: "'Inter', sans-serif"
     }
   },
   'dark-luxury': {
-    name: 'Dark Luxury',
+    name: 'Royal Gold Light',
     colors: {
-      background: '#0F0F0F',
-      secondary: '#1B1B1B',
+      background: '#FAF8F5',
+      secondary: '#F5EFE6',
       accent: '#C9A227',
-      highlight: '#5A3A22',
-      text: '#FFFFFF',
-      muted: 'rgba(255, 255, 255, 0.6)',
-      card: '#1A1A1A',
-      border: 'rgba(201, 162, 39, 0.2)',
-      shadow: 'rgba(0, 0, 0, 0.5)',
-      buttonText: '#0F0F0F'
+      highlight: '#B8860B',
+      text: '#171717',
+      muted: '#6B7280',
+      card: '#FFFFFF',
+      border: 'rgba(201, 162, 39, 0.25)',
+      shadow: 'rgba(0, 0, 0, 0.06)',
+      buttonText: '#FFFFFF',
+      bgGradient: 'linear-gradient(180deg, #FAF8F5 0%, #F5EFE6 100%)'
     },
     fonts: {
       heading: "'Cormorant Garamond', serif",
-      body: "'Poppins', sans-serif"
+      body: "'Inter', sans-serif"
     }
   },
   'modern-minimal': {
     name: 'Modern Minimal',
     colors: {
       background: '#FAF7F2',
-      secondary: '#D6CCC2',
+      secondary: '#F0ECE4',
       accent: '#6B705C',
       highlight: '#B8A89A',
       text: '#2B2B2B',
-      muted: 'rgba(43, 43, 43, 0.6)',
+      muted: '#666666',
       card: '#FFFFFF',
-      border: 'rgba(107, 112, 92, 0.15)',
-      shadow: 'rgba(184, 168, 154, 0.1)',
-      buttonText: '#FFFFFF'
+      border: 'rgba(107, 112, 92, 0.18)',
+      shadow: 'rgba(0, 0, 0, 0.05)',
+      buttonText: '#FFFFFF',
+      bgGradient: 'linear-gradient(180deg, #FAF7F2 0%, #F0ECE4 100%)'
     },
     fonts: {
       heading: "'Inter', sans-serif",
@@ -91,21 +92,22 @@ export const THEMES: Record<ThemeType, ThemeDefinition> = {
     }
   },
   'contemporary': {
-    name: 'Contemporary',
+    name: 'Contemporary Linen',
     colors: {
-      background: '#6D6A75',
-      secondary: '#2E2E2E',
+      background: '#F8F6F4',
+      secondary: '#EEEAE5',
       accent: '#B87333',
-      highlight: '#E7D7C9',
-      text: '#F8F8F8',
-      muted: 'rgba(248, 248, 248, 0.6)',
-      card: '#2E2E2E',
-      border: 'rgba(184, 115, 51, 0.3)',
-      shadow: 'rgba(0, 0, 0, 0.3)',
-      buttonText: '#FFFFFF'
+      highlight: '#C5A059',
+      text: '#1E1E1E',
+      muted: '#666666',
+      card: '#FFFFFF',
+      border: 'rgba(184, 115, 51, 0.2)',
+      shadow: 'rgba(0, 0, 0, 0.05)',
+      buttonText: '#FFFFFF',
+      bgGradient: 'linear-gradient(180deg, #F8F6F4 0%, #EEEAE5 100%)'
     },
     fonts: {
-      heading: "'Poppins', sans-serif",
+      heading: "'Cormorant Garamond', serif",
       body: "'Inter', sans-serif"
     }
   },
@@ -113,19 +115,20 @@ export const THEMES: Record<ThemeType, ThemeDefinition> = {
     name: 'Premium Earthy',
     colors: {
       background: '#F5EFE6',
-      secondary: '#D9CBB6',
+      secondary: '#EBE2D5',
       accent: '#A2674B',
-      highlight: '#5C4033',
+      highlight: '#8C583E',
       text: '#3B302A',
-      muted: 'rgba(59, 48, 42, 0.6)',
+      muted: '#6B5E55',
       card: '#FFFFFF',
       border: 'rgba(162, 103, 75, 0.2)',
-      shadow: 'rgba(92, 64, 51, 0.1)',
-      buttonText: '#FFFFFF'
+      shadow: 'rgba(0, 0, 0, 0.05)',
+      buttonText: '#FFFFFF',
+      bgGradient: 'linear-gradient(180deg, #F5EFE6 0%, #EBE2D5 100%)'
     },
     fonts: {
       heading: "'Playfair Display', serif",
-      body: "'Poppins', sans-serif"
+      body: "'Inter', sans-serif"
     }
   }
 };
@@ -138,7 +141,7 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setTheme] = useState<ThemeType>('dark-luxury');
+  const [theme, setTheme] = useState<ThemeType>('luxury-white');
 
   useEffect(() => {
     // Listen for global theme changes from admin settings
@@ -146,10 +149,12 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       if (docSnap.exists()) {
         const data = docSnap.data();
         const activeTheme = data.activeTheme as ThemeType;
-        if (activeTheme && THEMES[activeTheme]) {
+        if (activeTheme === 'dark-luxury') {
+          setTheme('luxury-white');
+        } else if (activeTheme && THEMES[activeTheme]) {
           setTheme(activeTheme);
         } else {
-          setTheme('dark-luxury');
+          setTheme('luxury-white');
         }
       }
     });
@@ -159,7 +164,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   useEffect(() => {
     const root = window.document.documentElement;
-    const def = THEMES[theme];
+    const def = THEMES[theme] || THEMES['luxury-white'];
 
     // Apply colors as CSS variables
     Object.entries(def.colors).forEach(([key, value]) => {
@@ -179,14 +184,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     root.style.setProperty('--theme-font-heading', def.fonts.heading);
     root.style.setProperty('--theme-font-body', def.fonts.body);
 
-    // Apply dark/light class for Tailwind compatibility
-    if (theme === 'dark-luxury' || theme === 'contemporary') {
-      root.classList.add('dark');
-      root.classList.remove('light');
-    } else {
-      root.classList.add('light');
-      root.classList.remove('dark');
-    }
+    // Enforce 100% light mode across the entire application
+    root.classList.add('light');
+    root.classList.remove('dark');
   }, [theme]);
 
   return (

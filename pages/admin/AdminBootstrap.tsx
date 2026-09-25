@@ -119,7 +119,7 @@ const AdminBootstrap: React.FC = () => {
 
     if (checkingAdmins) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-neutral-950">
+            <div className="min-h-screen flex items-center justify-center bg-[#FAF8F5]">
                 <Loader2 className="w-12 h-12 text-luxury-gold animate-spin" />
             </div>
         );
@@ -127,20 +127,20 @@ const AdminBootstrap: React.FC = () => {
 
     if (adminsExist) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-neutral-950 p-4">
+            <div className="min-h-screen flex items-center justify-center bg-[#FAF8F5] p-4">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="bg-neutral-900/60 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl p-12 max-w-md w-full text-center"
+                    className="bg-white rounded-3xl border border-stone-200/80 shadow-2xl p-12 max-w-md w-full text-center"
                 >
-                    <AlertTriangle className="w-16 h-16 text-yellow-500 mx-auto mb-6" />
-                    <h2 className="text-2xl font-bold text-white mb-4">Bootstrap Not Available</h2>
-                    <p className="text-neutral-400 mb-8">
+                    <AlertTriangle className="w-16 h-16 text-yellow-600 mx-auto mb-6" />
+                    <h2 className="text-2xl font-bold text-[#171717] mb-4">Bootstrap Not Available</h2>
+                    <p className="text-stone-600 mb-8">
                         Admin users already exist in the system. Please use the regular login page.
                     </p>
                     <button
                         onClick={() => navigate('/admin/login')}
-                        className="w-full bg-gradient-to-r from-luxury-gold to-[#B08D57] text-white font-bold py-3 rounded-xl"
+                        className="w-full bg-gradient-to-r from-luxury-gold to-[#B08D57] text-white font-bold py-3 rounded-xl cursor-pointer"
                     >
                         Go to Login
                     </button>
@@ -150,12 +150,11 @@ const AdminBootstrap: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-neutral-950 relative overflow-hidden">
+        <div className="min-h-screen flex items-center justify-center bg-[#FAF8F5] relative overflow-hidden">
             {/* Background Ambience */}
             <div className="absolute inset-0 z-0">
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2053&auto=format&fit=crop')] bg-cover bg-center opacity-20 transform scale-105 blur-sm" />
-                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/80 to-transparent" />
-                <div className="absolute inset-0 bg-black/40" />
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2053&auto=format&fit=crop')] bg-cover bg-center opacity-10 transform scale-105 blur-sm" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#FAF8F5] via-[#FAF8F5]/90 to-transparent" />
             </div>
 
             {/* Glowing Orbs */}
@@ -169,7 +168,7 @@ const AdminBootstrap: React.FC = () => {
                 className="relative z-10 w-full max-w-[480px] p-8 md:p-12 mx-4"
             >
                 {/* Glass Card */}
-                <div className="absolute inset-0 bg-neutral-900/60 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl" />
+                <div className="absolute inset-0 bg-white/95 backdrop-blur-xl rounded-3xl border border-stone-200/80 shadow-2xl" />
 
                 <div className="relative z-20">
                     <div className="text-center mb-10">
@@ -181,15 +180,15 @@ const AdminBootstrap: React.FC = () => {
                         >
                             <ShieldCheck className="w-10 h-10 text-luxury-gold" />
                         </motion.div>
-                        <h2 className="text-3xl font-serif font-bold text-white mb-3 tracking-wide">
+                        <h2 className="text-3xl font-serif font-bold text-[#171717] mb-3 tracking-wide">
                             Admin Bootstrap
                         </h2>
-                        <p className="text-neutral-400 text-sm uppercase tracking-widest font-medium mb-4">
+                        <p className="text-stone-500 text-sm uppercase tracking-widest font-medium mb-4">
                             First-Time Admin Setup
                         </p>
-                        <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 text-left">
-                            <p className="text-blue-200 text-xs leading-relaxed">
-                                <strong className="text-blue-100">ℹ️ No admins detected.</strong><br />
+                        <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-4 text-left">
+                            <p className="text-stone-700 text-xs leading-relaxed">
+                                <strong className="text-stone-900">ℹ️ No admins detected.</strong><br />
                                 Sign in below and click "Bootstrap Admin" to grant yourself admin privileges.
                             </p>
                         </div>
@@ -199,7 +198,7 @@ const AdminBootstrap: React.FC = () => {
                         <motion.div
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
-                            className="bg-red-500/10 border border-red-500/20 text-red-200 px-4 py-3 rounded-lg mb-6 text-sm flex items-center backdrop-blur-sm"
+                            className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm flex items-center"
                         >
                             <div className="w-1 h-8 bg-red-500 rounded-full mr-3" />
                             {error}
@@ -210,7 +209,7 @@ const AdminBootstrap: React.FC = () => {
                         <motion.div
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
-                            className="bg-green-500/10 border border-green-500/20 text-green-200 px-4 py-3 rounded-lg mb-6 text-sm flex items-center backdrop-blur-sm"
+                            className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6 text-sm flex items-center"
                         >
                             <CheckCircle className="w-5 h-5 mr-3" />
                             {success}
@@ -223,13 +222,13 @@ const AdminBootstrap: React.FC = () => {
                                 <div className="space-y-2">
                                     <label className="text-luxury-gold text-[10px] uppercase tracking-widest font-bold ml-1">Email</label>
                                     <div className="relative group">
-                                        <Mail className="absolute left-4 top-4 w-5 h-5 text-neutral-500 group-focus-within:text-luxury-gold transition-colors" />
+                                        <Mail className="absolute left-4 top-4 w-5 h-5 text-stone-400 group-focus-within:text-luxury-gold transition-colors" />
                                         <input
                                             type="email"
                                             required
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
-                                            className="w-full bg-black/20 border border-white/10 rounded-xl py-4 pl-12 pr-4 text-white placeholder-neutral-600 focus:outline-none focus:border-luxury-gold/50 focus:bg-black/40 transition-all font-sans text-sm"
+                                            className="w-full bg-stone-50 border border-stone-200 rounded-xl py-4 pl-12 pr-4 text-stone-900 placeholder-stone-400 focus:outline-none focus:border-luxury-gold focus:bg-white transition-all font-sans text-sm"
                                             placeholder="your.email@gmail.com"
                                         />
                                     </div>
@@ -238,13 +237,13 @@ const AdminBootstrap: React.FC = () => {
                                 <div className="space-y-2">
                                     <label className="text-luxury-gold text-[10px] uppercase tracking-widest font-bold ml-1">Password</label>
                                     <div className="relative group">
-                                        <Lock className="absolute left-4 top-4 w-5 h-5 text-neutral-500 group-focus-within:text-luxury-gold transition-colors" />
+                                        <Lock className="absolute left-4 top-4 w-5 h-5 text-stone-400 group-focus-within:text-luxury-gold transition-colors" />
                                         <input
                                             type="password"
                                             required
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
-                                            className="w-full bg-black/20 border border-white/10 rounded-xl py-4 pl-12 pr-4 text-white placeholder-neutral-600 focus:outline-none focus:border-luxury-gold/50 focus:bg-black/40 transition-all font-sans text-sm"
+                                            className="w-full bg-stone-50 border border-stone-200 rounded-xl py-4 pl-12 pr-4 text-stone-900 placeholder-stone-400 focus:outline-none focus:border-luxury-gold focus:bg-white transition-all font-sans text-sm"
                                             placeholder="••••••••••••"
                                         />
                                     </div>
@@ -253,7 +252,7 @@ const AdminBootstrap: React.FC = () => {
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="w-full bg-gradient-to-r from-luxury-gold to-[#B08D57] hover:to-luxury-gold text-white font-bold py-4 rounded-xl shadow-lg shadow-luxury-gold/20 transition-all duration-300 transform hover:scale-[1.01] flex items-center justify-center uppercase tracking-widest text-xs group mt-4"
+                                    className="w-full bg-gradient-to-r from-luxury-gold to-[#B08D57] hover:to-luxury-gold text-white font-bold py-4 rounded-xl shadow-lg shadow-luxury-gold/20 transition-all duration-300 transform hover:scale-[1.01] flex items-center justify-center uppercase tracking-widest text-xs group mt-4 cursor-pointer"
                                 >
                                     {loading && !currentUser ? (
                                         <Loader2 className="animate-spin w-5 h-5" />
@@ -265,15 +264,15 @@ const AdminBootstrap: React.FC = () => {
 
                             <div className="mt-8">
                                 <div className="relative flex py-2 items-center">
-                                    <div className="flex-grow border-t border-white/10"></div>
-                                    <span className="flex-shrink-0 mx-4 text-neutral-500 text-xs uppercase tracking-widest">Or</span>
-                                    <div className="flex-grow border-t border-white/10"></div>
+                                    <div className="flex-grow border-t border-stone-200"></div>
+                                    <span className="flex-shrink-0 mx-4 text-stone-400 text-xs uppercase tracking-widest">Or</span>
+                                    <div className="flex-grow border-t border-stone-200"></div>
                                 </div>
 
                                 <button
                                     onClick={handleGoogleLogin}
                                     disabled={loading}
-                                    className="w-full mt-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 text-sm font-medium"
+                                    className="w-full mt-4 bg-white hover:bg-stone-50 border border-stone-200 text-stone-700 py-3 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 text-sm font-medium shadow-sm cursor-pointer"
                                 >
                                     <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
                                     Google Sign In
@@ -282,16 +281,16 @@ const AdminBootstrap: React.FC = () => {
                         </>
                     ) : (
                         <div className="space-y-6">
-                            <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4">
-                                <p className="text-green-200 text-sm">
-                                    ✅ Signed in as: <span className="font-mono text-xs bg-black/30 px-2 py-1 rounded">{currentUser.email}</span>
+                            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                                <p className="text-green-800 text-sm">
+                                    ✅ Signed in as: <span className="font-mono text-xs bg-stone-100 border border-stone-200 px-2 py-1 rounded text-stone-800">{currentUser.email}</span>
                                 </p>
                             </div>
 
                             <button
                                 onClick={bootstrapAdmin}
                                 disabled={loading}
-                                className="w-full bg-gradient-to-r from-luxury-gold to-[#B08D57] hover:to-luxury-gold text-white font-bold py-4 rounded-xl shadow-lg shadow-luxury-gold/20 transition-all duration-300 transform hover:scale-[1.01] flex items-center justify-center uppercase tracking-widest text-xs"
+                                className="w-full bg-gradient-to-r from-luxury-gold to-[#B08D57] hover:to-luxury-gold text-white font-bold py-4 rounded-xl shadow-lg shadow-luxury-gold/20 transition-all duration-300 transform hover:scale-[1.01] flex items-center justify-center uppercase tracking-widest text-xs cursor-pointer"
                             >
                                 {loading ? (
                                     <Loader2 className="animate-spin w-5 h-5" />
@@ -308,7 +307,7 @@ const AdminBootstrap: React.FC = () => {
                     <div className="mt-10 text-center">
                         <a
                             href="/admin/login"
-                            className="inline-flex items-center text-neutral-500 hover:text-luxury-gold text-xs uppercase tracking-widest transition-colors duration-300"
+                            className="inline-flex items-center text-stone-500 hover:text-luxury-gold text-xs uppercase tracking-widest transition-colors duration-300"
                         >
                             Already have admin access? Login here
                         </a>

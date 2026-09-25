@@ -32,10 +32,10 @@ const defaultAbout: AboutContent = {
         'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=400'
     ],
     headerImage: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=80',
-    founderName: 'Mr. Sonu Singh',
-    founderTitle: 'Founder & Principal Designer',
-    founderBio: 'With over 15 years of experience in the construction and interior design industry, Mr. Singh founded Sonu Enterprises with a vision to deliver premium quality homes at accessible prices. His attention to detail and commitment to customer satisfaction has driven the company to complete over 4500+ successful projects and serve more than 4000+ happy families.',
-    founderImage: '  ',
+    founderName: 'Sonu Enterprises',
+    founderTitle: 'Architectural Design & Turnkey Studio',
+    founderBio: 'With over 15 years of experience in the construction and interior design industry in Mumbai, Sonu Enterprises was established with a vision to deliver bespoke, high-quality homes and architectural interiors. Our commitment to craftsmanship and client satisfaction has driven the firm to complete over 150+ successful projects and serve more than 140+ happy homeowners across Mumbai MMR.',
+    founderImage: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=900&q=80',
     mission: {
         title: 'Our Mission',
         content: 'To deliver exceptional interior design solutions that exceed client expectations while creating spaces that inspire, comfort, and reflect individual personalities.',

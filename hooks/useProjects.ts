@@ -13,18 +13,17 @@ import {
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { Project, ProjectCategory } from '../types';
+import { PROJECTS } from '../constants';
 
 export const useProjects = () => {
-    const [projects, setProjects] = useState<Project[]>([]);
+    const [projects, setProjects] = useState<Project[]>(PROJECTS);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         setLoading(true);
-        // Fetch projects ordered by creation time (assuming we add a createdAt field, or fallback to title)
         const q = query(collection(db, 'projects'));
 
-        // Real-time listener
         const unsubscribe = onSnapshot(q,
             (snapshot) => {
                 const projectsData: Project[] = snapshot.docs.map(doc => ({
@@ -32,12 +31,16 @@ export const useProjects = () => {
                     ...doc.data()
                 } as Project));
 
-                setProjects(projectsData);
+                if (projectsData.length > 0) {
+                    setProjects(projectsData);
+                } else {
+                    setProjects(PROJECTS);
+                }
                 setLoading(false);
             },
             (err) => {
-                console.error("Error fetching projects:", err);
-                setError("Failed to fetch projects.");
+                console.warn("Firestore projects unavailable, using constants fallback:", err);
+                setProjects(PROJECTS);
                 setLoading(false);
             }
         );
@@ -86,7 +89,7 @@ export const useProjects = () => {
                 views: (projects.find(p => p.id === id)?.views || 0) + 1
             });
         } catch (err) {
-            console.error("Error incrementing view count:", err);
+            // Non-critical, ignore
         }
     };
 
@@ -97,7 +100,7 @@ export const useProjects = () => {
                 inquiryCount: (projects.find(p => p.id === id)?.inquiryCount || 0) + 1
             });
         } catch (err) {
-            console.error("Error incrementing inquiry count:", err);
+            // Non-critical, ignore
         }
     };
 
@@ -126,7 +129,8 @@ export const useProjects = () => {
 };
 
 export const useProject = (idOrSlug: string | undefined) => {
-    const [project, setProject] = useState<Project | null>(null);
+    const fallback = idOrSlug ? (PROJECTS.find(p => p.id === idOrSlug || p.slug === idOrSlug) || null) : null;
+    const [project, setProject] = useState<Project | null>(fallback);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -150,12 +154,20 @@ export const useProject = (idOrSlug: string | undefined) => {
                         const docData = snapshot.docs[0];
                         setProject({ id: docData.id, ...docData.data() } as Project);
                     } else {
-                        setProject(null);
+                        setProject(fallback);
                     }
+                    setLoading(false);
+                }, (err) => {
+                    console.warn("Firestore slug query failed, falling back to local constants:", err);
+                    setProject(fallback);
                     setLoading(false);
                 });
                 return () => unsubSlug();
             }
+        }, (err) => {
+            console.warn("Firestore project ID failed, falling back to local constants:", err);
+            setProject(fallback);
+            setLoading(false);
         });
 
         return () => unsubscribe();

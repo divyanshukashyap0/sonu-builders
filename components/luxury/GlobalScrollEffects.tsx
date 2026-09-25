@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 /**
  * GlobalScrollEffects — minimal JS, maximum CSS.
  *
  * 1. Scroll progress bar   — passive RAF, CSS width update
  * 2. data-reveal            — IntersectionObserver → CSS class (ZERO JS animation)
- * 3. Section entrance       — GSAP opacity only (NO filter, NO scale) — only desktop
- * 4. Parallax / blur        — disabled globally (perf cost too high for general use)
  */
 const GlobalScrollEffects: React.FC = () => {
+  const location = useLocation();
 
   // ── 1. Progress bar ─────────────────────────────────────────────────────────
   useEffect(() => {
@@ -26,7 +26,6 @@ const GlobalScrollEffects: React.FC = () => {
           const total = document.documentElement.scrollHeight - window.innerHeight;
           if (total > 0) {
             const pct = Math.min((window.scrollY / total) * 100, 100);
-            // Only update DOM when value actually changed (avoids unnecessary repaints)
             if (Math.abs(pct - lastWidth) > 0.2) {
               bar.style.width = `${pct}%`;
               lastWidth = pct;
@@ -47,27 +46,34 @@ const GlobalScrollEffects: React.FC = () => {
   }, []);
 
   // ── 2. CSS data-reveal & Section entrances IntersectionObserver ───────────────
-  // Pure CSS transitions — zero Framer Motion, zero GSAP
   useEffect(() => {
-    const els = document.querySelectorAll('[data-reveal], [data-cinematic-section]');
-    if (!els.length) return;
+    const timer = setTimeout(() => {
+      const els = document.querySelectorAll('[data-reveal], [data-cinematic-section]');
+      if (!els.length) return;
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const el = entry.target as HTMLElement;
-            el.classList.add('is-revealed');
-            io.unobserve(el);
-          }
-        });
-      },
-      { threshold: 0.05, rootMargin: '0px 0px -40px 0px' }
-    );
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const el = entry.target as HTMLElement;
+              el.classList.add('is-revealed');
+              io.unobserve(el);
+            }
+          });
+        },
+        { threshold: 0.05, rootMargin: '50px 0px 50px 0px' }
+      );
 
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
+      els.forEach((el) => {
+        el.classList.add('is-revealed');
+        io.observe(el);
+      });
+
+      return () => io.disconnect();
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
 
   return null;
 };

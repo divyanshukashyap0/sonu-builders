@@ -43,15 +43,16 @@ const CustomCursor: React.FC = () => {
                 setIsHovered(true);
             } else {
                 setCursorText('');
-                // Enhanced hover detection
                 const isClickable =
                     target.tagName === 'A' ||
                     target.tagName === 'BUTTON' ||
+                    target.tagName === 'INPUT' ||
+                    target.tagName === 'SELECT' ||
+                    target.tagName === 'TEXTAREA' ||
                     target.closest('button') ||
                     target.closest('a') ||
                     target.closest('[role="button"]') ||
-                    target.classList.contains('interactive') ||
-                    getComputedStyle(target).cursor === 'pointer';
+                    target.classList.contains('interactive');
 
                 setIsHovered(!!isClickable);
             }
@@ -72,7 +73,7 @@ const CustomCursor: React.FC = () => {
     return (
         <>
             <motion.div
-                className="fixed top-0 left-0 w-8 h-8 rounded-full border border-luxury-gold pointer-events-none z-[9999] mix-blend-difference hidden md:flex items-center justify-center overflow-hidden"
+                className="fixed top-0 left-0 w-8 h-8 rounded-full border-2 border-luxury-gold pointer-events-none z-[9999] hidden md:flex items-center justify-center overflow-hidden"
                 style={{
                     x: springX,
                     y: springY,
@@ -80,9 +81,9 @@ const CustomCursor: React.FC = () => {
                     translateY: '-50%',
                 }}
                 animate={{
-                    scale: cursorText ? 4 : (isHovered ? 2.5 : 1),
-                    backgroundColor: cursorText ? 'rgba(212, 175, 55, 1)' : (isHovered ? 'rgba(212, 175, 55, 0.1)' : 'rgba(212, 175, 55, 0)'),
-                    borderColor: cursorText ? 'rgba(212, 175, 55, 0)' : 'rgba(212, 175, 55, 1)',
+                    scale: cursorText ? 4 : (isHovered ? 2.2 : 1),
+                    backgroundColor: cursorText ? 'rgba(197, 160, 89, 0.95)' : (isHovered ? 'rgba(197, 160, 89, 0.15)' : 'rgba(197, 160, 89, 0)'),
+                    borderColor: cursorText ? 'rgba(197, 160, 89, 0)' : 'rgba(197, 160, 89, 0.85)',
                 }}
                 transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             >
@@ -91,14 +92,14 @@ const CustomCursor: React.FC = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="text-[3px] uppercase tracking-widest font-bold text-black text-center leading-none"
+                        className="text-[3px] uppercase tracking-widest font-bold text-white text-center leading-none"
                     >
                         {cursorText}
                     </motion.span>
                 )}
             </motion.div>
             <motion.div
-                className="fixed top-0 left-0 w-1 h-1 bg-luxury-gold rounded-full pointer-events-none z-[9999] hidden md:block mix-blend-difference"
+                className="fixed top-0 left-0 w-1.5 h-1.5 bg-luxury-gold rounded-full pointer-events-none z-[9999] hidden md:block"
                 style={{
                     x: cursorX,
                     y: cursorY,

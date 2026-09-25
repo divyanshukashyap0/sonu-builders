@@ -20,7 +20,7 @@ const trustItems = [
     },
     {
         icon: Clock,
-        title: "15+ Years",
+        title: "17+ Years",
         subtitle: "of Excellence"
     }
 ];

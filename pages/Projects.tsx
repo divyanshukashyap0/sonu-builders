@@ -52,7 +52,7 @@ const Projects: React.FC = () => {
   }
 
   return (
-    <div className="text-white min-h-screen overflow-x-hidden" style={{ background: '#060606' }}>
+    <div className="text-stone-900 min-h-screen overflow-x-hidden" style={{ background: '#FAF8F5' }}>
       <SEO
         title="Our Projects | Sonu Enterprises"
         description="Browse our luxury portfolio of interior design and construction projects."
@@ -62,22 +62,22 @@ const Projects: React.FC = () => {
       {/* ── CINEMATIC HERO ─────────────────────────────────────────────────────── */}
       <section className="relative pt-36 pb-24 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 70% 30%,rgba(197,160,89,0.06) 0%,transparent 60%)' }} />
+          style={{ background: 'radial-gradient(ellipse at 70% 30%,rgba(197,160,89,0.08) 0%,transparent 60%)' }} />
         <div className="absolute bottom-0 left-0 right-0 h-[1px]"
-          style={{ background: 'linear-gradient(90deg,transparent,rgba(197,160,89,0.15),transparent)' }} />
+          style={{ background: 'linear-gradient(90deg,transparent,rgba(197,160,89,0.2),transparent)' }} />
 
         <div className="max-w-7xl mx-auto px-6">
           <motion.div initial="hidden" animate="show" variants={stagger}>
             <motion.div variants={fadeUp}><Label>Our Portfolio</Label></motion.div>
             <motion.h1 variants={fadeUp}
-              className="text-6xl md:text-8xl lg:text-[9rem] font-bold leading-none mb-6 text-glow-white"
+              className="text-6xl md:text-8xl lg:text-[9rem] font-bold leading-none mb-6 text-[#171717]"
               style={{ fontFamily: "'Cormorant Garamond',serif", letterSpacing: '-0.03em' }}>
               Featured<br />
-              <span style={{ background: `linear-gradient(135deg,${GOLD},${GOLD_LIGHT})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+              <span style={{ background: `linear-gradient(135deg,${GOLD},#9A7836)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                 Projects
               </span>
             </motion.h1>
-            <motion.p variants={fadeUp} className="text-gray-500 text-lg max-w-xl">
+            <motion.p variants={fadeUp} className="text-stone-600 text-lg max-w-xl">
               A curated showcase of spaces we've transformed — from luxury residences to premium commercial environments.
             </motion.p>
           </motion.div>
@@ -97,19 +97,19 @@ const Projects: React.FC = () => {
                 key={cat}
                 onClick={() => setFilter(cat)}
                 whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
-                className="px-6 py-2 text-[10px] md:text-xs uppercase tracking-widest font-bold transition-all duration-300"
+                className="px-6 py-2.5 text-[10px] md:text-xs uppercase tracking-widest font-bold transition-all duration-300 shadow-sm"
                 style={{
-                  border: isActive ? `1px solid ${GOLD}` : '1px solid rgba(255,255,255,0.07)',
-                  background: isActive ? `linear-gradient(135deg,${GOLD},#b08d42)` : 'rgba(197,160,89,0.03)',
-                  color: isActive ? '#000' : 'rgba(197,160,89,0.6)',
-                  borderRadius: '2px',
+                  border: isActive ? `1px solid ${GOLD}` : '1px solid #E5E7EB',
+                  background: isActive ? `linear-gradient(135deg,${GOLD},#b08d42)` : '#FFFFFF',
+                  color: isActive ? '#FFFFFF' : '#4B5563',
+                  borderRadius: '4px',
                 }}>
                 {cat}
               </motion.button>
             );
           })}
-          <div className="w-9 h-9 flex items-center justify-center ml-1"
-            style={{ border: '1px solid rgba(197,160,89,0.15)', borderRadius: '2px', color: 'rgba(197,160,89,0.5)' }}>
+          <div className="w-10 h-10 flex items-center justify-center ml-1 bg-white shadow-sm"
+            style={{ border: '1px solid #E5E7EB', borderRadius: '4px', color: GOLD }}>
             <SlidersHorizontal className="w-4 h-4" />
           </div>
         </motion.div>
@@ -120,8 +120,7 @@ const Projects: React.FC = () => {
         {loading ? (
           <div className="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="break-inside-avoid h-64 animate-pulse rounded-sm"
-                style={{ background: 'rgba(197,160,89,0.04)' }} />
+              <div key={i} className="break-inside-avoid h-64 animate-pulse rounded-lg bg-white border border-stone-200" />
             ))}
           </div>
         ) : (
@@ -149,8 +148,8 @@ const Projects: React.FC = () => {
         {!loading && filtered.length === 0 && (
           <motion.div className="py-40 text-center"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <Search className="w-12 h-12 mx-auto mb-6" style={{ color: 'rgba(197,160,89,0.2)' }} />
-            <h3 className="text-2xl font-bold text-gray-600" style={{ fontFamily: "'Cormorant Garamond',serif" }}>
+            <Search className="w-12 h-12 mx-auto mb-6 text-stone-400" />
+            <h3 className="text-2xl font-bold text-stone-600" style={{ fontFamily: "'Cormorant Garamond',serif" }}>
               No projects found in this category
             </h3>
           </motion.div>

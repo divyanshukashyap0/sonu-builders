@@ -44,10 +44,10 @@
   ],
   "shortcuts": [
     {
-      "name": "Projects",
-      "short_name": "Projects",
-      "description": "View our portfolio of luxury interior designs",
-      "url": "/#/projects",
+      "name": "Services",
+      "short_name": "Services",
+      "description": "Explore our turnkey luxury interior services",
+      "url": "/#/services",
       "icons": [
         {
           "src": "/favicon.png",

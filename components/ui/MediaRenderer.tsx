@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import YouTubeBackground from './YouTubeBackground';
 import { Play } from 'lucide-react';
 import { useCompanyData } from '../../hooks/useCompanyData';
 import logo from '../../logo.png';
 import { getOptimizedImageUrl } from '../../utils/performance';
+import LazyImage from './LazyImage';
 
 interface MediaRendererProps {
   src: string;
@@ -25,6 +26,7 @@ const MediaRenderer: React.FC<MediaRendererProps> = ({
   width
 }) => {
   const isYoutube = src.includes('youtube.com') || src.includes('youtu.be');
+  const [fallbackSrc, setFallbackSrc] = useState<string | null>(null);
 
   const { watermarkLogo } = useCompanyData();
 
@@ -95,19 +97,19 @@ const MediaRenderer: React.FC<MediaRendererProps> = ({
           playsInline
         />
       ) : (
-        <img
-          src={finalSrc}
+        <LazyImage
+          src={fallbackSrc || finalSrc}
           alt={alt}
-          className={`w-full ${className.includes('h-auto') ? 'h-auto' : 'h-full'} object-${objectFit}`}
-          loading={loading}
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            // If the watermarked URL fails, strip the transformation and try original
-            if (target.src.includes('/upload/l_')) {
-              target.src = target.src.replace(/\/upload\/l_[^/]+\//, '/upload/');
-              return;
+          priority={loading === 'eager'}
+          objectFit={objectFit}
+          rootMargin="800px 0px"
+          className={`w-full ${className.includes('h-auto') ? 'h-auto' : 'h-full'}`}
+          onError={() => {
+            if (finalSrc.includes('/upload/l_')) {
+              setFallbackSrc(finalSrc.replace(/\/upload\/l_[^/]+\//, '/upload/'));
+            } else if (!fallbackSrc && src !== finalSrc) {
+              setFallbackSrc(src);
             }
-            target.src = 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1200&q=60';
           }}
         />
       )}

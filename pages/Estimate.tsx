@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 
 const EstimatePage: React.FC = () => {
     return (
-        <div className="page-transition min-h-screen bg-transparent text-white">
+        <div className="page-transition min-h-screen bg-[#FAF8F5] text-[#171717]">
             <SEO 
                 title="Project Cost Estimator" 
                 description="Get an instant luxury interior design and construction estimate for your project. Professional budget planning at your fingertips."
@@ -37,10 +37,10 @@ const EstimatePage: React.FC = () => {
                                 </div>
                                 <span className="text-luxury-gold font-bold uppercase tracking-[0.2em] text-sm">Smart Estimator</span>
                             </div>
-                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-luxury-charcoal dark:text-white mb-6 leading-tight">
+                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-[#171717] mb-6 leading-tight">
                                 Transparent <span className="text-luxury-gold italic">Precision</span>
                             </h2>
-                            <p className="text-gray-600 dark:text-gray-400 text-lg mb-8 leading-relaxed">
+                            <p className="text-stone-600 text-lg mb-8 leading-relaxed">
                                 Build your project inventory step-by-step or use our high-speed presets to generate a professional budget estimate in seconds. Every quote is balanced against current luxury market rates.
                             </p>
                             <div className="flex flex-wrap gap-4">
@@ -78,20 +78,20 @@ const EstimatePage: React.FC = () => {
 
                     
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-24">
-                        <div className="p-8 bg-black/40 backdrop-blur-md rounded-2xl border border-white/10 shadow-sm text-center">
+                        <div className="p-8 bg-white rounded-3xl border border-stone-200/80 shadow-luxury text-center">
                             <ShieldCheck className="w-10 h-10 text-luxury-gold mx-auto mb-4" />
-                            <h4 className="font-bold text-white mb-2 uppercase tracking-widest text-xs">Verified Rates</h4>
-                            <p className="text-sm text-gray-400">Estimates are balanced against current luxury market materials and labor costs.</p>
+                            <h4 className="font-bold text-[#171717] mb-2 uppercase tracking-widest text-xs">Verified Rates</h4>
+                            <p className="text-sm text-stone-500">Estimates are balanced against current luxury market materials and labor costs.</p>
                         </div>
-                        <div className="p-8 bg-black/40 backdrop-blur-md rounded-2xl border border-white/10 shadow-sm text-center">
+                        <div className="p-8 bg-white rounded-3xl border border-stone-200/80 shadow-luxury text-center">
                             <Sparkles className="w-10 h-10 text-luxury-gold mx-auto mb-4" />
-                            <h4 className="font-bold text-white mb-2 uppercase tracking-widest text-xs">Bespoke Options</h4>
-                            <p className="text-sm text-gray-400">From essential quality to ultra-luxury imported finishes, we cover every tier.</p>
+                            <h4 className="font-bold text-[#171717] mb-2 uppercase tracking-widest text-xs">Bespoke Options</h4>
+                            <p className="text-sm text-stone-500">From essential quality to ultra-luxury imported finishes, we cover every tier.</p>
                         </div>
-                        <div className="p-8 bg-black/40 backdrop-blur-md rounded-2xl border border-white/10 shadow-sm text-center">
+                        <div className="p-8 bg-white rounded-3xl border border-stone-200/80 shadow-luxury text-center">
                             <Calculator className="w-10 h-10 text-luxury-gold mx-auto mb-4" />
-                            <h4 className="font-bold text-white mb-2 uppercase tracking-widest text-xs">Real-time sync</h4>
-                            <p className="text-sm text-gray-400">Your final quote calculation includes GST and technical overheads automatically.</p>
+                            <h4 className="font-bold text-[#171717] mb-2 uppercase tracking-widest text-xs">Real-time sync</h4>
+                            <p className="text-sm text-stone-500">Your final quote calculation includes GST and technical overheads automatically.</p>
                         </div>
                     </div>
                 </div>

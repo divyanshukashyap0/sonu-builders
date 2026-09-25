@@ -28,29 +28,22 @@ const Label = ({ children }: { children: string }) => (
 
 // Luxury input wrapper
 const LuxInput = ({
-  label, id, name, type = 'text', value, onChange, placeholder, required = false,
+  label, id, name, type = 'text', value, onChange, placeholder, required = false, list,
 }: {
   label: string; id: string; name: string; type?: string;
-  value: string; onChange: (e: any) => void; placeholder?: string; required?: boolean;
+  value: string; onChange: (e: any) => void; placeholder?: string; required?: boolean; list?: string;
 }) => (
   <div className="relative group">
     <label htmlFor={id}
-      className="block text-[9px] uppercase tracking-[0.25em] font-bold mb-2"
-      style={{ color: 'rgba(197,160,89,0.7)' }}>
+      className="block text-[10px] uppercase tracking-[0.2em] font-bold mb-2 text-stone-700">
       {label}
     </label>
     <input
-      type={type} id={id} name={name} value={value}
+      type={type} id={id} name={name} value={value} list={list}
       onChange={onChange} placeholder={placeholder} required={required}
-      className="w-full px-4 py-3.5 outline-none text-white text-sm transition-all duration-300"
-      style={{
-        background: 'rgba(6,6,6,0.8)',
-        border: '1px solid rgba(197,160,89,0.15)',
-        borderRadius: '2px',
-        color: 'rgba(255,255,255,0.85)',
-      }}
-      onFocus={e => { e.currentTarget.style.borderColor = 'rgba(197,160,89,0.6)'; e.currentTarget.style.boxShadow = '0 0 0 1px rgba(197,160,89,0.15)'; }}
-      onBlur={e => { e.currentTarget.style.borderColor = 'rgba(197,160,89,0.15)'; e.currentTarget.style.boxShadow = 'none'; }}
+      className="w-full px-4 py-3.5 outline-none text-stone-900 text-sm transition-all duration-300 placeholder-stone-400 bg-[#FAF8F5] border border-stone-300 rounded"
+      onFocus={e => { e.currentTarget.style.borderColor = '#c5a059'; e.currentTarget.style.boxShadow = '0 0 0 1px #c5a059'; e.currentTarget.style.backgroundColor = '#FFFFFF'; }}
+      onBlur={e => { e.currentTarget.style.borderColor = '#D6D3D1'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.backgroundColor = '#FAF8F5'; }}
     />
   </div>
 );
@@ -62,16 +55,11 @@ const LuxSelect = ({
   onChange: (e: any) => void; required?: boolean; children: React.ReactNode;
 }) => (
   <div>
-    <label htmlFor={id} className="block text-[9px] uppercase tracking-[0.25em] font-bold mb-2"
-      style={{ color: 'rgba(197,160,89,0.7)' }}>{label}</label>
+    <label htmlFor={id} className="block text-[10px] uppercase tracking-[0.2em] font-bold mb-2 text-stone-700">{label}</label>
     <select id={id} name={name} value={value} onChange={onChange} required={required}
-      className="w-full px-4 py-3.5 outline-none text-sm transition-all duration-300"
-      style={{
-        background: 'rgba(6,6,6,0.8)', border: '1px solid rgba(197,160,89,0.15)',
-        borderRadius: '2px', color: 'rgba(255,255,255,0.85)',
-      }}
-      onFocus={e => { e.currentTarget.style.borderColor = 'rgba(197,160,89,0.6)'; }}
-      onBlur={e => { e.currentTarget.style.borderColor = 'rgba(197,160,89,0.15)'; }}>
+      className="w-full px-4 py-3.5 outline-none text-sm transition-all duration-300 text-stone-900 bg-[#FAF8F5] border border-stone-300 rounded"
+      onFocus={e => { e.currentTarget.style.borderColor = '#c5a059'; e.currentTarget.style.backgroundColor = '#FFFFFF'; }}
+      onBlur={e => { e.currentTarget.style.borderColor = '#D6D3D1'; e.currentTarget.style.backgroundColor = '#FAF8F5'; }}>
       {children}
     </select>
   </div>
@@ -91,6 +79,7 @@ const Contact: React.FC = () => {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>(
     searchParams.get('sent') === '1' ? 'success' : 'idle'
   );
+  const [honeypot, setHoneypot] = useState('');
 
   React.useEffect(() => {
     if (searchParams.get('sent') === '1') {
@@ -99,8 +88,19 @@ const Contact: React.FC = () => {
     }
     const fetchGeo = async () => {
       try {
+        const cachedCity = localStorage.getItem('sonu_user_city');
+        if (cachedCity) {
+          setFormData(prev => ({ ...prev, city: cachedCity }));
+          return;
+        }
         const r = await fetch('https://ipapi.co/json/').catch(() => null);
-        if (r?.ok) { const d = await r.json(); if (d.city) setFormData(prev => ({ ...prev, city: d.city })); }
+        if (r?.ok) {
+          const d = await r.json();
+          if (d.city) {
+            setFormData(prev => ({ ...prev, city: d.city }));
+            localStorage.setItem('sonu_user_city', d.city);
+          }
+        }
       } catch {}
     };
     fetchGeo();
@@ -111,11 +111,33 @@ const Contact: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (honeypot) {
+      console.warn('Spam submission filtered via honeypot.');
+      setStatus('success');
+      setFormData({ name: '', email: '', phone: '', city: '', projectType: '', budget: '', notes: '' });
+      return;
+    }
     setStatus('submitting');
     try {
       const subject = searchParams.get('subject');
       const designId = searchParams.get('designId');
       const payload = {
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        city: formData.city || 'Undetected',
+        projectType: formData.projectType || 'General Inquiry',
+        budget: formData.budget || 'Not specified',
+        notes: formData.notes || '',
+        referredDesign: projectContext?.title || subject || 'None',
+        referredDesignId: projectContext?.id || designId || null,
+        source: projectContext ? `Project Showcase: ${projectContext.title}` : 'Direct Contact Form',
+        _subject: projectContext ? `Booking: ${projectContext.title}` : (subject ? `Inquiry for ${subject}` : 'Inquiry from Sonu Enterprises'),
+        _captcha: 'false'
+      };
+
+      // 1. Save lead details in Firestore
+      await addDoc(collection(db, 'leads'), {
         ...formData,
         city: formData.city || 'Undetected',
         projectType: formData.projectType || 'General Inquiry',
@@ -126,27 +148,24 @@ const Contact: React.FC = () => {
         source: projectContext ? `Project Showcase: ${projectContext.title}` : 'Direct Contact Form',
         status: 'New',
         createdAt: new Date().toISOString(),
-      };
-      await addDoc(collection(db, 'leads'), payload);
-      const form = document.createElement('form');
-      form.action = `https://formsubmit.co/${encodeURIComponent(contactInfo.email)}`;
-      form.method = 'POST';
-      Object.entries(payload).forEach(([k, v]) => {
-        const input = document.createElement('input');
-        input.type = 'hidden'; input.name = k; input.value = String(v);
-        form.appendChild(input);
       });
-      const sub = document.createElement('input'); sub.type = 'hidden'; sub.name = '_subject';
-      sub.value = projectContext ? `Booking: ${projectContext.title}` : (subject ? `Inquiry for ${subject}` : 'Inquiry from Sonu Enterprises');
-      form.appendChild(sub);
-      const next = document.createElement('input'); next.type = 'hidden'; next.name = '_next';
-      next.value = `${window.location.origin}/contact?sent=1`; form.appendChild(next);
-      const cap = document.createElement('input'); cap.type = 'hidden'; cap.name = '_captcha'; cap.value = 'false';
-      form.appendChild(cap);
-      document.body.appendChild(form);
+
+      // 2. Post asynchronously to FormSubmit
+      const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(contactInfo.email)}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error('FormSubmit AJAX post failed');
+      }
+
       if (projectContext?.id) await incrementInquiryCount(projectContext.id);
-      form.submit();
-      document.body.removeChild(form);
+
       setStatus('success');
       setFormData({ name: '', email: '', phone: '', city: '', projectType: '', budget: '', notes: '' });
     } catch (err) {
@@ -157,7 +176,7 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <div className="text-white min-h-screen overflow-x-hidden" style={{ background: '#060606' }}>
+    <div className="text-stone-900 min-h-screen overflow-x-hidden" style={{ background: '#FAF8F5' }}>
       <SEO
         title="Contact Us | Sonu Enterprises"
         description="Get in touch for a free consultation. Luxury interior design services in Kalyan, Maharashtra."
@@ -170,23 +189,23 @@ const Contact: React.FC = () => {
           <img
             src={headers?.contact?.backgroundImage || 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=100'}
             className="w-full h-full object-cover"
-            style={{ filter: 'brightness(0.3) contrast(1.04) saturate(0.8)' }}
+            style={{ filter: 'brightness(0.9) contrast(1.02) saturate(0.9)' }}
             alt="Contact Hero"
           />
         </div>
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg,rgba(4,4,4,0.9) 0%,rgba(4,4,4,0.4) 60%,transparent 100%)' }} />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(6,6,6,0.95) 0%,transparent 50%)' }} />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg,rgba(250,248,245,0.92) 0%,rgba(250,248,245,0.65) 60%,transparent 100%)' }} />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(250,248,245,0.95) 0%,transparent 50%)' }} />
         <div className="absolute right-0 top-0 w-[500px] h-[500px] pointer-events-none"
-          style={{ background: 'radial-gradient(circle,rgba(197,160,89,0.07) 0%,transparent 70%)', filter: 'blur(80px)' }} />
+          style={{ background: 'radial-gradient(circle,rgba(197,160,89,0.12) 0%,transparent 70%)' }} />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 pt-28">
           <motion.div initial="hidden" animate="show" variants={stagger}>
             <motion.div variants={fadeUp}><Label>Get In Touch</Label></motion.div>
             <motion.h1 variants={fadeUp}
-              className="text-6xl md:text-8xl font-bold leading-none mb-6"
+              className="text-6xl md:text-8xl font-bold leading-none mb-6 text-[#171717]"
               style={{ fontFamily: "'Cormorant Garamond',serif", letterSpacing: '-0.03em' }}>
               Let's Start<br />
-              <span style={{ background: `linear-gradient(135deg,${GOLD},${GOLD_LIGHT})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+              <span style={{ background: `linear-gradient(135deg,${GOLD},#9A7836)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                 Your Story.
               </span>
             </motion.h1>
@@ -197,7 +216,7 @@ const Contact: React.FC = () => {
       {/* ── MAIN CONTENT ──────────────────────────────────────────────────────── */}
       <section className="relative py-24 overflow-hidden" data-cinematic-section>
         <div className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 80% 50%,rgba(197,160,89,0.04) 0%,transparent 60%)' }} />
+          style={{ background: 'radial-gradient(ellipse at 80% 50%,rgba(197,160,89,0.06) 0%,transparent 60%)' }} />
 
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
@@ -206,10 +225,10 @@ const Contact: React.FC = () => {
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} variants={stagger}>
               <motion.div variants={fadeUp}><Label>Contact Information</Label></motion.div>
               <motion.h2 variants={fadeUp}
-                className="text-4xl md:text-5xl font-bold text-white mb-10 leading-tight text-glow-gold"
+                className="text-4xl md:text-5xl font-bold text-[#171717] mb-10 leading-tight"
                 style={{ fontFamily: "'Cormorant Garamond',serif", letterSpacing: '-0.02em' }}>
                 We Are Here<br />
-                <span style={{ background: `linear-gradient(135deg,${GOLD},${GOLD_LIGHT})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                <span style={{ background: `linear-gradient(135deg,${GOLD},#9A7836)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                   to Listen.
                 </span>
               </motion.h2>
@@ -222,16 +241,15 @@ const Contact: React.FC = () => {
                 ].map((info, i) => (
                   <motion.a
                     key={i} href={info.href} target={i > 0 ? '_blank' : undefined} rel="noopener noreferrer"
-                    className="flex items-start gap-5 group"
+                    className="flex items-start gap-5 group p-4 rounded-lg bg-white shadow-sm border border-stone-200 hover:border-luxury-gold/50 transition-all duration-300"
                     whileHover={{ x: 4 }} transition={{ duration: 0.3 }}>
-                    <div className="w-12 h-12 flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:border-[#c5a059]"
-                      style={{ border: '1px solid rgba(197,160,89,0.2)', background: 'rgba(197,160,89,0.04)', borderRadius: '2px' }}>
-                      <info.icon className="w-5 h-5 transition-colors duration-300" style={{ color: 'rgba(197,160,89,0.7)' }} />
+                    <div className="w-12 h-12 flex items-center justify-center flex-shrink-0 transition-all duration-300 rounded bg-luxury-gold/10 border border-luxury-gold/30">
+                      <info.icon className="w-5 h-5 transition-colors duration-300 text-luxury-gold" />
                     </div>
                     <div>
-                      <p className="text-[9px] uppercase tracking-[0.2em] font-bold mb-1" style={{ color: 'rgba(197,160,89,0.5)' }}>{info.label}</p>
-                      <p className="text-sm font-medium text-white group-hover:text-[#c5a059] transition-colors duration-300">{info.value}</p>
-                      {info.sub && <p className="text-[9px] uppercase tracking-widest mt-1" style={{ color: 'rgba(197,160,89,0.4)' }}>{info.sub}</p>}
+                      <p className="text-[10px] uppercase tracking-[0.2em] font-bold mb-1 text-stone-500">{info.label}</p>
+                      <p className="text-sm font-semibold text-stone-900 group-hover:text-luxury-gold transition-colors duration-300">{info.value}</p>
+                      {info.sub && <p className="text-[10px] uppercase tracking-widest mt-1 text-stone-500">{info.sub}</p>}
                     </div>
                   </motion.a>
                 ))}
@@ -239,45 +257,34 @@ const Contact: React.FC = () => {
 
               {/* Map */}
               <motion.div variants={fadeUp}
-                className="relative overflow-hidden rounded-sm"
-                style={{ height: '280px', border: '1px solid rgba(197,160,89,0.1)' }}>
-                <div className="absolute inset-0 pointer-events-none z-10"
-                  style={{ boxShadow: 'inset 0 0 0 1px rgba(197,160,89,0.12)' }} />
+                className="relative overflow-hidden rounded-lg shadow-sm"
+                style={{ height: '280px', border: '1px solid rgba(197,160,89,0.3)' }}>
                 <iframe
                   title="Sonu Enterprises Map"
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d120605.25598410501!2d72.93404914335936!3d19.1552305!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7bfb4b94582cd%3A0xc0e9efc260246a09!2sSonu%20Enterprises%20and%20building%20developers!5e0!3m2!1sen!2sus!4v1776269945283!5m2!1sen!2sus"
                   width="100%" height="100%"
-                  style={{ border: 0, filter: 'grayscale(80%) contrast(0.9) brightness(0.7)' }}
+                  style={{ border: 0 }}
                   allowFullScreen loading="lazy"
                 />
               </motion.div>
             </motion.div>
 
-            {/* ── RIGHT: Glassmorphism form ─────────────────────────────────── */}
+            {/* ── RIGHT: Form ─────────────────────────────────── */}
             <motion.div
               initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}>
-              <div className="relative overflow-hidden rounded-sm p-8 md:p-10"
-                style={{
-                  background: 'rgba(8,8,8,0.85)',
-                  border: '1px solid rgba(197,160,89,0.15)',
-                  backdropFilter: 'blur(20px)',
-                }}>
-                {/* Ambient glow */}
-                <div className="absolute top-0 right-0 w-48 h-48 pointer-events-none"
-                  style={{ background: 'radial-gradient(circle,rgba(197,160,89,0.08) 0%,transparent 70%)', filter: 'blur(30px)' }} />
-
+              <div className="relative overflow-hidden rounded-xl p-8 md:p-10 bg-white shadow-luxury border border-luxury-gold/25">
                 <div className="relative z-10">
                   <div className="flex items-start justify-between mb-8">
                     <div>
                       <Label>Send Message</Label>
-                      <h3 className="text-2xl font-bold text-white"
+                      <h3 className="text-2xl font-bold text-[#171717]"
                         style={{ fontFamily: "'Cormorant Garamond',serif" }}>Book Your Consultation</h3>
                     </div>
                     {projectContext && (
                       <div className="px-3 py-1 text-[9px] uppercase tracking-[0.2em] font-bold flex-shrink-0"
-                        style={{ border: '1px solid rgba(197,160,89,0.3)', color: GOLD, background: 'rgba(197,160,89,0.05)', borderRadius: '2px' }}>
+                        style={{ border: '1px solid rgba(197,160,89,0.4)', color: GOLD, background: 'rgba(197,160,89,0.08)', borderRadius: '2px' }}>
                         {projectContext.title}
                       </div>
                     )}
@@ -290,13 +297,13 @@ const Contact: React.FC = () => {
                         initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0 }} transition={{ duration: 0.5 }}
                         className="py-16 text-center">
-                        <div className="w-16 h-16 flex items-center justify-center mx-auto mb-6 rounded-sm"
+                        <div className="w-16 h-16 flex items-center justify-center mx-auto mb-6 rounded-full"
                           style={{ background: `linear-gradient(135deg,${GOLD},#b08d42)` }}>
-                          <Send className="w-7 h-7 text-black" />
+                          <Send className="w-7 h-7 text-white" />
                         </div>
-                        <h3 className="text-2xl font-bold text-white mb-3"
+                        <h3 className="text-2xl font-bold text-[#171717] mb-3"
                           style={{ fontFamily: "'Cormorant Garamond',serif" }}>Message Delivered</h3>
-                        <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                        <p className="text-sm text-stone-600">
                           Our design experts will review your details and contact you shortly.
                         </p>
                       </motion.div>
@@ -305,13 +312,35 @@ const Contact: React.FC = () => {
                         key="form" onSubmit={handleSubmit}
                         initial={{ opacity: 1 }} exit={{ opacity: 0 }}
                         className="space-y-5">
+                        {/* Honeypot field for bot spam protection */}
+                        <div style={{ display: 'none', opacity: 0, position: 'absolute', zIndex: -1 }} aria-hidden="true">
+                          <input
+                            type="text"
+                            name="website_verify"
+                            value={honeypot}
+                            onChange={(e) => setHoneypot(e.target.value)}
+                            tabIndex={-1}
+                            autoComplete="off"
+                          />
+                        </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                           <LuxInput label="Full Name" id="name" name="name" value={formData.name} onChange={handleChange} placeholder="John Doe" required />
                           <LuxInput label="Phone Number" id="phone" name="phone" type="tel" value={formData.phone} onChange={handleChange} placeholder="+91 ..." required />
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                           <LuxInput label="Email Address" id="email" name="email" type="email" value={formData.email} onChange={handleChange} placeholder="john@example.com" required />
-                          <LuxInput label="City" id="city" name="city" value={formData.city} onChange={handleChange} placeholder="Your city" required />
+                          <div>
+                            <LuxInput label="City" id="city" name="city" value={formData.city} onChange={handleChange} placeholder="e.g. Kalyan, Thane" required list="cities-list" />
+                            <datalist id="cities-list">
+                              <option value="Kalyan" />
+                              <option value="Dombivli" />
+                              <option value="Thane West" />
+                              <option value="Navi Mumbai" />
+                              <option value="Palava City" />
+                              <option value="Panvel" />
+                              <option value="Mumbai" />
+                            </datalist>
+                          </div>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                           <LuxSelect label="Project Type" id="projectType" name="projectType" value={formData.projectType} onChange={handleChange} required>
@@ -331,21 +360,19 @@ const Contact: React.FC = () => {
                           </LuxSelect>
                         </div>
                         <div>
-                          <label htmlFor="notes" className="block text-[9px] uppercase tracking-[0.25em] font-bold mb-2"
-                            style={{ color: 'rgba(197,160,89,0.7)' }}>Notes & Description</label>
+                          <label htmlFor="notes" className="block text-[10px] uppercase tracking-[0.2em] font-bold mb-2 text-stone-700">Notes & Description</label>
                           <textarea id="notes" name="notes" rows={4} required
                             value={formData.notes} onChange={handleChange}
                             placeholder="Describe your vision, specific requirements, layout details..."
-                            className="w-full px-4 py-3.5 outline-none text-sm transition-all duration-300 resize-none"
-                            style={{ background: 'rgba(6,6,6,0.8)', border: '1px solid rgba(197,160,89,0.15)', borderRadius: '2px', color: 'rgba(255,255,255,0.85)' }}
-                            onFocus={e => { e.currentTarget.style.borderColor = 'rgba(197,160,89,0.6)'; }}
-                            onBlur={e => { e.currentTarget.style.borderColor = 'rgba(197,160,89,0.15)'; }}
+                            className="w-full px-4 py-3.5 outline-none text-sm transition-all duration-300 resize-none text-stone-900 bg-[#FAF8F5] border border-stone-300 rounded"
+                            onFocus={e => { e.currentTarget.style.borderColor = '#c5a059'; e.currentTarget.style.backgroundColor = '#FFFFFF'; }}
+                            onBlur={e => { e.currentTarget.style.borderColor = '#D6D3D1'; e.currentTarget.style.backgroundColor = '#FAF8F5'; }}
                           />
                         </div>
                         <motion.button
                           type="submit" disabled={status === 'submitting'}
-                          className="w-full relative inline-flex items-center justify-center gap-3 py-4 text-[11px] uppercase tracking-[0.3em] font-bold overflow-hidden"
-                          style={{ background: `linear-gradient(135deg,${GOLD},#b08d42)`, color: '#000', borderRadius: '2px', opacity: status === 'submitting' ? 0.7 : 1 }}
+                          className="w-full relative inline-flex items-center justify-center gap-3 py-4 text-[11px] uppercase tracking-[0.3em] font-bold overflow-hidden shadow-lg shadow-luxury-gold/20"
+                          style={{ background: `linear-gradient(135deg,${GOLD},#b08d42)`, color: '#FFFFFF', borderRadius: '4px', opacity: status === 'submitting' ? 0.7 : 1 }}
                           whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
                           <span className="light-streak" />
                           <span className="relative z-10 flex items-center gap-2">
@@ -356,10 +383,6 @@ const Contact: React.FC = () => {
                     )}
                   </AnimatePresence>
                 </div>
-
-                {/* Bottom gold line */}
-                <div className="absolute bottom-0 left-0 right-0 h-[1px]"
-                  style={{ background: 'linear-gradient(90deg,transparent,rgba(197,160,89,0.4),transparent)' }} />
               </div>
             </motion.div>
           </div>

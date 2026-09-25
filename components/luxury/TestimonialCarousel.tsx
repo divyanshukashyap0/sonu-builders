@@ -43,17 +43,25 @@ const TestimonialCarousel: React.FC = () => {
 
     return (
         <div
-            className="relative py-12 px-4"
+            className="relative py-6"
             onMouseEnter={() => setIsAutoPlaying(false)}
             onMouseLeave={() => setIsAutoPlaying(true)}
         >
             {/* Controls */}
-            <div className="flex justify-end gap-2 mb-8 pr-4">
-                <button onClick={prevSlide} className="p-3 rounded-full border border-luxury-gold/30 text-luxury-gold hover:bg-luxury-gold hover:text-white transition-all duration-300">
-                    <ChevronLeft className="w-5 h-5" />
+            <div className="flex justify-end gap-2 mb-6">
+                <button
+                    onClick={prevSlide}
+                    className="p-2.5 rounded-xs border border-stone-300 text-stone-700 hover:text-black hover:border-[#171717] bg-white shadow-2xs transition-colors"
+                    aria-label="Previous testimonial"
+                >
+                    <ChevronLeft className="w-4 h-4" />
                 </button>
-                <button onClick={nextSlide} className="p-3 rounded-full border border-luxury-gold/30 text-luxury-gold hover:bg-luxury-gold hover:text-white transition-all duration-300">
-                    <ChevronRight className="w-5 h-5" />
+                <button
+                    onClick={nextSlide}
+                    className="p-2.5 rounded-xs border border-stone-300 text-stone-700 hover:text-black hover:border-[#171717] bg-white shadow-2xs transition-colors"
+                    aria-label="Next testimonial"
+                >
+                    <ChevronRight className="w-4 h-4" />
                 </button>
             </div>
 
@@ -63,42 +71,48 @@ const TestimonialCarousel: React.FC = () => {
                     {getVisibleTestimonials().map((item, idx) => (
                         <motion.div
                             key={item.id}
-                            initial={{ opacity: 0, x: 50 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -50 }}
-                            transition={{ duration: 0.5, delay: idx * 0.1 }}
-                            className={`bg-neutral-900/40 backdrop-blur-xl p-8 rounded-2xl shadow-luxury hover:shadow-luxury-hover border border-white/5 relative group h-full flex flex-col ${idx !== 0 ? 'hidden md:flex' : 'flex'}`}
+                            initial={{ opacity: 0, y: 15 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -15 }}
+                            transition={{ duration: 0.4, delay: idx * 0.08 }}
+                            className={`bg-white p-7 md:p-8 rounded-xs shadow-2xs hover:shadow-sm border border-stone-200/90 relative group h-full flex flex-col justify-between ${idx !== 0 ? 'hidden md:flex' : 'flex'}`}
                         >
-                            {/* Google Verified Badge */}
-                            <div className="absolute top-6 left-8 flex items-center gap-2 px-3 py-1 bg-white/5 rounded-full border border-white/10">
-                                <GoogleIcon />
-                                <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Verified Review</span>
-                            </div>
+                            <div>
+                                <div className="flex items-center justify-between mb-5">
+                                    {/* Google Verified Review */}
+                                    <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[#FAF8F5] rounded-xs border border-stone-200/70">
+                                        <GoogleIcon />
+                                        <span className="text-[10px] text-stone-600 font-semibold uppercase tracking-wider">Verified Review</span>
+                                    </div>
 
-                            {/* Quote Icon */}
-                            <Quote className="absolute top-6 right-8 w-10 h-10 text-luxury-gold/5 group-hover:text-luxury-gold/10 transition-colors" />
-
-                            {/* Stars */}
-                            <div className="flex gap-1 mt-10 mb-6">
-                                {[...Array(5)].map((_, i) => (
-                                    <Star key={i} className={`w-4 h-4 ${i < item.rating ? 'text-[#FFD700] fill-[#FFD700]' : 'text-gray-600'}`} />
-                                ))}
-                            </div>
-
-                            {/* Content */}
-                            <p className="text-gray-300 mb-8 italic leading-relaxed flex-grow text-sm line-clamp-[8] group-hover:line-clamp-none transition-all duration-500 overflow-hidden">
-                                "{item.content}"
-                            </p>
-
-                            {/* Author */}
-                            <div className="flex items-center gap-4 mt-auto pt-6 border-t border-white/5">
-                                <div className="w-10 h-10 rounded-full bg-luxury-gold/20 flex items-center justify-center text-luxury-gold font-bold text-lg">
-                                    {item.name.charAt(0)}
+                                    {/* Stars */}
+                                    <div className="flex gap-0.5">
+                                        {[...Array(5)].map((_, i) => (
+                                            <Star key={i} className={`w-3.5 h-3.5 ${i < item.rating ? 'text-[#c5a059] fill-[#c5a059]' : 'text-stone-300'}`} />
+                                        ))}
+                                    </div>
                                 </div>
+
+                                {/* Content */}
+                                <p className="text-stone-700 text-sm leading-relaxed italic mb-6">
+                                    &ldquo;{item.content}&rdquo;
+                                </p>
+                            </div>
+
+                            {/* Author & Project Context */}
+                            <div className="pt-4 border-t border-stone-100 flex items-center justify-between">
                                 <div>
-                                    <h4 className="font-bold text-white text-sm">{item.name}</h4>
-                                    <p className="text-[10px] uppercase tracking-wider text-luxury-gold font-bold mt-0.5">{item.role}</p>
+                                    <h4
+                                        className="font-bold text-base text-[#171717]"
+                                        style={{ fontFamily: "'Cormorant Garamond', serif" }}
+                                    >
+                                        {item.name}
+                                    </h4>
+                                    <p className="text-[11px] text-[#8C6D23] font-semibold tracking-wide uppercase mt-0.5">
+                                        {item.role}
+                                    </p>
                                 </div>
+                                <Quote className="w-6 h-6 text-stone-300 group-hover:text-[#c5a059]/40 transition-colors" />
                             </div>
                         </motion.div>
                     ))}
@@ -106,19 +120,20 @@ const TestimonialCarousel: React.FC = () => {
             </div>
 
             {/* Mobile Indicators */}
-            <div className="flex justify-center gap-2 mt-8 md:hidden">
+            <div className="flex justify-center gap-1.5 mt-6 md:hidden">
                 {TESTIMONIALS.map((_, idx) => (
                     <button
                         key={idx}
                         onClick={() => setCurrentIndex(idx)}
-                        className={`w-2 h-2 rounded-full transition-all duration-300 ${idx === currentIndex ? 'bg-luxury-gold w-6' : 'bg-gray-300'}`}
+                        className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentIndex ? 'bg-[#c5a059] w-6' : 'bg-stone-300 w-2'}`}
+                        aria-label={`Go to slide ${idx + 1}`}
                     />
                 ))}
             </div>
-            
-            <div className="text-center mt-12">
-               <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold flex items-center justify-center gap-2">
-                   Authenticated via <span className="text-white flex items-center gap-1"><GoogleIcon /> Google Maps Listing</span>
+
+            <div className="text-center mt-10">
+               <p className="text-[11px] text-stone-500 uppercase tracking-widest font-semibold flex items-center justify-center gap-2">
+                   Verified via <span className="text-[#171717] font-bold flex items-center gap-1.5"><GoogleIcon /> Google Business Profile</span>
                </p>
             </div>
         </div>

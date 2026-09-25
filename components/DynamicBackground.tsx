@@ -5,28 +5,30 @@ import { getOptimizedImageUrl } from '../utils/performance';
 
 export const DynamicBackground: React.FC = () => {
     const [settings, setSettings] = useState({
-        backgroundColor: '#050505',
+        backgroundColor: '#FAF8F5',
         backgroundImage: '',
-        backgroundBlur: 25
+        backgroundBlur: 0
     });
 
     useEffect(() => {
-        // Use a one-time fetch instead of a real-time listener.
-        // The app background setting is session-stable and doesn't need live updates.
         const fetchSettings = async () => {
             try {
                 const docSnap = await getDoc(doc(db, 'settings', 'appearance'));
                 if (docSnap.exists()) {
                     const data = docSnap.data();
+                    const isDark = (c?: string) => {
+                        if (!c) return true;
+                        const clean = c.toLowerCase().trim();
+                        return clean.startsWith('#0') || clean.startsWith('#1') || clean.startsWith('#2') || clean === 'black';
+                    };
                     setSettings({
-                        backgroundColor: data.backgroundColor || '#050505',
+                        backgroundColor: (data.backgroundColor && !isDark(data.backgroundColor)) ? data.backgroundColor : '#FAF8F5',
                         backgroundImage: data.backgroundImage || '',
-                        backgroundBlur: data.backgroundBlur !== undefined ? data.backgroundBlur : 25
+                        backgroundBlur: data.backgroundBlur !== undefined ? data.backgroundBlur : 0
                     });
                 }
             } catch (err) {
-                // Silently fail — background is cosmetic and has a default
-                console.warn('Could not load background settings:', err);
+                // Silently fallback to light luxury background
             }
         };
 
@@ -35,24 +37,21 @@ export const DynamicBackground: React.FC = () => {
 
     return (
         <div 
-            className="fixed inset-0 -z-50 transition-all duration-1000 ease-in-out"
-            style={{ backgroundColor: settings.backgroundColor }}
+            className="fixed inset-0 -z-50 pointer-events-none transition-colors duration-700"
+            style={{ backgroundColor: settings.backgroundColor || '#FAF8F5' }}
         >
             {settings.backgroundImage && (
                 <>
                     <div 
-                        className="absolute inset-0 transition-opacity duration-1000"
+                        className="absolute inset-0 transition-opacity duration-700"
                         style={{ 
                             backgroundImage: `url(${getOptimizedImageUrl(settings.backgroundImage, 1920)})`,
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
-                            backgroundAttachment: 'fixed',
-                            filter: `blur(${settings.backgroundBlur / 8}px) brightness(0.8)`,
-                            opacity: 0.9
+                            opacity: 0.12
                         }}
                     />
-                    <div className="absolute inset-0 opacity-[0.05] bg-grain pointer-events-none" />
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#FAF8F5]/80 via-transparent to-[#FAF8F5]/90" />
                 </>
             )}
         </div>

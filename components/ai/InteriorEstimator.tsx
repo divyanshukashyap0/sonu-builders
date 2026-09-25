@@ -250,23 +250,23 @@ export const InteriorEstimator: React.FC = () => {
                     >
                         <Sparkles size={14} /> Design Your Destiny
                     </motion.div>
-                    <h1 className="text-4xl md:text-6xl font-serif font-bold text-white mb-4">Interior <span className="text-luxury-gold italic">Project Estimator</span></h1>
-                    <p className="text-white/70 max-w-2xl mx-auto text-lg">Experience precision and luxury. Get a detailed professional estimate for your dream property in minutes.</p>
+                    <h1 className="text-4xl md:text-6xl font-serif font-bold text-[#171717] mb-4">Interior <span className="text-luxury-gold italic">Project Estimator</span></h1>
+                    <p className="text-stone-600 max-w-2xl mx-auto text-lg font-medium">Experience precision and luxury. Get a detailed professional estimate for your dream property in minutes.</p>
                 </div>
 
                 {/* Progress Bar */}
                 <div className="max-w-4xl mx-auto mb-20">
                     <div className="relative flex justify-between">
-                        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-white/10 -translate-y-1/2" />
+                        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-stone-200 -translate-y-1/2" />
                         {[0, 1, 2, 3].map((s) => (
                             <div 
                                 key={s} 
                                 className={`relative z-10 w-12 h-12 rounded-full flex items-center justify-center font-bold transition-all duration-500 ${
-                                    step >= s ? 'bg-luxury-gold text-white shadow-glow-gold scale-110' : 'bg-luxury-charcoal text-gray-500 border-2 border-white/10'
+                                    step >= s ? 'bg-luxury-gold text-white shadow-glow-gold scale-110' : 'bg-stone-100 text-stone-400 border-2 border-stone-200'
                                 }`}
                             >
                                 {step > s ? <CheckCircle2 size={24} /> : s + 1}
-                                <span className={`absolute top-full mt-4 whitespace-nowrap text-[10px] uppercase font-bold tracking-widest ${step >= s ? 'text-luxury-gold' : 'text-gray-500'}`}>
+                                <span className={`absolute top-full mt-4 whitespace-nowrap text-[10px] uppercase font-bold tracking-widest ${step >= s ? 'text-luxury-gold' : 'text-stone-400'}`}>
                                     {s === 0 ? 'Design Style' : s === 1 ? 'Personal Details' : s === 2 ? 'Requirements' : 'Review & Quote'}
                                 </span>
                             </div>
@@ -290,8 +290,8 @@ export const InteriorEstimator: React.FC = () => {
                                     className="space-y-8"
                                 >
                                     <div className="text-center mb-8">
-                                        <h3 className="text-3xl font-serif font-bold text-white">Choose Your <span className="text-luxury-gold">Design Inspiration</span></h3>
-                                        <p className="text-white/60 mt-2">Select a theme that aligns with your vision and budget.</p>
+                                        <h3 className="text-3xl font-serif font-bold text-[#171717]">Choose Your <span className="text-luxury-gold">Design Inspiration</span></h3>
+                                        <p className="text-stone-500 mt-2 font-medium">Select a theme that aligns with your vision and budget.</p>
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                         {costs?.styleTiers?.map(tier => (
@@ -302,7 +302,7 @@ export const InteriorEstimator: React.FC = () => {
                                                     setStep(1);
                                                 }}
                                                 className={`group relative h-[400px] rounded-3xl overflow-hidden border-2 transition-all ${
-                                                    clientInfo.selectedStyleId === tier.id ? 'border-luxury-gold shadow-glow-gold' : 'border-white/10'
+                                                    clientInfo.selectedStyleId === tier.id ? 'border-luxury-gold shadow-glow-gold' : 'border-stone-200/80 shadow-md hover:border-luxury-gold/50'
                                                 }`}
                                             >
                                                 <img src={tier.image} alt={tier.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
@@ -323,9 +323,9 @@ export const InteriorEstimator: React.FC = () => {
                                     initial={{ opacity: 0, x: -20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: 20 }}
-                                    className="bg-black/40 backdrop-blur-xl rounded-3xl shadow-luxury p-8 md:p-12 border border-white/10"
+                                    className="bg-white rounded-3xl shadow-luxury p-8 md:p-12 border border-stone-200/80"
                                 >
-                                    <h3 className="text-2xl font-serif font-bold text-white mb-8 flex items-center gap-4">
+                                    <h3 className="text-2xl font-serif font-bold text-[#171717] mb-8 flex items-center gap-4">
                                         <div className="w-10 h-10 bg-luxury-gold/10 rounded-full flex items-center justify-center text-luxury-gold border border-luxury-gold/20">
                                             <User size={20} />
                                         </div>
@@ -334,33 +334,33 @@ export const InteriorEstimator: React.FC = () => {
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                                         <div className="space-y-2">
-                                            <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest px-1">Full Name</label>
+                                            <label className="text-[10px] font-bold text-stone-500 uppercase tracking-widest px-1">Full Name</label>
                                             <div className="relative">
-                                                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                                                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" size={18} />
                                                 <input 
-                                                    type="text"
+                                                    type="text" 
                                                     value={clientInfo.name}
                                                     onChange={e => setClientInfo({...clientInfo, name: e.target.value})}
-                                                    className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-luxury-gold transition-all text-white"
+                                                    className="w-full pl-12 pr-4 py-4 bg-stone-50 border border-stone-200 rounded-2xl outline-none focus:border-luxury-gold focus:bg-white transition-all text-[#171717] placeholder:text-stone-400 font-medium"
                                                     placeholder="e.g. John Doe"
                                                 />
                                             </div>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest px-1">Phone Number</label>
+                                            <label className="text-[10px] font-bold text-stone-500 uppercase tracking-widest px-1">Phone Number</label>
                                             <div className="relative">
-                                                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                                                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" size={18} />
                                                 <input 
                                                     type="tel"
                                                     value={clientInfo.phone}
                                                     onChange={e => setClientInfo({...clientInfo, phone: e.target.value})}
-                                                    className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-luxury-gold transition-all text-white"
+                                                    className="w-full pl-12 pr-4 py-4 bg-stone-50 border border-stone-200 rounded-2xl outline-none focus:border-luxury-gold focus:bg-white transition-all text-[#171717] placeholder:text-stone-400 font-medium"
                                                     placeholder="+91 00000 00000"
                                                 />
                                             </div>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest px-1">Property Type</label>
+                                            <label className="text-[10px] font-bold text-stone-500 uppercase tracking-widest px-1">Property Type</label>
                                             <div className="grid grid-cols-3 gap-3">
                                                 {PROPERTY_TYPES.map(type => (
                                                     <button
@@ -369,7 +369,7 @@ export const InteriorEstimator: React.FC = () => {
                                                         className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all ${
                                                             clientInfo.propertyType === type.id 
                                                             ? 'bg-luxury-gold/10 border-luxury-gold text-luxury-gold shadow-glow-gold' 
-                                                            : 'bg-white/5 border-white/10 text-gray-500 hover:bg-white/10'
+                                                            : 'bg-stone-50 border-stone-200 text-stone-600 hover:bg-stone-100'
                                                         }`}
                                                     >
                                                         <type.icon size={20} className="mb-2" />
@@ -379,33 +379,33 @@ export const InteriorEstimator: React.FC = () => {
                                             </div>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest px-1">Total Area (Sq.ft)</label>
+                                            <label className="text-[10px] font-bold text-stone-500 uppercase tracking-widest px-1">Total Area (Sq.ft)</label>
                                             <div className="relative">
-                                                <Grid className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                                                <Grid className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" size={18} />
                                                 <input 
                                                     type="number"
                                                     value={clientInfo.totalArea}
                                                     onChange={e => setClientInfo({...clientInfo, totalArea: e.target.value})}
-                                                    className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-luxury-gold transition-all text-white"
+                                                    className="w-full pl-12 pr-4 py-4 bg-stone-50 border border-stone-200 rounded-2xl outline-none focus:border-luxury-gold focus:bg-white transition-all text-[#171717] placeholder:text-stone-400 font-medium"
                                                     placeholder="e.g. 1200"
                                                 />
                                             </div>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest px-1">Location</label>
+                                            <label className="text-[10px] font-bold text-stone-500 uppercase tracking-widest px-1">Location</label>
                                             <div className="relative">
-                                                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                                                <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" size={18} />
                                                 <input 
                                                     type="text"
                                                     value={clientInfo.location}
                                                     onChange={e => setClientInfo({...clientInfo, location: e.target.value})}
-                                                    className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-luxury-gold transition-all text-white"
+                                                    className="w-full pl-12 pr-4 py-4 bg-stone-50 border border-stone-200 rounded-2xl outline-none focus:border-luxury-gold focus:bg-white transition-all text-[#171717] placeholder:text-stone-400 font-medium"
                                                     placeholder="e.g. Mumbai, India"
                                                 />
                                             </div>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest px-1">Expected Completion</label>
+                                            <label className="text-[10px] font-bold text-stone-500 uppercase tracking-widest px-1">Expected Completion</label>
                                             <div className="grid grid-cols-2 gap-2">
                                                 {TIMELINES.map(t => (
                                                     <button
@@ -414,7 +414,7 @@ export const InteriorEstimator: React.FC = () => {
                                                         className={`py-3 px-4 rounded-xl border text-[10px] font-bold uppercase tracking-widest transition-all ${
                                                             clientInfo.timeline === t 
                                                             ? 'bg-luxury-gold/10 border-luxury-gold text-luxury-gold' 
-                                                            : 'bg-white/5 border-white/10 text-gray-500'
+                                                            : 'bg-stone-50 border-stone-200 text-stone-600 hover:bg-stone-100'
                                                         }`}
                                                     >
                                                         {t}
@@ -451,14 +451,14 @@ export const InteriorEstimator: React.FC = () => {
                                     className="space-y-8"
                                 >
                                     {CATEGORIES.map((category) => (
-                                        <div key={category.id} className="bg-black/40 backdrop-blur-xl rounded-3xl shadow-luxury p-8 border border-white/10 hover:border-luxury-gold/30 transition-all">
+                                        <div key={category.id} className="bg-white rounded-3xl shadow-luxury p-8 border border-stone-200/80 hover:border-luxury-gold/40 transition-all">
                                             <div className="flex items-center gap-4 mb-6">
                                                 <div className="w-12 h-12 bg-luxury-gold/10 rounded-2xl flex items-center justify-center text-luxury-gold border border-luxury-gold/20">
                                                     <category.icon size={24} />
                                                 </div>
                                                 <div>
-                                                    <h4 className="text-xl font-serif font-bold text-white">{category.label}</h4>
-                                                    <p className="text-xs text-gray-500 uppercase tracking-widest">Select your preference</p>
+                                                    <h4 className="text-xl font-serif font-bold text-[#171717]">{category.label}</h4>
+                                                    <p className="text-xs text-stone-500 uppercase tracking-widest">Select your preference</p>
                                                 </div>
                                             </div>
 
@@ -470,7 +470,7 @@ export const InteriorEstimator: React.FC = () => {
                                                         className={`p-4 rounded-xl border text-sm font-bold transition-all ${
                                                             selections[category.id]?.material === option
                                                             ? 'bg-luxury-gold text-white border-luxury-gold shadow-glow-gold'
-                                                            : 'bg-white/5 border-white/10 text-gray-400 hover:border-luxury-gold/30 hover:text-white'
+                                                            : 'bg-stone-50 border-stone-200 text-stone-700 hover:border-luxury-gold/40 hover:text-[#171717]'
                                                         }`}
                                                     >
                                                         {option}
@@ -502,25 +502,25 @@ export const InteriorEstimator: React.FC = () => {
                                     key="step3"
                                     initial={{ opacity: 0, scale: 0.95 }}
                                     animate={{ opacity: 1, scale: 1 }}
-                                    className="bg-black/60 backdrop-blur-2xl rounded-3xl shadow-luxury p-10 border border-white/10 overflow-hidden relative"
+                                    className="bg-white rounded-3xl shadow-luxury p-10 border border-stone-200/80 overflow-hidden relative"
                                 >
                                     <div className="absolute top-0 right-0 w-64 h-64 bg-luxury-gold/5 rounded-full -mr-32 -mt-32 blur-3xl" />
                                     
-                                    <h3 className="text-3xl font-serif font-bold text-white mb-10 relative flex items-center gap-4">
+                                    <h3 className="text-3xl font-serif font-bold text-[#171717] mb-10 relative flex items-center gap-4">
                                         <FileText className="text-luxury-gold" />
                                         Final Quotation Preview
                                     </h3>
 
                                     <div className="space-y-6 mb-12 relative">
                                         {CATEGORIES.filter(c => selections[c.id]).map(c => (
-                                            <div key={c.id} className="flex items-center justify-between p-6 bg-white/5 rounded-2xl border border-white/10 group hover:border-luxury-gold/30 transition-all">
+                                            <div key={c.id} className="flex items-center justify-between p-6 bg-stone-50 rounded-2xl border border-stone-200/80 group hover:border-luxury-gold/30 transition-all">
                                                 <div className="flex items-center gap-4">
-                                                    <div className="w-10 h-10 bg-luxury-charcoal rounded-full flex items-center justify-center text-luxury-gold border border-white/10 shadow-sm group-hover:shadow-glow-gold/20 transition-all">
+                                                    <div className="w-10 h-10 bg-stone-200 rounded-full flex items-center justify-center text-luxury-gold border border-stone-300 shadow-sm group-hover:shadow-glow-gold/20 transition-all">
                                                         <c.icon size={18} />
                                                     </div>
                                                     <div>
-                                                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">{c.label}</p>
-                                                        <p className="font-bold text-white">{selections[c.id].material}</p>
+                                                        <p className="text-[10px] text-stone-500 font-bold uppercase tracking-widest mb-1">{c.label}</p>
+                                                        <p className="font-bold text-[#171717]">{selections[c.id].material}</p>
                                                     </div>
                                                 </div>
                                                 <p className="font-mono font-bold text-luxury-gold text-lg">₹{selections[c.id].cost.toLocaleString('en-IN')}</p>
@@ -528,17 +528,17 @@ export const InteriorEstimator: React.FC = () => {
                                         ))}
                                     </div>
 
-                                    <div className="border-t-2 border-dashed border-white/10 pt-10 mb-12 relative">
+                                    <div className="border-t-2 border-dashed border-stone-200 pt-10 mb-12 relative">
                                         <div className="flex justify-between mb-4">
-                                            <span className="text-gray-400 font-bold uppercase tracking-widest text-sm">Project Subtotal</span>
-                                            <span className="text-white font-mono font-bold text-xl">₹{totalCost.subtotal.toLocaleString('en-IN')}</span>
+                                            <span className="text-stone-500 font-bold uppercase tracking-widest text-sm">Project Subtotal</span>
+                                            <span className="text-[#171717] font-mono font-bold text-xl">₹{totalCost.subtotal.toLocaleString('en-IN')}</span>
                                         </div>
                                         <div className="flex justify-between mb-8">
-                                            <span className="text-gray-400 font-bold uppercase tracking-widest text-sm">GST (18%)</span>
-                                            <span className="text-white font-mono font-bold text-xl">₹{totalCost.gst.toLocaleString('en-IN')}</span>
+                                            <span className="text-stone-500 font-bold uppercase tracking-widest text-sm">GST (18%)</span>
+                                            <span className="text-[#171717] font-mono font-bold text-xl">₹{totalCost.gst.toLocaleString('en-IN')}</span>
                                         </div>
                                         
-                                        <div className="p-8 bg-luxury-charcoal rounded-3xl flex flex-col md:flex-row items-center justify-between gap-6 border border-white/10 shadow-2xl relative overflow-hidden group">
+                                        <div className="p-8 bg-[#171717] rounded-3xl flex flex-col md:flex-row items-center justify-between gap-6 border border-stone-800 shadow-2xl relative overflow-hidden group">
                                             <div className="absolute inset-0 bg-luxury-gold/5 group-hover:bg-luxury-gold/10 transition-all" />
                                             <div className="text-center md:text-left relative z-10">
                                                 <p className="text-luxury-gold uppercase font-bold tracking-[0.3em] text-[10px] mb-2">Grand Total Estimate</p>
@@ -557,7 +557,7 @@ export const InteriorEstimator: React.FC = () => {
                                     <div className="flex justify-start">
                                         <button 
                                             onClick={() => setStep(2)}
-                                            className="text-[10px] font-bold text-gray-500 hover:text-luxury-gold uppercase tracking-[0.2em] transition-all"
+                                            className="text-[10px] font-bold text-stone-500 hover:text-luxury-gold uppercase tracking-[0.2em] transition-all"
                                         >
                                             &larr; Modify Requirements
                                         </button>
@@ -570,41 +570,41 @@ export const InteriorEstimator: React.FC = () => {
                     {/* Sticky Calculation Panel */}
                     <div className="lg:col-span-4">
                         <div className="sticky top-24 space-y-6">
-                            <div className="bg-black/40 backdrop-blur-xl rounded-3xl shadow-luxury p-8 border border-white/10 overflow-hidden relative">
+                            <div className="bg-white rounded-3xl shadow-luxury p-8 border border-stone-200/80 overflow-hidden relative">
                                 <div className="absolute top-0 right-0 w-24 h-24 bg-luxury-gold/5 rounded-full -mr-12 -mt-12 blur-2xl" />
                                 
-                                <h4 className="text-lg font-serif font-bold text-white mb-6 flex items-center gap-2">
+                                <h4 className="text-lg font-serif font-bold text-[#171717] mb-6 flex items-center gap-2">
                                     <Calculator size={18} className="text-luxury-gold" /> Live Estimate
                                 </h4>
 
                                 <div className="space-y-4 mb-8">
-                                    <div className="flex justify-between text-xs text-gray-500">
+                                    <div className="flex justify-between text-xs text-stone-500">
                                         <span className="font-bold uppercase tracking-widest">Base Area</span>
-                                        <span className="text-white font-bold">{clientInfo.totalArea || 0} Sq.ft</span>
+                                        <span className="text-[#171717] font-bold">{clientInfo.totalArea || 0} Sq.ft</span>
                                     </div>
-                                    <div className="flex justify-between text-xs text-gray-500">
+                                    <div className="flex justify-between text-xs text-stone-500">
                                         <span className="font-bold uppercase tracking-widest">Selections</span>
-                                        <span className="text-white font-bold">{Object.keys(selections).length} Categories</span>
+                                        <span className="text-[#171717] font-bold">{Object.keys(selections).length} Categories</span>
                                     </div>
-                                    <div className="flex justify-between text-xs text-gray-500">
+                                    <div className="flex justify-between text-xs text-stone-500">
                                         <span className="font-bold uppercase tracking-widest">Style</span>
                                         <span className="text-luxury-gold font-bold">{clientInfo.budgetRange || 'Default'}</span>
                                     </div>
                                 </div>
 
-                                <div className="p-6 bg-white/5 rounded-2xl border border-white/10 text-center">
-                                    <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Current Subtotal</p>
+                                <div className="p-6 bg-stone-50 rounded-2xl border border-stone-200 text-center">
+                                    <p className="text-[10px] text-stone-500 font-bold uppercase tracking-widest mb-1">Current Subtotal</p>
                                     <p className="text-3xl font-serif font-bold text-luxury-gold">₹{totalCost.subtotal.toLocaleString('en-IN')}</p>
                                 </div>
 
-                                <div className="mt-8 pt-8 border-t border-dashed border-white/10">
+                                <div className="mt-8 pt-8 border-t border-dashed border-stone-200">
                                     <div className="flex items-center gap-4 p-4 bg-luxury-gold/10 rounded-2xl border border-luxury-gold/20 shadow-glow-gold/10">
                                         <div className="w-10 h-10 bg-luxury-gold rounded-full flex items-center justify-center text-white shrink-0 shadow-glow-gold">
                                             <Sparkles size={18} />
                                         </div>
                                         <div>
                                             <p className="text-[10px] font-bold text-luxury-gold uppercase tracking-widest">Smart Suggestion</p>
-                                            <p className="text-xs text-gray-400 font-medium leading-tight mt-1">
+                                            <p className="text-xs text-stone-600 font-medium leading-tight mt-1">
                                                 {clientInfo.selectedStyleId === 'ultra' 
                                                 ? 'Your selections align with 5-star international standards.' 
                                                 : 'Upgrade to Ultra-Luxury for premium imported finishes.'}
@@ -614,12 +614,12 @@ export const InteriorEstimator: React.FC = () => {
                                 </div>
                             </div>
 
-                            <div className="bg-luxury-charcoal rounded-3xl p-8 text-white border border-white/10">
+                            <div className="bg-stone-50 rounded-3xl p-8 text-[#171717] border border-stone-200 shadow-sm">
                                 <h5 className="font-serif font-bold text-luxury-gold text-lg mb-2">Need Expert Help?</h5>
-                                <p className="text-xs text-gray-400 leading-relaxed mb-6">Our design consultants are available for a 1-on-1 virtual walkthrough of your project details.</p>
+                                <p className="text-xs text-stone-600 leading-relaxed mb-6">Our design consultants are available for a 1-on-1 virtual walkthrough of your project details.</p>
                                 <a 
                                     href={`tel:9967044479`}
-                                    className="block text-center py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl font-bold uppercase tracking-widest text-[10px] transition-all"
+                                    className="block text-center py-4 bg-white hover:bg-stone-100 border border-stone-300 rounded-xl font-bold uppercase tracking-widest text-[10px] text-[#171717] transition-all shadow-sm"
                                 >
                                     Call Now: 9967044479
                                 </a>

@@ -104,9 +104,19 @@ export interface Testimonial {
   rating: number;
 }
 
+export interface FAQItem {
+  question: string;
+  answer: string;
+}
+
 export interface Service {
   id: string;
+  slug?: string;
   title: string;
+  seoTitle?: string;
+  metaDescription?: string;
+  h1?: string;
+  categoryGroup?: 'Primary' | 'Room Interior' | 'Joinery & Architectural';
   description: string;
   longDescription?: string;
   icon: any;
@@ -116,6 +126,54 @@ export interface Service {
   suggestions?: string[];
   gallery?: string[];
   videos?: string[];
+  layouts?: { name: string; description: string }[];
+  materials?: string[];
+  finishes?: string[];
+  hardwareAndLighting?: string[];
+  processSteps?: { step: string; title: string; desc: string }[];
+  faqs?: FAQItem[];
+}
+
+export interface MumbaiLocation {
+  slug: string;
+  name: string;
+  suburbs: string[];
+  seoTitle: string;
+  metaDescription: string;
+  h1: string;
+  heroImage: string;
+  intro: string;
+  propertyTypes: { name: string; desc: string }[];
+  localChallenges: { challenge: string; solution: string }[];
+  process: { step: string; title: string; desc: string }[];
+  faqs: FAQItem[];
+  projectIds?: string[];
+}
+
+export interface BlogPost {
+  slug: string;
+  title: string;
+  seoTitle: string;
+  metaDescription: string;
+  h1: string;
+  category: string;
+  publishedDate: string;
+  readTime: string;
+  author: {
+    name: string;
+    role: string;
+    image?: string;
+  };
+  image: string;
+  excerpt: string;
+  tableOfContents?: { id: string; title: string }[];
+  sections: {
+    id?: string;
+    heading: string;
+    content: string[]; // paragraphs or markdown-like content
+    subsections?: { subheading: string; points: string[] }[];
+  }[];
+  faqs?: FAQItem[];
 }
 
 export interface NavLink {
