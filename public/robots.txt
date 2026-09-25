@@ -9,5 +9,14 @@ Disallow: /admin-dashboard
 Disallow: /login
 Disallow: /account
 
-# Canonical XML Sitemap
+# Canonical XML Sitemaps (Web & Image Indexing)
 Sitemap: https://sonu-builders.in/sitemap.xml
+Sitemap: https://sonu-builders.in/sitemap-images.xml
+
+# Ensure search engine image bots have full crawling permissions
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: msnbot-media
+Allow: /
+

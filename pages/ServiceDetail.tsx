@@ -35,14 +35,18 @@ const ServiceDetail: React.FC = () => {
   const { services, loading } = useServices();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
-  // Normalization for legacy aliases
+  // Normalization for search engine friendly and legacy aliases
   const normalizedId = useMemo(() => {
     if (!id) return '';
     const clean = id.toLowerCase();
-    if (clean === 'full-home-interiors') return 'residential-interior-design';
-    if (clean === 'modular-kitchens') return 'modular-kitchen-design';
-    if (clean === 'living-room-design') return 'living-room-interior-design';
-    if (clean === 'bathroom-design') return 'bathroom-interior-design';
+    if (clean === 'full-home-interiors' || clean === 'interior' || clean === 'interiors' || clean === 'home-interior' || clean === 'home-interiors') return 'residential-interior-design';
+    if (clean === 'modular-kitchens' || clean === 'kitchen' || clean === 'kitchens' || clean === 'modular-kitchen') return 'modular-kitchen-design';
+    if (clean === 'living-room-design' || clean === 'living-room' || clean === 'living') return 'living-room-interior-design';
+    if (clean === 'bedroom' || clean === 'bedrooms' || clean === 'bedroom-design' || clean === 'master-bedroom') return 'bedroom-interior-design';
+    if (clean === 'bathroom-design' || clean === 'bathroom' || clean === 'bathrooms') return 'bathroom-interior-design';
+    if (clean === 'temple' || clean === 'mandir' || clean === 'pooja-room' || clean === 'home-temple' || clean === 'pooja') return 'pooja-room-design';
+    if (clean === 'wardrobe' || clean === 'wardrobes' || clean === 'storage') return 'wardrobe-design';
+    if (clean === 'ceiling' || clean === 'false-ceiling' || clean === 'ceilings') return 'false-ceiling-design';
     return clean;
   }, [id]);
 

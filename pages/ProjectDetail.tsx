@@ -14,8 +14,7 @@ import BeforeAfterSlider from '../components/ui/BeforeAfterSlider';
 import { getOptimizedImageUrl } from '../utils/performance';
 import SEO from '../components/SEO';
 import Breadcrumbs from '../components/Breadcrumbs';
-import Section from '../components/Section';
-import { COMPANY_PHONE } from '../constants';
+import { COMPANY_PHONE, PROJECTS } from '../constants';
 
 const ProjectDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();

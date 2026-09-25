@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
-  <!-- ========================================== -->
-  <!-- CORE PILLAR & MAIN PAGES                  -->
-  <!-- ========================================== -->
   <url>
     <loc>https://sonu-builders.in/</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1600&amp;q=80</image:loc>
       <image:title>Sonu Enterprises - Premier Interior Designer &amp; Turnkey Contractor Mumbai</image:title>
@@ -26,9 +19,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/interior-designer-mumbai</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1600&amp;q=80</image:loc>
       <image:title>Best Interior Designer in Mumbai - Turnkey Home Renovation</image:title>
@@ -38,9 +28,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/about</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&amp;q=80</image:loc>
       <image:title>About Sonu Enterprises - 15+ Years of Interior Craftsmanship</image:title>
@@ -50,9 +37,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/services</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600&amp;q=80</image:loc>
       <image:title>Full Directory of Interior Design Services Mumbai - Sonu Enterprises</image:title>
@@ -62,9 +46,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/contact</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.90</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1600&amp;q=80</image:loc>
       <image:title>Contact Sonu Enterprises Interior Designers Mumbai</image:title>
@@ -74,9 +55,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/ai-tools</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1600&amp;q=80</image:loc>
       <image:title>AI Interior Design &amp; Cost Estimator Tools - Sonu Enterprises</image:title>
@@ -86,9 +64,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/blog</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1600&amp;q=80</image:loc>
       <image:title>Interior Design Blog &amp; Mumbai Apartment Guides</image:title>
@@ -97,34 +72,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://sonu-builders.in/sitemap</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.50</priority>
-  </url>
-  <url>
-    <loc>https://sonu-builders.in/privacy-policy</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.30</priority>
-  </url>
-  <url>
-    <loc>https://sonu-builders.in/terms</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.30</priority>
-  </url>
-
-  <!-- ========================================== -->
-  <!-- 18 SPECIALIZED INTERIOR SERVICES & IMAGES   -->
-  <!-- (Interior, Bedroom, Kitchen, Bathroom,     -->
-  <!--  Temple, Wardrobes, Ceilings, TV Units)     -->
-  <!-- ========================================== -->
-  <url>
     <loc>https://sonu-builders.in/services/residential-interior-design</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1600&amp;q=80</image:loc>
       <image:title>Turnkey Luxury Home Interior Design in Mumbai - Sonu Enterprises</image:title>
@@ -152,9 +100,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/services/bedroom-interior-design</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1600&amp;q=80</image:loc>
       <image:title>Luxury Master Bedroom Interior Design Mumbai</image:title>
@@ -182,9 +127,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/services/modular-kitchen-design</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=1600&amp;q=80</image:loc>
       <image:title>Modern Modular Kitchen Design in Mumbai</image:title>
@@ -212,9 +154,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/services/bathroom-interior-design</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=1600&amp;q=80</image:loc>
       <image:title>Luxury Bathroom Interior Design and Renovation Mumbai</image:title>
@@ -236,9 +175,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/services/pooja-room-design</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1615529328331-f8917597711f?w=1600&amp;q=80</image:loc>
       <image:title>Sacred Home Mandir and Pooja Room Interior Design Mumbai</image:title>
@@ -260,9 +196,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/services/living-room-interior-design</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600&amp;q=80</image:loc>
       <image:title>Modern Living Room Interior Design in Mumbai</image:title>
@@ -284,9 +217,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/services/wardrobe-design</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1558997519-83ea9252def8?w=1600&amp;q=80</image:loc>
       <image:title>Custom Built-In Wardrobes and Walk-in Closets Mumbai</image:title>
@@ -302,9 +232,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/services/false-ceiling-design</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1513694203232-719a280e022f?w=1600&amp;q=80</image:loc>
       <image:title>Modern False Ceiling Design and Cove Lighting Mumbai</image:title>
@@ -320,9 +247,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/services/tv-unit-design</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&amp;q=80</image:loc>
       <image:title>Modern TV Unit Design and Floating Media Console Mumbai</image:title>
@@ -332,9 +256,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/services/dining-room-design</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1617806118233-18e1de247200?w=1600&amp;q=80</image:loc>
       <image:title>Luxury Dining Room Interior and Marble Table Mumbai</image:title>
@@ -344,9 +265,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/services/balcony-design</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1600&amp;q=80</image:loc>
       <image:title>Balcony Makeover and Weatherproof Composite Decking Mumbai</image:title>
@@ -356,9 +274,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/services/home-office-design</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=1600&amp;q=80</image:loc>
       <image:title>Ergonomic Study Table and Home Office Interior Mumbai</image:title>
@@ -368,9 +283,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/services/commercial-interior-design</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1600&amp;q=80</image:loc>
       <image:title>Commercial Office Interior Design and Corporate Fit-Outs Mumbai</image:title>
@@ -380,9 +292,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/services/staircase-design</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&amp;q=80</image:loc>
       <image:title>Architectural Duplex Staircase and Glass Railing Design Mumbai</image:title>
@@ -392,9 +301,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/services/crockery-unit-design</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1617806118233-18e1de247200?w=1600&amp;q=80</image:loc>
       <image:title>Designer Crockery Unit with Warm Vitrine Lighting Mumbai</image:title>
@@ -404,9 +310,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/services/home-bar-design</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1600&amp;q=80</image:loc>
       <image:title>Modern Home Bar Counter and Lounge Interior Mumbai</image:title>
@@ -416,9 +319,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/services/flooring-design</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1600&amp;q=80</image:loc>
       <image:title>Italian Marble and Wooden Flooring Installation Mumbai</image:title>
@@ -428,9 +328,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/services/wallpaper-design</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1600&amp;q=80</image:loc>
       <image:title>Luxury Textured Wallpapers and Fluted Panelling Mumbai</image:title>
@@ -438,47 +335,8 @@
       <image:geo_location>Mumbai, Maharashtra, India</image:geo_location>
     </image:image>
   </url>
-
-  <!-- ========================================== -->
-  <!-- GENUINE MUMBAI OPERATIONAL LOCATIONS      -->
-  <!-- Geo-Targeted: Kalyan-Dombivli, Palava,     -->
-  <!-- Thane, Navi Mumbai, Bandra, Andheri, Powai  -->
-  <!-- ========================================== -->
   <url>
     <loc>https://sonu-builders.in/locations/kalyan-dombivli</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1600&amp;q=80</image:loc>
-      <image:title>Interior Designers in Kalyan &amp; Dombivli - Sonu Enterprises</image:title>
-      <image:caption>Headquarters and turnkey interior execution across Khadakpada, Tilak Nagar, Dombivli East, Dombivli West, and Gandhinagar.</image:caption>
-      <image:geo_location>Kalyan-Dombivli, Maharashtra, India</image:geo_location>
-    </image:image>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=1600&amp;q=80</image:loc>
-      <image:title>Modular Kitchen Designer in Kalyan &amp; Dombivli</image:title>
-      <image:caption>Bespoke waterproof modular kitchens with German hardware installed in Kalyan and Dombivli residences.</image:caption>
-      <image:geo_location>Kalyan-Dombivli, Maharashtra, India</image:geo_location>
-    </image:image>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1600&amp;q=80</image:loc>
-      <image:title>Master Bedroom Interior in Khadakpada Kalyan &amp; Dombivli East</image:title>
-      <image:caption>Luxury master bedroom design with upholstered headboard and storage beds in Kalyan Dombivli.</image:caption>
-      <image:geo_location>Kalyan-Dombivli, Maharashtra, India</image:geo_location>
-    </image:image>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1615529328331-f8917597711f?w=1600&amp;q=80</image:loc>
-      <image:title>Sacred Home Mandir &amp; Temple Design in Kalyan &amp; Dombivli</image:title>
-      <image:caption>Vastu-compliant pooja rooms with CNC jali screens and backlit onyx stone in Kalyan-Dombivli.</image:caption>
-      <image:geo_location>Kalyan-Dombivli, Maharashtra, India</image:geo_location>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://sonu-builders.in/interior-designers-kalyan-dombivli</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1600&amp;q=80</image:loc>
       <image:title>Interior Designers in Kalyan &amp; Dombivli - Sonu Enterprises</image:title>
@@ -506,39 +364,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/locations/palava-city</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1600&amp;q=80</image:loc>
-      <image:title>Interior Designers in Palava City Dombivli - Lodha Apartments Specialist</image:title>
-      <image:caption>Specialized modular kitchens, smart wardrobes, and turnkey interior design for Casa Bella, Casa Rio, and Lakeshore Greens.</image:caption>
-      <image:geo_location>Palava City, Dombivli, Maharashtra, India</image:geo_location>
-    </image:image>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1556909212-d5b604d0c90d?w=1600&amp;q=80</image:loc>
-      <image:title>Parallel Modular Kitchens for Lodha Palava City Flats</image:title>
-      <image:caption>Precision engineered kitchen modules matching Palava pipeline and duct alignments with zero space wastage.</image:caption>
-      <image:geo_location>Palava City, Dombivli, Maharashtra, India</image:geo_location>
-    </image:image>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=1600&amp;q=80</image:loc>
-      <image:title>Smart Space-Saving Bedroom Wardrobes in Palava City</image:title>
-      <image:caption>Floor-to-ceiling sliding wardrobes and hydraulic beds designed specifically for Palava apartment dimensions.</image:caption>
-      <image:geo_location>Palava City, Dombivli, Maharashtra, India</image:geo_location>
-    </image:image>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1567449303078-57ad995bd301?w=1600&amp;q=80</image:loc>
-      <image:title>Compact Mandir &amp; Temple Unit for Palava Apartments</image:title>
-      <image:caption>Space-saving alcove pooja room unit with warm backlighting and diya heat-protection in Palava City.</image:caption>
-      <image:geo_location>Palava City, Dombivli, Maharashtra, India</image:geo_location>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://sonu-builders.in/interior-designers-palava-city</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1600&amp;q=80</image:loc>
       <image:title>Interior Designers in Palava City Dombivli - Lodha Apartments Specialist</image:title>
@@ -566,39 +391,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/locations/thane</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1600&amp;q=80</image:loc>
-      <image:title>Luxury Interior Designers in Thane - Hiranandani Estate &amp; Majiwada</image:title>
-      <image:caption>Turnkey interior design and luxury apartments across Ghodbunder Road, Pokhran Road, and Hiranandani Estate Thane.</image:caption>
-      <image:geo_location>Thane, Maharashtra, India</image:geo_location>
-    </image:image>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=1600&amp;q=80</image:loc>
-      <image:title>German Modular Kitchens in Thane High-Rises</image:title>
-      <image:caption>Quartz countertops and Blum tandem drawer systems installed across Thane luxury gated societies.</image:caption>
-      <image:geo_location>Thane, Maharashtra, India</image:geo_location>
-    </image:image>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1600&amp;q=80</image:loc>
-      <image:title>Luxury Master Bedroom Interior Design in Thane West</image:title>
-      <image:caption>Custom upholstered headboards and acoustic panelling for high-ceiling flats in Thane.</image:caption>
-      <image:geo_location>Thane, Maharashtra, India</image:geo_location>
-    </image:image>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=1600&amp;q=80</image:loc>
-      <image:title>Modern Spa Bathroom Renovation in Thane</image:title>
-      <image:caption>Toughened glass shower partitions and anti-skid vitrified tiling for Thane residences.</image:caption>
-      <image:geo_location>Thane, Maharashtra, India</image:geo_location>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://sonu-builders.in/interior-designers-thane</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1600&amp;q=80</image:loc>
       <image:title>Luxury Interior Designers in Thane - Hiranandani Estate &amp; Majiwada</image:title>
@@ -626,33 +418,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/locations/navi-mumbai</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600&amp;q=80</image:loc>
-      <image:title>Turnkey Interior Designers in Navi Mumbai - Vashi, Palm Beach, Kharghar</image:title>
-      <image:caption>Modern luxury flats and coastal climate engineered interiors across Vashi, Seawoods, Nerul, and Kharghar high-rises.</image:caption>
-      <image:geo_location>Navi Mumbai, Maharashtra, India</image:geo_location>
-    </image:image>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=1600&amp;q=80</image:loc>
-      <image:title>Waterproof Modular Kitchens in Navi Mumbai (Vashi &amp; Kharghar)</image:title>
-      <image:caption>IS:710 Marine Ply kitchens built to withstand coastal humidity in Navi Mumbai towers.</image:caption>
-      <image:geo_location>Navi Mumbai, Maharashtra, India</image:geo_location>
-    </image:image>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1600&amp;q=80</image:loc>
-      <image:title>Contemporary Bedroom &amp; Wardrobes along Palm Beach Road Navi Mumbai</image:title>
-      <image:caption>Seawoods luxury apartment bedroom styling with tinted glass sliding wardrobes.</image:caption>
-      <image:geo_location>Navi Mumbai, Maharashtra, India</image:geo_location>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://sonu-builders.in/interior-designers-navi-mumbai</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600&amp;q=80</image:loc>
       <image:title>Turnkey Interior Designers in Navi Mumbai - Vashi, Palm Beach, Kharghar</image:title>
@@ -674,27 +439,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/locations/bandra</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1600&amp;q=80</image:loc>
-      <image:title>Luxury Interior Designers in Bandra West &amp; Pali Hill Mumbai</image:title>
-      <image:caption>High-end bespoke residences and sea-facing penthouse interior transformations in Bandra West.</image:caption>
-      <image:geo_location>Bandra, Mumbai, Maharashtra, India</image:geo_location>
-    </image:image>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1558997519-83ea9252def8?w=1600&amp;q=80</image:loc>
-      <image:title>Walk-In Closets &amp; Luxury Master Suites in Pali Hill Bandra</image:title>
-      <image:caption>Sensor LED illuminated walk-in wardrobes with champagne brass profiles in Bandra.</image:caption>
-      <image:geo_location>Bandra, Mumbai, Maharashtra, India</image:geo_location>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://sonu-builders.in/interior-designers-bandra</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1600&amp;q=80</image:loc>
       <image:title>Luxury Interior Designers in Bandra West &amp; Pali Hill Mumbai</image:title>
@@ -710,27 +454,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/locations/andheri</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1600&amp;q=80</image:loc>
-      <image:title>Interior Designers in Andheri West &amp; Lokhandwala Complex Mumbai</image:title>
-      <image:caption>Turnkey flat renovation and modern aesthetic fit-outs in Lokhandwala and Oshiwara Andheri.</image:caption>
-      <image:geo_location>Andheri, Mumbai, Maharashtra, India</image:geo_location>
-    </image:image>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&amp;q=80</image:loc>
-      <image:title>Modern TV Console &amp; Living Room Interior in Andheri West</image:title>
-      <image:caption>Acoustic wall panelling and backlit marble entertainment unit in Andheri high-rise flats.</image:caption>
-      <image:geo_location>Andheri, Mumbai, Maharashtra, India</image:geo_location>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://sonu-builders.in/interior-designers-andheri</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1600&amp;q=80</image:loc>
       <image:title>Interior Designers in Andheri West &amp; Lokhandwala Complex Mumbai</image:title>
@@ -746,9 +469,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/locations/powai</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600&amp;q=80</image:loc>
       <image:title>Interior Designers in Powai &amp; Hiranandani Gardens Mumbai</image:title>
@@ -762,33 +482,8 @@
       <image:geo_location>Powai, Mumbai, Maharashtra, India</image:geo_location>
     </image:image>
   </url>
-  <url>
-    <loc>https://sonu-builders.in/interior-designers-powai</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600&amp;q=80</image:loc>
-      <image:title>Interior Designers in Powai &amp; Hiranandani Gardens Mumbai</image:title>
-      <image:caption>Neoclassical and contemporary smart home interiors for lakeside luxury apartments in Powai and Chandivali.</image:caption>
-      <image:geo_location>Powai, Mumbai, Maharashtra, India</image:geo_location>
-    </image:image>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1600&amp;q=80</image:loc>
-      <image:title>Neoclassical High-Ceiling Interiors in Hiranandani Powai</image:title>
-      <image:caption>Decorative wall mouldings, coffered ceilings, and imported Italian marble flooring in Powai.</image:caption>
-      <image:geo_location>Powai, Mumbai, Maharashtra, India</image:geo_location>
-    </image:image>
-  </url>
-
-  <!-- ========================================== -->
-  <!-- VALUE-PACKED MUMBAI INTERIOR BLOG GUIDES   -->
-  <!-- ========================================== -->
   <url>
     <loc>https://sonu-builders.in/blog/how-to-choose-interior-designer-mumbai</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&amp;q=80</image:loc>
       <image:title>How to Choose an Interior Designer in Mumbai Guide</image:title>
@@ -798,9 +493,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/blog/modern-flat-interior-design-ideas-mumbai</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&amp;q=80</image:loc>
       <image:title>Modern Flat Interior Design Ideas Mumbai Apartments</image:title>
@@ -810,9 +502,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/blog/modular-kitchen-design-ideas-mumbai-apartments</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=1200&amp;q=80</image:loc>
       <image:title>Modular Kitchen Design Ideas for Mumbai Apartments</image:title>
@@ -822,9 +511,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/blog/space-saving-interior-ideas-mumbai-1bhk-2bhk</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&amp;q=80</image:loc>
       <image:title>Space Saving Interior Ideas for Mumbai 1BHK and 2BHK Homes</image:title>
@@ -834,9 +520,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/blog/2bhk-interior-design-guide-mumbai-homeowners</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1200&amp;q=80</image:loc>
       <image:title>2BHK Interior Design Complete Cost and Timeline Guide Mumbai</image:title>
@@ -846,9 +529,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/blog/interior-design-checklist-new-mumbai-flat</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1200&amp;q=80</image:loc>
       <image:title>Interior Design Checklist for New Mumbai Flat Handover</image:title>
@@ -856,15 +536,8 @@
       <image:geo_location>Mumbai, Maharashtra, India</image:geo_location>
     </image:image>
   </url>
-
-  <!-- ========================================== -->
-  <!-- GALLERY & VISUAL INSPIRATION CATEGORIES   -->
-  <!-- ========================================== -->
   <url>
     <loc>https://sonu-builders.in/gallery</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1600&amp;q=80</image:loc>
       <image:title>Luxury Interior Design Gallery &amp; Inspirations Mumbai</image:title>
@@ -874,9 +547,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/gallery/Kitchens</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=1600&amp;q=80</image:loc>
       <image:title>Modular Kitchen Photo Gallery Sonu Enterprises Mumbai</image:title>
@@ -886,9 +556,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/gallery/Bedrooms</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1600&amp;q=80</image:loc>
       <image:title>Luxury Bedroom Design Photo Gallery Mumbai</image:title>
@@ -898,9 +565,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/gallery/Living%20&amp;%20Dining</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600&amp;q=80</image:loc>
       <image:title>Living and Dining Room Interior Design Gallery Mumbai</image:title>
@@ -910,9 +574,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/gallery/Wardrobes</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1558997519-83ea9252def8?w=1600&amp;q=80</image:loc>
       <image:title>Custom Modular Wardrobes and Closets Gallery Mumbai</image:title>
@@ -922,9 +583,6 @@
   </url>
   <url>
     <loc>https://sonu-builders.in/gallery/Ceilings%20&amp;%20Bathrooms</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
     <image:image>
       <image:loc>https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=1600&amp;q=80</image:loc>
       <image:title>Luxury Ceilings and Bathrooms Photo Gallery Mumbai</image:title>

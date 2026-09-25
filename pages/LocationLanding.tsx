@@ -14,7 +14,7 @@ import {
   Phone
 } from 'lucide-react';
 import { useCompanyData } from '../hooks/useCompanyData';
-import SEO, { organizationSchema, faqSchema, breadcrumbSchema } from '../components/SEO';
+import SEO, { organizationSchema, locationLocalBusinessSchema, faqSchema, breadcrumbSchema } from '../components/SEO';
 import LeadCaptureForm from '../components/luxury/LeadCaptureForm';
 import { MUMBAI_LOCATIONS, CANONICAL_DOMAIN } from '../constants';
 
@@ -74,6 +74,18 @@ const LocationLanding: React.FC = () => {
     setOpenFaq(prev => (prev === index ? null : index));
   };
 
+  const LOCATION_COORDINATES: Record<string, { lat: string; placename: string }> = {
+    'kalyan-dombivli': { lat: '19.2437;73.1355', placename: 'Kalyan, Dombivli, Maharashtra, India' },
+    'palava-city': { lat: '19.1726;73.0850', placename: 'Palava City, Dombivli East, Maharashtra, India' },
+    'thane': { lat: '19.2183;72.9781', placename: 'Thane, Mumbai MMR, Maharashtra, India' },
+    'navi-mumbai': { lat: '19.0330;73.0297', placename: 'Navi Mumbai, Vashi, Kharghar, Maharashtra, India' },
+    'bandra': { lat: '19.0596;72.8295', placename: 'Bandra West, Mumbai, Maharashtra, India' },
+    'andheri': { lat: '19.1136;72.8697', placename: 'Andheri West, Mumbai, Maharashtra, India' },
+    'powai': { lat: '19.1176;72.9060', placename: 'Powai, Hiranandani, Mumbai, Maharashtra, India' },
+  };
+
+  const geoInfo = LOCATION_COORDINATES[locationData.slug] || { lat: '19.1726;73.0850', placename: `${locationData.name}, Mumbai MMR, Maharashtra, India` };
+
   const canonicalUrl = `${CANONICAL_DOMAIN}/locations/${locationData.slug}`;
   const breadcrumbs = [
     { name: 'Home', url: '/' },
@@ -88,8 +100,11 @@ const LocationLanding: React.FC = () => {
         description={locationData.metaDescription}
         canonical={canonicalUrl}
         ogImage={locationData.heroImage}
+        geoPlacename={geoInfo.placename}
+        geoPosition={geoInfo.lat}
         schema={[
           organizationSchema,
+          locationLocalBusinessSchema(locationData),
           faqSchema(locationData.faqs),
           breadcrumbSchema(breadcrumbs)
         ]}
@@ -243,6 +258,145 @@ const LocationLanding: React.FC = () => {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── LOCATION SERVICE SOLUTIONS (INTERIOR, BEDROOM, KITCHEN, BATHROOM, TEMPLE) ── */}
+      <section className="py-24 relative bg-stone-50 border-t border-stone-200">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <p className="text-[10px] font-bold tracking-[0.35em] uppercase text-luxury-gold mb-3">
+              Room &amp; Space Solutions
+            </p>
+            <h2 className="text-3xl md:text-5xl font-serif font-bold text-[#171717] mb-4">
+              Interior Services in {locationData.name}
+            </h2>
+            <p className="text-stone-600 text-sm">
+              Explore bespoke modular craftsmanship tailored for residences across {locationData.name}.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Link
+              to="/services/residential-interior-design"
+              className="p-6 rounded-xl bg-white border border-stone-200 shadow-sm hover:border-luxury-gold/50 transition-all group flex flex-col justify-between"
+            >
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-luxury-gold bg-luxury-gold/10 px-2 py-0.5 rounded">
+                  Turnkey
+                </span>
+                <h3 className="text-lg font-serif font-bold text-stone-900 mt-3 group-hover:text-luxury-gold transition-colors">
+                  Full Home Interiors in {locationData.name}
+                </h3>
+                <p className="text-stone-600 text-xs mt-2 leading-relaxed">
+                  Turnkey 1BHK, 2BHK &amp; 3BHK flat interiors with Italian marble, false ceilings, and factory modular woodwork in {locationData.name}.
+                </p>
+              </div>
+              <div className="text-xs text-luxury-gold font-semibold mt-4 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                Explore Full Home Design &rarr;
+              </div>
+            </Link>
+
+            <Link
+              to="/services/bedroom-interior-design"
+              className="p-6 rounded-xl bg-white border border-stone-200 shadow-sm hover:border-luxury-gold/50 transition-all group flex flex-col justify-between"
+            >
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-luxury-gold bg-luxury-gold/10 px-2 py-0.5 rounded">
+                  Bedroom
+                </span>
+                <h3 className="text-lg font-serif font-bold text-stone-900 mt-3 group-hover:text-luxury-gold transition-colors">
+                  Bedroom Interior Design in {locationData.name}
+                </h3>
+                <p className="text-stone-600 text-xs mt-2 leading-relaxed">
+                  Serene master bedrooms with cushioned headboards, hydraulic storage beds, and acoustic wall panelling in {locationData.name}.
+                </p>
+              </div>
+              <div className="text-xs text-luxury-gold font-semibold mt-4 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                Explore Bedroom Design &rarr;
+              </div>
+            </Link>
+
+            <Link
+              to="/services/modular-kitchen-design"
+              className="p-6 rounded-xl bg-white border border-stone-200 shadow-sm hover:border-luxury-gold/50 transition-all group flex flex-col justify-between"
+            >
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-luxury-gold bg-luxury-gold/10 px-2 py-0.5 rounded">
+                  Kitchen
+                </span>
+                <h3 className="text-lg font-serif font-bold text-stone-900 mt-3 group-hover:text-luxury-gold transition-colors">
+                  Modular Kitchens in {locationData.name}
+                </h3>
+                <p className="text-stone-600 text-xs mt-2 leading-relaxed">
+                  100% IS:710 Marine Grade BWP Plywood with German Blum tandem drawers and seamless quartz countertops in {locationData.name}.
+                </p>
+              </div>
+              <div className="text-xs text-luxury-gold font-semibold mt-4 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                Explore Kitchen Design &rarr;
+              </div>
+            </Link>
+
+            <Link
+              to="/services/bathroom-interior-design"
+              className="p-6 rounded-xl bg-white border border-stone-200 shadow-sm hover:border-luxury-gold/50 transition-all group flex flex-col justify-between"
+            >
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-luxury-gold bg-luxury-gold/10 px-2 py-0.5 rounded">
+                  Bathroom
+                </span>
+                <h3 className="text-lg font-serif font-bold text-stone-900 mt-3 group-hover:text-luxury-gold transition-colors">
+                  Bathroom Renovation in {locationData.name}
+                </h3>
+                <p className="text-stone-600 text-xs mt-2 leading-relaxed">
+                  Spa-like luxury bathrooms with frameless glass cubicles, floating vanities, and anti-skid porcelain tiles in {locationData.name}.
+                </p>
+              </div>
+              <div className="text-xs text-luxury-gold font-semibold mt-4 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                Explore Bathroom Design &rarr;
+              </div>
+            </Link>
+
+            <Link
+              to="/services/pooja-room-design"
+              className="p-6 rounded-xl bg-white border border-stone-200 shadow-sm hover:border-luxury-gold/50 transition-all group flex flex-col justify-between"
+            >
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-luxury-gold bg-luxury-gold/10 px-2 py-0.5 rounded">
+                  Temple &amp; Mandir
+                </span>
+                <h3 className="text-lg font-serif font-bold text-stone-900 mt-3 group-hover:text-luxury-gold transition-colors">
+                  Home Temple &amp; Mandir Design in {locationData.name}
+                </h3>
+                <p className="text-stone-600 text-xs mt-2 leading-relaxed">
+                  Vastu-compliant sacred pooja rooms with CNC brass jali screens, backlit onyx stone, and marble altars in {locationData.name}.
+                </p>
+              </div>
+              <div className="text-xs text-luxury-gold font-semibold mt-4 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                Explore Mandir Design &rarr;
+              </div>
+            </Link>
+
+            <Link
+              to="/services/wardrobe-design"
+              className="p-6 rounded-xl bg-white border border-stone-200 shadow-sm hover:border-luxury-gold/50 transition-all group flex flex-col justify-between"
+            >
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-luxury-gold bg-luxury-gold/10 px-2 py-0.5 rounded">
+                  Wardrobes
+                </span>
+                <h3 className="text-lg font-serif font-bold text-stone-900 mt-3 group-hover:text-luxury-gold transition-colors">
+                  Custom Wardrobes in {locationData.name}
+                </h3>
+                <p className="text-stone-600 text-xs mt-2 leading-relaxed">
+                  Floor-to-ceiling sliding mirrors, tinted glass walk-in closets, and modular internal organizers engineered for {locationData.name} apartments.
+                </p>
+              </div>
+              <div className="text-xs text-luxury-gold font-semibold mt-4 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                Explore Wardrobe Design &rarr;
+              </div>
+            </Link>
           </div>
         </div>
       </section>

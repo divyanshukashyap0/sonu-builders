@@ -10,6 +10,9 @@ interface SEOProps {
     ogType?: string;
     keywords?: string;
     schema?: object | object[];
+    geoRegion?: string;
+    geoPlacename?: string;
+    geoPosition?: string;
 }
 
 export const SEO: React.FC<SEOProps> = ({
@@ -19,7 +22,10 @@ export const SEO: React.FC<SEOProps> = ({
     ogImage = 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&q=80',
     ogType = 'website',
     keywords,
-    schema
+    schema,
+    geoRegion = 'IN-MH',
+    geoPlacename = 'Mumbai, Kalyan-Dombivli, Thane, Palava City, Navi Mumbai',
+    geoPosition = '19.1726;73.0850'
 }) => {
     // Ensure canonical always uses canonical domain https://sonu-builders.in
     let finalCanonical = canonical;
@@ -34,6 +40,7 @@ export const SEO: React.FC<SEOProps> = ({
     }
 
     const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
+    const icbmValue = geoPosition.replace(';', ', ');
 
     return (
         <Helmet>
@@ -44,11 +51,11 @@ export const SEO: React.FC<SEOProps> = ({
             {keywords && <meta name="keywords" content={keywords} />}
             <link rel="canonical" href={finalCanonical} />
 
-            {/* Geo Location Tags for Mumbai / Maharashtra */}
-            <meta name="geo.region" content="IN-MH" />
-            <meta name="geo.placename" content="Mumbai, Kalyan-Dombivli, Thane" />
-            <meta name="geo.position" content="19.1726;73.0850" />
-            <meta name="ICBM" content="19.1726, 73.0850" />
+            {/* Geo Location Tags for Search Engines (Google, Bing, Local SEO) */}
+            <meta name="geo.region" content={geoRegion} />
+            <meta name="geo.placename" content={geoPlacename} />
+            <meta name="geo.position" content={geoPosition} />
+            <meta name="ICBM" content={icbmValue} />
 
             {/* Open Graph / Facebook */}
             <meta property="og:type" content={ogType} />
@@ -220,4 +227,70 @@ export const faqSchema = (questions: { question: string; answer: string }[]) => 
     }))
 });
 
+// Location-Specific LocalBusiness / HomeAndConstructionBusiness Schema
+export const locationLocalBusinessSchema = (location: {
+    name: string;
+    slug: string;
+    suburbs?: string[];
+    seoTitle?: string;
+    metaDescription?: string;
+    heroImage?: string;
+}) => {
+    const coords: Record<string, { lat: string; lon: string; postalCode: string; locality: string }> = {
+        'kalyan-dombivli': { lat: '19.2437', lon: '73.1355', postalCode: '421204', locality: 'Kalyan-Dombivli' },
+        'palava-city': { lat: '19.1726', lon: '73.0850', postalCode: '421204', locality: 'Palava City, Dombivli' },
+        'thane': { lat: '19.2183', lon: '72.9781', postalCode: '400601', locality: 'Thane' },
+        'navi-mumbai': { lat: '19.0330', lon: '73.0297', postalCode: '400703', locality: 'Navi Mumbai' },
+        'bandra': { lat: '19.0596', lon: '72.8295', postalCode: '400050', locality: 'Bandra, Mumbai' },
+        'andheri': { lat: '19.1136', lon: '72.8697', postalCode: '400053', locality: 'Andheri, Mumbai' },
+        'powai': { lat: '19.1176', lon: '72.9060', postalCode: '400076', locality: 'Powai, Mumbai' },
+    };
+
+    const coord = coords[location.slug] || { lat: '19.1726', lon: '73.0850', postalCode: '421204', locality: location.name };
+    const areaList = [
+        { "@type": "City", "name": location.name },
+        ...(location.suburbs || []).map(sub => ({ "@type": "AdministrativeArea", "name": sub }))
+    ];
+
+    return {
+        "@context": "https://schema.org",
+        "@type": "HomeAndConstructionBusiness",
+        "@id": `${CANONICAL_DOMAIN}/locations/${location.slug}#localbusiness`,
+        "name": `Sonu Enterprises - Interior Designer in ${location.name}`,
+        "alternateName": `${COMPANY_NAME} ${location.name}`,
+        "image": location.heroImage || "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&q=80",
+        "url": `${CANONICAL_DOMAIN}/locations/${location.slug}`,
+        "telephone": COMPANY_PHONE,
+        "email": COMPANY_EMAIL,
+        "priceRange": "₹₹ - ₹₹₹₹",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": COMPANY_ADDRESS,
+            "addressLocality": coord.locality,
+            "addressRegion": "Maharashtra",
+            "postalCode": coord.postalCode,
+            "addressCountry": "IN"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": coord.lat,
+            "longitude": coord.lon
+        },
+        "areaServed": areaList,
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": `Interior Design Services in ${location.name}`,
+            "itemListElement": [
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": `Turnkey Home Interiors in ${location.name}` } },
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": `Modular Kitchen Design in ${location.name}` } },
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": `Bedroom Interior Design in ${location.name}` } },
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": `Bathroom Renovation in ${location.name}` } },
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": `Home Temple & Mandir Design in ${location.name}` } },
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": `Custom Wardrobes & Storage in ${location.name}` } }
+            ]
+        }
+    };
+};
+
 export default SEO;
+

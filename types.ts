@@ -361,3 +361,16 @@ export interface Expense {
   createdAt?: any;
   updatedAt?: any;
 }
+
+export interface TeamMember {
+  id?: string;
+  name: string;
+  role: string;
+  email?: string;
+  phone?: string;
+  image?: string;
+  bio?: string;
+  order?: number;
+  createdAt?: any;
+  updatedAt?: any;
+}
